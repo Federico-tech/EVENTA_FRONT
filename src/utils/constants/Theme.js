@@ -15,6 +15,8 @@ export const COLORS = {
   gradient: ['#32DAE4', '#00A1FF'],
 };
 
+export const SIZE = 14
+
 export const SIZES = {
   xxs: 8,
   xs: 10,

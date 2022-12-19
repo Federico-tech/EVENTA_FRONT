@@ -5,7 +5,7 @@ import { BottomNavigator, AuthNavigator } from './Navigation';
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <BottomNavigator/>
+      <AuthNavigator/>
     </NavigationContainer>
   );
 };

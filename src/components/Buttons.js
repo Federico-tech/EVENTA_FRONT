@@ -27,13 +27,13 @@ export const FollowButton = () => {
             <Text style={styles.textFollow}> Follow </Text>
           </LinearGradient>
         </View>
-    </TouchableOpacity> 
+    </TouchableOpacity>
   )
 }
 
-export const LoginButton = ({ text }) => {
+export const LoginButton = ({ text, onPress }) => {
   return(
-    <TouchableOpacity >
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.loginButtonContainer}>
         <Text style={styles.loginText}> {text} </Text>
       </View>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: SIZES.lg,
   },
-  
+
   textFollow: {
     fontFamily: 'InterSemiBold',
     color: 'white',
@@ -115,29 +115,28 @@ const styles = StyleSheet.create({
   loginButtonContainer: {
     backgroundColor: COLORS.primary,
     height: HEIGHT_DEVICE / 15,
-    borderRadius: SIZES.xxs, 
+    borderRadius: SIZES.xxs,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: HEIGHT_DEVICE / 50
-  }, 
+  },
 
   loginText: {
     color: 'white',
-    fontFamily: 'InterExtraBold', 
-    fontSize: SIZES.xl, 
-  }, 
+    fontSize: SIZES.xl,
+  },
 
   socialLoginButtonContainer: {
     backgroundColor: 'white',
     width: WIDTH_DEVICE / 2.3,
     height: HEIGHT_DEVICE / 15,
-    borderRadius: SIZES.xxs, 
+    borderRadius: SIZES.xxs,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
 
     ...SHADOWS.medium
-  }, 
+  },
 
   textSocialLogin: {
     fontFamily: 'InterRegular',

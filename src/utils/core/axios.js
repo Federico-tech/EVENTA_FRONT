@@ -1,27 +1,23 @@
-import axios from "axios";
+import axios from 'axios';
+import { CONFIG } from '../../config';
 
-const BASE_URL = 'http://localhost:3000'
-
-axios.baseURL = BASE_URL
-axios.interceptors.request.use(function (config) {
-    const token = 'token preso dallo stato'
-    config.headers = {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    // Do something before request is sent
+axios.defaults.baseURL = CONFIG.API_URL;
+axios.defaults.headers['Content-Type'] = 'application/json';
+axios.interceptors.request.use(
+  async (config) => {
+    console.log({ config });
     return config;
-  }, function (error) {
-    // Do something with request error
+  },
+  (error) => {
     return Promise.reject(error);
-  });
+  },
+);
 
-
-axios.interceptors.request.use(function (config) {
-  // Do something before request is sent
-  return config;
-}, function (error) {
-    console.error({error})
-  return Promise.reject(error);
-});
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async function (error) {
+    return Promise.reject(error);
+  },
+);

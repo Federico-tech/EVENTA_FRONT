@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'InterBold',
     fontSize: SIZES.xl,
     alignSelf: 'center',
     marginTop: HEIGHT_DEVICE / 70,
@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
 
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'InterSemiBold',
     fontSize: SIZES.sm,
     color: COLORS.darkGray
   },
 
   passwordReq: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'InterSemiBold',
     fontSize: SIZES.sm,
     color: COLORS.darkGray,
     marginTop: HEIGHT_DEVICE / 80
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     color: COLORS.darkGray,
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'InterRegular',
     fontSize: SIZES.sm,
     marginHorizontal: WIDTH_DEVICE / 20
   },
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   privacyText: {
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'InterMedium',
     color: COLORS.primary,
     fontSize: SIZES.md, 
     textAlign: 'center', 
