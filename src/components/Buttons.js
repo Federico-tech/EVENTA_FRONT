@@ -31,21 +31,11 @@ export const FollowButton = () => {
   )
 }
 
-export const LoginButton = ({ text }) => {
+export const OnboardingButton = ({ title, onPress }) => {
   return(
-    <TouchableOpacity >
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.loginButtonContainer}>
-        <Text style={styles.loginText}> {text} </Text>
-      </View>
-    </TouchableOpacity>
-  )
-}
-
-export const RegisterButton = () => {
-  return(
-    <TouchableOpacity>
-      <View style={styles.loginButtonContainer}>
-        <Text style={styles.loginText}> Register </Text>
+        <Text style={styles.loginText}> {title} </Text>
       </View>
     </TouchableOpacity>
   )

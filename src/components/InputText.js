@@ -2,11 +2,11 @@ import { Text, TextInput, StyleSheet} from 'react-native'
 import React from 'react'
 import { HEIGHT_DEVICE, SIZES, COLORS, WIDTH_DEVICE } from '../utils/constants/Theme'
 
-export const InputText = ({value, setValue, label}) => {
+export const InputText = ({value, label, onChangeText}) => {
   return (
     <>
       <Text style={styles.emailText}>{label}</Text>
-      <TextInput style={styles.textInput} value={value} onChangeText={setValue}/>
+      <TextInput style={styles.textInput} value={value} onChangeText={onChangeText}/>
     </>
   )
 }
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: HEIGHT_DEVICE / 16,
     marginTop: HEIGHT_DEVICE / 100,
-    borderRadius: SIZES.md,
+    borderRadius: SIZES.xs,
     borderWidth: 0.5,
     borderColor: COLORS.lightGray,
     paddingHorizontal: WIDTH_DEVICE / 20,

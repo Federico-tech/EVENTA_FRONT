@@ -8,7 +8,7 @@ import { Header, HomeTop } from '../../components/index'
 
 export const HomeScreen = () => {
   return (
-    <View style={{flex:0}}>
+    <View>
       <Header />
         <FlatList
           data={EventData}
@@ -16,6 +16,7 @@ export const HomeScreen = () => {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={<HomeTop />}
+          style={styles.container}
         /> 
     </View>
   ); 
@@ -24,6 +25,5 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: HEIGHT_DEVICE / 8.5,
-    flex: 0
   },
 });

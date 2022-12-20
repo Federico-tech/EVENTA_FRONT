@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://localhost:3000'
+export const BASE_URL = 'https://eventa-back.herokuapp.com'
 
 axios.baseURL = BASE_URL
 axios.interceptors.request.use(function (config) {
