@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { HEIGHT_DEVICE, WIDTH_DEVICE, SIZES, COLORS, SHADOWS } from '../utils/constants/Theme';
+import { HEIGHT_DEVICE, WIDTH_DEVICE, SIZES, COLORS, SHADOWS, FONTS } from '../utils/constants/Theme';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export const PLaceButton = () => {
@@ -33,7 +33,7 @@ export const FollowButton = () => {
 
 export const OnboardingButton = ({ title, onPress }) => {
   return(
-    <TouchableOpacity >
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.loginButtonContainer}>
         <Text style={styles.loginText}> {title} </Text>
       </View>
@@ -77,13 +77,13 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontFamily: 'InterSemiBold',
+    fontFamily: FONTS.semiBold,
     color: 'white',
     fontSize: SIZES.lg,
   },
 
   textFollow: {
-    fontFamily: 'InterSemiBold',
+    fontFamily: FONTS.semiBold,
     color: 'white',
     fontSize: SIZES.lg,
   },
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'white',
     fontSize: SIZES.xl,
+    fontFamily: FONTS.bold
   },
 
   socialLoginButtonContainer: {
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   },
 
   textSocialLogin: {
-    fontFamily: 'InterRegular',
+    fontFamily: FONTS.regular,
     fontSize: SIZES.md,
     color: COLORS.darkGray,
     marginLeft: WIDTH_DEVICE / 60

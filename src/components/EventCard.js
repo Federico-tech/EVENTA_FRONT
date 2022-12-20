@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import {WIDTH_DEVICE, HEIGHT_DEVICE, SHADOWS, COLORS, SIZE, SIZES} from '../utils/constants/Theme';
+import {WIDTH_DEVICE, HEIGHT_DEVICE, SHADOWS, COLORS, SIZE, SIZES, FONTS} from '../utils/constants/Theme';
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
   },
 
   textTitle: {
-    fontFamily: 'InterMedium',
+    fontFamily: FONTS.medium,
     fontSize: SIZES.md,
   },
 
   textAdress: {
-    fontFamily: 'InterRegular',
+    fontFamily: FONTS.regular,
     fontSize: SIZES.xs,
   },
 

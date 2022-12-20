@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES } from '../utils/constants/Theme';
+import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/constants/Theme';
 
 
 export const Header = ({ data }) => {
@@ -61,13 +61,13 @@ const styles = StyleSheet.create({
 
   welcome: {
     color: 'white',
-    fontFamily: 'InterRegular',
+    fontFamily: FONTS.regular,
     fontSize: SIZES.sm,
   },
 
   federico: {
     color: 'white',
-    fontFamily: 'InterSemiBold',
+    fontFamily: FONTS.semiBold,
     fontSize: SIZES.lg,
   },
 });

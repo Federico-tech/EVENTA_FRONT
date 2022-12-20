@@ -15,6 +15,15 @@ export const COLORS = {
   gradient: ['#32DAE4', '#00A1FF'],
 };
 
+export const FONTS = {
+  bold: 'InterBold',
+  extraBold: 'InterExtraBold',
+  light: 'InterLight',
+  medium: 'InterMedium',
+  regular: 'InterRegular',
+  semiBold: 'InterSemiBold',
+}
+
 export const SIZE = 14
 
 export const SIZES = {

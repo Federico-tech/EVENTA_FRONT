@@ -5,5 +5,6 @@ export * from './HomeHeader';
 export * from './OrganiserInf';
 export * from './HomeTop';
 export * from './InputText'
+export * from './TextButton'
 
 

@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
 import { Image, StyleSheet, View, Text} from 'react-native'
-import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, COLORS } from '../../../utils/constants/Theme'
+import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, COLORS, FONTS } from '../../../utils/constants/Theme'
 
-import {LoginButton, Line, AppleSocialLoginButton, GoogleSocialLoginButton, InputText} from '../../../components'
+import { TextButton, LineLogin, AppleSocialLoginButton, GoogleSocialLoginButton, InputText, OnboardingButton} from '../../../components'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
-import {TextButton} from "../../../components/TextButton";
 import base64 from "base-64";
-import {noAuthAxios} from "../../../utils/core/axios";
 import axios from "axios";
+import { useDispatch } from 'react-redux'
+import { setUserInfo } from '../../../store/user'
 
 export const LoginScreen = () => {
 
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const [email, setEmail] = useState('federico.lentini1410@gmail.com')
   const [password, setPassword] = useState('fede1410')
@@ -27,6 +28,7 @@ export const LoginScreen = () => {
         }
       })
       console.debug({data})
+      dispatch(setUserInfo(data))
     } catch (e) {
       console.log({e})
     }
@@ -40,11 +42,11 @@ export const LoginScreen = () => {
         <InputText label={'Email'} value={email} setValue={setEmail} autoCapitalize={'none'} />
         <InputText label={'Password'} value={password} setValue={setPassword} autoCapitalize={'none'}/>
         <TextButton text={'Forgot Password?'} textStyle={styles.forgotPassword}/>
-        <LoginButton text={'Login'} onPress={onPressLogin}/>
+        <OnboardingButton title={'Login'} onPress={onPressLogin}/>
         <View style={styles.containerLine}>
-          <Line/>
+          <LineLogin/>
           <Text style={styles.orLoginUsing}>Or Login Using</Text>
-          <Line/>
+          <LineLogin/>
         </View>
         <View style={styles.socialLoginContainer}>
          <AppleSocialLoginButton/>
@@ -54,18 +56,18 @@ export const LoginScreen = () => {
           <View style={styles.registerTextContainer}>
             <Text style={styles.registerText}>You don't have an account?</Text>
             <TouchableOpacity onPress={() => navigation.navigate('UserSignUpScreen')}>
-              <Text style={styles.registerButtonText}> Sign Up</Text>
+              <TextButton text={' SignUp'} textStyle={styles.registerButtonText} />
             </TouchableOpacity>
           </View>
           <View style={styles.registerTextContainer}>
             <Text style={styles.registerText}>Do you want to become an organiser? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
-              <Text style={styles.registerButtonText}> Click here</Text>
+              <TextButton text={' Click Here'} textStyle={styles.registerButtonText}/>
             </TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity>
-          <Text style={styles.privacyText}> Privacy & Terms </Text>
+          <TextButton text={'Privacy & Terms'} textStyle={styles.privacyText}/>
         </TouchableOpacity>
       </View>
     </View>
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     textLogin: {
       alignSelf: 'center',
       marginTop: HEIGHT_DEVICE / 35,
-      fontFamily: 'InterMedium',
+      fontFamily: FONTS.medium,
       fontSize: SIZES.md
     },
 
@@ -98,16 +100,11 @@ const styles = StyleSheet.create({
       borderColor: COLORS.lightGray,
       paddingHorizontal: WIDTH_DEVICE / 20,
     },
-    emailText: {
-      marginTop: HEIGHT_DEVICE / 100,
-      fontFamily: 'InterSemiBold',
-      fontSize: SIZES.sm,
-      color: COLORS.darkGray
-    },
+
     forgotPassword: {
       alignSelf: 'flex-end',
       marginTop: HEIGHT_DEVICE / 50,
-      fontFamily: 'InterRegular',
+      fontFamily: FONTS.regular,
       fontSize: SIZES.sm,
       color: COLORS.primary
     },
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       alignItems: 'center',
       color: COLORS.darkGray,
-      fontFamily: 'InterRegular',
+      fontFamily: FONTS.regular,
       fontSize: 12,
       marginHorizontal: WIDTH_DEVICE / 20
     },
@@ -148,12 +145,12 @@ const styles = StyleSheet.create({
     },
 
     registerText: {
-      fontFamily: 'InterRegular',
+      fontFamily: FONTS.regular,
       fontSize: SIZES.sm,
     },
 
     registerButtonText: {
-      fontFamily: 'InterMedium',
+      fontFamily: FONTS.medium,
       fontSize: SIZES.sm,
       color: COLORS.primary
     },
@@ -161,7 +158,7 @@ const styles = StyleSheet.create({
     privacyText: {
         alignSelf: 'center',
         marginTop: HEIGHT_DEVICE / 30,
-        fontFamily: 'InterMedium',
+        fontFamily: FONTS.medium,
         color: COLORS.primary,
         fontSize: SIZES.md
     }

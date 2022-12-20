@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, Image } from 'react-native'
 import React from 'react'
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../utils/constants/Theme'
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../utils/constants/Theme'
 import { FollowButton } from './Buttons'
   
 
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
     }, 
 
     textName: {
-      fontFamily: 'InterMedium', 
+      fontFamily: FONTS.medium, 
       fontSize: SIZES.lg
     },
      
     textAdress: {
-      fontFamily: 'InterRegular',
+      fontFamily: FONTS.medium,
       fontSize: SIZES.xs, 
       color: COLORS.gray
     }
