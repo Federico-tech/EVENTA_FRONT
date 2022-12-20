@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import { AppleSocialLoginButton, GoogleSocialLoginButton, InputText, LineLogin, OnboardingButton, TextButton } from '../../../../components'
 import { setUserInfo } from '../../../../store/user'
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme'
-import { BASE_URL } from '../../../../utils/core/axios'
 
 
 export const UserSingUpScreen = () => {
@@ -19,11 +18,9 @@ export const UserSingUpScreen = () => {
 
   const onPressUserSignUp = async () => {
     try{
-      const response = await axios.post(`${BASE_URL}/auth/register`, {name, username, email, password })
+      const response = await axios.post('/auth/register', {name, username, email, password })
       console.log(response.data)
-      if(response) {
-        dispatch(setUserInfo(response.data))
-      }
+      dispatch(setUserInfo(data)) 
     } catch(e){
       console.error({e})
     }

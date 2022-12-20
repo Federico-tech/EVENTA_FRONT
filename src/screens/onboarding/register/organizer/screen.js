@@ -2,12 +2,30 @@ import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AppleSocialLoginButton, GoogleSocialLoginButton, InputText, LineLogin, OnboardingButton, TextButton } from '../../../../components'
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme'
+import axios from 'axios'
+import { useDispatch } from 'react-redux' 
+import { setUserInfo } from '../../../../store/user'
 
 export const OrganiserSignUpScreen = () => {
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [adress, setAdress] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('Coco')
+  const [email, setEmail] = useState('Coco@gmail.com')
+  const [adress, setAdress] = useState('Via Coco')
+  const [password, setPassword] = useState('Coco')
+  const role = 'organiser'
+
+  const dispatch = useDispatch()
+
+  const OnPressOrganiserSignUp = async () => {
+    try{
+      const response = await axios.post(`/auth/register`, {username, email, adress, password, role})
+      console.log(response.data)
+      if(response) {
+        dispatch(setUserInfo(response.data))
+      }
+    } catch(e){
+      console.error({e})
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -17,7 +35,7 @@ export const OrganiserSignUpScreen = () => {
       <InputText value={adress} onChangeText={setAdress} label={'Adress'} />
       <InputText value={password} onChangeText={setPassword} label={'Password'} />
       <Text style={styles.passwordReq}>The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number </Text>
-      <OnboardingButton title={'Register'}/>
+      <OnboardingButton title={'Register'} onPress={OnPressOrganiserSignUp}/>
       <View style={styles.containerLine}>
         <LineLogin/>
           <Text style={styles.orLoginUsing}>Or Register Using</Text>

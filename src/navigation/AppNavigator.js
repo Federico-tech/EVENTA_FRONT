@@ -1,16 +1,20 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated } from '../store/user';
-import { AuthNavigator, BottomNavigator } from './Navigation';
+import { selectIsAuthenticated, selectUserRole } from '../store/user';
+import { AuthNavigator, BottomNavigator, OrganiserNavigator } from './Navigation';
 
 const AppNavigator = () => {
 
   const isAuth = useSelector(selectIsAuthenticated)
+  const isOrganiser = useSelector(selectUserRole)
 
   return (
     <NavigationContainer>
-      { isAuth ? <BottomNavigator/> : <AuthNavigator/> }
+      { isAuth ? (
+        isOrganiser ? <OrganiserNavigator/> : BottomNavigator
+        ) : ( 
+        <AuthNavigator/> )}
     </NavigationContainer>
     
   );

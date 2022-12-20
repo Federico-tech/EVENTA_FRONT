@@ -10,6 +10,7 @@ import { EventDetails } from '../screens/eventDetails.js/screen';
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organizer/screen';
+import { OrganiserHome } from '../screens/organiserHome/screen';
 
 const BottomTabNavigator = createBottomTabNavigator();
 
@@ -22,7 +23,8 @@ export const ROUTES = {
   EventDetails: 'EventDetails',
   LoginScreen: 'LoginScreen',
   UserSingUpScreen: 'UserSignUpScreen',
-  OrganiserSignUpScreen: 'OrganiserSignUpScreen'
+  OrganiserSignUpScreen: 'OrganiserSignUpScreen',
+  OrganiserHome: 'OrganiserHomeScreen'
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -73,5 +75,14 @@ export const AuthNavigator = () => {
       <AuthStackNavigator.Screen name={ROUTES.UserSingUpScreen} component={UserSingUpScreen} options={{ headerShown: false }}/>
       <AuthStackNavigator.Screen name={ROUTES.OrganiserSignUpScreen} component={OrganiserSignUpScreen} options={{ headerShown: false }}/>
     </AuthStackNavigator.Navigator>
+  )
+}
+const OrganiserStackNavigator = createStackNavigator()
+
+export const OrganiserNavigator = () => {
+  return(
+    <OrganiserStackNavigator.Navigator>
+      <OrganiserStackNavigator.Screen name={ROUTES.OrganiserHome} component={OrganiserHome}/> 
+    </OrganiserStackNavigator.Navigator>
   )
 }
