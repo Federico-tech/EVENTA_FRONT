@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/constants/Theme';
 
 
-export const Header = ({ data }) => {
+export const HomeHeader = ({ data }) => {
 
   return (
     <View>

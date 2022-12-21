@@ -12,7 +12,6 @@ export const OrganiserSignUpScreen = () => {
   const [adress, setAdress] = useState('Via Coco')
   const [password, setPassword] = useState('Coco')
   const role = 'organiser'
-
   const dispatch = useDispatch()
 
   const OnPressOrganiserSignUp = async () => {
