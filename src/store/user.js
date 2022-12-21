@@ -1,10 +1,29 @@
 import {createSlice} from '@reduxjs/toolkit'
+import base64 from "base-64";
+import axios from "axios";
+import {store} from "./index";
 
 const initialState = {
-  userInfo: { },
+  userInfo: {},
   token: null,
 }
 
+
+export const loginUser = async  (email, password) => {
+  try {
+    const auth = base64.encode(`${email.toLowerCase()}:${password}`);
+    const { data } = await axios.post(`auth/login`, undefined, {
+      headers: {
+        authorization: `Basic ${auth}`,
+      },
+      baseURL: 'https://eventa-back.herokuapp.com/'
+    })
+    store.dispatch(setUserInfo(data))
+    console.debug({data})
+  } catch (e) {
+    console.log({e})
+  }
+}
 
 export const userSlice = createSlice({
   name: 'user',
@@ -13,16 +32,17 @@ export const userSlice = createSlice({
     setUserInfo: (state, action) => {
       state.userInfo = action.payload
       state.token = action.payload.token
-    }
+    },
+    logoutUserSlice: () => initialState
   },
 })
 
-export const { setUserInfo  } = userSlice.actions
+export const { setUserInfo, logoutUserSlice } = userSlice.actions
 
-export const selectUser = (state) => state.user.userInfo
+
+export const selectUser = (state) => state.user?.userInfo
 export const selectUserRole = (state) => state.user?.userInfo?.role || 'user'
-export const selectToken = (state) => state.user.token
-export const selectIsAuthenticated = (state) => !!state.user.token
+export const selectToken = (state) => state.user?.token
+export const selectIsAuthenticated = (state) => !!state.user?.token
 
-
-export default userSlice.reducer
+export default userSlice.reducer;

@@ -7,12 +7,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import {TextButton} from "../../../components/TextButton";
 import base64 from "base-64";
-import {noAuthAxios} from "../../../utils/core/axios";
 import axios from "axios";
+import {CONFIG} from "../../../config";
+import {setUserInfo} from "../../../store/user";
+import {useDispatch} from "react-redux";
 
 export const LoginScreen = () => {
 
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const [email, setEmail] = useState('federico.lentini1410@gmail.com')
   const [password, setPassword] = useState('fede1410')
@@ -24,8 +27,10 @@ export const LoginScreen = () => {
       const { data } =  await axios.post(`auth/login`, undefined, {
         headers: {
           authorization: `Basic ${auth}`,
-        }
+        },
+        baseURL: CONFIG.API_URL
       })
+      dispatch(setUserInfo(data))
       console.debug({data})
     } catch (e) {
       console.log({e})
