@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { Button, InputText, LineLogin, TextButton } from '../../../../components';
+import { Button, InputText, Line, TextButton } from '../../../../components';
 import { setUserInfo } from '../../../../store/user';
 import {
   COLORS,
@@ -12,13 +12,13 @@ import {
   SIZES,
   WIDTH_DEVICE,
 } from '../../../../utils/constants/Theme';
+import { ROLES } from '../../../../utils/conts';
 
 export const OrganiserSignUpScreen = () => {
   const [username, setUsername] = useState('Coco');
   const [email, setEmail] = useState('Coco@gmail.com');
   const [adress, setAdress] = useState('Via Coco');
   const [password, setPassword] = useState('Coco');
-  const role = 'organiser';
   const dispatch = useDispatch();
 
   const OnPressOrganiserSignUp = async () => {
@@ -28,7 +28,7 @@ export const OrganiserSignUpScreen = () => {
         email,
         adress,
         password,
-        role,
+        role: ROLES.ORGANIZER,
       });
       console.log(response.data);
       if (response) {
@@ -51,9 +51,9 @@ export const OrganiserSignUpScreen = () => {
       </Text>
       <Button title="Register" onPress={OnPressOrganiserSignUp} />
       <View style={styles.containerLine}>
-        <LineLogin />
+        <Line />
         <Text style={styles.orLoginUsing}>Or Register Using</Text>
-        <LineLogin />
+        <Line />
       </View>
       <View style={styles.socialLoginContainer} />
       <TouchableOpacity>

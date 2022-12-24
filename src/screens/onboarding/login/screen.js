@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Button, InputText, Line, TextButton } from '../../../components';
+import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../store/user';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/constants/Theme';
 
@@ -25,6 +26,10 @@ export const LoginScreen = () => {
     }
   };
 
+  const onPressUserRegister = () => {
+    navigation.navigate(ROUTES.UserSingUpScreen);
+  };
+
   return (
     <View>
       <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
@@ -43,7 +48,7 @@ export const LoginScreen = () => {
         <View style={styles.registerContainer}>
           <View style={styles.registerTextContainer}>
             <Text style={styles.registerText}>You don't have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('UserSignUpScreen')}>
+            <TouchableOpacity onPress={onPressUserRegister}>
               <Text style={styles.registerButtonText}> Sign Up</Text>
             </TouchableOpacity>
           </View>

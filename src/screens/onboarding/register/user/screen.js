@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { Button, InputText, LineLogin, TextButton } from '../../../../components';
-import { setUserInfo } from '../../../../store/user';
+import { Button, InputText, Line, TextButton } from '../../../../components';
+import { loginUser, setUserInfo } from '../../../../store/user';
 import {
   COLORS,
   FONTS,
@@ -12,21 +12,28 @@ import {
   SIZES,
   WIDTH_DEVICE,
 } from '../../../../utils/constants/Theme';
+import { noAuthAxios } from '../../../../utils/core/axios';
 
 export const UserSingUpScreen = () => {
-  const dispatch = useDispatch();
-
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onPressUserSignUp = async () => {
     try {
-      const response = await axios.post('/auth/register', { name, username, email, password });
-      // console.log(response.data);
-      // dispatch(setUserInfo(data));
+      setLoading(true);
+      await noAuthAxios.post('/auth/register', {
+        name,
+        username,
+        email,
+        password,
+      });
+      await loginUser(email, password);
+      setLoading(false);
     } catch (e) {
+      setLoading(false);
       console.error({ e });
     }
   };
@@ -41,11 +48,11 @@ export const UserSingUpScreen = () => {
       <Text style={styles.passwordReq}>
         The password has to contain at least: {'\n'}-8 characters{'\n'}-1 numeber{' '}
       </Text>
-      <Button title="Register" loaonPress={onPressUserSignUp} />
+      <Button loading={loading} text="Register" onPress={onPressUserSignUp} />
       <View style={styles.containerLine}>
-        <LineLogin />
+        <Line />
         <Text style={styles.orLoginUsing}>Or Register Using</Text>
-        <LineLogin />
+        <Line />
       </View>
       <View style={styles.socialLoginContainer} />
       <TouchableOpacity>
@@ -59,7 +66,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
   },
-
   title: {
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.xl,
