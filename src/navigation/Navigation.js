@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
-import * as React from 'react';
+import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { HomeScreen } from '../screens/user/home/screen';
 import { SearchScreen } from '../screens/user/search/screen';
 import { MapScreen } from '../screens/user/map/screen';
 import { ProfileScreen } from '../screens/user/profile/screen';
-import { EventDetails } from '../screens/user/eventDetails.js/screen';
-import { LoginScreen } from '../screens/onboarding/login/screen';
+import { EventDetails } from '../screens/user/eventDetails/screen';
+import { LoginScreen } from '../screens/onboarding/login/screen'; 
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organizer/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';

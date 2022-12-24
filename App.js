@@ -1,22 +1,22 @@
+import { useFonts } from 'expo-font';
 import React from 'react';
+import { Provider } from 'react-redux';
+
 import AppNavigator from './src/navigation/AppNavigator';
-import { useFonts } from "expo-font";
 import { store } from './src/store';
-import { Provider} from 'react-redux';
 
 const App = () => {
-
   const [loaded] = useFonts({
-    InterBold: require("./src/assets/fonts/Inter-Bold.ttf"),
-    InterExtraBold: require("./src/assets/fonts/Inter-ExtraBold.ttf"),
-    InterLight: require("./src/assets/fonts/Inter-Light.ttf"),
-    InterMedium: require("./src/assets/fonts/Inter-Medium.ttf"),
-    InterRegular: require("./src/assets/fonts/Inter-Regular.ttf"),
-    InterSemiBold: require("./src/assets/fonts/Inter-SemiBold.ttf"),
+    InterBold: require('./src/assets/fonts/Inter-Bold.ttf'),
+    InterExtraBold: require('./src/assets/fonts/Inter-ExtraBold.ttf'),
+    InterLight: require('./src/assets/fonts/Inter-Light.ttf'),
+    InterMedium: require('./src/assets/fonts/Inter-Medium.ttf'),
+    InterRegular: require('./src/assets/fonts/Inter-Regular.ttf'),
+    InterSemiBold: require('./src/assets/fonts/Inter-SemiBold.ttf'),
   });
 
   if (!loaded) return null;
-  
+
   return (
     <Provider store={store}>
       <AppNavigator />

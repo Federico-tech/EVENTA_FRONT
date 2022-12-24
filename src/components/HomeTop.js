@@ -1,16 +1,14 @@
-import { View, StyleSheet } from 'react-native';
-import React from 'react';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { HEIGHT_DEVICE } from '../utils/constants/Theme';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { PLaceButton } from './Buttons';
+import { HEIGHT_DEVICE } from '../utils/constants/Theme';
 
 export const HomeTop = () => {
   return (
     <View style={styles.container}>
       <Ionicons name="ios-notifications-outline" size={22} />
-      <PLaceButton />
       <FontAwesome name="heart-o" size={20} />
     </View>
   );

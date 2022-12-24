@@ -39,7 +39,13 @@
     "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.3"
+    "@babel/core": "^7.19.3",
+    "eslint": "^8.30.0",
+    "eslint-config-universe": "^11.1.1",
+    "prettier": "^2.8.1"
   },
-  "private": true
+  "private": true,
+  "eslintConfig": {
+    "extends": "universe/native"
+  }
 }

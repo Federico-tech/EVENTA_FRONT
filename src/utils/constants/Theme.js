@@ -7,6 +7,7 @@ export const HEIGHT_DEVICE = height;
 
 export const COLORS = {
   primary: '#00A1FF',
+  white: '#fff',
   gray: '#A1A1A1',
   lightGray: '#CCCBCB',
   darkGray: '#7A7A7A',
@@ -22,9 +23,9 @@ export const FONTS = {
   medium: 'InterMedium',
   regular: 'InterRegular',
   semiBold: 'InterSemiBold',
-}
+};
 
-export const SIZE = 14
+export const SIZE = 14;
 
 export const SIZES = {
   xxs: 8,
@@ -32,7 +33,7 @@ export const SIZES = {
   sm: 12,
   md: 14,
   lg: 16,
-  xl: 18
+  xl: 18,
 };
 
 export const SHADOWS = {

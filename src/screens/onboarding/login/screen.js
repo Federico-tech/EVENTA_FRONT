@@ -1,55 +1,45 @@
-import React, { useState } from 'react'
-import { Image, StyleSheet, View, Text, TextInput } from 'react-native'
-import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, COLORS } from '../../../utils/constants/Theme'
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import {LoginButton, Line, AppleSocialLoginButton, GoogleSocialLoginButton, InputText} from '../../../components'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/native'
-import {TextButton} from "../../../components/TextButton";
-import base64 from "base-64";
-import {CONFIG} from "../../../config";
-import {loginUser, setUserInfo} from "../../../store/user";
-import {useDispatch} from "react-redux";
-import {noAuthAxios} from "../../../utils/core/axios";
+import { Button, InputText, Line, TextButton } from '../../../components';
+import { loginUser } from '../../../store/user';
+import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/constants/Theme';
 
 export const LoginScreen = () => {
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
-  const navigation = useNavigation()
-  const dispatch = useDispatch()
-  const [loading, setLoading] = useState(false)
-
-  const [email, setEmail] = useState('federico.lentini1410@gmail.com')
-  const [password, setPassword] = useState('fede1410')
+  const [email, setEmail] = useState('federico.lentini1410@gmail.com');
+  const [password, setPassword] = useState('fede1410');
 
   const onPressLogin = async () => {
     try {
-      setLoading(true)
-      await loginUser(email, password)
-      setLoading(false)
+      setLoading(true);
+      await loginUser(email, password);
+      setLoading(false);
     } catch (e) {
-      console.log({e})
-      setLoading(false)
+      console.log({ e });
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <View>
-      <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo}/>
+      <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
       <View style={styles.container}>
         <Text style={styles.textLogin}>Login to your account</Text>
-        <InputText label={'Email'} value={email} setValue={setEmail} autoCapitalize={'none'} />
-        <InputText label={'Password'} value={password} setValue={setPassword} autoCapitalize={'none'}/>
-        <TextButton text={'Forgot Password?'} textStyle={styles.forgotPassword}/>
-        <LoginButton text={'Login'} onPress={onPressLogin}/>
+        <InputText label="Email" value={email} setValue={setEmail} autoCapitalize="none" />
+        <InputText label="Password" value={password} setValue={setPassword} autoCapitalize="none" />
+        <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
+        <Button text="Login" onPress={onPressLogin} loading={loading} />
         <View style={styles.containerLine}>
-          <Line/>
+          <Line />
           <Text style={styles.orLoginUsing}>Or Login Using</Text>
-          <Line/>
+          <Line />
         </View>
-        <View style={styles.socialLoginContainer}>
-         <AppleSocialLoginButton/>
-         <GoogleSocialLoginButton/>
-        </View>
+        <View style={styles.socialLoginContainer}>{/*  social*/}</View>
         <View style={styles.registerContainer}>
           <View style={styles.registerTextContainer}>
             <Text style={styles.registerText}>You don't have an account?</Text>
@@ -69,101 +59,100 @@ export const LoginScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-      justifyContent: 'center',
-      marginHorizontal: WIDTH_DEVICE / 20
-    },
+  container: {
+    justifyContent: 'center',
+    marginHorizontal: WIDTH_DEVICE / 20,
+  },
 
-    logo: {
-      alignSelf: 'center',
-      marginTop: HEIGHT_DEVICE / 18
-    },
+  logo: {
+    alignSelf: 'center',
+    marginTop: HEIGHT_DEVICE / 18,
+  },
 
-    textLogin: {
-      alignSelf: 'center',
-      marginTop: HEIGHT_DEVICE / 35,
-      fontFamily: 'InterMedium',
-      fontSize: SIZES.md
-    },
+  textLogin: {
+    alignSelf: 'center',
+    marginTop: HEIGHT_DEVICE / 35,
+    fontFamily: 'InterMedium',
+    fontSize: SIZES.md,
+  },
 
-    textInput: {
-      height: HEIGHT_DEVICE / 16,
-      marginTop: HEIGHT_DEVICE / 140,
-      borderRadius: SIZES.md,
-      borderWidth: 0.5,
-      borderColor: COLORS.lightGray,
-      paddingHorizontal: WIDTH_DEVICE / 20,
-    },
-    emailText: {
-      marginTop: HEIGHT_DEVICE / 100,
-      fontFamily: 'InterSemiBold',
-      fontSize: SIZES.sm,
-      color: COLORS.darkGray
-    },
-    forgotPassword: {
-      alignSelf: 'flex-end',
-      marginTop: HEIGHT_DEVICE / 50,
-      fontFamily: 'InterRegular',
-      fontSize: SIZES.sm,
-      color: COLORS.primary
-    },
-    orLoginUsing: {
-      alignSelf: 'center',
-      alignItems: 'center',
-      color: COLORS.darkGray,
-      fontFamily: 'InterRegular',
-      fontSize: 12,
-      marginHorizontal: WIDTH_DEVICE / 20
-    },
-    containerLine: {
-      justifyContent: 'space-between',
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: HEIGHT_DEVICE / 40,
-    },
+  textInput: {
+    height: HEIGHT_DEVICE / 16,
+    marginTop: HEIGHT_DEVICE / 140,
+    borderRadius: SIZES.md,
+    borderWidth: 0.5,
+    borderColor: COLORS.lightGray,
+    paddingHorizontal: WIDTH_DEVICE / 20,
+  },
+  emailText: {
+    marginTop: HEIGHT_DEVICE / 100,
+    fontFamily: 'InterSemiBold',
+    fontSize: SIZES.sm,
+    color: COLORS.darkGray,
+  },
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginTop: HEIGHT_DEVICE / 50,
+    fontFamily: 'InterRegular',
+    fontSize: SIZES.sm,
+    color: COLORS.primary,
+  },
+  orLoginUsing: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    color: COLORS.darkGray,
+    fontFamily: 'InterRegular',
+    fontSize: 12,
+    marginHorizontal: WIDTH_DEVICE / 20,
+  },
+  containerLine: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: HEIGHT_DEVICE / 40,
+  },
 
-    socialLoginContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: HEIGHT_DEVICE / 40
-    },
+  socialLoginContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: HEIGHT_DEVICE / 40,
+  },
 
-    appleLogo: {
-      width: WIDTH_DEVICE / 20,
-      height: HEIGHT_DEVICE /20
-    },
+  appleLogo: {
+    width: WIDTH_DEVICE / 20,
+    height: HEIGHT_DEVICE / 20,
+  },
 
-    registerContainer: {
-      marginTop: HEIGHT_DEVICE / 40
-    },
+  registerContainer: {
+    marginTop: HEIGHT_DEVICE / 40,
+  },
 
-    registerTextContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      marginBottom: HEIGHT_DEVICE / 80
-    },
+  registerTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: HEIGHT_DEVICE / 80,
+  },
 
-    registerText: {
-      fontFamily: 'InterRegular',
-      fontSize: SIZES.sm,
-    },
+  registerText: {
+    fontFamily: 'InterRegular',
+    fontSize: SIZES.sm,
+  },
 
-    registerButtonText: {
-      fontFamily: 'InterMedium',
-      fontSize: SIZES.sm,
-      color: COLORS.primary
-    },
+  registerButtonText: {
+    fontFamily: 'InterMedium',
+    fontSize: SIZES.sm,
+    color: COLORS.primary,
+  },
 
-    privacyText: {
-        alignSelf: 'center',
-        marginTop: HEIGHT_DEVICE / 30,
-        fontFamily: 'InterMedium',
-        color: COLORS.primary,
-        fontSize: SIZES.md
-    }
-})
-
+  privacyText: {
+    alignSelf: 'center',
+    marginTop: HEIGHT_DEVICE / 30,
+    fontFamily: 'InterMedium',
+    color: COLORS.primary,
+    fontSize: SIZES.md,
+  },
+});
