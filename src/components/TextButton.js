@@ -1,6 +1,6 @@
 import React from 'react'
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
-import {COLORS, SIZES} from "../utils/constants/Theme";
+import {COLORS, FONTS, SIZES} from "../utils/constants/Theme";
 
 
 export const TextButton  = ({onPress, text, textStyle, ...rest}) => {
@@ -14,7 +14,7 @@ export const TextButton  = ({onPress, text, textStyle, ...rest}) => {
 const styles = StyleSheet.create({
   text: {
     color: COLORS.primary,
-    fontFamily: 'InterRegular',
+    fontFamily: FONTS.regular,
     fontSize: SIZES.sm,
   }
 })

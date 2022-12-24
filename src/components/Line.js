@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native'
 import React from 'react'
-import { HEIGHT_DEVICE, WIDTH_DEVICE, COLORS } from '../utils/constants/Theme'
+import { View } from 'react-native'
+import { COLORS, HEIGHT_DEVICE } from '../utils/constants/Theme'
 
 export const LineLogin = () => {
   return (

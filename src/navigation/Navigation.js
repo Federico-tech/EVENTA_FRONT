@@ -2,16 +2,20 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import * as React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { HomeScreen } from '../screens/home/screen';
-import { SearchScreen } from '../screens/search/screen';
-import { MapScreen } from '../screens/map/screen';
-import { ProfileScreen } from '../screens/profile/screen';
-import { EventDetails } from '../screens/eventDetails.js/screen';
+import { HomeScreen } from '../screens/user/home/screen';
+import { SearchScreen } from '../screens/user/search/screen';
+import { MapScreen } from '../screens/user/map/screen';
+import { ProfileScreen } from '../screens/user/profile/screen';
+import { EventDetails } from '../screens/user/eventDetails.js/screen';
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organizer/screen';
+import { OrganiserHome } from '../screens/organiser/home/screen';
+import { CreateEventScreen } from '../screens/organiser/createEvent/screen';
+import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
 
-const BottomTabNavigator = createBottomTabNavigator();
+const UserBottomTabNavigator = createBottomTabNavigator();
+const OrganiserBottomTabNavigator = createBottomTabNavigator();
 
 export const ROUTES = {
   HomeScreen: 'HomeScreen',
@@ -22,21 +26,26 @@ export const ROUTES = {
   EventDetails: 'EventDetails',
   LoginScreen: 'LoginScreen',
   UserSingUpScreen: 'UserSignUpScreen',
-  OrganiserSignUpScreen: 'OrganiserSignUpScreen'
+  OrganiserSignUpScreen: 'OrganiserSignUpScreen',
+  OrganiserHome: 'OrganiserHomeScreen',
+  CreateEventScreen: 'CreateEventScreen',
+  OrganiserProfileScreen: 'OrganiserProfileScreen'
 };
 
 const BottomBarIcons = ({ route }) => ({
   tabBarLabel: '',
   tabBarIcon: ({ focused, size, colour }) => {
     let iconName;
-    if (route.name === 'HomeNavigator') {
+    if (route.name === 'HomeNavigator' || route.name === 'OrganiserHomeScreen') {
       iconName = focused ? 'home' : 'home-outline';
     } else if (route.name === 'SearchScreen') {
       iconName = focused ? 'ios-search' : 'search-outline';
     } else if (route.name === 'MapScreen') {
       iconName = focused ? 'map' : 'map-outline';
-    } else if (route.name === 'ProfileScreen') {
+    } else if (route.name === 'ProfileScreen' || route.name === 'OrganiserProfileScreen') {
       iconName = focused ? 'person' : 'person-outline';
+    } else if (route.name === 'CreateEventScreen') {
+      iconName = focused ? 'add-circle' : 'add-circle-outline';
     }
     return <Ionicons name={iconName} size={22} colour={colour} />;
   },
@@ -53,16 +62,26 @@ const HomeNavigator = () => {
   )
 }
 
-export const BottomNavigator = () => {
+export const UserBottomNavigator = () => {
   return (
-    <BottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
-      <BottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
-      <BottomTabNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} />
-      <BottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} />
-      <BottomTabNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} />
-    </BottomTabNavigator.Navigator>
+    <UserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
+      <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} />
+      <UserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} />
+      <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} />
+    </UserBottomTabNavigator.Navigator>
   );
 };
+
+export const OrganiserBottomNavigator = () => {
+  return(
+    <OrganiserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
+      <OrganiserBottomTabNavigator.Screen name={ROUTES.OrganiserHome} component={OrganiserHome} options={{ headerShown: false }}/> 
+      <OrganiserBottomTabNavigator.Screen name={ROUTES.CreateEventScreen} component={CreateEventScreen} options={{ headerShown: false }}/> 
+      <OrganiserBottomTabNavigator.Screen name={ROUTES.OrganiserProfileScreen} component={OrganiserProfileScreen} options={{ headerShown: false }}/> 
+    </OrganiserBottomTabNavigator.Navigator>
+  )
+}
 
 const AuthStackNavigator = createStackNavigator()
 
@@ -75,3 +94,5 @@ export const AuthNavigator = () => {
     </AuthStackNavigator.Navigator>
   )
 }
+
+
