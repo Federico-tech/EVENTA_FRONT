@@ -7,7 +7,6 @@ export const Line = () => {
   return (
     <View
       style={{
-        flex: 1,
         height: HEIGHT_DEVICE / 1500,
         backgroundColor: COLORS.lightGray,
       }}

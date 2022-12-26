@@ -1,15 +1,16 @@
-import { Text, TextInput, StyleSheet} from 'react-native'
-import React from 'react'
-import {HEIGHT_DEVICE, SIZES, COLORS, WIDTH_DEVICE, SIZE, FONTS} from '../utils/constants/Theme'
+import React from 'react';
+import { Text, TextInput, StyleSheet } from 'react-native';
 
-export const InputText = ({value, setValue, label, containerStyle, ...rest}) => {
+import { HEIGHT_DEVICE, SIZES, COLORS, SIZE, FONTS } from '../utils/constants/Theme';
+
+export const InputText = ({ value, setValue, label, containerStyle, ...rest }) => {
   return (
     <>
       <Text style={styles.emailText}>{label}</Text>
-      <TextInput  style={[styles.textInput, containerStyle]} value={value} onChangeText={setValue} {...rest}/>
+      <TextInput style={[styles.textInput, containerStyle]} value={value} onChangeText={setValue} {...rest} />
     </>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   textInput: {
@@ -18,13 +19,13 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xs,
     borderWidth: 0.5,
     borderColor: COLORS.lightGray,
-    paddingHorizontal: SIZE
+    paddingHorizontal: SIZE,
   },
 
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.sm,
-    color: COLORS.darkGray
+    color: COLORS.darkGray,
   },
-})
+});

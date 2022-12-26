@@ -38,7 +38,7 @@ export const LoginScreen = () => {
         <InputText label="Email" value={email} setValue={setEmail} autoCapitalize="none" />
         <InputText label="Password" value={password} setValue={setPassword} autoCapitalize="none" />
         <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
-        <Button text="Login" onPress={onPressLogin} loading={loading} />
+        <Button primary text="Login" onPress={onPressLogin} loading={loading} />
         <View style={styles.containerLine}>
           <Line />
           <Text style={styles.orLoginUsing}>Or Login Using</Text>

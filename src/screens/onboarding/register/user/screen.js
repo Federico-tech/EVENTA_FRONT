@@ -1,17 +1,9 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import { Button, InputText, Line, TextButton } from '../../../../components';
-import { loginUser, setUserInfo } from '../../../../store/user';
-import {
-  COLORS,
-  FONTS,
-  HEIGHT_DEVICE,
-  SIZES,
-  WIDTH_DEVICE,
-} from '../../../../utils/constants/Theme';
+import { loginUser } from '../../../../store/user';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
 import { noAuthAxios } from '../../../../utils/core/axios';
 
 export const UserSingUpScreen = () => {
@@ -48,7 +40,7 @@ export const UserSingUpScreen = () => {
       <Text style={styles.passwordReq}>
         The password has to contain at least: {'\n'}-8 characters{'\n'}-1 numeber{' '}
       </Text>
-      <Button loading={loading} text="Register" onPress={onPressUserSignUp} />
+      <Button loading={loading} primary text="Register" onPress={onPressUserSignUp} />
       <View style={styles.containerLine}>
         <Line />
         <Text style={styles.orLoginUsing}>Or Register Using</Text>

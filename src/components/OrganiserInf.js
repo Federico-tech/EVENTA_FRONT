@@ -16,7 +16,7 @@ export const OrganiserInf = ({ data }) => {
           </View>
         </View>
       </View>
-      <Button />
+      <Button gradient text="Follow" />
     </View>
   );
 };

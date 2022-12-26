@@ -5,13 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { Button, InputText, Line, TextButton } from '../../../../components';
 import { setUserInfo } from '../../../../store/user';
-import {
-  COLORS,
-  FONTS,
-  HEIGHT_DEVICE,
-  SIZES,
-  WIDTH_DEVICE,
-} from '../../../../utils/constants/Theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
 import { ROLES } from '../../../../utils/conts';
 
 export const OrganiserSignUpScreen = () => {
@@ -49,7 +43,7 @@ export const OrganiserSignUpScreen = () => {
       <Text style={styles.passwordReq}>
         The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
       </Text>
-      <Button title="Register" onPress={OnPressOrganiserSignUp} />
+      <Button primary text="Register" onPress={OnPressOrganiserSignUp} />
       <View style={styles.containerLine}>
         <Line />
         <Text style={styles.orLoginUsing}>Or Register Using</Text>

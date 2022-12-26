@@ -23,11 +23,7 @@ const AppNavigator = () => {
     return <View />;
   }
 
-  return (
-    <NavigationContainer>
-      {isLogged ? <UserBottomNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
-  );
+  return <NavigationContainer>{isLogged ? <UserBottomNavigator /> : <AuthNavigator />}</NavigationContainer>;
 };
 
 export default AppNavigator;
