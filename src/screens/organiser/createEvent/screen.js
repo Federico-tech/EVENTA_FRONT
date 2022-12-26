@@ -12,7 +12,6 @@ export const CreateEventScreen = () => {
   const [description, setDescription] = useState(
     'Cocò Snow PartySabato 10 Dicembre, vestiti a tema neve e vinci ricchi premi! Stupiscici col tuo outfit e vinci un tavolo al Cocò'
   );
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}> Create a new Event </Text>
@@ -24,13 +23,7 @@ export const CreateEventScreen = () => {
         <InputText label="Name" value={name} setValue={setName} />
         <InputText label="Place" value={place} setValue={setPlace} />
         <InputText label="Date" value={date} setValue={setDate} />
-        <InputText
-          label="Description"
-          containerStyle={styles.description}
-          value={description}
-          setValue={setDescription}
-          multiline
-        />
+        <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline />
         <TextButton text="Publish Event" textStyle={styles.publishEvent} />
       </View>
     </SafeAreaView>

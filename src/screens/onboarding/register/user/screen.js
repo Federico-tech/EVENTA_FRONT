@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { Button, InputText, Line, TextButton } from '../../../../components';
+import { Button, InputText, Line, TextButton, SocialLoginButton } from '../../../../components/index';
 import { loginUser } from '../../../../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
 import { noAuthAxios } from '../../../../utils/core/axios';
@@ -42,11 +42,14 @@ export const UserSingUpScreen = () => {
       </Text>
       <Button loading={loading} primary text="Register" onPress={onPressUserSignUp} />
       <View style={styles.containerLine}>
-        <Line />
+        <Line lineStyle={{flex: 1}}/>
         <Text style={styles.orLoginUsing}>Or Register Using</Text>
-        <Line />
+        <Line lineStyle={{flex: 1}}/>
       </View>
-      <View style={styles.socialLoginContainer} />
+      <View style={styles.socialLoginContainer}>
+        <SocialLoginButton />
+        <SocialLoginButton google />
+      </View>
       <TouchableOpacity>
         <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
       </TouchableOpacity>

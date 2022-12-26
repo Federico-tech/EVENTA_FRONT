@@ -1,8 +1,9 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../utils/constants/Theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS } from '../utils/constants/Theme';
 
 export const Button = ({ text, onPress, loading, containerStyle, primary, wrapperStyle, textStyle, secondary, gradient, disabled, children }) => {
   const Component = gradient ? LinearGradient : View;
@@ -22,6 +23,26 @@ export const Button = ({ text, onPress, loading, containerStyle, primary, wrappe
           </>
         )}
       </Component>
+    </TouchableOpacity>
+  );
+};
+
+export const SocialLoginButton = ({ google, onPress, text }) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.socialLoginButtonContainer}>
+        {google ? (
+          <>
+            <Image source={require('../assets/images/btn/social/GoogleLogo.png')} resizeMode="contain" style={styles.appleLogo} />
+            <Text style={styles.textSocialLogin}> Google </Text>
+          </>
+        ) : (
+          <>
+            <Ionicons name="ios-logo-apple" size={22} />
+            <Text style={styles.textSocialLogin}> AppleID </Text>
+          </>
+        )}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -64,5 +85,23 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: FONTS.extraBold,
     fontSize: SIZES.lg,
+  },
+  socialLoginButtonContainer: {
+    backgroundColor: 'white',
+    width: WIDTH_DEVICE / 2.3,
+    height: HEIGHT_DEVICE / 15,
+    borderRadius: SIZES.xxs,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+
+    ...SHADOWS.medium,
+  },
+
+  textSocialLogin: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.md,
+    color: COLORS.darkGray,
+    marginLeft: WIDTH_DEVICE / 60,
   },
 });

@@ -1,7 +1,8 @@
 import axios from 'axios';
+
 import { CONFIG } from '../../config';
-import {store} from "../../store";
-import {selectToken} from "../../store/user";
+import { store } from '../../store';
+import { selectToken } from '../../store/user';
 
 axios.defaults.baseURL = CONFIG.API_URL;
 axios.defaults.headers['Content-Type'] = 'application/json';
@@ -12,7 +13,7 @@ axios.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 axios.interceptors.response.use(
@@ -20,9 +21,9 @@ axios.interceptors.response.use(
     return response;
   },
   async function (error) {
-    console.log({error})
+    console.log({ error });
     return Promise.reject(error);
-  },
+  }
 );
 
 export const mainAxios = axios.create({
@@ -37,14 +38,14 @@ export const mainAxios = axios.create({
 mainAxios.interceptors.request.use(
   async (config) => {
     console.log({ config });
-    const state = store.getState()
-    const token = selectToken(state)
+    const state = store.getState();
+    const token = selectToken(state);
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
 mainAxios.interceptors.response.use(
@@ -52,9 +53,9 @@ mainAxios.interceptors.response.use(
     return response;
   },
   async function (error) {
-    console.log({error})
+    console.log({ error });
     return Promise.reject(error);
-  },
+  }
 );
 
 export const noAuthAxios = axios.create({

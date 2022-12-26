@@ -4,12 +4,13 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { awaitRehydrate } from '../store';
-import { selectIsAuthenticated } from '../store/user';
-import { AuthNavigator, UserBottomNavigator } from './Navigation';
+import { selectIsAuthenticated, selectUserRole } from '../store/user';
+import { AuthNavigator, OrganiserBottomNavigator, UserBottomNavigator } from './Navigation';
 
 const AppNavigator = () => {
   const [rehydrated, setRehydrated] = useState(false);
   const isLogged = useSelector(selectIsAuthenticated);
+  const role = useSelector(selectUserRole);
 
   useEffect(() => {
     const componentDidMount = async () => {
@@ -23,7 +24,7 @@ const AppNavigator = () => {
     return <View />;
   }
 
-  return <NavigationContainer>{isLogged ? <UserBottomNavigator /> : <AuthNavigator />}</NavigationContainer>;
+  return <NavigationContainer>{isLogged ? role ? <UserBottomNavigator /> : <OrganiserBottomNavigator /> : <AuthNavigator />}</NavigationContainer>;
 };
 
 export default AppNavigator;
