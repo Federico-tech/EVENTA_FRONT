@@ -1,40 +1,38 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 
-import { Button, InputText, Line, TextButton, SocialLoginButton } from '../../../../components/index';
-import { setUserInfo } from '../../../../store/user';
+import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
+import { loginUser } from '../../../../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
-import { ROLES } from '../../../../utils/conts';
+import { noAuthAxios } from '../../../../utils/core/axios';
 
-export const OrganiserSignUpScreen = () => {
+export const OrganiserSignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('Coco');
   const [email, setEmail] = useState('Coco@gmail.com');
   const [adress, setAdress] = useState('Via Coco');
   const [password, setPassword] = useState('Coco');
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const OnPressOrganiserSignUp = async () => {
     try {
-      const response = await axios.post(`/auth/register`, {
+      setLoading(true);
+      await noAuthAxios.post('/auth/register', {
         username,
         email,
         adress,
         password,
-        role: ROLES.ORGANIZER,
       });
-      console.log(response.data);
-      if (response) {
-        dispatch(setUserInfo(response.data));
-      }
+      await loginUser(email, password);
+      setLoading(false);
     } catch (e) {
+      setLoading(false);
       console.error({ e });
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
       <Text style={styles.title}>Become an organiser!</Text>
       <InputText value={username} setValue={setUsername} label="Username" />
       <InputText value={email} onChangeText={setEmail} label="Email" />
@@ -43,11 +41,11 @@ export const OrganiserSignUpScreen = () => {
       <Text style={styles.passwordReq}>
         The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
       </Text>
-      <Button primary text="Register" onPress={OnPressOrganiserSignUp} />
+      <Button loading={loading} primary text="Register" onPress={OnPressOrganiserSignUp} />
       <View style={styles.containerLine}>
-        <Line lineStyle={{flex: 1}}/>
+        <Line lineStyle={{ flex: 1 }} />
         <Text style={styles.orLoginUsing}>Or Register Using</Text>
-        <Line lineStyle={{flex: 1}}/>
+        <Line lineStyle={{ flex: 1 }} />
       </View>
       <View style={styles.socialLoginContainer}>
         <SocialLoginButton />
@@ -64,7 +62,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
   },
-
   title: {
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.xl,
@@ -81,7 +78,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.lightGray,
     paddingHorizontal: WIDTH_DEVICE / 20,
   },
-
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,
     fontFamily: FONTS.semiBold,
@@ -95,7 +91,6 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
     marginTop: HEIGHT_DEVICE / 80,
   },
-
   orLoginUsing: {
     alignSelf: 'center',
     alignItems: 'center',
@@ -111,13 +106,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: HEIGHT_DEVICE / 40,
   },
-
   socialLoginContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: HEIGHT_DEVICE / 40,
   },
-
   privacyText: {
     flexDirection: 'column',
     justifyContent: 'flex-end',
@@ -126,5 +119,8 @@ const styles = StyleSheet.create({
     fontSize: SIZES.md,
     textAlign: 'center',
     marginTop: HEIGHT_DEVICE / 8,
+  },
+  arrowIcon: {
+    marginTop: HEIGHT_DEVICE / 70,
   },
 });

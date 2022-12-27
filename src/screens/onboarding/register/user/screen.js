@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { Button, InputText, Line, TextButton, SocialLoginButton } from '../../../../components/index';
+import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
 import { loginUser } from '../../../../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
 import { noAuthAxios } from '../../../../utils/core/axios';
 
-export const UserSingUpScreen = () => {
+export const UserSingUpScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -32,6 +32,7 @@ export const UserSingUpScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
       <Text style={styles.title}> Create your account</Text>
       <InputText value={name} label="Name" onChangeText={setName} />
       <InputText value={username} label="Username" onChangeText={setUsername} />
@@ -42,9 +43,9 @@ export const UserSingUpScreen = () => {
       </Text>
       <Button loading={loading} primary text="Register" onPress={onPressUserSignUp} />
       <View style={styles.containerLine}>
-        <Line lineStyle={{flex: 1}}/>
+        <Line lineStyle={{ flex: 1 }} />
         <Text style={styles.orLoginUsing}>Or Register Using</Text>
-        <Line lineStyle={{flex: 1}}/>
+        <Line lineStyle={{ flex: 1 }} />
       </View>
       <View style={styles.socialLoginContainer}>
         <SocialLoginButton />
@@ -122,5 +123,8 @@ const styles = StyleSheet.create({
     fontSize: SIZES.md,
     textAlign: 'center',
     marginTop: HEIGHT_DEVICE / 8,
+  },
+  arrowIcon: {
+    marginTop: HEIGHT_DEVICE / 70,
   },
 });

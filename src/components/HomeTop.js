@@ -1,17 +1,15 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Button } from '../components/index';
+import { Button, IconButton } from '../components/index';
 import { FONTS, HEIGHT_DEVICE } from '../utils/constants/Theme';
 
 export const HomeTop = () => {
   return (
     <View style={styles.container}>
-      <Ionicons name="ios-notifications-outline" size={22} />
+      <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={22} />
       <Button gradient text="Lovere" />
-      <FontAwesome name="heart-o" size={20} />
+      <IconButton name="heart-outline" iconStyle={styles.icon} size={23} />
     </View>
   );
 };
@@ -27,5 +25,8 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: FONTS.regular,
     color: 'white',
+  },
+  icon: {
+    position: 'relative',
   },
 });

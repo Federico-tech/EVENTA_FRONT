@@ -11,8 +11,8 @@ export const Button = ({ text, onPress, loading, containerStyle, primary, wrappe
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
       <Component
         colors={[COLORS.gradient1, COLORS.gradient2]}
-        start={{ x: 0, y: 1 }}
-        end={{ x: 0, y: 0 }}
+        // start={{ x: 0, y: 1 }}
+        // end={{ x: 0, y: 0 }}
         style={[primary && styles.container, secondary && styles.secondary, disabled && styles.disabled, gradient && styles.containerGradient, containerStyle]}>
         {loading ? (
           <ActivityIndicator color="white" />
@@ -27,7 +27,7 @@ export const Button = ({ text, onPress, loading, containerStyle, primary, wrappe
   );
 };
 
-export const SocialLoginButton = ({ google, onPress, text }) => {
+export const SocialLoginButton = ({ google, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.socialLoginButtonContainer}>
@@ -43,6 +43,14 @@ export const SocialLoginButton = ({ google, onPress, text }) => {
           </>
         )}
       </View>
+    </TouchableOpacity>
+  );
+};
+
+export const IconButton = ({ onPress, name, iconStyle, size }) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Ionicons name={name} size={size} style={[styles.icon, iconStyle]} />
     </TouchableOpacity>
   );
 };
@@ -103,5 +111,9 @@ const styles = StyleSheet.create({
     fontSize: SIZES.md,
     color: COLORS.darkGray,
     marginLeft: WIDTH_DEVICE / 60,
+  },
+  icon: {
+    alignSelf: 'flex-start',
+    position: 'absolute',
   },
 });
