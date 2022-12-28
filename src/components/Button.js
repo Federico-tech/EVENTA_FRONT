@@ -47,10 +47,10 @@ export const SocialLoginButton = ({ google, onPress }) => {
   );
 };
 
-export const IconButton = ({ onPress, name, iconStyle, size }) => {
+export const IconButton = ({ onPress, name, iconStyle, size, color }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Ionicons name={name} size={size} style={[styles.icon, iconStyle]} />
+      <Ionicons name={name} size={size} style={[styles.icon, iconStyle]} color={color} />
     </TouchableOpacity>
   );
 };

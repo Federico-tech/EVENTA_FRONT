@@ -4,10 +4,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native';
 
-import { Line, OrganiserInf } from '../../../components';
+import { IconButton, Line, OrganiserInf } from '../../../components';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/constants/Theme';
 
-export const EventDetails = ({ route }) => {
+export const EventDetails = ({ route, navigation }) => {
   const { data } = route.params;
 
   return (
@@ -15,6 +15,7 @@ export const EventDetails = ({ route }) => {
       <View>
         <View style={styles.imageContainer}>
           <Image source={data.image} style={styles.eventImage} resizeMode="contain" />
+          <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={22} iconStyle={styles.arrowStyle} color="white" />
         </View>
         <OrganiserInf data={data} />
         <Line />
@@ -53,26 +54,22 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE,
     height: HEIGHT_DEVICE / 3.3,
   },
-
   eventImage: {
     height: HEIGHT_DEVICE / 3.3,
     width: WIDTH_DEVICE / 1,
     alignItems: 'center',
     position: 'absolute',
   },
-
   eventTitle: {
     fontFamily: 'InterSemiBold',
     fontSize: SIZES.xl,
     marginTop: HEIGHT_DEVICE / 60,
   },
-
   description: {
     fontFamily: 'InterRegular',
     fontSize: SIZES.sm,
     marginTop: HEIGHT_DEVICE / 80,
   },
-
   date: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -83,35 +80,34 @@ const styles = StyleSheet.create({
     fontFamily: 'InterMedium',
     fontSize: SIZES.sm,
   },
-
   timeText: {
     fontFamily: 'InterRegular',
     fontSize: SIZES.xs,
     color: COLORS.gray,
   },
-
   adressText: {
     marginLeft: WIDTH_DEVICE / 25,
     fontFamily: 'InterMedium',
     fontSize: SIZES.sm,
   },
-
   place: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: HEIGHT_DEVICE / 70,
     marginLeft: WIDTH_DEVICE / 160,
   },
-
   peopleText: {
     marginLeft: WIDTH_DEVICE / 50,
     fontFamily: 'InterMedium',
     fontSize: SIZES.sm,
   },
-
   person: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: HEIGHT_DEVICE / 70,
+  },
+  arrowStyle: {
+    marginHorizontal: WIDTH_DEVICE / 40,
+    marginTop: HEIGHT_DEVICE / 100,
   },
 });

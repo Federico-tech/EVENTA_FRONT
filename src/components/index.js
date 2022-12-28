@@ -7,3 +7,4 @@ export * from './HomeTop';
 export * from './InputText';
 export * from './TextButton';
 export * from './Header';
+export * from './SearchBar';

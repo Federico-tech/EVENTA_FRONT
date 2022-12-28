@@ -4,14 +4,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { InputText, TextButton } from '../../../components';
 import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE } from '../../../utils/constants/Theme';
+import { mainAxios } from '../../../utils/core/axios'
 
 export const CreateEventScreen = () => {
   const [name, setName] = useState('COCO CRAZY PARTY');
-  const [place, setPlace] = useState('Via Montegrappa, 25, 24060 Rogno BG');
+  const [address, setAddress] = useState('Via Montegrappa, 25, 24060 Rogno BG');
   const [date, setDate] = useState('COCO CRAZY PARTY');
   const [description, setDescription] = useState(
     'Cocò Snow PartySabato 10 Dicembre, vestiti a tema neve e vinci ricchi premi! Stupiscici col tuo outfit e vinci un tavolo al Cocò'
   );
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}> Create a new Event </Text>
@@ -21,7 +23,7 @@ export const CreateEventScreen = () => {
           <TextButton text="Upload an Image" textStyle={styles.uploadImageText} />
         </View>
         <InputText label="Name" value={name} setValue={setName} />
-        <InputText label="Place" value={place} setValue={setPlace} />
+        <InputText label="Place" value={address} setValue={setAddress} />
         <InputText label="Date" value={date} setValue={setDate} />
         <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline />
         <TextButton text="Publish Event" textStyle={styles.publishEvent} />

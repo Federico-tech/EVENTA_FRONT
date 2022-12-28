@@ -8,6 +8,7 @@ export const HEIGHT_DEVICE = height;
 export const COLORS = {
   primary: '#00A1FF',
   white: '#fff',
+  backGray: '#F2F2F2',
   gray: '#A1A1A1',
   lightGray: '#CCCBCB',
   darkGray: '#7A7A7A',
