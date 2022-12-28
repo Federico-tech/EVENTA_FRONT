@@ -6,7 +6,7 @@ import React from 'react';
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organizer/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
-import { CreateEventScreen } from '../screens/organiser/createEvent/screen';
+import { CreateEventScreen } from '../screens/organiser/events/create/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';
 import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
 import { EventDetails } from '../screens/user/eventDetails/screen';
