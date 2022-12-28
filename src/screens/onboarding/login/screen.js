@@ -12,8 +12,8 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState('federico.lentini1410@gmail.com');
-  const [password, setPassword] = useState('fede1410');
+  const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
+  const [password, setPassword] = useState('Dezzolo10');
 
   const onPressLogin = async () => {
     try {
@@ -36,7 +36,7 @@ export const LoginScreen = () => {
       <View style={styles.container}>
         <Text style={styles.textLogin}>Login to your account</Text>
         <InputText label="Email" value={email} setValue={setEmail} autoCapitalize="none" />
-        <InputText label="Password" value={password} setValue={setPassword} autoCapitalize="none" />
+        <InputText label="Password" value={password} setValue={setPassword} autoCapitalize="none" hide />
         <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
         <Button primary text="Login" onPress={onPressLogin} loading={loading} />
         <View style={styles.containerLine}>

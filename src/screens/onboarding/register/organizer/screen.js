@@ -4,6 +4,7 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
 import { loginUser } from '../../../../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
+import { ROLES } from '../../../../utils/conts';
 import { noAuthAxios } from '../../../../utils/core/axios';
 
 export const OrganiserSignUpScreen = ({ navigation }) => {
@@ -21,6 +22,8 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
         email,
         adress,
         password,
+        role: ROLES.ORGANIZER,
+        name: 'b',
       });
       await loginUser(email, password);
       setLoading(false);
@@ -37,7 +40,7 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
       <InputText value={username} setValue={setUsername} label="Username" />
       <InputText value={email} onChangeText={setEmail} label="Email" />
       <InputText value={adress} onChangeText={setAdress} label="Adress" />
-      <InputText value={password} onChangeText={setPassword} label="Password" />
+      <InputText value={password} onChangeText={setPassword} label="Password" hide/>
       <Text style={styles.passwordReq}>
         The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
       </Text>

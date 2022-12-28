@@ -37,7 +37,7 @@ export const UserSingUpScreen = ({ navigation }) => {
       <InputText value={name} label="Name" onChangeText={setName} />
       <InputText value={username} label="Username" onChangeText={setUsername} />
       <InputText value={email} label="Email" onChangeText={setEmail} />
-      <InputText value={password} label="Password" onChangeText={setPassword} />
+      <InputText value={password} label="Password" onChangeText={setPassword} hide/>
       <Text style={styles.passwordReq}>
         The password has to contain at least: {'\n'}-8 characters{'\n'}-1 numeber{' '}
       </Text>
