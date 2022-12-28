@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { InputText, TextButton } from '../../../components';
-import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE } from '../../../utils/constants/Theme';
-import { mainAxios } from '../../../utils/core/axios'
+import { EventImage1 } from '../../../../assets';
+import { InputText, TextButton } from '../../../../components';
+import { createEvent } from '../../../../services/events';
+import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE } from '../../../../utils/constants/Theme';
 
 export const CreateEventScreen = () => {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('COCO CRAZY PARTY');
   const [address, setAddress] = useState('Via Montegrappa, 25, 24060 Rogno BG');
   const [date, setDate] = useState('COCO CRAZY PARTY');
@@ -14,19 +16,34 @@ export const CreateEventScreen = () => {
     'Cocò Snow PartySabato 10 Dicembre, vestiti a tema neve e vinci ricchi premi! Stupiscici col tuo outfit e vinci un tavolo al Cocò'
   );
 
+  const onPressPublish = async () => {
+    try {
+      setLoading(true);
+      await createEvent({
+        name,
+        address,
+        description,
+      });
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log({ e });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}> Create a new Event </Text>
       <View>
         <View style={styles.uploadImage}>
-          <Image source={require('../../../assets/images/EventImage1.png')} style={styles.image} />
+          <Image source={EventImage1} style={styles.image} />
           <TextButton text="Upload an Image" textStyle={styles.uploadImageText} />
         </View>
         <InputText label="Name" value={name} setValue={setName} />
-        <InputText label="Place" value={address} setValue={setAddress} />
-        <InputText label="Date" value={date} setValue={setDate} />
+        <InputText label="Address" value={address} setValue={setAddress} />
+        {/*<InputText label="Date" value={date} setValue={setDate} />*/}
         <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline />
-        <TextButton text="Publish Event" textStyle={styles.publishEvent} />
+        <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
       </View>
     </SafeAreaView>
   );

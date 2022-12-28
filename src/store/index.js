@@ -1,15 +1,17 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import logger from 'redux-logger';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { configureStore } from '@reduxjs/toolkit';
-import user from './user';
 
+import event from './event';
+import user from './user';
 
 // REDUCERS
 const reducers = combineReducers({
-  user
+  user,
+  event,
 });
 
 const persistConfig = {
