@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   },
   description: {
     height: HEIGHT_DEVICE / 5,
+    alignItems: 'flex-start',
   },
   publishEvent: {
     fontFamily: FONTS.semiBold,

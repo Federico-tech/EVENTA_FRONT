@@ -15,8 +15,8 @@ export const InputText = ({ value, setValue, label, containerStyle, hide, ...res
   return (
     <>
       <Text style={styles.emailText}>{label}</Text>
-      <View style={styles.conatiner}>
-        <TextInput style={[styles.textInput, containerStyle]} value={value} onChangeText={setValue} secureTextEntry={isSecureEntry} {...rest} />
+      <View style={[styles.conatiner, containerStyle]}>
+        <TextInput style={[styles.textInput]} value={value} onChangeText={setValue} secureTextEntry={isSecureEntry} {...rest} />
         {hide && (
           <TouchableOpacity onPress={secureEntry} style={styles.eyeIcon}>
             <Ionicons name={isSecureEntry ? 'eye-off-outline' : 'eye-outline'} size={16} />

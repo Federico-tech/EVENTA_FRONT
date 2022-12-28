@@ -37,10 +37,10 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
       <Text style={styles.title}>Become an organiser!</Text>
-      <InputText value={username} setValue={setUsername} label="Username" />
-      <InputText value={email} onChangeText={setEmail} label="Email" />
+      <InputText value={username} setValue={setUsername} label="Username" autoCapitalize="none" />
+      <InputText value={email} onChangeText={setEmail} label="Email" autoCapitalize="none" />
       <InputText value={adress} onChangeText={setAdress} label="Adress" />
-      <InputText value={password} onChangeText={setPassword} label="Password" hide/>
+      <InputText value={password} onChangeText={setPassword} label="Password" hide autoCapitalize="none" />
       <Text style={styles.passwordReq}>
         The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
       </Text>
