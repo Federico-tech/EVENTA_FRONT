@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HEIGHT_DEVICE, SIZES, COLORS, SIZE, FONTS } from '../utils/constants/Theme';
 
 export const InputText = ({ value, setValue, label, containerStyle, hide, ...rest }) => {
-  const [isSecureEntry, setIsSecureEntry] = useState(isSecureEntry);
+  const [isSecureEntry, setIsSecureEntry] = useState(true);
 
   const secureEntry = () => {
     setIsSecureEntry((prev) => !prev);
@@ -16,7 +16,7 @@ export const InputText = ({ value, setValue, label, containerStyle, hide, ...res
     <>
       <Text style={styles.emailText}>{label}</Text>
       <View style={[styles.conatiner, containerStyle]}>
-        <TextInput style={[styles.textInput]} value={value} onChangeText={setValue} secureTextEntry={isSecureEntry} {...rest} />
+        <TextInput style={[styles.textInput]} value={value} onChangeText={setValue} secureTextEntry={hide && isSecureEntry} {...rest} />
         {hide && (
           <TouchableOpacity onPress={secureEntry} style={styles.eyeIcon}>
             <Ionicons name={isSecureEntry ? 'eye-off-outline' : 'eye-outline'} size={16} />
