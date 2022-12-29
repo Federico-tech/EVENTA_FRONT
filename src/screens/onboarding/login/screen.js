@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+// eslint-disable-next-line no-unused-vars
+import { Image, StyleSheet, Text, View, Keyboard, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import { Button, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
@@ -12,8 +13,8 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
-  const [password, setPassword] = useState('Dezzolo10');
+  const [email, setEmail] = useState('cococlubing@gmail.com');
+  const [password, setPassword] = useState('Cococlub20');
 
   const onPressLogin = async () => {
     try {
@@ -31,42 +32,44 @@ export const LoginScreen = () => {
   };
 
   return (
-    <View>
-      <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
-      <View style={styles.container}>
-        <Text style={styles.textLogin}>Login to your account</Text>
-        <InputText label="Email" value={email} setValue={setEmail} autoCapitalize="none" />
-        <InputText label="Password" value={password} setValue={setPassword} autoCapitalize="none" hide />
-        <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
-        <Button primary text="Login" onPress={onPressLogin} loading={loading} />
-        <View style={styles.containerLine}>
-          <Line lineStyle={{ flex: 1 }} />
-          <Text style={styles.orLoginUsing}>Or Login Using</Text>
-          <Line lineStyle={{ flex: 1 }} />
-        </View>
-        <View style={styles.socialLoginContainer}>
-          <SocialLoginButton />
-          <SocialLoginButton google />
-        </View>
-        <View style={styles.registerContainer}>
-          <View style={styles.registerTextContainer}>
-            <Text style={styles.registerText}>You don't have an account?</Text>
-            <TouchableOpacity onPress={onPressUserRegister}>
-              <Text style={styles.registerButtonText}> Sign Up</Text>
-            </TouchableOpacity>
+    <ScrollView>
+      <View>
+        <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
+        <View style={styles.container}>
+          <Text style={styles.textLogin}>Login to your account</Text>
+          <InputText label="Email" value={email} setValue={setEmail} autoCapitalize="none" />
+          <InputText label="Password" value={password} setValue={setPassword} autoCapitalize="none" hide />
+          <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
+          <Button primary text="Login" onPress={onPressLogin} loading={loading} />
+          <View style={styles.containerLine}>
+            <Line lineStyle={{ flex: 1 }} />
+            <Text style={styles.orLoginUsing}>Or Login Using</Text>
+            <Line lineStyle={{ flex: 1 }} />
           </View>
-          <View style={styles.registerTextContainer}>
-            <Text style={styles.registerText}>Do you want to become an organiser? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
-              <Text style={styles.registerButtonText}> Click here</Text>
-            </TouchableOpacity>
+          <View style={styles.socialLoginContainer}>
+            <SocialLoginButton />
+            <SocialLoginButton google />
           </View>
+          <View style={styles.registerContainer}>
+            <View style={styles.registerTextContainer}>
+              <Text style={styles.registerText}>You don't have an account?</Text>
+              <TouchableOpacity onPress={onPressUserRegister}>
+                <Text style={styles.registerButtonText}> Sign Up</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.registerTextContainer}>
+              <Text style={styles.registerText}>Do you want to become an organiser? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
+                <Text style={styles.registerButtonText}> Click here</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.privacyText}> Privacy & Terms </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.privacyText}> Privacy & Terms </Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
