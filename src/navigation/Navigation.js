@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
@@ -14,6 +15,10 @@ import { HomeScreen } from '../screens/user/home/screen';
 import { MapScreen } from '../screens/user/map/screen';
 import { ProfileScreen } from '../screens/user/profile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
+import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
+import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
+import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
+import { FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, COLORS } from '../utils/constants/Theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
 const OrganiserBottomTabNavigator = createBottomTabNavigator();
@@ -31,6 +36,9 @@ export const ROUTES = {
   OrganiserHome: 'OrganiserHomeScreen',
   CreateEventScreen: 'CreateEventScreen',
   OrganiserProfileScreen: 'OrganiserProfileScreen',
+  SearchOrganiserScreen: 'SearchOrganiserScreen',
+  SearchEventScreen: 'SearchEventScreen',
+  SearchUserScreen: 'SearchUserScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -63,7 +71,42 @@ const HomeNavigator = () => {
   );
 };
 
+const SearchTopStackNavigator = createMaterialTopTabNavigator();
 
+export const SearchTopNavigator = () => {
+  return (
+    <SearchTopStackNavigator.Navigator
+      tabBarOptions={{ style: { backgroundColor: 'transparent', height: HEIGHT_DEVICE / 23, borderBottomWidth: 0.17, borderColor: COLORS.lightGray } }}>
+      <SearchTopStackNavigator.Screen
+        name={ROUTES.SearchEventScreen}
+        component={SearchEventScreen}
+        options={{
+          tabBarLabel: 'Event',
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: WIDTH_DEVICE / 30 },
+          tabBarIndicatorStyle: { backgroundColor: 'black' },
+        }}
+      />
+      <SearchTopStackNavigator.Screen
+        name={ROUTES.SearchOrganiserScreen}
+        component={SearchOrganiserScreen}
+        options={{
+          tabBarLabel: 'Organiser',
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: WIDTH_DEVICE / 30 },
+          tabBarIndicatorStyle: { backgroundColor: 'black' },
+        }}
+      />
+      <SearchTopStackNavigator.Screen
+        name={ROUTES.SearchUserScreen}
+        component={SearchUserScreen}
+        options={{
+          tabBarLabel: 'Account',
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: WIDTH_DEVICE / 30 },
+          tabBarIndicatorStyle: { backgroundColor: 'black' },
+        }}
+      />
+    </SearchTopStackNavigator.Navigator>
+  );
+};
 
 export const UserBottomNavigator = () => {
   return (

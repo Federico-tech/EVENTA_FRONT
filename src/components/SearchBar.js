@@ -17,7 +17,7 @@ export const SearchBar = () => {
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#DEDEDE',
-    marginTop: HEIGHT_DEVICE / 20,
+    marginTop: HEIGHT_DEVICE / 16,
     height: HEIGHT_DEVICE / 20,
     marginHorizontal: WIDTH_DEVICE / 20,
     borderRadius: SIZES.xs,

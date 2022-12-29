@@ -1,16 +1,18 @@
-// eslint-disable-next-line no-unused-vars
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { SearchBar } from '../../../components/index';
+import { SearchTopNavigator } from '../../../navigation/Navigation';
 
-export const SearchScreen = () => {
-
-
+export const SearchScreen = ({ navigation }) => {
   return (
-    <View>
+    <>
       <SearchBar />
-    </View>
+      <SearchTopNavigator navigation={navigation} style={styles.topBar} />
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  topBar: {},
+});
