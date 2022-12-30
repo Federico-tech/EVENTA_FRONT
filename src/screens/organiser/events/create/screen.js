@@ -1,7 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, Platform, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { InputText, TextButton } from '../../../../components';
@@ -10,12 +11,10 @@ import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE, COLORS } from '../../../../u
 
 export const CreateEventScreen = () => {
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState('COCO CRAZY PARTY');
-  const [address, setAddress] = useState('Via Montegrappa, 25, 24060 Rogno BG');
-  const [description, setDescription] = useState(
-    'Cocò Snow PartySabato 10 Dicembre, vestiti a tema neve e vinci ricchi premi! Stupiscici col tuo outfit e vinci un tavolo al Cocò'
-  );
-  const [eventImage, setEventImage] = useState();
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [description, setDescription] = useState('');
+  const [eventImage, setEventImage] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -60,26 +59,30 @@ export const CreateEventScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}> Create a new Event </Text>
-      <View>
-        <TouchableOpacity onPress={PickImage}>
-          <View style={styles.uploadImage}>
-            {!eventImage ? (
-              <>
-                <Ionicons name="add" size={50} />
-                <Text>Pick an image</Text>
-              </>
-            ) : (
-              <Image source={{ uri: eventImage }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
-            )}
-          </View>
-        </TouchableOpacity>
-        <InputText label="Name" value={name} setValue={setName} />
-        <InputText label="Address" value={address} setValue={setAddress} />
-        {/*<InputText label="Date" value={date} setValue={setDate} />*/}
-        <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline />
-        <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
-      </View>
+      <KeyboardAvoidingView behavior='padding'>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}> Create a new Event </Text>
+        <View>
+          <TouchableOpacity onPress={PickImage}>
+            <View style={styles.uploadImage}>
+              {!eventImage ? (
+                <>
+                  <Ionicons name="add" size={50} />
+                  <Text>Pick an image</Text>
+                </>
+              ) : (
+                <Image source={{ uri: eventImage }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+              )}
+            </View>
+          </TouchableOpacity>
+          <InputText label="Name" value={name} setValue={setName} maxLength={30} />
+          <InputText label="Address" value={address} setValue={setAddress} />
+          {/*<InputText label="Date" value={date} setValue={setDate} />*/}
+          <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline maxLength={400}/>
+          <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
+        </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -119,6 +122,9 @@ const styles = StyleSheet.create({
   description: {
     height: HEIGHT_DEVICE / 5,
     alignItems: 'flex-start',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   publishEvent: {
     fontFamily: FONTS.semiBold,

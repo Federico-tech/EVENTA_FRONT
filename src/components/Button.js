@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.darkGray,
   },
   disabled: {
-    opacity: 0.8,
+    backgroundColor: COLORS.darkGray,
   },
   textGradient: {
     fontFamily: FONTS.semiBold,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
 import { loginUser } from '../../../../store/user';
@@ -35,28 +35,32 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
-      <Text style={styles.title}>Become an organiser!</Text>
-      <InputText value={username} setValue={setUsername} label="Username" autoCapitalize="none" />
-      <InputText value={email} onChangeText={setEmail} label="Email" autoCapitalize="none" />
-      <InputText value={adress} onChangeText={setAdress} label="Adress" />
-      <InputText value={password} onChangeText={setPassword} label="Password" hide autoCapitalize="none" />
-      <Text style={styles.passwordReq}>
-        The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
-      </Text>
-      <Button loading={loading} primary text="Register" onPress={OnPressOrganiserSignUp} />
-      <View style={styles.containerLine}>
-        <Line lineStyle={{ flex: 1 }} />
-        <Text style={styles.orLoginUsing}>Or Register Using</Text>
-        <Line lineStyle={{ flex: 1 }} />
-      </View>
-      <View style={styles.socialLoginContainer}>
-        <SocialLoginButton />
-        <SocialLoginButton google />
-      </View>
-      <TouchableOpacity>
-        <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
-      </TouchableOpacity>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
+          <Text style={styles.title}>Become an organiser!</Text>
+          <InputText value={username} setValue={setUsername} label="Username" autoCapitalize="none" />
+          <InputText value={email} onChangeText={setEmail} label="Email" autoCapitalize="none" />
+          <InputText value={adress} onChangeText={setAdress} label="Adress" />
+          <InputText value={password} onChangeText={setPassword} label="Password" hide autoCapitalize="none" />
+          <Text style={styles.passwordReq}>
+            The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
+          </Text>
+          <Button loading={loading} primary text="Register" onPress={OnPressOrganiserSignUp} />
+          <View style={styles.containerLine}>
+            <Line lineStyle={{ flex: 1 }} />
+            <Text style={styles.orLoginUsing}>Or Register Using</Text>
+            <Line lineStyle={{ flex: 1 }} />
+          </View>
+          <View style={styles.socialLoginContainer}>
+            <SocialLoginButton />
+            <SocialLoginButton google />
+          </View>
+          <TouchableOpacity>
+            <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
