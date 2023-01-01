@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { InputText, TextButton } from '../../../../components';
 import { createEvent } from '../../../../services/events';
-import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE, COLORS } from '../../../../utils/constants/Theme';
+import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE, COLORS } from '../../../../utils/theme';
 
 export const CreateEventScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -59,29 +59,29 @@ export const CreateEventScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView behavior='padding'>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}> Create a new Event </Text>
-        <View>
-          <TouchableOpacity onPress={PickImage}>
-            <View style={styles.uploadImage}>
-              {!eventImage ? (
-                <>
-                  <Ionicons name="add" size={50} />
-                  <Text>Pick an image</Text>
-                </>
-              ) : (
-                <Image source={{ uri: eventImage }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
-              )}
-            </View>
-          </TouchableOpacity>
-          <InputText label="Name" value={name} setValue={setName} maxLength={30} />
-          <InputText label="Address" value={address} setValue={setAddress} />
-          {/*<InputText label="Date" value={date} setValue={setDate} />*/}
-          <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline maxLength={400}/>
-          <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
-        </View>
-      </ScrollView>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}> Create a new Event </Text>
+          <View>
+            <TouchableOpacity onPress={PickImage}>
+              <View style={styles.uploadImage}>
+                {!eventImage ? (
+                  <>
+                    <Ionicons name="add" size={50} />
+                    <Text>Pick an image</Text>
+                  </>
+                ) : (
+                  <Image source={{ uri: eventImage }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+                )}
+              </View>
+            </TouchableOpacity>
+            <InputText label="Name" value={name} setValue={setName} maxLength={30} />
+            <InputText label="Address" value={address} setValue={setAddress} />
+            {/*<InputText label="Date" value={date} setValue={setDate} />*/}
+            <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline maxLength={400} />
+            <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

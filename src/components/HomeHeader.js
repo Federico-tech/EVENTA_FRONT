@@ -1,11 +1,10 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/constants/Theme';
+import React from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
+import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/theme';
 
 export const HomeHeader = ({ data }) => {
-
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.container}>
@@ -23,7 +22,7 @@ export const HomeHeader = ({ data }) => {
         </View>
       </LinearGradient>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
 
   imageProfile: {
     width: WIDTH_DEVICE / 9,
-    height: HEIGHT_DEVICE / 9
+    height: HEIGHT_DEVICE / 9,
   },
 
   TextContainer: {

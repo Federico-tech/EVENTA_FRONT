@@ -1,13 +1,12 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
-import { EventCard, HomeHeader, HomeTop } from '../../../components/index';
+import { Container, EventCard, HomeHeader, HomeTop } from '../../../components/index';
 import { EventData } from '../../../utils/constants/Dummy';
-import { HEIGHT_DEVICE } from '../../../utils/constants/Theme';
 
 export const HomeScreen = () => {
   return (
-    <View>
+    <Container>
       <HomeHeader />
       <FlatList
         data={EventData}
@@ -17,12 +16,10 @@ export const HomeScreen = () => {
         ListHeaderComponent={<HomeTop />}
         style={styles.container}
       />
-    </View>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: HEIGHT_DEVICE / 8.5,
-  },
+  container: {},
 });

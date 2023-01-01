@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+
+import { Container } from '../../../components';
 
 export const OrganiserHome = () => {
   return (
-    <View>
+    <Container>
       <Text style={styles.container}> OrganiserHome </Text>
-    </View>
+    </Container>
   );
 };
 

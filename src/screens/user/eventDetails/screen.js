@@ -5,7 +5,7 @@ import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native';
 
 import { IconButton, Line, OrganiserInf } from '../../../components';
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/constants/Theme';
+import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const EventDetails = ({ route, navigation }) => {
   const { data } = route.params;

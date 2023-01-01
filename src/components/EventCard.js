@@ -1,18 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import {
-  WIDTH_DEVICE,
-  HEIGHT_DEVICE,
-  SHADOWS,
-  COLORS,
-  SIZE,
-  SIZES,
-  FONTS,
-} from '../utils/constants/Theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SHADOWS, SIZES, WIDTH_DEVICE } from '../utils/theme';
 
 export const EventCard = ({ data }) => {
   const { name, adress, date, image, organiser, likes } = data;
@@ -25,11 +17,7 @@ export const EventCard = ({ data }) => {
         <Image source={image} style={styles.eventImage} />
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
-            <Image
-              resizeMode="contain"
-              source={organiser.profileImage}
-              style={styles.organiserImage}
-            />
+            <Image resizeMode="contain" source={organiser.profileImage} style={styles.organiserImage} />
             <View style={styles.textContainer}>
               <Text style={styles.textDate}> {date} </Text>
               <Text style={styles.textTitle}> {name} </Text>

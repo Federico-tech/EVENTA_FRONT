@@ -3,9 +3,9 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, Key
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
 import { loginUser } from '../../../../store/user';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
 import { ROLES } from '../../../../utils/conts';
 import { noAuthAxios } from '../../../../utils/core/axios';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const OrganiserSignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('Coco');

@@ -1,11 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../utils/constants/Theme';
+import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, TAB_BAR_HEIGHT, WIDTH_DEVICE } from '../utils/theme';
 
-export const SearchBar = () => {
+export const SearchBar = ({}) => {
   return (
     <View style={styles.wrapper}>
       <Ionicons name="ios-search" size={20} color={COLORS.gray} style={styles.icon} />
@@ -17,7 +17,7 @@ export const SearchBar = () => {
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#DEDEDE',
-    marginTop: HEIGHT_DEVICE / 16,
+    marginTop: TAB_BAR_HEIGHT + SIZE,
     height: HEIGHT_DEVICE / 20,
     marginHorizontal: WIDTH_DEVICE / 20,
     borderRadius: SIZES.xs,

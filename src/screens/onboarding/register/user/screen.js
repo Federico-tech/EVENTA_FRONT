@@ -3,8 +3,8 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, Key
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
 import { loginUser } from '../../../../store/user';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/constants/Theme';
 import { noAuthAxios } from '../../../../utils/core/axios';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const UserSingUpScreen = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -36,8 +36,8 @@ export const UserSingUpScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
           <Text style={styles.title}> Create your account</Text>
-          <InputText value={name} label="Name" onChangeText={setName} maxLength={20}/>
-          <InputText value={username} label="Username" onChangeText={setUsername} autoCapitalize="none" maxLength={20}/>
+          <InputText value={name} label="Name" onChangeText={setName} maxLength={20} />
+          <InputText value={username} label="Username" onChangeText={setUsername} autoCapitalize="none" maxLength={20} />
           <InputText value={email} label="Email" onChangeText={setEmail} autoCapitalize="none" />
           <InputText value={password} label="Password" onChangeText={setPassword} hide autoCapitalize="none" />
           <Text style={styles.passwordReq}>

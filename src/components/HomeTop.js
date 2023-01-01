@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Button, IconButton } from '../components/index';
-import { FONTS, HEIGHT_DEVICE } from '../utils/constants/Theme';
+import { FONTS, HEIGHT_DEVICE } from '../utils/theme';
 
 export const HomeTop = () => {
   return (

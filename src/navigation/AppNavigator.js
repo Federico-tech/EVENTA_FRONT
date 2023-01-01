@@ -1,4 +1,3 @@
-/* eslint-disable eqeqeq */
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -27,7 +26,7 @@ const AppNavigator = () => {
     return <View />;
   }
 
-  return <NavigationContainer>{isLogged ? role == ROLES.USER ? <UserBottomNavigator /> : <OrganiserBottomNavigator /> : <AuthNavigator />}</NavigationContainer>;
+  return <NavigationContainer>{isLogged ? role === ROLES.USER ? <UserBottomNavigator /> : <OrganiserBottomNavigator /> : <AuthNavigator />}</NavigationContainer>;
 };
 
 export default AppNavigator;

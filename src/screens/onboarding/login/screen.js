@@ -1,20 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
-import { AxiosError } from 'axios';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { Button, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../store/user';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/constants/Theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const LoginScreen = ({}) => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState('cococlubing@gmail.com');
-  const [password, setPassword] = useState('Cococlub20');
+  // const [email, setEmail] = useState('cococlubing@gmail.com');
+  // const [password, setPassword] = useState('Cococlub20');
+  const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
+  const [password, setPassword] = useState('Dezzolo10');
 
   const onPressLogin = async () => {
     try {
@@ -37,9 +38,9 @@ export const LoginScreen = ({}) => {
         <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
         <View style={styles.container}>
           <Text style={styles.textLogin}>Login to your account</Text>
-          <InputText label="Email" value={email} setValue={setEmail} autoCapitalize="none"/>
+          <InputText label="Email" value={email} setValue={setEmail} autoCapitalize="none" />
           <InputText label="Password" value={password} setValue={setPassword} autoCapitalize="none" hide />
-            <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
+          <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
           <Button primary text="Login" onPress={onPressLogin} loading={loading} disabled={!password || (!email && true)} />
           <View style={styles.containerLine}>
             <Line lineStyle={{ flex: 1 }} />

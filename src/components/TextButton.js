@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES } from '../utils/constants/Theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES } from '../utils/theme';
 
 export const TextButton = ({ onPress, text, textStyle, loading, ...rest }) => {
   return loading ? (

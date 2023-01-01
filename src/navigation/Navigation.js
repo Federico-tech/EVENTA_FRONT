@@ -18,7 +18,7 @@ import { SearchScreen } from '../screens/user/search/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
 import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
-import { FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, COLORS } from '../utils/constants/Theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, TAB_BAR_HEIGHT, TAB_BAR_STYLE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
 const OrganiserBottomTabNavigator = createBottomTabNavigator();
@@ -43,31 +43,31 @@ export const ROUTES = {
 
 const BottomBarIcons = ({ route }) => ({
   tabBarLabel: '',
-  tabBarIcon: ({ focused, size, colour }) => {
+  tabBarIcon: ({ focused, colour }) => {
     let iconName;
-    if (route.name === 'HomeNavigator' || route.name === 'OrganiserHomeScreen') {
+    if (route.name === ROUTES.HomeNavigator || route.name === ROUTES.OrganiserHome) {
       iconName = focused ? 'home' : 'home-outline';
-    } else if (route.name === 'SearchScreen') {
-      iconName = focused ? 'ios-search' : 'search-outline';
-    } else if (route.name === 'MapScreen') {
+    } else if (route.name === ROUTES.SearchScreen) {
+      iconName = focused ? 'ios-search' : 'ios-search-outline';
+    } else if (route.name === ROUTES.MapScreen) {
       iconName = focused ? 'map' : 'map-outline';
-    } else if (route.name === 'ProfileScreen' || route.name === 'OrganiserProfileScreen') {
+    } else if (route.name === ROUTES.ProfileScreen || route.name === ROUTES.OrganiserSignUpScreen) {
       iconName = focused ? 'person' : 'person-outline';
-    } else if (route.name === 'CreateEventScreen') {
+    } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';
     }
     return <Ionicons name={iconName} size={22} colour={colour} />;
   },
 });
 
-const HomeStackNavigtor = createStackNavigator();
+const HomeStackNavigator = createStackNavigator();
 
 const HomeNavigator = () => {
   return (
-    <HomeStackNavigtor.Navigator initialRouteName="HomeScreen">
-      <HomeStackNavigtor.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
-      <HomeStackNavigtor.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
-    </HomeStackNavigtor.Navigator>
+    <HomeStackNavigator.Navigator initialRouteName={ROUTES.HomeScreen}>
+      <HomeStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+    </HomeStackNavigator.Navigator>
   );
 };
 
@@ -76,13 +76,13 @@ const SearchTopStackNavigator = createMaterialTopTabNavigator();
 export const SearchTopNavigator = () => {
   return (
     <SearchTopStackNavigator.Navigator
-      tabBarOptions={{ style: { backgroundColor: 'transparent', height: HEIGHT_DEVICE / 23, borderBottomWidth: 0.17, borderColor: COLORS.lightGray } }}>
+      tabBarOptions={{ style: { backgroundColor: 'transparent', height: TAB_BAR_HEIGHT, borderBottomWidth: 0.17, borderColor: COLORS.lightGray } }}>
       <SearchTopStackNavigator.Screen
         name={ROUTES.SearchEventScreen}
         component={SearchEventScreen}
         options={{
           tabBarLabel: 'Event',
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: WIDTH_DEVICE / 30 },
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}
       />
@@ -91,7 +91,7 @@ export const SearchTopNavigator = () => {
         component={SearchOrganiserScreen}
         options={{
           tabBarLabel: 'Organiser',
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: WIDTH_DEVICE / 30 },
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}
       />
@@ -100,7 +100,7 @@ export const SearchTopNavigator = () => {
         component={SearchUserScreen}
         options={{
           tabBarLabel: 'Account',
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: WIDTH_DEVICE / 30 },
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}
       />

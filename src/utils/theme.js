@@ -72,3 +72,9 @@ export const SHADOWS = {
     elevation: 14,
   },
 };
+
+export const TAB_BAR_STYLE = {
+  height: HEIGHT_DEVICE / 22,
+};
+
+export const TAB_BAR_HEIGHT = HEIGHT_DEVICE / 22;

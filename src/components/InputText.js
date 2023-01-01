@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Text, TextInput, StyleSheet, View } from 'react-native';
 import { RotationGestureHandler, TouchableOpacity } from 'react-native-gesture-handler';
 
-import { HEIGHT_DEVICE, SIZES, COLORS, SIZE, FONTS, WIDTH_DEVICE } from '../utils/constants/Theme';
+import { HEIGHT_DEVICE, SIZES, COLORS, SIZE, FONTS, WIDTH_DEVICE } from '../utils/theme';
 
 export const InputText = ({ value, setValue, label, containerStyle, hide, maxLength, ...rest }) => {
   const [isSecureEntry, setIsSecureEntry] = useState(true);
@@ -22,8 +22,11 @@ export const InputText = ({ value, setValue, label, containerStyle, hide, maxLen
             <Ionicons name={isSecureEntry ? 'eye-off-outline' : 'eye-outline'} size={16} />
           </TouchableOpacity>
         )}
-       {maxLength && (
-          <Text style={styles.lenght}> {value.length} / {maxLength}</Text>
+        {maxLength && (
+          <Text style={styles.lenght}>
+            {' '}
+            {value.length} / {maxLength}
+          </Text>
         )}
       </View>
     </>
@@ -46,7 +49,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: WIDTH_DEVICE / 50,
-
   },
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,
@@ -63,6 +65,6 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xs,
     alignSelf: 'flex-end',
     marginBottom: HEIGHT_DEVICE / 150,
-    padding: 0
-  }
+    padding: 0,
+  },
 });

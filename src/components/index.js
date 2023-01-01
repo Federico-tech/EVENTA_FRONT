@@ -8,3 +8,4 @@ export * from './InputText';
 export * from './TextButton';
 export * from './Header';
 export * from './SearchBar';
+export * from './Container';
