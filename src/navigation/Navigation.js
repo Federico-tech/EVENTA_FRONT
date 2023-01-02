@@ -18,7 +18,7 @@ import { SearchScreen } from '../screens/user/search/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
 import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, TAB_BAR_HEIGHT, TAB_BAR_STYLE } from '../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, TAB_BAR_HEIGHT} from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
 const OrganiserBottomTabNavigator = createBottomTabNavigator();
@@ -51,7 +51,7 @@ const BottomBarIcons = ({ route }) => ({
       iconName = focused ? 'ios-search' : 'ios-search-outline';
     } else if (route.name === ROUTES.MapScreen) {
       iconName = focused ? 'map' : 'map-outline';
-    } else if (route.name === ROUTES.ProfileScreen || route.name === ROUTES.OrganiserSignUpScreen) {
+    } else if (route.name === ROUTES.ProfileScreen || route.name === ROUTES.OrganiserProfileScreen) {
       iconName = focused ? 'person' : 'person-outline';
     } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';

@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { LogoText } from '../assets';
 
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/theme';
 
@@ -17,7 +18,7 @@ export const HomeHeader = ({ data }) => {
                 <Text style={styles.federico}> Federico </Text>
               </View>
             </View>
-            <Image resizeMode="contain" style={styles.logo} source={require('../assets/logos/LogoText.png')} />
+            <Image resizeMode="contain" style={styles.logo} source={LogoText} />
           </View>
         </View>
       </LinearGradient>

@@ -1,11 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
 import { Text, TextInput, StyleSheet, View } from 'react-native';
-import { RotationGestureHandler, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { HEIGHT_DEVICE, SIZES, COLORS, SIZE, FONTS, WIDTH_DEVICE } from '../utils/theme';
 
-export const InputText = ({ value, setValue, label, containerStyle, hide, maxLength, ...rest }) => {
+export const InputText = ({ value, setValue, label, containerStyle, hide, maxLength, date, ...rest }) => {
   const [isSecureEntry, setIsSecureEntry] = useState(true);
 
   const secureEntry = () => {
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZE,
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: WIDTH_DEVICE / 50,
   },
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,

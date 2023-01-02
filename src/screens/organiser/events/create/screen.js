@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { InputText, TextButton } from '../../../../components';
 import { createEvent } from '../../../../services/events';
 import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE, COLORS } from '../../../../utils/theme';
+import { DataPicker } from './dataPicker';
 
 export const CreateEventScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ export const CreateEventScreen = () => {
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
   const [eventImage, setEventImage] = useState(null);
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     const loadData = async () => {
@@ -77,7 +79,8 @@ export const CreateEventScreen = () => {
             </TouchableOpacity>
             <InputText label="Name" value={name} setValue={setName} maxLength={30} />
             <InputText label="Address" value={address} setValue={setAddress} />
-            {/*<InputText label="Date" value={date} setValue={setDate} />*/}
+            <DataPicker label={'Date'} Data/>
+            <DataPicker label={'Time'} Time/>
             <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline maxLength={400} />
             <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
           </View>

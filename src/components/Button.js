@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
+import { GoogleLogo } from '../assets';
 
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS } from '../utils/theme';
 
@@ -33,12 +34,12 @@ export const SocialLoginButton = ({ google, onPress }) => {
       <View style={styles.socialLoginButtonContainer}>
         {google ? (
           <>
-            <Image source={require('../assets/images/btn/social/GoogleLogo.png')} resizeMode="contain" style={styles.appleLogo} />
+            <Image source={GoogleLogo} resizeMode="contain" style={styles.appleLogo} />
             <Text style={styles.textSocialLogin}> Google </Text>
           </>
         ) : (
           <>
-            <Ionicons name="ios-logo-apple" size={22} />
+            <Ionicons name="ios-logo-apple" size={27} />
             <Text style={styles.textSocialLogin}> AppleID </Text>
           </>
         )}
