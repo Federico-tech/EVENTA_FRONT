@@ -1,8 +1,8 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { LogoText } from '../assets';
 
+import { LogoText } from '../assets';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/theme';
 
 export const HomeHeader = ({ data }) => {

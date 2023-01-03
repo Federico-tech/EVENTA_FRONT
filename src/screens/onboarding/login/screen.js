@@ -5,17 +5,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { Button, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
-import { loginUser } from '../../../store/user';
+import { loginUser } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState('cococlubing@gmail.com');
-  const [password, setPassword] = useState('Cococlub20');
-  // const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
-  // const [password, setPassword] = useState('Dezzolo10');
+  // const [email, setEmail] = useState('cococlubing@gmail.com');
+  // const [password, setPassword] = useState('Cococlub20');
+  const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
+  const [password, setPassword] = useState('Dezzolo10');
 
   const onPressLogin = async () => {
     try {
@@ -48,7 +48,7 @@ export const LoginScreen = () => {
             <Line lineStyle={{ flex: 1 }} />
           </View>
           <View style={styles.socialLoginContainer}>
-            <SocialLoginButton />
+            <SocialLoginButton apple />
             <SocialLoginButton google />
           </View>
           <View style={styles.registerContainer}>

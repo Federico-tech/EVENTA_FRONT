@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
-import { loginUser } from '../../../../store/user';
+import { loginUser } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
 import { noAuthAxios } from '../../../../utils/core/axios';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';

@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Appearance, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -79,3 +79,39 @@ export const TAB_BAR_STYLE = {
 };
 
 export const TAB_BAR_HEIGHT = HEIGHT_DEVICE / 22;
+
+export function useTheme() {
+  const appearance = Appearance.getColorScheme();
+  let colors = {
+    primary: '#00A1FF',
+    white: '#fff',
+    backGray: '#F2F2F2',
+    gray: '#A1A1A1',
+    lightGray: '#CCCBCB',
+    darkGray: '#7A7A7A',
+    gradient1: '#00D1FF',
+    gradient2: '#00A1FF',
+    error: 'red',
+    gradient: ['#32DAE4', '#00A1FF'],
+  };
+
+  if (appearance === 'dark') {
+    colors = {
+      primary: '#00A1FF',
+      white: '#fff',
+      backGray: '#F2F2F2',
+      gray: '#A1A1A1',
+      lightGray: '#CCCBCB',
+      darkGray: '#7A7A7A',
+      gradient1: '#00D1FF',
+      gradient2: '#00A1FF',
+      error: 'red',
+      gradient: ['#32DAE4', '#00A1FF'],
+    };
+  }
+
+  return {
+    colors,
+    standardSize: SIZE,
+  };
+}

@@ -12,7 +12,6 @@ const AppNavigator = () => {
   const [rehydrated, setRehydrated] = useState(false);
   const isLogged = useSelector(selectIsAuthenticated);
   const role = useSelector(selectUserRole);
-  console.log(role);
 
   useEffect(() => {
     const componentDidMount = async () => {

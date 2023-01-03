@@ -1,5 +1,6 @@
 import { useFonts } from 'expo-font';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 
 import AppNavigator from './src/navigation/AppNavigator';
@@ -16,7 +17,6 @@ const App = () => {
   });
 
   if (!loaded) return null;
-
   return (
     <Provider store={store}>
       <AppNavigator />
