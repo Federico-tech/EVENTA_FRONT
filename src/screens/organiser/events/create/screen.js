@@ -1,79 +1,88 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
+import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { useFormik } from 'formik';
 import { size } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { object, string } from 'yup';
 
 import { InputText, TextButton } from '../../../../components';
-import { createEvent } from '../../../../services/events';
+import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = () => {
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [description, setDescription] = useState('');
-  const [eventImage, setEventImage] = useState(null);
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  useEffect(requestCameraPermission, []);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const { status } = await ImagePicker.requestCameraPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Permission denied!');
+  const { values, errors, validateForm, setFieldValue, touched, handleSubmit, setFieldError, isSubmitting, setSubmitting } = useFormik({
+    initialValues: {
+      name: '',
+      address: '',
+      description: '',
+      eventImage: '',
+      date: '',
+      time: '',
+    },
+    validationSchema: object().shape({
+      name: string().required(),
+    }),
+    validateOnChange: false,
+    validateOnBlur: false,
+    validateOnMount: false,
+    enableReinitialize: true,
+    onSubmit: async (data) => {
+      try {
+        setSubmitting(true);
+        await validateForm(data);
+        setSubmitting(false);
+      } catch (e) {
+        console.log({ e });
+        setSubmitting(false);
       }
-    };
-    loadData();
-  }, []);
+    },
+  });
+
+  const onChangeText = (formikName, newValue) => {
+    setFieldValue(formikName, newValue);
+    setFieldError(formikName, '');
+  };
+
+  const formik = {
+    values,
+    errors,
+    touched,
+    onChangeText,
+  };
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    const result = await launchImageLibraryAsync({
+      mediaTypes: MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
     if (!result.canceled) {
-      setEventImage(result.assets[0].uri);
+      await setFieldValue('eventImage', result.assets[0].uri);
     }
   };
 
-  const onPressPublish = async () => {
-    try {
-      setLoading(true);
-      await createEvent({
-        name,
-        address,
-        description,
-        eventImage,
-      });
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-      console.log({ e });
-    }
-  };
-
-  const onChangeDate = (newValue) => {
-    const isDeleting = size(newValue) < size(date);
+  const onChangeDate = async (formikName, newValue) => {
+    const isDeleting = size(newValue) < size(values.date);
     let newDate = newValue;
     if ((size(newDate) === 2 || size(newDate) === 5) && !isDeleting) {
       newDate += '/';
     }
-    setDate(newDate);
+    onChangeText(formikName, newDate);
   };
 
-  const onChangeTime = (newValue) => {
-    const isDeleting = size(newValue) < size(time);
+  const onChangeTime = async (formikName, newValue) => {
+    const isDeleting = size(newValue) < size(values.time);
     let newTime = newValue;
     if (size(newTime) === 2 && !isDeleting) {
       newTime += ':';
     }
-    setTime(newTime);
+    onChangeText(formikName, newTime);
   };
 
   return (
@@ -84,22 +93,22 @@ export const CreateEventScreen = () => {
           <View>
             <TouchableOpacity onPress={pickImage}>
               <View style={styles.uploadImage}>
-                {!eventImage ? (
+                {!values.eventImage ? (
                   <>
                     <Ionicons name="add" size={50} />
                     <Text>Pick an image</Text>
                   </>
                 ) : (
-                  <Image source={{ uri: eventImage }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+                  <Image source={{ uri: values.eventImage }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
                 )}
               </View>
             </TouchableOpacity>
-            <InputText label="Name" value={name} onChangeText={setName} maxLength={30} />
-            <InputText label="Address" value={address} onChangeText={setAddress} />
-            <InputText label="Description" value={description} onChangeText={setDescription} multiline />
-            <InputText label="Date" value={date} onChangeText={onChangeDate} maxLength={10} />
-            <InputText label="Time" value={time} onChangeText={onChangeTime} maxLength={5} />
-            <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
+            <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
+            <InputText label="Address" formik={formik} formikName="address" />
+            <InputText label="Description" formik={formik} formikName="description" multiline />
+            <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="date" maxLength={10} />
+            <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="time" maxLength={5} />
+            <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={handleSubmit} loading={isSubmitting} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

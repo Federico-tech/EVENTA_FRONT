@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES } from '../utils/theme';
 
 export const TextButton = ({ onPress, text, textStyle, loading, ...rest }) => {
+  console.log({ loading });
   return loading ? (
     <ActivityIndicator color="black" style={{ marginTop: HEIGHT_DEVICE / 30 }} />
   ) : (
@@ -16,31 +17,27 @@ export const TextButton = ({ onPress, text, textStyle, loading, ...rest }) => {
 };
 
 export const ReadMoreButton = (props, textStyle) => {
-
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const hanldlePress = () => {
-    setIsExpanded(!isExpanded)
-  }
+    setIsExpanded(!isExpanded);
+  };
 
-  let text = props.text || props.children
+  let text = props.text || props.children;
   if (!isExpanded) {
-    text = `${text.substring(0,70)}...`
+    text = `${text.substring(0, 70)}...`;
   }
 
-  return(
+  return (
     <TouchableOpacity onPress={hanldlePress}>
-      <Text style={props.style}>{text}
-      {!isExpanded && (
-        <Text style={[styles.text,{color: COLORS.gray}]}> Read More</Text>
-      )}
-      {isExpanded && (
-        <Text style={[styles.text,{color: COLORS.gray}]}> Read Less</Text>
-      )}
+      <Text style={props.style}>
+        {text}
+        {!isExpanded && <Text style={[styles.text, { color: COLORS.gray }]}> Read More</Text>}
+        {isExpanded && <Text style={[styles.text, { color: COLORS.gray }]}> Read Less</Text>}
       </Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   text: {

@@ -4,7 +4,7 @@ import { Text as RNText, StyleSheet } from 'react-native';
 import { FONTS, SIZES } from '../utils/theme';
 export const Text = ({ color, style, bold, children, semiBold, ...rest }) => {
   return (
-    <RNText style={[{ color }, bold && styles.bold, semiBold && styles.semiBold]} {...rest}>
+    <RNText style={[{ color }, bold && styles.bold, semiBold && styles.semiBold, style]} {...rest}>
       {children}
     </RNText>
   );
