@@ -1,14 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { size } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { InputText, TextButton } from '../../../../components';
 import { createEvent } from '../../../../services/events';
-import { DATE_TIME_FORMAT } from '../../../../utils/dates';
-import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE, COLORS } from '../../../../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,8 @@ export const CreateEventScreen = () => {
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
   const [eventImage, setEventImage] = useState(null);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
 
   useEffect(() => {
     const loadData = async () => {
@@ -57,6 +58,24 @@ export const CreateEventScreen = () => {
     }
   };
 
+  const onChangeDate = (newValue) => {
+    const isDeleting = size(newValue) < size(date);
+    let newDate = newValue;
+    if ((size(newDate) === 2 || size(newDate) === 5) && !isDeleting) {
+      newDate += '/';
+    }
+    setDate(newDate);
+  };
+
+  const onChangeTime = (newValue) => {
+    const isDeleting = size(newValue) < size(time);
+    let newTime = newValue;
+    if (size(newTime) === 2 && !isDeleting) {
+      newTime += ':';
+    }
+    setTime(newTime);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior="padding">
@@ -78,7 +97,8 @@ export const CreateEventScreen = () => {
             <InputText label="Name" value={name} onChangeText={setName} maxLength={30} />
             <InputText label="Address" value={address} onChangeText={setAddress} />
             <InputText label="Description" value={description} onChangeText={setDescription} multiline />
-            <InputText label="Date and Time" value={date} onChangeText={setDate} date datePickerMode="datetime" dateFormat={DATE_TIME_FORMAT} />
+            <InputText label="Date" value={date} onChangeText={onChangeDate} maxLength={10} />
+            <InputText label="Time" value={time} onChangeText={onChangeTime} maxLength={5} />
             <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
           </View>
         </ScrollView>
