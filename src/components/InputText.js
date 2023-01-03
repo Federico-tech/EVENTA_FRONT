@@ -55,19 +55,6 @@ export const InputText = ({
   if (onPress || date) {
     pointerEvents = 'none';
   }
-  // if (date && value) {
-  //   const isValidDate = DateTime.fromISO(value).isValid;
-  //   if (isValidDate && dateFormat) {
-  //     value = DateTime.fromISO(value).toFormat(dateFormat);
-  //   } else {
-  //     if (isValidDate && date !== 'time') {
-  //       value = DateTime.fromISO(value).toFormat('dd/MM/yyyy');
-  //     }
-  //     if (isValidDate && date === 'time') {
-  //       value = DateTime.fromISO(value).toFormat('HH:mm');
-  //     }
-  //   }
-  // }
 
   const onPressPressable = useCallback(() => {
     if (date) {

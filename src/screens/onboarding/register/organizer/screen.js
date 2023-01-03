@@ -39,7 +39,7 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
           <Text style={styles.title}>Become an organiser!</Text>
-          <InputText value={username} setValue={setUsername} label="Username" autoCapitalize="none" />
+          <InputText value={username} onChangeText={setUsername} label="Username" autoCapitalize="none" />
           <InputText value={email} onChangeText={setEmail} label="Email" autoCapitalize="none" />
           <InputText value={adress} onChangeText={setAdress} label="Adress" />
           <InputText value={password} onChangeText={setPassword} label="Password" hide autoCapitalize="none" />
