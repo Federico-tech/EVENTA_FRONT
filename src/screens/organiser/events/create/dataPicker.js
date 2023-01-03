@@ -28,7 +28,7 @@ export const DataPicker = ({ label, Data, Time }) => {
       <Text style={styles.emailText}>{label}</Text>
       {Data && (
         <TouchableOpacity style={styles.wrapper} onPress={() => setDataPicker(true)}>
-          {dataPicker && <DateTimePicker value={date.toJSDate()} onChange={onDateSelected} mode="date" display="none" />}
+          {dataPicker && <DateTimePicker value={date.toJSDate()} onChange={onDateSelected} moede="date" display="none" />}
           {!dataPicker && <Text>{formattedDate}</Text>}
         </TouchableOpacity>
       )}

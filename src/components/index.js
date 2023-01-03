@@ -9,3 +9,5 @@ export * from './TextButton';
 export * from './Header';
 export * from './SearchBar';
 export * from './Container';
+export * from './Text';
+export * from './Row';

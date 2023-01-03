@@ -14,6 +14,7 @@ export const COLORS = {
   darkGray: '#7A7A7A',
   gradient1: '#00D1FF',
   gradient2: '#00A1FF',
+  error: 'red',
   gradient: ['#32DAE4', '#00A1FF'],
 };
 

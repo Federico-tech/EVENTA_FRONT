@@ -7,8 +7,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { InputText, TextButton } from '../../../../components';
 import { createEvent } from '../../../../services/events';
+import { DATE_TIME_FORMAT } from '../../../../utils/dates';
 import { WIDTH_DEVICE, FONTS, SIZES, HEIGHT_DEVICE, COLORS } from '../../../../utils/theme';
-import { DataPicker } from './dataPicker';
 
 export const CreateEventScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -20,17 +20,15 @@ export const CreateEventScreen = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Permission denied!');
-        }
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Permission denied!');
       }
     };
     loadData();
   }, []);
 
-  const PickImage = async () => {
+  const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -65,7 +63,7 @@ export const CreateEventScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.title}> Create a new Event </Text>
           <View>
-            <TouchableOpacity onPress={PickImage}>
+            <TouchableOpacity onPress={pickImage}>
               <View style={styles.uploadImage}>
                 {!eventImage ? (
                   <>
@@ -77,11 +75,10 @@ export const CreateEventScreen = () => {
                 )}
               </View>
             </TouchableOpacity>
-            <InputText label="Name" value={name} setValue={setName} maxLength={30} />
-            <InputText label="Address" value={address} setValue={setAddress} />
-            <DataPicker label={'Date'} Data/>
-            <DataPicker label={'Time'} Time/>
-            <InputText label="Description" containerStyle={styles.description} value={description} setValue={setDescription} multiline maxLength={400} />
+            <InputText label="Name" value={name} onChangeText={setName} maxLength={30} />
+            <InputText label="Address" value={address} onChangeText={setAddress} />
+            <InputText label="Description" value={description} onChangeText={setDescription} multiline />
+            <InputText label="Date and Time" value={date} onChangeText={setDate} date datePickerMode="datetime" dateFormat={DATE_TIME_FORMAT} />
             <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={onPressPublish} loading={loading} />
           </View>
         </ScrollView>
