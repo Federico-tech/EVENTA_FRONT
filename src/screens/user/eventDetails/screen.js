@@ -1,48 +1,50 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native';
+import React, {useState} from 'react';
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
-import { IconButton, Line, OrganiserInf } from '../../../components';
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { IconButton, Line, OrganiserInf, TextButton, ReadMoreButton } from '../../../components';
+import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS } from '../../../utils/theme';
 
 export const EventDetails = ({ route, navigation }) => {
   const { data } = route.params;
 
   return (
-    <SafeAreaView>
-      <View>
-        <View style={styles.imageContainer}>
-          <Image source={data.image} style={styles.eventImage} resizeMode="contain" />
-          <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={22} iconStyle={styles.arrowStyle} color="white" />
-        </View>
-        <OrganiserInf data={data} />
-        <Line />
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <Text style={styles.eventTitle}>{data.name}</Text>
-          <Text style={styles.description}>{data.description}</Text>
-          <View style={styles.date}>
-            <FontAwesome name="calendar-o" size={18} />
-            <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-              <Text style={styles.dateText}>{data.date}</Text>
-              <Text style={styles.timeText}>{data.time}</Text>
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView showsVerticalScrollIndicator={false} >
+        <View>
+          <View style={styles.imageContainer}>
+            <Image source={data.image} style={styles.eventImage} resizeMode="contain" />
+            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={22} iconStyle={styles.arrowStyle} color="white" />
+          </View>
+          <OrganiserInf data={data} />
+          <Line />
+          <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+            <Text style={styles.eventTitle}>{data.name}</Text>
+              <ReadMoreButton text={data.description} style={styles.description}/>
+            <View style={styles.date}>
+              <FontAwesome name="calendar-o" size={18} />
+              <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
+                <Text style={styles.dateText}>{data.date}</Text>
+                <Text style={styles.timeText}>{data.time}</Text>
+              </View>
             </View>
+            <View style={styles.place}>
+              <Foundation name="marker" size={22} />
+              <Text style={styles.adressText}>{data.adress}</Text>
+            </View>
+            <View style={styles.person}>
+              <Ionicons name="people-outline" size={24} />
+              <Text style={styles.peopleText}>
+                {data.nPerson}
+                <Text style={styles.description}> of your friends are going</Text>
+              </Text>
+            </View>
+            <Text>Who's going?</Text>
           </View>
-          <View style={styles.place}>
-            <Foundation name="marker" size={22} />
-            <Text style={styles.adressText}>{data.adress}</Text>
-          </View>
-          <View style={styles.person}>
-            <Ionicons name="people-outline" size={24} />
-            <Text style={styles.peopleText}>
-              {data.nPerson}
-              <Text style={styles.description}> of your friends are going</Text>
-            </Text>
-          </View>
-          <Text>Who's going?</Text>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -66,8 +68,8 @@ const styles = StyleSheet.create({
     marginTop: HEIGHT_DEVICE / 60,
   },
   description: {
-    fontFamily: 'InterRegular',
-    fontSize: SIZES.sm,
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.md,
     marginTop: HEIGHT_DEVICE / 80,
   },
   date: {
@@ -110,4 +112,9 @@ const styles = StyleSheet.create({
     marginHorizontal: WIDTH_DEVICE / 40,
     marginTop: HEIGHT_DEVICE / 100,
   },
+  other: {
+    fontFamily: 'InterRegular',
+    fontSize: SIZES.sm,
+    color: COLORS.gray
+  }
 });

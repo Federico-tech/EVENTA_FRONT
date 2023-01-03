@@ -21,7 +21,6 @@ export const DataPicker = ({ label, Data, Time }) => {
 
   const onTimeSelected = (event, selectedTime) => {
     setTime(DateTime.fromJSDate(selectedTime));
-    setTimePicker(false);
   };
 
   return (
@@ -35,7 +34,7 @@ export const DataPicker = ({ label, Data, Time }) => {
       )}
       {Time && (
         <TouchableOpacity style={styles.wrapper} onPress={() => setTimePicker(true)}>
-          {timePicker && <DateTimePicker value={date.toJSDate()} onChange={onTimeSelected} mode="time" display="none" />}
+          {timePicker && <DateTimePicker value={date.toJSDate()} onChange={onTimeSelected} mode="time" display='compact' />}
           {!timePicker && <Text>{formattedTime}</Text>}
         </TouchableOpacity>
       )}

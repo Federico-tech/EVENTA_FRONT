@@ -15,8 +15,8 @@ export const LoginScreen = () => {
 
   // const [email, setEmail] = useState('cococlubing@gmail.com');
   // const [password, setPassword] = useState('Cococlub20');
-  const [email, setEmail] = useState('cococlubing@gmail.com');
-  const [password, setPassword] = useState('Cococlub20');
+  const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
+  const [password, setPassword] = useState('Dezzolo10');
 
   const onPressLogin = async () => {
     try {
