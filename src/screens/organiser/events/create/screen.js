@@ -1,12 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
-import { size } from 'lodash';
-import React, { useEffect } from 'react';
+import {  pick, size } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { object, string } from 'yup';
+import { createEvent } from '../../../../services/events';
 
 import { InputText, TextButton } from '../../../../components';
 import { requestCameraPermission } from '../../../../utils/permissions';
@@ -15,7 +16,8 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../u
 export const CreateEventScreen = () => {
   useEffect(requestCameraPermission, []);
 
-  const { values, errors, validateForm, setFieldValue, touched, handleSubmit, setFieldError, isSubmitting, setSubmitting } = useFormik({
+  const [loading, setLoading] = useState(false)
+  const { values, errors, validateForm, setFieldValue, touched, setFieldError, isSubmitting, handleSubmit, setSubmitting } = useFormik({
     initialValues: {
       name: '',
       address: '',
@@ -26,6 +28,10 @@ export const CreateEventScreen = () => {
     },
     validationSchema: object().shape({
       name: string().required(),
+      address: string().required(),
+      description: string().required(),
+      date: string().required(),
+      time: string().required(),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -33,12 +39,13 @@ export const CreateEventScreen = () => {
     enableReinitialize: true,
     onSubmit: async (data) => {
       try {
-        setSubmitting(true);
+        setLoading(true)
         await validateForm(data);
-        setSubmitting(false);
+        await createEvent(pick(data, ['name', 'address', 'description']));
+        setLoading(false)
       } catch (e) {
+        setLoading(false)
         console.log({ e });
-        setSubmitting(false);
       }
     },
   });
@@ -108,7 +115,7 @@ export const CreateEventScreen = () => {
             <InputText label="Description" formik={formik} formikName="description" multiline />
             <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="date" maxLength={10} />
             <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="time" maxLength={5} />
-            <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={handleSubmit} loading={isSubmitting} />
+            <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

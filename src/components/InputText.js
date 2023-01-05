@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-
 
 import { Normalize } from '../utils';
 import { DATE_FORMAT } from '../utils/dates';
-import { COLORS, HEIGHT_DEVICE, SIZE, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, HEIGHT_DEVICE, SIZE, WIDTH_DEVICE, SIZES, FONTS } from '../utils/theme';
 import { Text } from './Text';
 
 export const INPUT_WIDTH = WIDTH_DEVICE * 0.9;
@@ -109,16 +109,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: INPUT_WIDTH,
-    marginTop: SIZE,
+    borderRadius: SIZES.xxs,
   },
   label: {
-    paddingLeft: SIZE,
+    marginTop: HEIGHT_DEVICE / 150,
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.sm,
+    color: COLORS.darkGray,
   },
   errorStyle: {
     paddingTop: 2,
     width: WIDTH_DEVICE * 0.7,
     color: COLORS.error,
+    fontSize: SIZES.sm
   },
   iconsRight: {
     flex: 0,
@@ -126,7 +129,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: INPUT_HEIGHT,
     marginTop: SIZE / 3,
-    // backgroundColor: 'red',
     right: 0,
     top: 0,
   },
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     paddingTop: SIZE,
   },
   icon: {
-    height: Normalize(45),
+    height: Normalize(50),
     padding: Normalize(10),
     alignItems: 'center',
     justifyContent: 'center',
@@ -152,8 +154,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: INPUT_HEIGHT,
-    marginTop: SIZE / 3,
-    borderRadius: SIZE,
+    marginTop: HEIGHT_DEVICE / 100,
+    borderRadius: SIZES.xs,
     borderWidth: 0.5,
     borderColor: COLORS.lightGray,
     paddingHorizontal: SIZE,
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textUnder: {
-    minHeight: Normalize(10),
-    marginLeft: SIZE / 2,
+    minHeight: Normalize(5),
+    //marginLeft: SIZE / 3,
   },
 });

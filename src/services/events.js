@@ -9,3 +9,12 @@ export const createEvent = async (eventData) => {
     console.log({ errorCreateEvent: e });
   }
 };
+
+export const getEvents = async () => {
+  try {
+    const response = await mainAxios.get('events')
+    console.log(response)
+  } catch (e) {
+    console.log({e})
+  }
+}
