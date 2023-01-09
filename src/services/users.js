@@ -17,3 +17,13 @@ export const loginUser = async (email, password) => {
     console.log({ e });
   }
 };
+
+export const organiserSignUp = async (data) => {
+  try {
+    const { data: createdOrganiser } = await noAuthAxios.post('/auth/register', data);
+    console.log({ createdOrganiser });
+    return createdOrganiser;
+  } catch (e) {
+    console.log({ errorCreateOrganiser: e });
+  }
+};

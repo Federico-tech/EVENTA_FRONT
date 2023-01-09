@@ -23,9 +23,8 @@ export const CreateEventScreen = () => {
       name: '',
       address: '',
       description: '',
-      eventImage: '',
       date: '',
-      time: '',
+      // time: '',
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
@@ -34,15 +33,15 @@ export const CreateEventScreen = () => {
       date: string()
         .required('Date is a required field')
         .test('is-valid-date', 'Invalid date', (value) => {
-          console.log(value)
+          console.log(value);
           return !value || DateTime.fromFormat(value, 'dd/MM/yyyy').isValid;
         }),
-      time: string()
-        .required('Time is a required field')
-        .test('is-valid-date', 'Invalid date', (value) => {
-          console.log(value)
-          return !value || DateTime.fromFormat(value, 'dd/MM/yyyy').isValid;
-        }),
+      // time: string()
+      //   .required('Time is a required field')
+      //   .test('is-valid-date', 'Invalid date', (value) => {
+      //     console.log(value);
+      //     return !value || DateTime.fromFormat(value, 'HH:mm').isValid;
+      //   }),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -52,7 +51,8 @@ export const CreateEventScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
-        await createEvent(pick(data, ['name', 'adress', 'description', 'date', 'time']));
+        console.log(data)
+        await createEvent(pick(data, ['name', 'address', 'description', 'date']));
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -81,7 +81,7 @@ export const CreateEventScreen = () => {
       quality: 1,
     });
     if (!result.canceled) {
-      await setFieldValue('eventImage', result.assets[0].uri);
+      await setFieldValue('coverImage', result.assets[0].uri);
     }
   };
 
@@ -125,7 +125,7 @@ export const CreateEventScreen = () => {
             <InputText label="Address" formik={formik} formikName="address" />
             <InputText label="Description" formik={formik} formikName="description" multiline />
             <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="date" maxLength={10} placeholder="dd/MM/yyyy" />
-            <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="time" maxLength={5} placeholder="HH:mm" />
+            {/* <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="time" maxLength={5} placeholder="HH:mm" /> */}
             <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>
         </ScrollView>

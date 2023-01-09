@@ -1,7 +1,7 @@
 import { store } from '../store';
 import { mainAxios } from '../utils/core/axios';
 
-export const createEvent = async (eventData) => {
+export const createEvent = async ( eventData ) => {
   try {
     const { data: createdEvent } = await mainAxios.post('events', eventData);
     console.log({ createdEvent });
@@ -20,3 +20,5 @@ export const getEvents = async () => {
     console.log({e})
   }
 }
+
+

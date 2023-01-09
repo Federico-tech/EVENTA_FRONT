@@ -1,36 +1,81 @@
+import { useFormik } from 'formik';
+import { pick } from 'lodash';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { object, string } from 'yup';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
-import { loginUser } from '../../../../services/users';
+import { loginUser, organiserSignUp } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
-import { noAuthAxios } from '../../../../utils/core/axios';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const OrganiserSignUpScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('Coco');
-  const [email, setEmail] = useState('Coco@gmail.com');
-  const [adress, setAdress] = useState('Via Coco');
-  const [password, setPassword] = useState('Coco');
   const [loading, setLoading] = useState(false);
 
-  const OnPressOrganiserSignUp = async () => {
-    try {
-      setLoading(true);
-      await noAuthAxios.post('/auth/register', {
-        username,
-        email,
-        adress,
-        password,
-        role: ROLES.ORGANIZER,
-        name: 'b',
-      });
-      await loginUser(email, password);
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-      console.error({ e });
-    }
+  // const OnPressOrganiserSignUp = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await noAuthAxios.post('/auth/register', {
+  //       username,
+  //       email,
+  //       adress,
+  //       password,
+  //       role: ROLES.ORGANIZER,
+  //       name: 'b',
+  //     });
+  //     await loginUser(email, password);
+  //     setLoading(false);
+  //   } catch (e) {
+  //     setLoading(false);
+  //     console.error({ e });
+  //   }
+  // };
+
+  const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
+    initialValues: {
+      username: '',
+      email: '',
+      address: '',
+      password: '',
+      role: ROLES.ORGANIZER,
+    },
+    validationSchema: object().shape({
+      username: string().required('Username is a required field'),
+      email: string().required().email('This is not a valid email'),
+      address: string().required('Address is a required field'),
+      password: string()
+        .required('Password is a required field')
+        .matches(/^(?=.*\d)[a-zA-Z\d]{8,}$/, 'This is not a valid password'),
+    }),
+    validateOnChange: false,
+    validateOnBlur: false,
+    validateOnMount: false,
+    enableReinitialize: true,
+    onSubmit: async (data) => {
+      try {
+        setLoading(true);
+        await validateForm(data);
+        await organiserSignUp(pick(data, ['username', 'email', 'address', 'password']));
+        await loginUser(pick(data, ['email', 'password']))
+        console.log(data)
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        console.log({ e });
+      }
+    },
+  });
+
+  const onChangeText = (formikName, newValue) => {
+    setFieldValue(formikName, newValue);
+    setFieldError(formikName, '');
+  };
+
+  const formik = {
+    values,
+    errors,
+    touched,
+    onChangeText,
   };
 
   return (
@@ -39,21 +84,21 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
           <Text style={styles.title}>Become an organiser!</Text>
-          <InputText value={username} onChangeText={setUsername} label="Username" autoCapitalize="none" />
-          <InputText value={email} onChangeText={setEmail} label="Email" autoCapitalize="none" />
-          <InputText value={adress} onChangeText={setAdress} label="Adress" />
-          <InputText value={password} onChangeText={setPassword} label="Password" hide autoCapitalize="none" />
+          <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" />
+          <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
+          <InputText formik={formik} label="Address" formikName="address" />
+          <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
           <Text style={styles.passwordReq}>
             The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
           </Text>
-          <Button loading={loading} primary text="Register" onPress={OnPressOrganiserSignUp} />
+          <Button loading={loading} primary text="Register" onPress={handleSubmit} />
           <View style={styles.containerLine}>
             <Line lineStyle={{ flex: 1 }} />
             <Text style={styles.orLoginUsing}>Or Register Using</Text>
             <Line lineStyle={{ flex: 1 }} />
           </View>
           <View style={styles.socialLoginContainer}>
-            <SocialLoginButton />
+            <SocialLoginButton apple />
             <SocialLoginButton google />
           </View>
           <TouchableOpacity>
