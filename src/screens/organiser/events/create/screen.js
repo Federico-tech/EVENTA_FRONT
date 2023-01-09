@@ -1,23 +1,24 @@
 import { Ionicons } from '@expo/vector-icons';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
-import {  pick, size } from 'lodash';
+import { pick, size } from 'lodash';
+import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { object, string } from 'yup';
-import { createEvent } from '../../../../services/events';
 
 import { InputText, TextButton } from '../../../../components';
+import { createEvent } from '../../../../services/events';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = () => {
   useEffect(requestCameraPermission, []);
 
-  const [loading, setLoading] = useState(false)
-  const { values, errors, validateForm, setFieldValue, touched, setFieldError, isSubmitting, handleSubmit, setSubmitting } = useFormik({
+  const [loading, setLoading] = useState(false);
+  const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
       name: '',
       address: '',
@@ -27,11 +28,21 @@ export const CreateEventScreen = () => {
       time: '',
     },
     validationSchema: object().shape({
-      name: string().required(),
-      address: string().required(),
-      description: string().required(),
-      date: string().required(),
-      time: string().required(),
+      name: string().required('Name is a required field'),
+      address: string().required('Adress is a required field'),
+      description: string().required('Description is a required field'),
+      date: string()
+        .required('Date is a required field')
+        .test('is-valid-date', 'Invalid date', (value) => {
+          console.log(value)
+          return !value || DateTime.fromFormat(value, 'dd/MM/yyyy').isValid;
+        }),
+      time: string()
+        .required('Time is a required field')
+        .test('is-valid-date', 'Invalid date', (value) => {
+          console.log(value)
+          return !value || DateTime.fromFormat(value, 'dd/MM/yyyy').isValid;
+        }),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -39,12 +50,12 @@ export const CreateEventScreen = () => {
     enableReinitialize: true,
     onSubmit: async (data) => {
       try {
-        setLoading(true)
+        setLoading(true);
         await validateForm(data);
-        await createEvent(pick(data, ['name', 'address', 'description']));
-        setLoading(false)
+        await createEvent(pick(data, ['name', 'adress', 'description', 'date', 'time']));
+        setLoading(false);
       } catch (e) {
-        setLoading(false)
+        setLoading(false);
         console.log({ e });
       }
     },
@@ -113,8 +124,8 @@ export const CreateEventScreen = () => {
             <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
             <InputText label="Address" formik={formik} formikName="address" />
             <InputText label="Description" formik={formik} formikName="description" multiline />
-            <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="date" maxLength={10} />
-            <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="time" maxLength={5} />
+            <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="date" maxLength={10} placeholder="dd/MM/yyyy" />
+            <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="time" maxLength={5} placeholder="HH:mm" />
             <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>
         </ScrollView>
