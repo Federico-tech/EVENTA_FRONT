@@ -1,5 +1,4 @@
 import { useFormik } from 'formik';
-import { pick } from 'lodash';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { object, string } from 'yup';
@@ -55,13 +54,13 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
       try {
         setLoading(true);
         await validateForm(data);
-        await organiserSignUp(pick(data, ['username', 'email', 'address', 'password']));
-        await loginUser(pick(data, ['email', 'password']))
-        console.log(data)
+        await organiserSignUp(data);
+        await loginUser(data.email, data.password);
+        console.log(data);
         setLoading(false);
       } catch (e) {
         setLoading(false);
-        console.log({ e });
+        console.log({ error: e.response.data });
       }
     },
   });

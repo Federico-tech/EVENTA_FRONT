@@ -4,7 +4,6 @@ import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-nat
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES } from '../utils/theme';
 
 export const TextButton = ({ onPress, text, textStyle, loading, ...rest }) => {
-  console.log({ loading });
   return loading ? (
     <ActivityIndicator color="black" style={{ marginTop: HEIGHT_DEVICE / 30 }} />
   ) : (
