@@ -51,7 +51,7 @@ export const CreateEventScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
-        console.log(data)
+        console.log(data);
         await createEvent(pick(data, ['name', 'address', 'description', 'date']));
         setLoading(false);
       } catch (e) {

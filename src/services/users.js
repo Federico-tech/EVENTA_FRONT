@@ -20,10 +20,10 @@ export const loginUser = async (email, password) => {
 
 export const organiserSignUp = async (data) => {
   try {
-    const { data: createdOrganiser } = await noAuthAxios.post('/auth/register', data);
-    console.log({ createdOrganiser });
-    return createdOrganiser;
+    const { data: createdUser } = await noAuthAxios.post(`auth/register`, data);
+    console.log({ createdUser });
+    return createdUser;
   } catch (e) {
-    console.log({ errorCreateOrganiser: e });
+    console.log({ erorrCreatedUser: e });
   }
 };

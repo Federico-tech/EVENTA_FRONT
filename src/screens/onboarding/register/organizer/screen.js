@@ -37,6 +37,7 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
       address: '',
       password: '',
       role: ROLES.ORGANIZER,
+      name: 'organiser'
     },
     validationSchema: object().shape({
       username: string().required('Username is a required field'),
@@ -54,9 +55,9 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
       try {
         setLoading(true);
         await validateForm(data);
+        console.log(data);
         await organiserSignUp(data);
         await loginUser(data.email, data.password);
-        console.log(data);
         setLoading(false);
       } catch (e) {
         setLoading(false);
