@@ -1,21 +1,28 @@
 import { Ionicons } from '@expo/vector-icons';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
-import { pick, size } from 'lodash';
+// eslint-disable-next-line no-unused-vars
+import { size, omit } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { InputText, TextButton } from '../../../../components';
 import { createEvent } from '../../../../services/events';
+import { store } from '../../../../store';
+import { selectUser } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = () => {
   useEffect(requestCameraPermission, []);
+  
+  const user = useSelector(selectUser)
+  console.log('user',{user})
 
   const [loading, setLoading] = useState(false);
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
@@ -23,36 +30,56 @@ export const CreateEventScreen = () => {
       name: '',
       address: '',
       description: '',
-      date: '',
-      // time: '',
+      startDate: '',
+      startTime: '',   
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
       address: string().required('Adress is a required field'),
       description: string().required('Description is a required field'),
-      date: string()
+      startDate: string()
         .required('Date is a required field')
         .test('is-valid-date', 'Invalid date', (value) => {
           console.log(value);
           return !value || DateTime.fromFormat(value, 'dd/MM/yyyy').isValid;
         }),
-      // time: string()
-      //   .required('Time is a required field')
-      //   .test('is-valid-date', 'Invalid date', (value) => {
-      //     console.log(value);
-      //     return !value || DateTime.fromFormat(value, 'HH:mm').isValid;
-      //   }),
+      startTime: string()
+        .required('Time is a required field')
+        .test('is-valid-date', 'Invalid date', (value) => {
+          console.log(value);
+          return !value || DateTime.fromFormat(value, 'HH:mm').isValid;
+        }),
     }),
     validateOnChange: false,
     validateOnBlur: false,
     validateOnMount: false,
     enableReinitialize: true,
-    onSubmit: async (data) => {
+    onSubmit: async (data, event) => {
       try {
+        const startDate = data.startDate;
+        const time = data.startTime;
+        const [day, month, year] = startDate.split('/');
+        const [hour, minute] = time.split(':');
+        const date = DateTime.fromObject({
+          year,
+          month,
+          day,
+          minute,
+          hour,
+        }).toISO();
+        console.log('date' + date);
         setLoading(true);
-        await validateForm(data);
         console.log(data);
-        await createEvent(pick(data, ['name', 'address', 'description', 'date']));
+        event = {
+          organizerId: user._id,
+          name: data.name,
+          address: data.address,
+          description: data.description,
+          date,
+        };
+        console.log(event);
+        await validateForm(data);
+        await createEvent(event);
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -74,15 +101,16 @@ export const CreateEventScreen = () => {
   };
 
   const pickImage = async () => {
-    const result = await launchImageLibraryAsync({
+    const image = await launchImageLibraryAsync({
       mediaTypes: MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-    if (!result.canceled) {
-      await setFieldValue('coverImage', result.assets[0].uri);
+    if (!image.canceled) {
+      await setFieldValue('coverImage', image.assets[0].uri);
     }
+    
   };
 
   const onChangeDate = async (formikName, newValue) => {
@@ -95,7 +123,7 @@ export const CreateEventScreen = () => {
   };
 
   const onChangeTime = async (formikName, newValue) => {
-    const isDeleting = size(newValue) < size(values.time);
+    const isDeleting = size(newValue) < size(values.startTime);
     let newTime = newValue;
     if (size(newTime) === 2 && !isDeleting) {
       newTime += ':';
@@ -124,8 +152,8 @@ export const CreateEventScreen = () => {
             <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
             <InputText label="Address" formik={formik} formikName="address" />
             <InputText label="Description" formik={formik} formikName="description" multiline />
-            <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="date" maxLength={10} placeholder="dd/MM/yyyy" />
-            {/* <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="time" maxLength={5} placeholder="HH:mm" /> */}
+            <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="startDate" maxLength={10} placeholder="dd/MM/yyyy" />
+            <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="startTime" maxLength={5} placeholder="HH:mm" />
             <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>
         </ScrollView>

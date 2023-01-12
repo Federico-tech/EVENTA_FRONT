@@ -2,32 +2,58 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
-import { loginUser } from '../../../../services/users';
-import { noAuthAxios } from '../../../../utils/core/axios';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { object, string } from 'yup';
+import { useFormik } from 'formik';
+import { organiserSignUp, loginUser } from '../../../../services/users';
 
 export const UserSingUpScreen = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const onPressUserSignUp = async () => {
-    try {
-      setLoading(true);
-      await noAuthAxios.post('/auth/register', {
-        name,
-        username,
-        email,
-        password,
-      });
-      await loginUser(email, password);
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-      console.error({ e });
-    }
+  const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
+    initialValues: {
+      username: '',
+      email: '',
+      password: '',
+      name: '',
+    },
+    validationSchema: object().shape({
+      username: string().required('Username is a required field'),
+      email: string().required().email('This is not a valid email'),
+      password: string()
+        .required('Password is a required field')
+        .matches(/^(?=.*\d)[a-zA-Z\d]{8,}$/, 'This is not a valid password'),
+    }),
+    name: string().required('Name is a required field'),
+    validateOnChange: false,
+    validateOnBlur: false,
+    validateOnMount: false,
+    enableReinitialize: true,
+    onSubmit: async (data) => {
+      try {
+        setLoading(true);
+        await validateForm(data);
+        console.log(data);
+        await organiserSignUp(data);
+        await loginUser(data.email, data.password);
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        console.log({ error: e.response.data });
+      }
+    },
+  });
+
+  const onChangeText = (formikName, newValue) => {
+    setFieldValue(formikName, newValue);
+    setFieldError(formikName, '');
+  };
+
+  const formik = {
+    values,
+    errors,
+    touched,
+    onChangeText,
   };
 
   return (
@@ -36,14 +62,14 @@ export const UserSingUpScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
           <Text style={styles.title}> Create your account</Text>
-          <InputText value={name} label="Name" onChangeText={setName} maxLength={20} />
-          <InputText value={username} label="Username" onChangeText={setUsername} autoCapitalize="none" maxLength={20} />
-          <InputText value={email} label="Email" onChangeText={setEmail} autoCapitalize="none" />
-          <InputText value={password} label="Password" onChangeText={setPassword} hide autoCapitalize="none" />
+          <InputText formik={formik} label="Name" formikName ='name' maxLength={20} />
+          <InputText formik={formik} label="Username" formikName ='username' autoCapitalize="none" maxLength={20} />
+          <InputText formik={formik} label="Email" formikName ='email' autoCapitalize="none" />
+          <InputText formik={formik} label="Password" formikName ='password' hide autoCapitalize="none" />
           <Text style={styles.passwordReq}>
             The password has to contain at least: {'\n'}-8 characters{'\n'}-1 numeber{' '}
           </Text>
-          <Button loading={loading} primary text="Register" onPress={onPressUserSignUp} />
+          <Button loading={loading} primary text="Register" onPress={handleSubmit} />
           <View style={styles.containerLine}>
             <Line lineStyle={{ flex: 1 }} />
             <Text style={styles.orLoginUsing}>Or Register Using</Text>

@@ -11,25 +11,6 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../u
 export const OrganiserSignUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
-  // const OnPressOrganiserSignUp = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await noAuthAxios.post('/auth/register', {
-  //       username,
-  //       email,
-  //       adress,
-  //       password,
-  //       role: ROLES.ORGANIZER,
-  //       name: 'b',
-  //     });
-  //     await loginUser(email, password);
-  //     setLoading(false);
-  //   } catch (e) {
-  //     setLoading(false);
-  //     console.error({ e });
-  //   }
-  // };
-
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
       username: '',
@@ -37,7 +18,7 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
       address: '',
       password: '',
       role: ROLES.ORGANIZER,
-      name: 'organiser'
+      name: 'org',
     },
     validationSchema: object().shape({
       username: string().required('Username is a required field'),
