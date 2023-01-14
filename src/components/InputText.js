@@ -24,6 +24,7 @@ export const InputText = ({
   minDate,
   formik,
   formikName,
+  touchableOpacity,
   value: inputValue,
   error: inputError,
   keyboardType: inputKeyboardType = undefined,
@@ -66,8 +67,10 @@ export const InputText = ({
 
   console.debug({ value });
 
+  const Component = onPress ? (touchableOpacity ? TouchableOpacity : Pressable) : View;
+
   return (
-    <Pressable onPress={onPressPressable}>
+    <Component onPress={onPressPressable}>
       <View style={[styles.container, containerStyle]} onLayout={onLayout}>
         {!!label && <Text style={[styles.label]}>{label}</Text>}
         <View>
@@ -97,7 +100,7 @@ export const InputText = ({
         </View>
         <View style={[styles.textUnder]}>{!!error && <Text style={[styles.errorStyle]}>{error}</Text>}</View>
       </View>
-    </Pressable>
+    </Component>
   );
 };
 
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     width: WIDTH_DEVICE * 0.7,
     color: COLORS.error,
-    fontSize: SIZES.sm
+    fontSize: SIZES.sm,
   },
   iconsRight: {
     flex: 0,

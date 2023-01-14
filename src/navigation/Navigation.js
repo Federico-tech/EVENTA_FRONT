@@ -10,6 +10,7 @@ import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { CreateEventScreen } from '../screens/organiser/events/create/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';
 import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
+import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
 import { EventDetails } from '../screens/user/eventDetails/screen';
 import { HomeScreen } from '../screens/user/home/screen';
 import { MapScreen } from '../screens/user/map/screen';
@@ -18,7 +19,7 @@ import { SearchScreen } from '../screens/user/search/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
 import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
-import { COLORS, FONTS, SIZE, SIZES, TAB_BAR_HEIGHT} from '../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, TAB_BAR_HEIGHT } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
 const OrganiserBottomTabNavigator = createBottomTabNavigator();
@@ -39,6 +40,7 @@ export const ROUTES = {
   SearchOrganiserScreen: 'SearchOrganiserScreen',
   SearchEventScreen: 'SearchEventScreen',
   SearchUserScreen: 'SearchUserScreen',
+  AddressAutocompleteScreen: 'AddressAutocompleteScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -138,5 +140,18 @@ export const AuthNavigator = () => {
       <AuthStackNavigator.Screen name={ROUTES.UserSingUpScreen} component={UserSingUpScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Screen name={ROUTES.OrganiserSignUpScreen} component={OrganiserSignUpScreen} options={{ headerShown: false }} />
     </AuthStackNavigator.Navigator>
+  );
+};
+
+const OrganizerStackNavigator = createStackNavigator();
+
+export const OrganizerStack = () => {
+  return (
+    <OrganizerStackNavigator.Navigator initialRouteName="organizerStack" screenOptions={{ headerShown: false }}>
+      <OrganizerStackNavigator.Screen name="organizerStack" component={OrganiserBottomNavigator} />
+      <OrganizerStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
+        <OrganizerStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen} />
+      </OrganizerStackNavigator.Group>
+    </OrganizerStackNavigator.Navigator>
   );
 };

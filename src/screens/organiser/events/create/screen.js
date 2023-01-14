@@ -1,41 +1,47 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
-// eslint-disable-next-line no-unused-vars
-import { size, omit } from 'lodash';
+import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View, EventEmitter } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { InputText, TextButton } from '../../../../components';
+import { ROUTES } from '../../../../navigation/Navigation';
 import { createEvent } from '../../../../services/events';
-import { store } from '../../../../store';
-import { selectUser } from '../../../../store/user';
+import { selectUser, selectUserId } from '../../../../store/user';
+import { fromDateAndTimeToISODate } from '../../../../utils/dates';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const CreateEventScreen = () => {
+export const CreateEventScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
-  
-  const user = useSelector(selectUser)
-  console.log('user',{user})
+  const [file, setFile] = useState(null);
 
+  const organizerId = useSelector(selectUserId);
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
       name: '',
       address: '',
       description: '',
+      position: {
+        type: 'Point',
+        coordinates: [],
+      },
       startDate: '',
-      startTime: '',   
+      startTime: '',
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
-      address: string().required('Adress is a required field'),
+      address: string().required('Address is a required field'),
       description: string().required('Description is a required field'),
       startDate: string()
         .required('Date is a required field')
@@ -54,32 +60,12 @@ export const CreateEventScreen = () => {
     validateOnBlur: false,
     validateOnMount: false,
     enableReinitialize: true,
-    onSubmit: async (data, event) => {
+    onSubmit: async (data) => {
       try {
-        const startDate = data.startDate;
-        const time = data.startTime;
-        const [day, month, year] = startDate.split('/');
-        const [hour, minute] = time.split(':');
-        const date = DateTime.fromObject({
-          year,
-          month,
-          day,
-          minute,
-          hour,
-        }).toISO();
-        console.log('date' + date);
         setLoading(true);
-        console.log(data);
-        event = {
-          organizerId: user._id,
-          name: data.name,
-          address: data.address,
-          description: data.description,
-          date,
-        };
-        console.log(event);
+        const date = fromDateAndTimeToISODate(data.startDate, data.startTime);
         await validateForm(data);
-        await createEvent(event);
+        await createEvent({ ..._.omit(data, ['startTime', 'startDate']), date, file, organizerId });
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -87,6 +73,18 @@ export const CreateEventScreen = () => {
       }
     },
   });
+
+  useEffect(() => {
+    const { addressInfo } = route.params;
+    console.debug({ addressInfo });
+    if (addressInfo) {
+      onChangeText('address', addressInfo.formatted_address);
+      onChangeText('position', {
+        type: 'Point',
+        coordinates: [addressInfo.lng, addressInfo.lat],
+      });
+    }
+  }, [route.params?.addressInfo]);
 
   const onChangeText = (formikName, newValue) => {
     setFieldValue(formikName, newValue);
@@ -108,9 +106,9 @@ export const CreateEventScreen = () => {
       quality: 1,
     });
     if (!image.canceled) {
-      await setFieldValue('coverImage', image.assets[0].uri);
+      // await setFieldValue('coverImage', image.assets[0].uri);
+      setFile(image.assets[0].uri);
     }
-    
   };
 
   const onChangeDate = async (formikName, newValue) => {
@@ -131,6 +129,13 @@ export const CreateEventScreen = () => {
     onChangeText(formikName, newTime);
   };
 
+  const onPressAddress = () => {
+    navigation.navigate(ROUTES.AddressAutocompleteScreen, {
+      title: "Inserisci l'indirizzo dell'evento",
+      backScreenName: route.name,
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior="padding">
@@ -139,20 +144,26 @@ export const CreateEventScreen = () => {
           <View>
             <TouchableOpacity onPress={pickImage}>
               <View style={styles.uploadImage}>
-                {!values.eventImage ? (
+                {!file ? (
                   <>
                     <Ionicons name="add" size={50} />
                     <Text>Pick an image</Text>
                   </>
                 ) : (
-                  <Image source={{ uri: values.eventImage }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+                  <Image source={{ uri: file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
                 )}
               </View>
             </TouchableOpacity>
             <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
-            <InputText label="Address" formik={formik} formikName="address" />
+            <InputText label="Address" formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
             <InputText label="Description" formik={formik} formikName="description" multiline />
-            <InputText label="Date" formik={{ ...formik, onChangeText: onChangeDate }} formikName="startDate" maxLength={10} placeholder="dd/MM/yyyy" />
+            <InputText
+              label="Date"
+              formik={{ ...formik, onChangeText: onChangeDate }}
+              formikName="startDate"
+              maxLength={10}
+              placeholder="dd/MM/yyyy"
+            />
             <InputText label="Time" formik={{ ...formik, onChangeText: onChangeTime }} formikName="startTime" maxLength={5} placeholder="HH:mm" />
             <TextButton text="Publish Event" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>

@@ -20,6 +20,7 @@ export const userSlice = createSlice({
 export const { setUserInfo, logoutUserSlice } = userSlice.actions;
 
 export const selectUser = (state) => state.user?.userInfo;
+export const selectUserId = (state) => state.user?.userInfo?._id;
 export const selectUserRole = (state) => state.user?.userInfo?.role || 'user';
 export const selectToken = (state) => state.user?.token;
 export const selectIsAuthenticated = (state) => !!state.user?.token;
