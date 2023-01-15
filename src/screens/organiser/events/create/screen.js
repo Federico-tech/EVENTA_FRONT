@@ -5,7 +5,8 @@ import { useFormik } from 'formik';
 import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View, EventEmitter } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -14,14 +15,13 @@ import { object, string } from 'yup';
 import { InputText, TextButton } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { createEvent } from '../../../../services/events';
-import { selectUser, selectUserId } from '../../../../store/user';
+import { selectUserId } from '../../../../store/user';
 import { fromDateAndTimeToISODate } from '../../../../utils/dates';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
-  const [file, setFile] = useState(null);
 
   const organizerId = useSelector(selectUserId);
   const navigation = useNavigation();
@@ -38,6 +38,7 @@ export const CreateEventScreen = ({ route }) => {
       },
       startDate: '',
       startTime: '',
+      file: '',
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
@@ -47,7 +48,7 @@ export const CreateEventScreen = ({ route }) => {
         .required('Date is a required field')
         .test('is-valid-date', 'Invalid date', (value) => {
           console.log(value);
-          return !value || DateTime.fromFormat(value, 'dd/MM/yyyy').isValid;
+          return !value || (DateTime.fromFormat(value, 'dd/MM/yyyy').isValid && DateTime.fromFormat(value, 'dd/MM/yyyy') >= DateTime.local());
         }),
       startTime: string()
         .required('Time is a required field')
@@ -55,17 +56,25 @@ export const CreateEventScreen = ({ route }) => {
           console.log(value);
           return !value || DateTime.fromFormat(value, 'HH:mm').isValid;
         }),
+      file: string().required('Image is a required field'),
     }),
     validateOnChange: false,
     validateOnBlur: false,
     validateOnMount: false,
     enableReinitialize: true,
-    onSubmit: async (data) => {
+    onSubmit: async (data, { resetForm }) => {
       try {
         setLoading(true);
         const date = fromDateAndTimeToISODate(data.startDate, data.startTime);
         await validateForm(data);
-        await createEvent({ ..._.omit(data, ['startTime', 'startDate']), date, file, organizerId });
+        await createEvent({ ..._.omit(data, ['startTime', 'startDate']), date, organizerId });
+        navigation.navigate(ROUTES.OrganiserHome);
+        showMessage({
+          message: 'Event Created Succefully',
+          description: 'The event has been cerated succefully',
+          type: 'success',
+        });
+        resetForm();
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -75,7 +84,7 @@ export const CreateEventScreen = ({ route }) => {
   });
 
   useEffect(() => {
-    const { addressInfo } = route.params;
+    const { addressInfo } = route.params || {};
     console.debug({ addressInfo });
     if (addressInfo) {
       onChangeText('address', addressInfo.formatted_address);
@@ -106,13 +115,12 @@ export const CreateEventScreen = ({ route }) => {
       quality: 1,
     });
     if (!image.canceled) {
-      // await setFieldValue('coverImage', image.assets[0].uri);
-      setFile(image.assets[0].uri);
+      await setFieldValue('file', image.assets[0].uri);
     }
   };
 
   const onChangeDate = async (formikName, newValue) => {
-    const isDeleting = size(newValue) < size(values.date);
+    const isDeleting = size(newValue) < size(values.startDate);
     let newDate = newValue;
     if ((size(newDate) === 2 || size(newDate) === 5) && !isDeleting) {
       newDate += '/';
@@ -144,15 +152,16 @@ export const CreateEventScreen = ({ route }) => {
           <View>
             <TouchableOpacity onPress={pickImage}>
               <View style={styles.uploadImage}>
-                {!file ? (
+                {!values.file ? (
                   <>
                     <Ionicons name="add" size={50} />
                     <Text>Pick an image</Text>
                   </>
                 ) : (
-                  <Image source={{ uri: file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+                  <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
                 )}
               </View>
+              <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
             </TouchableOpacity>
             <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
             <InputText label="Address" formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
@@ -194,7 +203,7 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE / 2,
     aspectRatio: 1,
     alignSelf: 'center',
-    marginBottom: HEIGHT_DEVICE / 80,
+    marginBottom: HEIGHT_DEVICE / 100,
     borderRadius: SIZES.xxs,
     justifyContent: 'center',
     alignItems: 'center',
@@ -217,5 +226,10 @@ const styles = StyleSheet.create({
     fontSize: SIZES.md,
     alignSelf: 'center',
     marginTop: HEIGHT_DEVICE / 30,
+  },
+  requiredImage: {
+    color: COLORS.error,
+    fontSize: SIZES.sm,
+    alignSelf: 'center',
   },
 });

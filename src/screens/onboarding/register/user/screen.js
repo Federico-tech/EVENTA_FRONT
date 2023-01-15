@@ -1,11 +1,11 @@
+import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
-
-import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 import { object, string } from 'yup';
-import { useFormik } from 'formik';
+
+import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container } from '../../../../components/index';
 import { organiserSignUp, loginUser } from '../../../../services/users';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const UserSingUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -18,13 +18,17 @@ export const UserSingUpScreen = ({ navigation }) => {
       name: '',
     },
     validationSchema: object().shape({
-      username: string().required('Username is a required field'),
-      email: string().required().email('This is not a valid email'),
+      name: string().required('Name is a required field'),
+      username: string()
+        .required('Username is a required field')
+        .min(6, 'Username must be at least 6 characters')
+        .max(20, "Username can't be more than 20 characters")
+        .test('no-uppercase', 'The username cannot contain capital letters', (value) => !value.match(/[A-Z]/)),
+      email: string().required('Email is a required field').email('This is not a valid email'),
       password: string()
         .required('Password is a required field')
         .matches(/^(?=.*\d)[a-zA-Z\d]{8,}$/, 'This is not a valid password'),
     }),
-    name: string().required('Name is a required field'),
     validateOnChange: false,
     validateOnBlur: false,
     validateOnMount: false,
@@ -57,34 +61,36 @@ export const UserSingUpScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView behavior="padding">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
-          <Text style={styles.title}> Create your account</Text>
-          <InputText formik={formik} label="Name" formikName ='name' maxLength={20} />
-          <InputText formik={formik} label="Username" formikName ='username' autoCapitalize="none" maxLength={20} />
-          <InputText formik={formik} label="Email" formikName ='email' autoCapitalize="none" />
-          <InputText formik={formik} label="Password" formikName ='password' hide autoCapitalize="none" />
-          <Text style={styles.passwordReq}>
-            The password has to contain at least: {'\n'}-8 characters{'\n'}-1 numeber{' '}
-          </Text>
-          <Button loading={loading} primary text="Register" onPress={handleSubmit} />
-          <View style={styles.containerLine}>
-            <Line lineStyle={{ flex: 1 }} />
-            <Text style={styles.orLoginUsing}>Or Register Using</Text>
-            <Line lineStyle={{ flex: 1 }} />
-          </View>
-          <View style={styles.socialLoginContainer}>
-            <SocialLoginButton />
-            <SocialLoginButton google />
-          </View>
-          <TouchableOpacity>
-            <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <Container>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView behavior="padding">
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
+            <Text style={styles.title}> Create your account</Text>
+            <InputText formik={formik} label="Name" formikName="name" maxLength={20} />
+            <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} />
+            <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
+            <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
+            <Text style={styles.passwordReq}>
+              The password has to contain at least: {'\n'}-8 characters{'\n'}-1 numeber{' '}
+            </Text>
+            <Button loading={loading} primary text="Register" onPress={handleSubmit} />
+            <View style={styles.containerLine}>
+              <Line lineStyle={{ flex: 1 }} />
+              <Text style={styles.orLoginUsing}>Or Register Using</Text>
+              <Line lineStyle={{ flex: 1 }} />
+            </View>
+            <View style={styles.socialLoginContainer}>
+              <SocialLoginButton apple />
+              <SocialLoginButton google />
+            </View>
+            <TouchableOpacity>
+              <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </Container>
   );
 };
 
@@ -152,9 +158,10 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SIZES.md,
     textAlign: 'center',
-    marginTop: HEIGHT_DEVICE / 8,
+    marginTop: HEIGHT_DEVICE / 12,
   },
   arrowIcon: {
     marginTop: HEIGHT_DEVICE / 70,
+    position: 'absolute',
   },
 });

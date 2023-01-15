@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { object, string } from 'yup';
 
-import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton } from '../../../../components/index';
+import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container } from '../../../../components/index';
 import { loginUser, organiserSignUp } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
@@ -60,34 +60,36 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView behavior="padding">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
-          <Text style={styles.title}>Become an organiser!</Text>
-          <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" />
-          <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
-          <InputText formik={formik} label="Address" formikName="address" />
-          <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
-          <Text style={styles.passwordReq}>
-            The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
-          </Text>
-          <Button loading={loading} primary text="Register" onPress={handleSubmit} />
-          <View style={styles.containerLine}>
-            <Line lineStyle={{ flex: 1 }} />
-            <Text style={styles.orLoginUsing}>Or Register Using</Text>
-            <Line lineStyle={{ flex: 1 }} />
-          </View>
-          <View style={styles.socialLoginContainer}>
-            <SocialLoginButton apple />
-            <SocialLoginButton google />
-          </View>
-          <TouchableOpacity>
-            <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
-          </TouchableOpacity>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <Container>
+        <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView behavior="padding">
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
+            <Text style={styles.title}>Become an organiser!</Text>
+            <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" />
+            <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
+            <InputText formik={formik} label="Address" formikName="address" />
+            <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
+            <Text style={styles.passwordReq}>
+              The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}
+            </Text>
+            <Button loading={loading} primary text="Register" onPress={handleSubmit} />
+            <View style={styles.containerLine}>
+              <Line lineStyle={{ flex: 1 }} />
+              <Text style={styles.orLoginUsing}>Or Register Using</Text>
+              <Line lineStyle={{ flex: 1 }} />
+            </View>
+            <View style={styles.socialLoginContainer}>
+              <SocialLoginButton apple />
+              <SocialLoginButton google />
+            </View>
+            <TouchableOpacity>
+              <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </Container>
   );
 };
 
@@ -151,9 +153,10 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SIZES.md,
     textAlign: 'center',
-    marginTop: HEIGHT_DEVICE / 8,
+    marginTop: HEIGHT_DEVICE / 12,
   },
   arrowIcon: {
     marginTop: HEIGHT_DEVICE / 70,
+    position: 'absolute'
   },
 });

@@ -167,6 +167,5 @@ const styles = StyleSheet.create({
   },
   textUnder: {
     minHeight: Normalize(5),
-    //marginLeft: SIZE / 3,
   },
 });

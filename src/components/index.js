@@ -11,3 +11,4 @@ export * from './SearchBar';
 export * from './Container';
 export * from './Text';
 export * from './Row';
+export * from './ProfileHeader';

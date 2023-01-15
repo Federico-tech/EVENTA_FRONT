@@ -32,11 +32,11 @@ export const updateEventImage = async (image, eventId, deleteOnUploadFailed) => 
 
   console.debug({ formData });
   try {
-    const { data } = await mainAxios.put(`events/${eventId}/coverImage`, formData, { headers: { 'content-type': 'multipart/form-data' } });
-    console.debug({ data });
+    const { data } = await mainAxios.put(`events/${eventId}/coverImage`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    console.debug('Data', { data });
     return data;
   } catch (e) {
-    console.debug({ errorIMageEvent: e });
+    console.debug({ errorImageEvent: e });
     deleteOnUploadFailed && (await mainAxios.delete(`events/${eventId}`));
     return Promise.reject(e);
   }

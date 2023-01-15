@@ -1,11 +1,15 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { LogoText } from '../assets';
+import { selectUser } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/theme';
 
 export const HomeHeader = ({ data }) => {
+  const userinfo = useSelector(selectUser);
+
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.container}>
@@ -15,7 +19,7 @@ export const HomeHeader = ({ data }) => {
               <Image style={styles.imageProfile} resizeMode="contain" source={require('../assets/images/ProfileImage1.png')} />
               <View style={styles.text}>
                 <Text style={styles.welcome}> Welcome Back </Text>
-                <Text style={styles.federico}> Federico </Text>
+                <Text style={styles.federico}> {userinfo.username} </Text>
               </View>
             </View>
             <Image resizeMode="contain" style={styles.logo} source={LogoText} />

@@ -12,11 +12,14 @@ export const Row = ({
   justifyCenter,
   spaceAround,
   justifyStart,
+  spaceEvenly,
   alignEnd,
   justifyEnd,
   onPress,
   backgroundColor,
   maxWidth,
+  row,
+  column,
   touchableOpacity,
   ...rest
 }) => {
@@ -25,7 +28,6 @@ export const Row = ({
     <Component
       style={[
         styles.row,
-        style,
         alignCenter && { alignItems: 'center' },
         alignStart && { alignItems: 'flex-start' },
         alignEnd && { alignItems: 'flex-end' },
@@ -34,8 +36,12 @@ export const Row = ({
         justifyEnd && { justifyContent: 'flex-end' },
         spaceBetween && { justifyContent: 'space-between' },
         spaceAround && { justifyContent: 'space-around' },
+        row && { flexDirection: 'row' },
+        column && { flexDirection: 'column' },
+        spaceEvenly && { justifyContent: 'space-evenly' },
         { width },
         { flex },
+        style,
       ]}
       collapsable={false}
       onPress={onPress}
@@ -48,6 +54,5 @@ export const Row = ({
 const styles = StyleSheet.create({
   row: {
     flex: 1,
-    flexDirection: 'row',
   },
 });

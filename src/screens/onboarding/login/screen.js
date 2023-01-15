@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { Button, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
+import { Button, Container, InputText, Line, SocialLoginButton, TextButton, Row } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
@@ -14,6 +14,7 @@ export const LoginScreen = () => {
 
   const [email, setEmail] = useState('cococlubing@gmail.com');
   const [password, setPassword] = useState('Cococlub20');
+  const [error, setError] = useState();
   // const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
   // const [password, setPassword] = useState('Dezzolo10');
 
@@ -25,6 +26,7 @@ export const LoginScreen = () => {
     } catch (e) {
       console.log({ e });
       setLoading(false);
+      setError(true);
     }
   };
 
@@ -33,44 +35,51 @@ export const LoginScreen = () => {
   };
 
   return (
-    <ScrollView>
-      <View>
-        <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
-        <View style={styles.container}>
-          <Text style={styles.textLogin}>Login to your account</Text>
-          <InputText label="Email" value={email} onChangeText={setEmail} autoCapitalize="none" />
-          <InputText label="Password" value={password} onChangeText={setPassword} autoCapitalize="none" secureTextEntry />
-          <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
-          <Button primary text="Login" onPress={onPressLogin} loading={loading} disabled={!password || (!email && true)} />
-          <View style={styles.containerLine}>
-            <Line lineStyle={{ flex: 1 }} />
-            <Text style={styles.orLoginUsing}>Or Login Using</Text>
-            <Line lineStyle={{ flex: 1 }} />
-          </View>
-          <View style={styles.socialLoginContainer}>
-            <SocialLoginButton apple />
-            <SocialLoginButton google />
-          </View>
-          <View style={styles.registerContainer}>
-            <View style={styles.registerTextContainer}>
-              <Text style={styles.registerText}>You don't have an account?</Text>
-              <TouchableOpacity onPress={onPressUserRegister}>
-                <Text style={styles.registerButtonText}> Sign Up</Text>
-              </TouchableOpacity>
+    <Container>
+      <ScrollView>
+        <Container>
+          <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
+          <View style={styles.container}>
+            <Text style={styles.textLogin}>Login to your account</Text>
+            <InputText label="Email" value={email} onChangeText={setEmail} autoCapitalize="none" />
+            <InputText label="Password" value={password} onChangeText={setPassword} autoCapitalize="none" secureTextEntry />
+            {error && (
+              <Row>
+                <Text style={styles.error401}>Wrong Username or password</Text>
+              </Row>
+            )}
+            <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
+            <Button primary text="Login" onPress={onPressLogin} loading={loading} disabled={!password || (!email && true)} />
+            <View style={styles.containerLine}>
+              <Line lineStyle={{ flex: 1 }} />
+              <Text style={styles.orLoginUsing}>Or Login Using</Text>
+              <Line lineStyle={{ flex: 1 }} />
             </View>
-            <View style={styles.registerTextContainer}>
-              <Text style={styles.registerText}>Do you want to become an organiser? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
-                <Text style={styles.registerButtonText}> Click here</Text>
-              </TouchableOpacity>
+            <View style={styles.socialLoginContainer}>
+              <SocialLoginButton apple />
+              <SocialLoginButton google />
             </View>
+            <View style={styles.registerContainer}>
+              <View style={styles.registerTextContainer}>
+                <Text style={styles.registerText}>You don't have an account?</Text>
+                <TouchableOpacity onPress={onPressUserRegister}>
+                  <Text style={styles.registerButtonText}> Sign Up</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.registerTextContainer}>
+                <Text style={styles.registerText}>Do you want to become an organiser? </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
+                  <Text style={styles.registerButtonText}> Click here</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <TouchableOpacity>
+              <Text style={styles.privacyText}> Privacy & Terms </Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity>
-            <Text style={styles.privacyText}> Privacy & Terms </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+        </Container>
+      </ScrollView>
+    </Container>
   );
 };
 
@@ -171,5 +180,7 @@ const styles = StyleSheet.create({
     color: 'red',
     fontFamily: FONTS.regular,
     fontSize: SIZES.sm,
+    position: 'absolute',
+    marginTop: HEIGHT_DEVICE / 50,
   },
 });

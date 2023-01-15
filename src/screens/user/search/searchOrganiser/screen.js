@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { Container } from '../../../../components';
 
 export const SearchOrganiserScreen = () => {
   return (
-    <View>
+    <Container>
       <Text>searchOrganiserScreen</Text>
-    </View>
+    </Container>
   );
 };

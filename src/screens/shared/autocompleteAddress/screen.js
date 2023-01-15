@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-import { Text } from '../../../components';
+import { Container, Text } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
-import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
+import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const AddressAutocompleteScreen = ({ route, navigation }) => {
-  const { title, backScreenName } = route.params;
+  const { title } = route.params;
 
   const onPress = (data, details) => {
     if (!details?.geometry) {
@@ -27,34 +27,40 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={[styles.container]}>
-      {!!title && (
-        <View style={styles.titleRow}>
-          <Text>{title}</Text>
-        </View>
-      )}
-      <GooglePlacesAutocomplete
-        styles={{
-          container: {
-            width: WIDTH_DEVICE * 0.9,
-          },
-        }}
-        enablePoweredByContainer={false}
-        listUnderlayColor="transparent"
-        placeholder="Indirizzo"
-        numberOfLines={10}
-        nearbyPlacesAPI="GooglePlacesSearch"
-        textInputProps={{
-          placeholderTextColor: COLORS.white,
-        }}
-        fetchDetails
-        onPress={onPress}
-        query={{
-          key: 'AIzaSyBPn2Qae8E0o1wVEi8pOyUVsz87eGfFQGQ',
-          language: 'it',
-        }}
-      />
-    </View>
+    <Container>
+      <View style={[styles.container]}>
+        {!!title && (
+          <View style={styles.titleRow}>
+            <Text>{title}</Text>
+          </View>
+        )}
+        <GooglePlacesAutocomplete
+          styles={{
+            container: {
+              width: WIDTH_DEVICE * 0.9,
+            },
+          }}
+          enablePoweredByContainer={false}
+          listUnderlayColor="transparent"
+          placeholder="Indirizzo"
+          numberOfLines={10}
+          nearbyPlacesAPI="GooglePlacesSearch"
+          textInputProps={{
+            placeholderTextColor: COLORS.white,
+            borderWidth: 0.5,
+            borderRadius: SIZES.xs,
+            borderColor: COLORS.lightGray,
+            height: HEIGHT_DEVICE / 17,
+          }}
+          fetchDetails
+          onPress={onPress}
+          query={{
+            key: 'AIzaSyBPn2Qae8E0o1wVEi8pOyUVsz87eGfFQGQ',
+            language: 'it',
+          }}
+        />
+      </View>
+    </Container>
   );
 };
 

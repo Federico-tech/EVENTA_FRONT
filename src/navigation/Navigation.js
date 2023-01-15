@@ -115,8 +115,8 @@ export const UserBottomNavigator = () => {
     <UserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
       <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} options={{ headerShown: false }} />
-      <UserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} />
-      <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} />
+      <UserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
     </UserBottomTabNavigator.Navigator>
   );
 };
