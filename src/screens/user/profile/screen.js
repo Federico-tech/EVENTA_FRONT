@@ -1,14 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { ProfileHeader, Container, Row, Button } from '../../../components';
+import { ROUTES } from '../../../navigation/Navigation';
 import { selectUser } from '../../../store/user';
 import { logout } from '../../../utils';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, HEIGHT_DEVICE, SIZE } from '../../../utils/theme';
 
 export const ProfileScreen = () => {
   const user = useSelector(selectUser);
+  const navigation = useNavigation();
   return (
     <Container>
       <ProfileHeader myProfile />
@@ -31,12 +34,12 @@ export const ProfileScreen = () => {
         </Row>
       </Row>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Button gradient containerStyle={styles.button} text="Edit Profile" />
+        <Button gradient containerStyle={styles.button} text="Edit Profile" onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
         <Text style={styles.recent}>Recent Events</Text>
       </View>
-      <TouchableOpacity style={{ marginTop: 150 }} onPress={logout}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
+      <TouchableOpacity onPress={logout}> 
+          <Text> Logout </Text>
+        </TouchableOpacity>
     </Container>
   );
 };

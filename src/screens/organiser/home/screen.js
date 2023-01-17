@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import FlashMessage from 'react-native-flash-message';
 
 import { Container } from '../../../components';
+import FlashMessage from 'react-native-flash-message';
 
 export const OrganiserHome = () => {
   return (

@@ -61,7 +61,7 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
 
   return (
     <Container>
-        <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView behavior="padding">
           <ScrollView showsVerticalScrollIndicator={false}>
             <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
@@ -157,6 +157,6 @@ const styles = StyleSheet.create({
   },
   arrowIcon: {
     marginTop: HEIGHT_DEVICE / 70,
-    position: 'absolute'
+    position: 'absolute',
   },
 });

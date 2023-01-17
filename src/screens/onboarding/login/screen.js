@@ -12,11 +12,11 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState('cococlubing@gmail.com');
-  const [password, setPassword] = useState('Cococlub20');
+  // const [email, setEmail] = useState('cococlubing@gmail.com');
+  // const [password, setPassword] = useState('Cococlub20');
   const [error, setError] = useState();
-  // const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
-  // const [password, setPassword] = useState('Dezzolo10');
+  const [email, setEmail] = useState('riccardocarizzoni@gmail.com');
+  const [password, setPassword] = useState('Dezzolo10');
 
   const onPressLogin = async () => {
     try {

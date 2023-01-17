@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { awaitRehydrate } from '../store';
 import { selectIsAuthenticated, selectUserRole } from '../store/user';
 import { ROLES } from '../utils/conts';
-import { AuthNavigator, OrganizerStack, UserBottomNavigator } from './Navigation';
+import { AuthNavigator, OrganizerStack, UserBottomNavigator, UserStack } from './Navigation';
 
 const AppNavigator = () => {
   const [rehydrated, setRehydrated] = useState(false);

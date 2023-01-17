@@ -12,8 +12,8 @@ export const Button = ({ text, onPress, loading, containerStyle, primary, wrappe
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
       <Component
         colors={[COLORS.gradient1, COLORS.gradient2]}
-        start={gradient ? { x: 0, y: 1 } : undefined}
-        end={gradient ? { x: 0, y: 0 } : undefined}
+        // start={{ x: 0, y: 1 }}
+        // end={{ x: 0, y: 0 }}
         style={[
           primary && styles.container,
           secondary && styles.secondary,
