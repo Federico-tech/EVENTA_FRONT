@@ -13,11 +13,14 @@ export const userSlice = createSlice({
       state.userInfo = action.payload.user;
       state.token = action.payload.token;
     },
+    updateUserInfo: (state, action) => {
+      state.userInfo = action.payload.user;
+    },
     logoutUserSlice: () => initialState,
   },
 });
 
-export const { setUserInfo, logoutUserSlice } = userSlice.actions;
+export const { setUserInfo, logoutUserSlice, updateUserInfo } = userSlice.actions;
 
 export const selectUser = (state) => state.user?.userInfo;
 export const selectUserId = (state) => state.user?.userInfo?._id;

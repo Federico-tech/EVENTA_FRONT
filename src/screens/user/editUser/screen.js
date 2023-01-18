@@ -4,29 +4,34 @@ import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row } from '../../../components';
+import { userUpdate } from '../../../services/users';
+import { selectUser } from '../../../store/user';
 import { requestCameraPermission } from '../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const EditUserScreen = () => {
   useEffect(requestCameraPermission, []);
 
+  const user = useSelector(selectUser)
+
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
-      name: '',
-      bio: '',
+      name: user.name,
+      bio: user.bio,
+      username: user.username,
       file: '',
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
-      address: string().required('Address is a required field'),
-      description: string().required('Description is a required field'),
-      file: string().required('Image is a required field'),
+      bio: string().required('Address is a required field'),
+      username: string().required('Description is a required field'),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -36,6 +41,7 @@ export const EditUserScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
+        await userUpdate(data)
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -79,8 +85,8 @@ export const EditUserScreen = () => {
           <TextButton text='Upload an image' textStyle={styles.upload}/>
         </Row>
         <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
-        <InputText label="Username" formik={formik} formikName="description" />
-        <InputText label="Bio" formik={formik} formikName="description" multiline/>
+        <InputText label="Username" formik={formik} formikName="username" />
+        <InputText label="Bio" formik={formik} formikName="bio" multiline/>
         <TextButton text="Save" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
       </View>
     </Container>
@@ -120,12 +126,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-  publishEvent: {
-    fontFamily: FONTS.semiBold,
-    fontSize: SIZES.md,
-    alignSelf: 'center',
-    marginTop: HEIGHT_DEVICE / 30,
-  },
   requiredImage: {
     color: COLORS.error,
     fontSize: SIZES.sm,
@@ -134,5 +134,11 @@ const styles = StyleSheet.create({
   upload: {
     fontFamily: FONTS.semiBold, 
     fontSize: SIZES.sm
-  }
+  },
+  publishEvent: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.md,
+    alignSelf: 'center',
+    marginTop: HEIGHT_DEVICE / 30,
+  },
 });

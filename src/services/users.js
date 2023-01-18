@@ -1,8 +1,8 @@
 import base64 from 'base-64';
 
 import { store } from '../store';
-import { setUserInfo } from '../store/user';
-import { noAuthAxios } from '../utils/core/axios';
+import { setUserInfo, updateUserInfo } from '../store/user';
+import { mainAxios, noAuthAxios } from '../utils/core/axios';
 
 export const loginUser = async (email, password) => {
   try {
@@ -28,3 +28,14 @@ export const organiserSignUp = async (data) => {
     console.log({ erorrCreatedUser: e });
   }
 };
+
+export const userUpdate = async (data) => {
+  try {
+    const { data: updatedUser } = await mainAxios.put(`users/me`, data)
+    console.log({updatedUser})
+    store.dispatch(updateUserInfo(data))
+    return updatedUser
+  } catch (e) {
+    console.log({ErrorUpdatingUser: e})
+  }
+}
