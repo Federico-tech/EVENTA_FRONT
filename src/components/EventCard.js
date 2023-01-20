@@ -2,31 +2,33 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { DateTime } from 'luxon';
 
 import { COLORS, FONTS, HEIGHT_DEVICE, SHADOWS, SIZES, WIDTH_DEVICE } from '../utils/theme';
 
-export const EventCard = ({ data }) => {
-  const { name, adress, date, image, organiser, likes } = data;
+export const EventCard = ({data}) => {
 
   const navigation = useNavigation();
+  const dateTime = DateTime.fromISO(data.date);
+  const formDate = dateTime.toFormat('ccc d LLL yyyy')
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>
       <View style={styles.cardContainer}>
-        <Image source={image} style={styles.eventImage} />
+        <Image source={{uri: data.imageUrl}} style={styles.eventImage} />
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
-            <Image resizeMode="contain" source={organiser.profileImage} style={styles.organiserImage} />
+            <Image resizeMode="contain" style={styles.organiserImage} />
             <View style={styles.textContainer}>
-              <Text style={styles.textDate}> {date} </Text>
-              <Text style={styles.textTitle}> {name} </Text>
-              <Text style={styles.textAdress}> {adress} </Text>
+              <Text style={styles.textDate}> {formDate} </Text>
+              <Text style={styles.textTitle}> {data.name} </Text>
+              <Text style={styles.textAdress}> {data.address} </Text>
             </View>
           </View>
           <View style={styles.likeContainer}>
             <FontAwesome name="heart" size={17} color="red" />
-            <Text> {likes} </Text>
+            <Text> {} </Text>
           </View>
         </View>
       </View>

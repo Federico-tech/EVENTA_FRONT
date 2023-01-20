@@ -13,13 +13,15 @@ export const HomeScreen = () => {
 
   const eventData = useSelector(selectEvents);
 
+  console.log("r", eventData.data.updatedData);
+
   return (
     <Container>
       <HomeHeader />
       <FlatList
-        data={eventData}
-        renderItem={({ item }) => <EventCard data={item} />}
-        keyExtractor={(item) => item.id}
+        data={eventData.data.updatedData}
+        renderItem={({item}) => <EventCard data={item} />}
+        keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<HomeTop />}
         style={styles.container}
