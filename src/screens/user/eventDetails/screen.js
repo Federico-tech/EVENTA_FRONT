@@ -9,13 +9,14 @@ import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS } from '../../../util
 
 export const EventDetails = ({ route, navigation }) => {
   const { data } = route.params;
+  const source = { uri: data.imageUrl }
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false} >
         <View>
           <View style={styles.imageContainer}>
-            <Image source={data.image} style={styles.eventImage} resizeMode="contain" />
+            <Image source={source} style={styles.eventImage} resizeMode="contain" />
             <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={22} iconStyle={styles.arrowStyle} color="white" />
           </View>
           <OrganiserInf data={data} />
@@ -27,17 +28,17 @@ export const EventDetails = ({ route, navigation }) => {
               <FontAwesome name="calendar-o" size={18} />
               <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
                 <Text style={styles.dateText}>{data.date}</Text>
-                <Text style={styles.timeText}>{data.time}</Text>
+                <Text style={styles.timeText}>{data.date}</Text>
               </View>
             </View>
             <View style={styles.place}>
               <Foundation name="marker" size={22} />
-              <Text style={styles.adressText}>{data.adress}</Text>
+              <Text style={styles.adressText}>{data.address}</Text>
             </View>
             <View style={styles.person}>
               <Ionicons name="people-outline" size={24} />
               <Text style={styles.peopleText}>
-                {data.nPerson}
+                22
                 <Text style={styles.description}> of your friends are going</Text>
               </Text>
             </View>

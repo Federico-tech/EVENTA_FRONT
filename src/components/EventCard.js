@@ -16,7 +16,7 @@ export const EventCard = ({data}) => {
   return (
     <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>
       <View style={styles.cardContainer}>
-        <Image source={{uri: data.imageUrl}} style={styles.eventImage} />
+        <Image source={{uri: data.coverImage}} style={styles.eventImage} />
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
             <Image resizeMode="contain" style={styles.organiserImage} />

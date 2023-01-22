@@ -33,7 +33,7 @@ export const userUpdate = async (data) => {
   try {
     const { data: updatedUser } = await mainAxios.put(`users/me`, data)
     console.log({updatedUser})
-    store.dispatch(updateUserInfo(data))
+    store.dispatch(updateUserInfo(updatedUser))
     return updatedUser
   } catch (e) {
     console.log({ErrorUpdatingUser: e})

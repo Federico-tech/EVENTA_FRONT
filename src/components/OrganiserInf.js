@@ -8,11 +8,11 @@ export const OrganiserInf = ({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.informationContainer}>
-        <Image source={data.organiser.profileImage} style={styles.image} resizeMode="contain" />
+        <Image style={styles.image} resizeMode="contain" />
         <View style={styles.textContainer}>
-          <Text style={styles.textName}>{data.organiser.name}</Text>
+          <Text style={styles.textName}>COCO CLUBBING</Text>
           <View style={{ width: WIDTH_DEVICE / 4 }}>
-            <Text style={styles.textAdress}>{data.organiser.adress}</Text>
+            <Text style={styles.textAdress}>{data.address}</Text>
           </View>
         </View>
       </View>
