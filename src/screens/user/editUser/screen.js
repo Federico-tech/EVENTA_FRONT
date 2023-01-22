@@ -77,7 +77,7 @@ export const EditUserScreen = () => {
   return (
     <Container>
       <KeyboardAvoidingView behavior="padding">
-        <Header title="Edit Profile" onPress={handleSubmit} />
+        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} />
         <View style={styles.container}>
           <Row alignCenter>
             <View style={styles.imageContainer}>
@@ -94,7 +94,6 @@ export const EditUserScreen = () => {
           <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
           <InputText label="Username" formik={formik} formikName="username" />
           <InputText label="Bio" formik={formik} formikName="bio" multiline />
-          <TextButton text="Save" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
         </View>
       </KeyboardAvoidingView>
     </Container>

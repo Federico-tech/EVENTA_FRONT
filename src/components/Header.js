@@ -15,7 +15,7 @@ export const Header = ({ title, onPress, loading }) => {
       <Row alignCenter row spaceBetween style={{ marginTop: SIZE * 3.5 }}>
         <IconButton name="chevron-back" size={22} onPress={() => navigation.goBack()} />
         <Text style={styles.title}>{title}</Text>
-        <TextButton text="Fine" onPress={onPress} textStyle={styles.fine} loading={loading}/>
+        <TextButton text="Fine" onPress={onPress} textStyle={styles.fine} loading={loading} />
       </Row>
     </View>
   );

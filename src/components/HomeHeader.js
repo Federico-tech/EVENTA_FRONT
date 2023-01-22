@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { LogoText } from '../assets';
 import { selectUser } from '../store/user';
+import i18n from '../utils/locales/i18n';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/theme';
 
 export const HomeHeader = ({ data }) => {
@@ -18,7 +19,7 @@ export const HomeHeader = ({ data }) => {
             <View style={styles.TextContainer}>
               <Image style={styles.imageProfile} resizeMode="contain" source={require('../assets/images/ProfileImage1.png')} />
               <View style={styles.text}>
-                <Text style={styles.welcome}> Welcome Back </Text>
+                <Text style={styles.welcome}>{i18n.t('welcome')}</Text>
                 <Text style={styles.federico}> Ciao </Text>
               </View>
             </View>
