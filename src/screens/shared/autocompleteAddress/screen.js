@@ -7,7 +7,7 @@ import { ROUTES } from '../../../navigation/Navigation';
 import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const AddressAutocompleteScreen = ({ route, navigation }) => {
-  const { title } = route.params;
+  const { title, backScreenName } = route.params;
 
   const onPress = (data, details) => {
     if (!details?.geometry) {
@@ -20,7 +20,7 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
       formatted_address,
     };
     navigation.navigate({
-      name: ROUTES.CreateEventScreen,
+      name: backScreenName,
       params: { addressInfo },
       merge: true,
     });

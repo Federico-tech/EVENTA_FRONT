@@ -9,7 +9,7 @@ import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS } from '../../../util
 
 export const EventDetails = ({ route, navigation }) => {
   const { data } = route.params;
-  const source = { uri: data.imageUrl }
+  const source = { uri: data.coverImage }
 
   return (
     <SafeAreaView style={{flex: 1}}>

@@ -23,7 +23,7 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../u
 export const CreateEventScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
 
-  const organizerId = useSelector(selectUserId);
+  const organiserId = useSelector(selectUserId);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
@@ -67,7 +67,7 @@ export const CreateEventScreen = ({ route }) => {
         setLoading(true);
         const date = fromDateAndTimeToISODate(data.startDate, data.startTime);
         await validateForm(data);
-        await createEvent({ ..._.omit(data, ['startTime', 'startDate']), date, organizerId });
+        await createEvent({ ..._.omit(data, ['startTime', 'startDate']), date, organiserId });
         navigation.navigate(ROUTES.OrganiserHome);
         showMessage({
           message: 'Event Created Succefully',

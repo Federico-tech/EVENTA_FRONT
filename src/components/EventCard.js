@@ -12,6 +12,7 @@ export const EventCard = ({data}) => {
   const navigation = useNavigation();
   const dateTime = DateTime.fromISO(data.date);
   const formDate = dateTime.toFormat('ccc d LLL yyyy')
+  console.log(data.coverImage)
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>

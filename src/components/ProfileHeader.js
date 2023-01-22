@@ -1,28 +1,37 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, {useEffect, useState} from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { selectUser } from '../store/user';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { IconButton } from './Button';
 
 export const ProfileHeader = ({ name, myProfile }) => {
-  const user = useSelector(selectUser)
-  const navigation = useNavigation()
+  const user = useSelector(selectUser);
+  const navigation = useNavigation();
   return (
     <View style={{ height: HEIGHT_DEVICE / 4.7 }}>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
         <View style={styles.container}>
           {!myProfile && <IconButton name="chevron-back" color="white" size={22} />}
           <Text style={styles.usernameText}>{user.username}</Text>
-          {myProfile ? <IconButton name="settings" color="white" size={20} onPress={() => navigation.navigate('SettingScreen')}/> : <IconButton name="ios-ellipsis-vertical" color="white" size={18} />}
+          {myProfile ? (
+            <IconButton name="settings" color="white" size={20} onPress={() => navigation.navigate('SettingScreen')} />
+          ) : (
+            <IconButton name="ios-ellipsis-vertical" color="white" size={18} />
+          )}
         </View>
       </LinearGradient>
       <View style={styles.profileImage}>
-        <Ionicons name="person" size={60} color={COLORS.gray} />
+        {!user.profilePic ? (
+          <Ionicons name="person" size={60} color={COLORS.gray} />
+        ) : (
+          <Image source={{ uri: user.profilePic }} style={styles.image} resizeMode="contain" />
+        )}
       </View>
     </View>
   );
@@ -30,7 +39,14 @@ export const ProfileHeader = ({ name, myProfile }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: HEIGHT_DEVICE / 7,
+    height: HEIGHT_DEVICE / 7.5,
+  },
+  image: {
+    borderRadius: 100,
+    width: SIZE * 8,
+    aspectRatio: 1,
+    borderWidth: 2,
+    borderColor: COLORS.white,
   },
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
@@ -46,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.lg,
   },
   profileImage: {
-    width: WIDTH_DEVICE / 3.7,
+    width: SIZE * 8,
     aspectRatio: 1,
     backgroundColor: COLORS.lightGray,
     justifyContent: 'center',
@@ -56,6 +72,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.white,
     alignSelf: 'center',
     position: 'absolute',
-    marginTop: HEIGHT_DEVICE / 10.5,
+    marginTop: HEIGHT_DEVICE / 12,
   },
 });

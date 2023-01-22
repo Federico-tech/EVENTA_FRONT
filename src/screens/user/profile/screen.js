@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -10,7 +10,7 @@ import { logout } from '../../../utils';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, HEIGHT_DEVICE, SIZE } from '../../../utils/theme';
 
 export const ProfileScreen = () => {
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
   const navigation = useNavigation();
   return (
     <Container>
@@ -37,9 +37,9 @@ export const ProfileScreen = () => {
         <Button gradient containerStyle={styles.button} text="Edit Profile" onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
         <Text style={styles.recent}>Recent Events</Text>
       </View>
-      <TouchableOpacity onPress={logout}> 
-          <Text> Logout </Text>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={logout}>
+        <Text> Logout </Text>
+      </TouchableOpacity>
     </Container>
   );
 };

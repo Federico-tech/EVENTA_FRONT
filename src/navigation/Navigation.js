@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import { LoginScreen } from '../screens/onboarding/login/screen';
-import { OrganiserSignUpScreen } from '../screens/onboarding/register/organizer/screen';
+import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { CreateEventScreen } from '../screens/organiser/events/create/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';
@@ -155,20 +155,21 @@ export const AuthNavigator = () => {
       <AuthStackNavigator.Screen name={ROUTES.LoginScreen} component={LoginScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Screen name={ROUTES.UserSingUpScreen} component={UserSingUpScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Screen name={ROUTES.OrganiserSignUpScreen} component={OrganiserSignUpScreen} options={{ headerShown: false }} />
+      <AuthStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen}  options={{ headerShown: false }}/>
     </AuthStackNavigator.Navigator>
   );
 };
 
-const OrganizerStackNavigator = createStackNavigator();
+const OrganiserStackNavigator = createStackNavigator();
 
-export const OrganizerStack = () => {
+export const OrganiserStack = () => {
   return (
-    <OrganizerStackNavigator.Navigator initialRouteName="organizerStack" screenOptions={{ headerShown: false }}>
-      <OrganizerStackNavigator.Screen name="organizerStack" component={OrganiserBottomNavigator} />
-      <OrganizerStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
-        <OrganizerStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen} />
-      </OrganizerStackNavigator.Group>
-    </OrganizerStackNavigator.Navigator>
+    <OrganiserStackNavigator.Navigator initialRouteName="organiserStack" screenOptions={{ headerShown: false }}>
+      <OrganiserStackNavigator.Screen name="organiserStack" component={OrganiserBottomNavigator} />
+      <OrganiserStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
+        <OrganiserStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen} />
+      </OrganiserStackNavigator.Group>
+    </OrganiserStackNavigator.Navigator>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { object, string } from 'yup';
 
@@ -7,8 +7,9 @@ import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Con
 import { loginUser, organiserSignUp } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { ROUTES } from '../../../../navigation/Navigation';
 
-export const OrganiserSignUpScreen = ({ navigation }) => {
+export const OrganiserSignUpScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
@@ -17,7 +18,7 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
       email: '',
       address: '',
       password: '',
-      role: ROLES.ORGANIZER,
+      role: ROLES.ORGANISER,
       name: 'org',
     },
     validationSchema: object().shape({
@@ -47,6 +48,18 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
     },
   });
 
+  useEffect(() => {
+    const { addressInfo } = route.params || {};
+    console.debug({ addressInfo });
+    if (addressInfo) {
+      onChangeText('address', addressInfo.formatted_address);
+      onChangeText('position', {
+        type: 'Point',
+        coordinates: [addressInfo.lng, addressInfo.lat],
+      });
+    }
+  }, [route.params?.addressInfo]);
+
   const onChangeText = (formikName, newValue) => {
     setFieldValue(formikName, newValue);
     setFieldError(formikName, '');
@@ -59,6 +72,13 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
     onChangeText,
   };
 
+  const onPressAddress = () => {
+    navigation.navigate(ROUTES.AddressAutocompleteScreen, {
+      title: "Inserisci l'indirizzo dell'evento",
+      backScreenName: ROUTES.OrganiserSignUpScreen,
+    });
+  };
+
   return (
     <Container>
       <SafeAreaView style={styles.container}>
@@ -68,7 +88,7 @@ export const OrganiserSignUpScreen = ({ navigation }) => {
             <Text style={styles.title}>Become an organiser!</Text>
             <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
-            <InputText formik={formik} label="Address" formikName="address" />
+            <InputText formik={formik} label="Address" formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity/>
             <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
             <Text style={styles.passwordReq}>
               The password has to contain at least: {'\n'}-8 characters{'\n'}-1 number{' '}

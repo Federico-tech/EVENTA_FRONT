@@ -2,20 +2,22 @@ import { Ionicons } from '@expo/vector-icons';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row } from '../../../components';
 import { userUpdate } from '../../../services/users';
-import { selectUser } from '../../../store/user';
+import { selectUser, selectUserId } from '../../../store/user';
 import { requestCameraPermission } from '../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const EditUserScreen = () => {
   useEffect(requestCameraPermission, []);
 
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
+  const userId = useSelector(selectUserId);
 
   const [loading, setLoading] = useState(false);
 
@@ -24,7 +26,7 @@ export const EditUserScreen = () => {
       name: user.name,
       bio: user.bio,
       username: user.username,
-      file: '',
+      file: user.profilePic,
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
@@ -39,7 +41,7 @@ export const EditUserScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
-        await userUpdate(data)
+        await userUpdate(data, userId);
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -71,22 +73,30 @@ export const EditUserScreen = () => {
       await setFieldValue('file', image.assets[0].uri);
     }
   };
-
+  console.log('file', values.file);
   return (
     <Container>
-      <Header title='Edit Profile'/>
-      <View style={styles.container}>
-        <Row alignCenter>
-          <View style={styles.imageContainer}>
-            <Ionicons name='person' size={50} color={COLORS.darkGray}/>
-          </View>
-          <TextButton text='Upload an image' textStyle={styles.upload}/>
-        </Row>
-        <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
-        <InputText label="Username" formik={formik} formikName="username" />
-        <InputText label="Bio" formik={formik} formikName="bio" multiline/>
-        <TextButton text="Save" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
-      </View>
+      <KeyboardAvoidingView behavior="padding">
+        <Header title="Edit Profile" onPress={handleSubmit} />
+        <View style={styles.container}>
+          <Row alignCenter>
+            <View style={styles.imageContainer}>
+              {!values.file ? (
+                <Ionicons name="person" size={50} color={COLORS.darkGray} />
+              ) : (
+                <>
+                  <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
+                </>
+              )}
+            </View>
+            <TextButton text="Upload an image" textStyle={styles.upload} onPress={pickImage} />
+          </Row>
+          <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
+          <InputText label="Username" formik={formik} formikName="username" />
+          <InputText label="Bio" formik={formik} formikName="bio" multiline />
+          <TextButton text="Save" textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
+        </View>
+      </KeyboardAvoidingView>
     </Container>
   );
 };
@@ -97,9 +107,9 @@ const styles = StyleSheet.create({
     marginTop: SIZE,
   },
   image: {
-    borderRadius: SIZES.xs,
-    width: WIDTH_DEVICE / 2.5,
-    height: HEIGHT_DEVICE / 6,
+    borderRadius: 100,
+    width: SIZE * 8,
+    aspectRatio: 1,
   },
   imageContainer: {
     backgroundColor: COLORS.lightGray,
@@ -130,8 +140,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   upload: {
-    fontFamily: FONTS.semiBold, 
-    fontSize: SIZES.sm
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.sm,
   },
   publishEvent: {
     fontFamily: FONTS.semiBold,

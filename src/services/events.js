@@ -16,9 +16,9 @@ export const createEvent = async (eventData) => {
 export const getEvents = async () => {
   try {
     const { data } = await mainAxios.get(`events`);
-    store.dispatch(setEvents(data))
+    store.dispatch(setEvents(data));
   } catch (e) {
-    console.log({e});
+    console.log({ e });
   }
 };
 

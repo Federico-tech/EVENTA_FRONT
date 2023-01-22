@@ -29,13 +29,32 @@ export const organiserSignUp = async (data) => {
   }
 };
 
-export const userUpdate = async (data) => {
+export const userUpdate = async (data, userId) => {
   try {
-    const { data: updatedUser } = await mainAxios.put(`users/me`, data)
-    console.log({updatedUser})
-    store.dispatch(updateUserInfo(updatedUser))
-    return updatedUser
+    const { data: updatedUser } = await mainAxios.put(`users/me`, data);
+    await updateUserImage(data.file, userId);
+    store.dispatch(updateUserInfo(updatedUser));
+    console.log({ updatedUser });
   } catch (e) {
-    console.log({ErrorUpdatingUser: e})
+    console.log({ ErrorUpdatingUser: e });
   }
-}
+};
+
+export const updateUserImage = async (image, userId) => {
+  console.log(image);
+  const formData = new FormData();
+  formData.append('file', {
+    uri: image,
+    name: 'image.png',
+    type: 'image/png',
+  });
+
+  console.debug({ formData });
+  try {
+    const { data } = await mainAxios.put(`users/${userId}/profilePic`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    console.debug('Data', { data });
+    return data;
+  } catch (e) {
+    console.debug({ errorProfilePic: e });
+  }
+};

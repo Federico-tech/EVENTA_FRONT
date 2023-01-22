@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 
 export const ROLES = {
   USER: 'user',
-  ORGANIZER: 'organizer',
+  ORGANISER: 'organiser',
 };
 
 export const IS_IOS = Platform.OS === 'ios';

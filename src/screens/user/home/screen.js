@@ -11,7 +11,7 @@ export const HomeScreen = () => {
     getEvents();
   }, []);
 
-  const { data, totalData } = useSelector(selectEvents);
+  const { data } = useSelector(selectEvents);
 
   return (
     <Container>
