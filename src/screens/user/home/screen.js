@@ -17,7 +17,7 @@ export const HomeScreen = () => {
     <Container>
       <HomeHeader />
       <FlatList
-        data={data}
+        //data={data}
         renderItem={({item}) => <EventCard data={item} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}

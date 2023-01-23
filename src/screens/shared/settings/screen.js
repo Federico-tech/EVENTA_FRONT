@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import i18n from '../../../utils/locales/i18n';
 
 import { Container, IconButton } from '../../../components';
 import { logout } from '../../../utils/index';
@@ -11,7 +12,7 @@ export const SettingScreen = ({ navigation }) => {
       <IconButton name="chevron-back" size={22} iconStyle={styles.iconStyle} onPress={() => navigation.goBack()} />
       <View style={styles.logout}>
         <TouchableOpacity onPress={logout}>
-          <Text>Logout</Text>
+          <Text>{i18n.t('logout')}</Text>
         </TouchableOpacity>
       </View>
     </Container>

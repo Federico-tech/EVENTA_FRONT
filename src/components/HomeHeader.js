@@ -20,7 +20,7 @@ export const HomeHeader = ({ data }) => {
               <Image style={styles.imageProfile} resizeMode="contain" source={require('../assets/images/ProfileImage1.png')} />
               <View style={styles.text}>
                 <Text style={styles.welcome}>{i18n.t('welcome')}</Text>
-                <Text style={styles.federico}> Ciao </Text>
+                <Text style={styles.federico}>{userinfo.username}</Text>
               </View>
             </View>
             <Image resizeMode="contain" style={styles.logo} source={LogoText} />

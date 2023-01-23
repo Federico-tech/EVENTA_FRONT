@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import i18n from '../../../utils/locales/i18n';
 
 import { Button, Container, InputText, Line, SocialLoginButton, TextButton, Row } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
@@ -12,8 +13,8 @@ export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
-  // const [email, setEmail] = useState('cococlubing@gmail.com');
-  // const [password, setPassword] = useState('Cococlub20');
+  // const [email, setEmail] = useState('coco@gmail.com');
+  // const [password, setPassword] = useState('cococlub10');
   const [error, setError] = useState();
   const [email, setEmail] = useState('riccardo@gmail.com');
   const [password, setPassword] = useState('dezzolo10');
@@ -40,19 +41,19 @@ export const LoginScreen = () => {
         <Container>
           <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
           <View style={styles.container}>
-            <Text style={styles.textLogin}>Login to your account</Text>
+            <Text style={styles.textLogin}>{i18n.t('login to your account')}</Text>
             <InputText label="Email" value={email} onChangeText={setEmail} autoCapitalize="none" />
             <InputText label="Password" value={password} onChangeText={setPassword} autoCapitalize="none" secureTextEntry />
             {error && (
               <Row>
-                <Text style={styles.error401}>Wrong Username or password</Text>
+                <Text style={styles.error401}>{i18n.t('wrong username or password')}</Text>
               </Row>
             )}
-            <TextButton text="Forgot Password?" textStyle={styles.forgotPassword} />
-            <Button primary text="Login" onPress={onPressLogin} loading={loading} disabled={!password || (!email && true)} />
+            <TextButton text={i18n.t('forgot password')} textStyle={styles.forgotPassword} />
+            <Button primary text={i18n.t('login')} onPress={onPressLogin} loading={loading} disabled={!password || (!email && true)} />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />
-              <Text style={styles.orLoginUsing}>Or Login Using</Text>
+              <Text style={styles.orLoginUsing}>{i18n.t('or login using')}</Text>
               <Line lineStyle={{ flex: 1 }} />
             </View>
             <View style={styles.socialLoginContainer}>
@@ -61,20 +62,20 @@ export const LoginScreen = () => {
             </View>
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
-                <Text style={styles.registerText}>You don't have an account?</Text>
+                <Text style={styles.registerText}>{i18n.t(`you don't have an account`)}</Text>
                 <TouchableOpacity onPress={onPressUserRegister}>
                   <Text style={styles.registerButtonText}> Sign Up</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.registerTextContainer}>
-                <Text style={styles.registerText}>Do you want to become an organiser? </Text>
+                <Text style={styles.registerText}>{i18n.t('become an organiser')}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
-                  <Text style={styles.registerButtonText}> Click here</Text>
+                  <Text style={styles.registerButtonText}> {i18n.t('click here')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
             <TouchableOpacity>
-              <Text style={styles.privacyText}> Privacy & Terms </Text>
+              <Text style={styles.privacyText}>{i18n.t('privacy and terms')}</Text>
             </TouchableOpacity>
           </View>
         </Container>

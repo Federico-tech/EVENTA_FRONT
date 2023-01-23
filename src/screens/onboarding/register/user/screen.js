@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { object, string } from 'yup';
+import i18n from '../../../../utils/locales/i18n';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container } from '../../../../components/index';
 import { organiserSignUp, loginUser } from '../../../../services/users';
@@ -66,27 +67,25 @@ export const UserSingUpScreen = ({ navigation }) => {
         <KeyboardAvoidingView behavior="padding">
           <ScrollView showsVerticalScrollIndicator={false}>
             <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
-            <Text style={styles.title}> Create your account</Text>
-            <InputText formik={formik} label="Name" formikName="name" maxLength={20} />
+            <Text style={styles.title}>{i18n.t('create your account')}</Text>
+            <InputText formik={formik} label={i18n.t('name')} formikName="name" maxLength={20} />
             <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
             <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
             <Text style={styles.passwordReq}>
-              The password has to contain at least: {'\n'}-8 characters{'\n'}-1 numeber{' '}
+              {i18n.t('password requirements')}
             </Text>
-            <Button loading={loading} primary text="Register" onPress={handleSubmit} />
+            <Button loading={loading} primary text={i18n.t('register')} onPress={handleSubmit} />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />
-              <Text style={styles.orLoginUsing}>Or Register Using</Text>
+              <Text style={styles.orLoginUsing}>{i18n.t('or register using')}</Text>
               <Line lineStyle={{ flex: 1 }} />
             </View>
             <View style={styles.socialLoginContainer}>
               <SocialLoginButton apple />
               <SocialLoginButton google />
             </View>
-            <TouchableOpacity>
-              <TextButton text="Privacy & Terms" textStyle={styles.privacyText} />
-            </TouchableOpacity>
+            <TextButton text={i18n.t('privacy and terms')} textStyle={styles.privacyText} />
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>

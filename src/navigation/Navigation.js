@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import i18n from '../utils/locales/i18n';
 
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
@@ -87,7 +88,7 @@ export const SearchTopNavigator = () => {
         name={ROUTES.SearchEventScreen}
         component={SearchEventScreen}
         options={{
-          tabBarLabel: 'Event',
+          tabBarLabel: i18n.t('event'),
           tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}
@@ -96,7 +97,7 @@ export const SearchTopNavigator = () => {
         name={ROUTES.SearchOrganiserScreen}
         component={SearchOrganiserScreen}
         options={{
-          tabBarLabel: 'Organiser',
+          tabBarLabel: i18n.t('organiser'),
           tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}

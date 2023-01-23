@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import i18n from '../../../utils/locales/i18n';
 
 import { ProfileHeader, Container, Row, Button } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
@@ -17,7 +18,7 @@ export const ProfileScreen = () => {
       <ProfileHeader myProfile />
       <Row alignCenter>
         <Text style={styles.userName}>{user.name}</Text>
-        {!user.bio ? <Text style={styles.noDesc}> Description </Text> : <Text style={styles.desc}>{user.bio}</Text>}
+        {!user.bio ? <Text style={styles.noDesc}>{i18n.t('description')} </Text> : <Text style={styles.desc}>{user.bio}</Text>}
       </Row>
       <Row row spaceAround style={styles.followRow}>
         <Row alignCenter style={styles.boxFollow}>
@@ -26,20 +27,17 @@ export const ProfileScreen = () => {
         </Row>
         <Row alignCenter style={styles.boxFollow}>
           <Text style={styles.number}>125</Text>
-          <Text style={styles.follow}>Following</Text>
+          <Text style={styles.follow}>{i18n.t('following')}</Text>
         </Row>
         <Row alignCenter style={styles.boxFollow}>
           <Text style={styles.number}>12</Text>
-          <Text style={styles.follow}>Events</Text>
+          <Text style={styles.follow}>{i18n.t('event')}</Text>
         </Row>
       </Row>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Button gradient containerStyle={styles.button} text="Edit Profile" onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
-        <Text style={styles.recent}>Recent Events</Text>
+        <Button gradient containerStyle={styles.button} text={i18n.t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
+        <Text style={styles.recent}>{i18n.t('recent events')}</Text>
       </View>
-      <TouchableOpacity onPress={logout}>
-        <Text> Logout </Text>
-      </TouchableOpacity>
     </Container>
   );
 };
