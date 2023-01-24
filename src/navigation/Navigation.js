@@ -22,7 +22,7 @@ import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
 import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
 import i18n from '../utils/locales/i18n';
-import { COLORS, FONTS, SIZE, SIZES, TAB_BAR_HEIGHT } from '../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
 const OrganiserBottomTabNavigator = createBottomTabNavigator();
@@ -82,15 +82,23 @@ const SearchTopStackNavigator = createMaterialTopTabNavigator();
 
 export const SearchTopNavigator = () => {
   return (
-    <SearchTopStackNavigator.Navigator
-      tabBarOptions={{ style: { backgroundColor: 'transparent', height: TAB_BAR_HEIGHT, borderBottomWidth: 0.17, borderColor: COLORS.lightGray } }}>
+    <SearchTopStackNavigator.Navigator initialRouteName={ROUTES.SearchEventScreen}>
       <SearchTopStackNavigator.Screen
         name={ROUTES.SearchEventScreen}
         component={SearchEventScreen}
         options={{
           tabBarLabel: i18n.t('event'),
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.medium, fontSize: SIZES.xs, textTransform: 'none', marginBottom: SIZE },
+          tabBarLabelStyle: {
+            color: 'black',
+            fontFamily: FONTS.medium,
+            fontSize: SIZES.sm,
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            borderBottomWidth: 0.17,
+            borderColor: COLORS.lightGray,
+          },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
+          tabBarStyle: { height: SIZE * 3.5 },
         }}
       />
       <SearchTopStackNavigator.Screen
@@ -98,8 +106,17 @@ export const SearchTopNavigator = () => {
         component={SearchOrganiserScreen}
         options={{
           tabBarLabel: i18n.t('organiser'),
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.medium, fontSize: SIZES.xs, textTransform: 'none', marginBottom: SIZE },
+          tabBarLabelStyle: {
+            color: 'black',
+            fontFamily: FONTS.medium,
+            fontSize: SIZES.xs,
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            borderBottomWidth: 0.17,
+            borderColor: COLORS.lightGray,
+          },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
+          tabBarStyle: { height: SIZE * 3.5 },
         }}
       />
       <SearchTopStackNavigator.Screen
@@ -107,8 +124,17 @@ export const SearchTopNavigator = () => {
         component={SearchUserScreen}
         options={{
           tabBarLabel: 'Account',
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.medium, fontSize: SIZES.xs, textTransform: 'none', marginBottom: SIZE },
+          tabBarLabelStyle: {
+            color: 'black',
+            fontFamily: FONTS.medium,
+            fontSize: SIZES.xs,
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            borderBottomWidth: 0.17,
+            borderColor: COLORS.lightGray,
+          },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
+          tabBarStyle: { height: SIZE * 3.5 },
         }}
       />
     </SearchTopStackNavigator.Navigator>
