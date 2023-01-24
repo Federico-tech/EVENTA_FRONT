@@ -12,6 +12,6 @@ const i18n = new I18n(translation);
 
 i18n.translations = translation;
 i18n.fallbacks = true;
-i18n.locale = 'it';
+i18n.locale = 'en';
 
 export default i18n;

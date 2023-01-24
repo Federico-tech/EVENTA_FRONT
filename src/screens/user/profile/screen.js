@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import i18n from '../../../utils/locales/i18n';
 
 import { ProfileHeader, Container, Row, Button } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
 import { selectUser } from '../../../store/user';
-import { logout } from '../../../utils';
-import { COLORS, FONTS, SIZES, WIDTH_DEVICE, HEIGHT_DEVICE, SIZE } from '../../../utils/theme';
+import i18n from '../../../utils/locales/i18n';
+import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 
 export const ProfileScreen = () => {
   const user = useSelector(selectUser);
@@ -35,7 +35,7 @@ export const ProfileScreen = () => {
         </Row>
       </Row>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Button gradient containerStyle={styles.button} text={i18n.t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
+        <Button secondary containerStyle={styles.button} text={i18n.t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
         <Text style={styles.recent}>{i18n.t('recent events')}</Text>
       </View>
     </Container>
@@ -48,49 +48,48 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontFamily: FONTS.medium,
-    fontSize: SIZES.lg,
-    marginTop: HEIGHT_DEVICE / 60,
+    fontSize: SIZES.md,
+    marginTop: SIZE / 2,
   },
   noDesc: {
     fontFamily: FONTS.medium,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     color: COLORS.lightGray,
-    marginTop: HEIGHT_DEVICE / 150,
+    marginTop: SIZE * 0.5,
   },
   desc: {
     fontFamily: FONTS.regular,
-    fontSize: SIZES.sm,
-    marginTop: HEIGHT_DEVICE / 150,
+    fontSize: SIZES.xs,
+    marginTop: SIZE * 0.5,
     textAlign: 'center',
     flexWrap: 'wrap',
     width: WIDTH_DEVICE / 2,
   },
   followRow: {
-    marginTop: HEIGHT_DEVICE / 80,
+    marginTop: SIZE * 0.5,
     paddingHorizontal: SIZE * 4,
   },
   follow: {
     fontFamily: FONTS.regular,
-    fontSize: SIZES.sm,
-    color: COLORS.gray,
-    marginTop: HEIGHT_DEVICE / 300,
+    fontSize: SIZES.xs,
+    marginTop: SIZE * 0.1,
   },
   number: {
-    fontFamily: FONTS.medium,
-    fontSize: SIZES.lg,
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.md,
   },
   button: {
     marginHorizontal: WIDTH_DEVICE / 20,
     width: WIDTH_DEVICE / 1.1,
     alignSelf: 'center',
-    marginTop: HEIGHT_DEVICE / 50,
+    marginTop: SIZE,
   },
   recent: {
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.lg,
-    marginTop: HEIGHT_DEVICE / 70,
+    fontSize: SIZES.md,
+    marginTop: SIZE,
   },
   boxFollow: {
-    width: WIDTH_DEVICE / 6,
+    width: SIZE * 5,
   },
 });

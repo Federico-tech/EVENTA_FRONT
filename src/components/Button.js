@@ -4,7 +4,7 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 
 import { GoogleLogo } from '../assets';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS } from '../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS, SIZE } from '../utils/theme';
 
 export const Button = ({ text, onPress, loading, containerStyle, primary, wrapperStyle, textStyle, secondary, gradient, disabled, children }) => {
   const Component = gradient ? LinearGradient : View;
@@ -25,7 +25,11 @@ export const Button = ({ text, onPress, loading, containerStyle, primary, wrappe
           <ActivityIndicator color="white" />
         ) : (
           <>
-            {!!text && <Text style={[textStyle, primary && styles.textPrimary, gradient && styles.textGradient]}>{text}</Text>}
+            {!!text && (
+              <Text style={[textStyle, primary && styles.textPrimary, gradient && styles.textGradient, secondary && styles.textSecondary]}>
+                {text}
+              </Text>
+            )}
             {children}
           </>
         )}
@@ -47,7 +51,7 @@ export const SocialLoginButton = ({ google, apple, onPress }) => {
 
         {apple && (
           <>
-            <Ionicons name="ios-logo-apple" size={27} />
+            <Ionicons name="ios-logo-apple" size={SIZE * 2.5} />
             <Text style={styles.textSocialLogin}> AppleID </Text>
           </>
         )}
@@ -75,15 +79,19 @@ const styles = StyleSheet.create({
   },
   containerGradient: {
     backgroundColor: undefined,
-    height: HEIGHT_DEVICE / 27,
-    width: WIDTH_DEVICE / 3.8,
+    height: SIZE * 3,
+    width: SIZE * 10,
     borderRadius: SIZES.xs,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   secondary: {
-    backgroundColor: COLORS.darkGray,
+    backgroundColor: COLORS.backGray,
+    height: SIZE * 2.5,
+    borderRadius: SIZES.xs,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   disabled: {
     backgroundColor: COLORS.darkGray,
@@ -102,6 +110,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: FONTS.extraBold,
     fontSize: SIZES.lg,
+  },
+  textSecondary: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.sm,
   },
   socialLoginButtonContainer: {
     backgroundColor: 'white',

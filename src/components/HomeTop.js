@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Button, IconButton } from '../components/index';
-import { FONTS, HEIGHT_DEVICE } from '../utils/theme';
+import { FONTS, HEIGHT_DEVICE, SIZE } from '../utils/theme';
 
 export const HomeTop = () => {
   return (
     <View style={styles.container}>
-      <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={22} />
+      <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} />
       <Button gradient text="Lovere" />
-      <IconButton name="heart-outline" iconStyle={styles.icon} size={23} />
+      <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} />
     </View>
   );
 };

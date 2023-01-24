@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import i18n from '../utils/locales/i18n';
 
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
@@ -22,6 +21,7 @@ import { SearchScreen } from '../screens/user/search/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
 import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
+import i18n from '../utils/locales/i18n';
 import { COLORS, FONTS, SIZE, SIZES, TAB_BAR_HEIGHT } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -63,7 +63,7 @@ const BottomBarIcons = ({ route }) => ({
     } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';
     }
-    return <Ionicons name={iconName} size={22} colour={colour} />;
+    return <Ionicons name={iconName} size={SIZE * 2} colour={colour} />;
   },
 });
 
@@ -89,7 +89,7 @@ export const SearchTopNavigator = () => {
         component={SearchEventScreen}
         options={{
           tabBarLabel: i18n.t('event'),
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.medium, fontSize: SIZES.xs, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}
       />
@@ -98,7 +98,7 @@ export const SearchTopNavigator = () => {
         component={SearchOrganiserScreen}
         options={{
           tabBarLabel: i18n.t('organiser'),
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.medium, fontSize: SIZES.xs, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}
       />
@@ -107,7 +107,7 @@ export const SearchTopNavigator = () => {
         component={SearchUserScreen}
         options={{
           tabBarLabel: 'Account',
-          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.semiBold, fontSize: SIZES.sm, textTransform: 'none', marginBottom: SIZE },
+          tabBarLabelStyle: { color: 'black', fontFamily: FONTS.medium, fontSize: SIZES.xs, textTransform: 'none', marginBottom: SIZE },
           tabBarIndicatorStyle: { backgroundColor: 'black' },
         }}
       />
@@ -156,7 +156,7 @@ export const AuthNavigator = () => {
       <AuthStackNavigator.Screen name={ROUTES.LoginScreen} component={LoginScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Screen name={ROUTES.UserSingUpScreen} component={UserSingUpScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Screen name={ROUTES.OrganiserSignUpScreen} component={OrganiserSignUpScreen} options={{ headerShown: false }} />
-      <AuthStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen}  options={{ headerShown: false }}/>
+      <AuthStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen} options={{ headerShown: false }} />
     </AuthStackNavigator.Navigator>
   );
 };

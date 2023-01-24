@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+// eslint-disable-next-line no-unused-vars
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { IconButton } from './Button';
 import { Row } from './Row';
@@ -12,10 +13,16 @@ export const Header = ({ title, onPress, loading }) => {
 
   return (
     <View style={styles.container}>
-      <Row alignCenter row spaceBetween style={{ marginTop: SIZE * 3.5 }}>
-        <IconButton name="chevron-back" size={22} onPress={() => navigation.goBack()} />
-        <Text style={styles.title}>{title}</Text>
-        <TextButton text="Fine" onPress={onPress} textStyle={styles.fine} loading={loading} />
+      <Row alignCenter row spaceBetween style={{ marginTop: SIZE * 4 }}>
+        <View style={{ width: SIZE * 4 }}>
+          <IconButton name="chevron-back" size={SIZE * 2} onPress={() => navigation.goBack()} />
+        </View>
+        <View>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={{ width: SIZE * 4, alignItems: 'center' }}>
+          <TextButton text="Fine" onPress={onPress} textStyle={styles.fine} loading={loading} />
+        </View>
       </Row>
     </View>
   );
@@ -23,9 +30,9 @@ export const Header = ({ title, onPress, loading }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: HEIGHT_DEVICE / 10,
+    height: SIZE * 7,
     borderBottomWidth: 0.5,
-    borderBottomColor: COLORS.gray,
+    borderBottomColor: COLORS.lightGray,
     paddingHorizontal: WIDTH_DEVICE / 40,
   },
   title: {

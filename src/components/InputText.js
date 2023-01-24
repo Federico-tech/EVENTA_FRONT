@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   label: {
     marginTop: HEIGHT_DEVICE / 150,
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     color: COLORS.darkGray,
   },
   errorStyle: {

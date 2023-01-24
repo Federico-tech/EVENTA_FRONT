@@ -27,15 +27,15 @@ export const FONTS = {
   semiBold: 'InterSemiBold',
 };
 
-export const SIZE = 14;
+export const SIZE = WIDTH_DEVICE / 31;
 
 export const SIZES = {
-  xxs: 8,
-  xs: 10,
-  sm: 12,
-  md: 14,
-  lg: 16,
-  xl: 18,
+  xxs: SIZE * 0.7,
+  xs: SIZE,
+  sm: SIZE * 1.1,
+  md: SIZE * 1.25,
+  lg: SIZE * 1.4,
+  xl: SIZE * 1.7,
 };
 
 export const SHADOWS = {

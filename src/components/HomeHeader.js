@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { LogoText } from '../assets';
 import { selectUser } from '../store/user';
 import i18n from '../utils/locales/i18n';
-import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS } from '../utils/theme';
+import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE } from '../utils/theme';
 
 export const HomeHeader = ({ data }) => {
   const userinfo = useSelector(selectUser);
@@ -17,7 +17,7 @@ export const HomeHeader = ({ data }) => {
         <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
-              <Image style={styles.imageProfile} resizeMode="contain" source={require('../assets/images/ProfileImage1.png')} />
+              <Image style={styles.imageProfile} resizeMode="contain" source={{ uri: userinfo.profilePic }} />
               <View style={styles.text}>
                 <Text style={styles.welcome}>{i18n.t('welcome')}</Text>
                 <Text style={styles.federico}>{userinfo.username}</Text>
@@ -33,7 +33,7 @@ export const HomeHeader = ({ data }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: HEIGHT_DEVICE / 8.5,
+    height: SIZE * 9,
   },
 
   header: {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: WIDTH_DEVICE / 24,
+    marginHorizontal: WIDTH_DEVICE / 20,
   },
 
   logo: {
@@ -50,8 +50,9 @@ const styles = StyleSheet.create({
   },
 
   imageProfile: {
-    width: WIDTH_DEVICE / 9,
-    height: HEIGHT_DEVICE / 9,
+    width: SIZE * 4,
+    aspectRatio: 1,
+    borderRadius: 100,
   },
 
   TextContainer: {
@@ -61,13 +62,13 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    marginLeft: WIDTH_DEVICE / 40,
+    marginLeft: SIZE,
   },
 
   welcome: {
     color: 'white',
     fontFamily: FONTS.regular,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
   },
 
   federico: {

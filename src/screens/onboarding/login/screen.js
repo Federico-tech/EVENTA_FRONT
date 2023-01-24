@@ -2,12 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import i18n from '../../../utils/locales/i18n';
 
 import { Button, Container, InputText, Line, SocialLoginButton, TextButton, Row } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import i18n from '../../../utils/locales/i18n';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -92,23 +92,14 @@ const styles = StyleSheet.create({
 
   logo: {
     alignSelf: 'center',
-    marginTop: HEIGHT_DEVICE / 18,
+    marginTop: SIZE * 4,
   },
 
   textLogin: {
     alignSelf: 'center',
-    marginTop: HEIGHT_DEVICE / 35,
-    fontFamily: 'InterMedium',
+    marginTop: SIZE / 2,
+    fontFamily: FONTS.medium,
     fontSize: SIZES.md,
-  },
-
-  textInput: {
-    height: HEIGHT_DEVICE / 16,
-    marginTop: HEIGHT_DEVICE / 140,
-    borderRadius: SIZES.md,
-    borderWidth: 0.5,
-    borderColor: COLORS.lightGray,
-    paddingHorizontal: WIDTH_DEVICE / 20,
   },
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,
@@ -118,17 +109,17 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     alignSelf: 'flex-end',
-    marginTop: HEIGHT_DEVICE / 50,
-    fontFamily: 'InterRegular',
-    fontSize: SIZES.sm,
+    marginTop: SIZE,
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.xs,
     color: COLORS.primary,
   },
   orLoginUsing: {
     alignSelf: 'center',
     alignItems: 'center',
     color: COLORS.darkGray,
-    fontFamily: 'InterRegular',
-    fontSize: 12,
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.xs,
     marginHorizontal: WIDTH_DEVICE / 20,
   },
   containerLine: {
@@ -161,12 +152,12 @@ const styles = StyleSheet.create({
 
   registerText: {
     fontFamily: 'InterRegular',
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
   },
 
   registerButtonText: {
     fontFamily: 'InterMedium',
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     color: COLORS.primary,
   },
 
@@ -175,12 +166,12 @@ const styles = StyleSheet.create({
     marginTop: HEIGHT_DEVICE / 30,
     fontFamily: 'InterMedium',
     color: COLORS.primary,
-    fontSize: SIZES.md,
+    fontSize: SIZES.sm,
   },
   error401: {
     color: 'red',
     fontFamily: FONTS.regular,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     position: 'absolute',
     marginTop: HEIGHT_DEVICE / 50,
   },

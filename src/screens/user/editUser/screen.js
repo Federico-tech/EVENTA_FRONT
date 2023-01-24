@@ -11,7 +11,7 @@ import { Container, InputText, TextButton, Header, Row } from '../../../componen
 import { userUpdate } from '../../../services/users';
 import { selectUser, selectUserId } from '../../../store/user';
 import { requestCameraPermission } from '../../../utils/permissions';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const EditUserScreen = () => {
   useEffect(requestCameraPermission, []);
@@ -115,37 +115,14 @@ const styles = StyleSheet.create({
     width: SIZE * 8,
     aspectRatio: 1,
     alignSelf: 'center',
-    marginBottom: SIZE,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  uploadImageText: {
-    alignSelf: 'center',
-    position: 'relative',
-    fontFamily: FONTS.semiBold,
-    marginLeft: WIDTH_DEVICE / 6.5,
-  },
-  description: {
-    height: HEIGHT_DEVICE / 5,
-    alignItems: 'flex-start',
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  requiredImage: {
-    color: COLORS.error,
-    fontSize: SIZES.sm,
-    alignSelf: 'center',
-  },
   upload: {
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.sm,
-  },
-  publishEvent: {
-    fontFamily: FONTS.semiBold,
-    fontSize: SIZES.md,
-    alignSelf: 'center',
-    marginTop: HEIGHT_DEVICE / 30,
+    fontSize: SIZES.xs,
+    marginTop: SIZE / 2,
+    marginBottom: SIZE
   },
 });

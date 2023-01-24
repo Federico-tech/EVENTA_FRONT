@@ -1,12 +1,12 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { object, string } from 'yup';
-import i18n from '../../../../utils/locales/i18n';
 
-import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container } from '../../../../components/index';
+import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container, Row } from '../../../../components/index';
 import { organiserSignUp, loginUser } from '../../../../services/users';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import i18n from '../../../../utils/locales/i18n';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const UserSingUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -66,15 +66,17 @@ export const UserSingUpScreen = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView behavior="padding">
           <ScrollView showsVerticalScrollIndicator={false}>
-            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={22} />
-            <Text style={styles.title}>{i18n.t('create your account')}</Text>
+            <Row>
+              <View style={{ position: 'absolute', left: 0 }}>
+                <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
+              </View>
+              <Text style={styles.title}>{i18n.t('create your account')}</Text>
+            </Row>
             <InputText formik={formik} label={i18n.t('name')} formikName="name" maxLength={20} />
             <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
             <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
-            <Text style={styles.passwordReq}>
-              {i18n.t('password requirements')}
-            </Text>
+            <Text style={styles.passwordReq}>{i18n.t('password requirements')}</Text>
             <Button loading={loading} primary text={i18n.t('register')} onPress={handleSubmit} />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />
@@ -101,31 +103,15 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.xl,
     alignSelf: 'center',
-    marginTop: HEIGHT_DEVICE / 70,
-    marginBottom: HEIGHT_DEVICE / 40,
-  },
-
-  textInput: {
-    height: HEIGHT_DEVICE / 16,
-    marginTop: HEIGHT_DEVICE / 100,
-    borderRadius: SIZES.md,
-    borderWidth: 0.5,
-    borderColor: COLORS.lightGray,
-    paddingHorizontal: WIDTH_DEVICE / 20,
-  },
-
-  emailText: {
-    marginTop: HEIGHT_DEVICE / 100,
-    fontFamily: FONTS.semiBold,
-    fontSize: SIZES.sm,
-    color: COLORS.darkGray,
+    marginTop: SIZE / 2,
+    marginBottom: SIZE,
   },
 
   passwordReq: {
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     color: COLORS.darkGray,
-    marginTop: HEIGHT_DEVICE / 80,
+    marginTop: SIZE,
   },
 
   orLoginUsing: {
@@ -133,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     color: COLORS.darkGray,
     fontFamily: FONTS.regular,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     marginHorizontal: WIDTH_DEVICE / 20,
   },
 
@@ -141,13 +127,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: HEIGHT_DEVICE / 40,
+    marginTop: SIZE * 2,
   },
 
   socialLoginContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: HEIGHT_DEVICE / 40,
+    marginTop: SIZE * 2,
   },
 
   privacyText: {
@@ -155,12 +141,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     fontFamily: FONTS.medium,
     color: COLORS.primary,
-    fontSize: SIZES.md,
+    fontSize: SIZES.sm,
     textAlign: 'center',
     marginTop: HEIGHT_DEVICE / 12,
   },
   arrowIcon: {
-    marginTop: HEIGHT_DEVICE / 70,
-    position: 'absolute',
+    marginTop: SIZE / 2,
   },
 });

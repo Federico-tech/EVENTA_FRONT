@@ -7,14 +7,14 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { selectUser } from '../store/user';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
+import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { IconButton } from './Button';
 
 export const ProfileHeader = ({ name, myProfile }) => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
   return (
-    <View style={{ height: HEIGHT_DEVICE / 4.7 }}>
+    <View style={{ height: SIZE * 15 }}>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
         <View style={styles.container}>
           {!myProfile && <IconButton name="chevron-back" color="white" size={22} />}
@@ -39,7 +39,7 @@ export const ProfileHeader = ({ name, myProfile }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: HEIGHT_DEVICE / 7.5,
+    height: SIZE * 10,
   },
   image: {
     borderRadius: 100,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: HEIGHT_DEVICE / 18,
+    marginTop: SIZE * 4,
     alignItem: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   usernameText: {
     color: COLORS.white,
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.lg,
+    fontSize: SIZES.xl,
   },
   profileImage: {
     width: SIZE * 8,
@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.white,
     alignSelf: 'center',
     position: 'absolute',
-    marginTop: HEIGHT_DEVICE / 12,
+    marginTop: SIZE * 7,
   },
 });
