@@ -26,7 +26,7 @@ export const ReadMoreButton = (props, textStyle) => {
     setIsExpanded(!isExpanded);
   };
 
-  let text = props.text || props.children;
+  let text = (props.text || props.children).trim();
   if (!isExpanded) {
     text = `${text.substring(0, 70)}...`;
   }
@@ -35,8 +35,8 @@ export const ReadMoreButton = (props, textStyle) => {
     <TouchableOpacity onPress={hanldlePress}>
       <Text style={props.style}>
         {text}
-        {!isExpanded && <Text style={[styles.text, { color: COLORS.gray }]}> Read More</Text>}
-        {isExpanded && <Text style={[styles.text, { color: COLORS.gray }]}> Read Less</Text>}
+        {!isExpanded && <Text style={[styles.text, { color: COLORS.gray }]}>More</Text>}
+        {isExpanded && <Text style={[styles.text, { color: COLORS.gray }]}> Less</Text>}
       </Text>
     </TouchableOpacity>
   );

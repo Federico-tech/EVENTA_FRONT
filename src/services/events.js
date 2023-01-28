@@ -1,6 +1,6 @@
 import { store } from '../store';
 import { setEvents } from '../store/event';
-import { mainAxios } from '../utils/core/axios';
+import { mainAxios } from '../core/axios';
 
 export const createEvent = async (eventData) => {
   try {

@@ -22,6 +22,7 @@ export const InputText = ({
   dateFormat = DATE_FORMAT,
   maxDate,
   minDate,
+  maxLength,
   formik,
   formikName,
   touchableOpacity,
@@ -88,6 +89,7 @@ export const InputText = ({
               numberOfLines={multiline ? 5 : undefined}
               spellCheck={!email}
               {...rest}
+              maxLength={maxLength}
             />
           </View>
           <View style={styles.iconsRight}>
@@ -122,9 +124,9 @@ const styles = StyleSheet.create({
   },
   errorStyle: {
     paddingTop: 2,
-    width: WIDTH_DEVICE * 0.7,
+    width: WIDTH_DEVICE * 0.9,
     color: COLORS.error,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
   },
   iconsRight: {
     flex: 0,
@@ -138,6 +140,7 @@ const styles = StyleSheet.create({
   multiline: {
     height: INPUT_HEIGHT * 2.5,
     paddingTop: SIZE,
+    textAlignVertical: 'top',
   },
   icon: {
     height: Normalize(50),

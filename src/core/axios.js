@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import { CONFIG } from '../../config';
-import { store } from '../../store';
-import { selectToken } from '../../store/user';
+import { CONFIG } from '../config';
+import { store } from '../store';
+import { selectToken } from '../store/user';
 
 axios.defaults.baseURL = CONFIG.API_URL;
 axios.defaults.headers['Content-Type'] = 'application/json';

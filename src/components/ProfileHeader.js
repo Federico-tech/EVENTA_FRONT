@@ -10,8 +10,9 @@ import { selectUser } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { IconButton } from './Button';
 
-export const ProfileHeader = ({ name, myProfile }) => {
+export const ProfileHeader = ({ myProfile }) => {
   const user = useSelector(selectUser);
+  console.log('User', user)
   const navigation = useNavigation();
   return (
     <View style={{ height: SIZE * 15 }}>

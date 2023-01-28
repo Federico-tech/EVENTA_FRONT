@@ -7,11 +7,12 @@ import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Con
 import { ROUTES } from '../../../../navigation/Navigation';
 import { loginUser, organiserSignUp } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
-import i18n from '../../../../utils/locales/i18n';
+import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const OrganiserSignUpScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation()
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
@@ -23,7 +24,16 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
       name: 'org',
     },
     validationSchema: object().shape({
-      username: string().required('Username is a required field'),
+      username: string()
+        .required('Username is a required field')
+        .min(6, 'Username must be at least 6 characters')
+        .max(20, "Username can't be more than 20 characters")
+        .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
+          if (!value) {
+            return false;
+          }
+          return !value.match(/[A-Z]/);
+        }),
       email: string().required().email('This is not a valid email'),
       address: string().required('Address is a required field'),
       password: string()
@@ -85,26 +95,26 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
       <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView behavior="padding">
           <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={{ position: 'absolute', left: 0 }}>
-                <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
-              </View>
-            <Text style={styles.title}>{i18n.t('become an organiser!')}</Text>
+            <View style={{ position: 'absolute', left: 0 }}>
+              <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
+            </View>
+            <Text style={styles.title}>{t('become an organiser!')}</Text>
             <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
             <InputText
               formik={formik}
-              label={i18n.t('address')}
+              label={t('address')}
               formikName="address"
               pointerEvents="none"
               onPress={onPressAddress}
               touchableOpacity
             />
-            <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" />
-            <Text style={styles.passwordReq}>{i18n.t('password requirements')}</Text>
-            <Button loading={loading} primary text={i18n.t('register')} onPress={handleSubmit} />
+            <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
+            <Text style={styles.passwordReq}>{t('password requirements')}</Text>
+            <Button loading={loading} primary text={t('register')} onPress={handleSubmit} />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />
-              <Text style={styles.orLoginUsing}>{i18n.t('or register using')}</Text>
+              <Text style={styles.orLoginUsing}>{t('or register using')}</Text>
               <Line lineStyle={{ flex: 1 }} />
             </View>
             <View style={styles.socialLoginContainer}>
@@ -112,7 +122,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
               <SocialLoginButton google />
             </View>
             <TouchableOpacity>
-              <TextButton text={i18n.t('privacy and terms')} textStyle={styles.privacyText} />
+              <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
             </TouchableOpacity>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -152,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: SIZE * 2 ,
+    marginTop: SIZE * 2,
   },
   socialLoginContainer: {
     flexDirection: 'row',

@@ -11,7 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
-import i18n from '../../../../utils/locales/i18n';
+import { useTranslation } from 'react-i18next';
 
 import { InputText, TextButton } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
@@ -27,6 +27,7 @@ export const CreateEventScreen = ({ route }) => {
   const organiserId = useSelector(selectUserId);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation()
 
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
@@ -149,14 +150,14 @@ export const CreateEventScreen = ({ route }) => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>{i18n.t('create event')}</Text>
+          <Text style={styles.title}>{t('create event')}</Text>
           <View>
             <TouchableOpacity onPress={pickImage}>
               <View style={styles.uploadImage}>
                 {!values.file ? (
                   <>
                     <Ionicons name="add" size={50} />
-                    <Text>{i18n.t('pick an image')}</Text>
+                    <Text>{t('pick an image')}</Text>
                   </>
                 ) : (
                   <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
@@ -164,18 +165,18 @@ export const CreateEventScreen = ({ route }) => {
               </View>
               <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
             </TouchableOpacity>
-            <InputText label={i18n.t('name')} formik={formik} formikName="name" maxLength={30} />
-            <InputText label={i18n.t('address')} formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
-            <InputText label={i18n.t('description')} formik={formik} formikName="description" multiline />
+            <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
+            <InputText label={t('address')} formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
+            <InputText label={t('description')} formik={formik} formikName="description" multiline />
             <InputText
-              label={i18n.t('date')}
+              label={t('date')}
               formik={{ ...formik, onChangeText: onChangeDate }}
               formikName="startDate"
               maxLength={10}
               placeholder="dd/MM/yyyy"
             />
-            <InputText label={i18n.t('start time')} formik={{ ...formik, onChangeText: onChangeTime }} formikName="startTime" maxLength={5} placeholder="HH:mm" />
-            <TextButton text={i18n.t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
+            <InputText label={t('start time')} formik={{ ...formik, onChangeText: onChangeTime }} formikName="startTime" maxLength={5} placeholder="HH:mm" />
+            <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

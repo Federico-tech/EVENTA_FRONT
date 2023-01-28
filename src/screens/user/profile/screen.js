@@ -7,18 +7,19 @@ import { useSelector } from 'react-redux';
 import { ProfileHeader, Container, Row, Button } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
 import { selectUser } from '../../../store/user';
-import i18n from '../../../utils/locales/i18n';
+import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 
 export const ProfileScreen = () => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
+  const { t } = useTranslation()
   return (
     <Container>
       <ProfileHeader myProfile />
       <Row alignCenter>
         <Text style={styles.userName}>{user.name}</Text>
-        {!user.bio ? <Text style={styles.noDesc}>{i18n.t('description')} </Text> : <Text style={styles.desc}>{user.bio}</Text>}
+        {!user.bio ? <Text style={styles.noDesc}>{t('description')} </Text> : <Text style={styles.desc}>{user.bio}</Text>}
       </Row>
       <Row row spaceAround style={styles.followRow}>
         <Row alignCenter style={styles.boxFollow}>
@@ -27,16 +28,16 @@ export const ProfileScreen = () => {
         </Row>
         <Row alignCenter style={styles.boxFollow}>
           <Text style={styles.number}>125</Text>
-          <Text style={styles.follow}>{i18n.t('following')}</Text>
+          <Text style={styles.follow}>{t('following')}</Text>
         </Row>
         <Row alignCenter style={styles.boxFollow}>
           <Text style={styles.number}>12</Text>
-          <Text style={styles.follow}>{i18n.t('event')}</Text>
+          <Text style={styles.follow}>{t('event')}</Text>
         </Row>
       </Row>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Button secondary containerStyle={styles.button} text={i18n.t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
-        <Text style={styles.recent}>{i18n.t('recent events')}</Text>
+        <Button secondary containerStyle={styles.button} text={t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
+        <Text style={styles.recent}>{t('recent events')}</Text>
       </View>
     </Container>
   );

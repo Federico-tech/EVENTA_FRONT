@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import i18n from '../../../utils/locales/i18n';
+import i18n from '../../../locales/i18n';
 
 import { Container, IconButton } from '../../../components';
 import { logout } from '../../../utils/index';

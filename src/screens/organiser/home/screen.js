@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { Container } from '../../../components';
+import { Container, HomeHeader } from '../../../components';
 import FlashMessage from 'react-native-flash-message';
 
 export const OrganiserHome = () => {
   return (
     <Container>
-      <Text style={styles.container}> OrganiserHome </Text>
+      <HomeHeader />
       <FlashMessage position="top" />
     </Container>
   );

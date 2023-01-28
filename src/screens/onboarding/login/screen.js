@@ -2,24 +2,23 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { object, string } from 'yup';
+import { useFormik } from 'formik';
 
 import { Button, Container, InputText, Line, SocialLoginButton, TextButton, Row } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
-import i18n from '../../../utils/locales/i18n';
+import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation()
 
-  // const [email, setEmail] = useState('coco@gmail.com');
-  // const [password, setPassword] = useState('cococlub10');
   const [error, setError] = useState();
-  const [email, setEmail] = useState('riccardo@gmail.com');
-  const [password, setPassword] = useState('dezzolo10');
 
-  const onPressLogin = async () => {
+  const onPressLogin = async (email, password) => {
     try {
       setLoading(true);
       await loginUser(email, password);
@@ -35,25 +34,69 @@ export const LoginScreen = () => {
     navigation.navigate(ROUTES.UserSingUpScreen);
   };
 
+  const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
+    initialValues: {
+      // email: 'riccardo@gmail.com',
+      // password: 'dezzolo10',
+      email: 'coco@gmail.com',
+      password: 'cococlub10',
+    },
+    validationSchema: object().shape({
+      email: string().required('Email is a required field').email('This is not a valid email'),
+      password: string()
+        .required('Password is a required field')
+        .matches(/^(?=.*\d)[a-zA-Z\d]{8,}$/, 'This is not a valid password'),
+    }),
+    validateOnChange: false,
+    validateOnBlur: false,
+    validateOnMount: false,
+    enableReinitialize: true,
+    onSubmit: async (data) => {
+      try {
+        setLoading(true);
+        await validateForm(data);
+        console.log(data);
+        await onPressLogin(data.email, data.password);
+        await loginUser(data.email, data.password);
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        console.log({ error: e.response.data });
+      }
+    },
+  });
+
+  const onChangeText = (formikName, newValue) => {
+    setFieldValue(formikName, newValue);
+    setFieldError(formikName, '');
+  };
+
+  const formik = {
+    values,
+    errors,
+    touched,
+    onChangeText,
+  };
+
   return (
     <Container>
       <ScrollView>
         <Container>
           <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
           <View style={styles.container}>
-            <Text style={styles.textLogin}>{i18n.t('login to your account')}</Text>
-            <InputText label="Email" value={email} onChangeText={setEmail} autoCapitalize="none" />
-            <InputText label="Password" value={password} onChangeText={setPassword} autoCapitalize="none" secureTextEntry />
+            <Text style={styles.textLogin}>{t('login to your account')}</Text>
+            <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
+            <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
             {error && (
               <Row>
-                <Text style={styles.error401}>{i18n.t('wrong username or password')}</Text>
+                <Text style={styles.error401}>{t('wrong username or password')}</Text>
               </Row>
             )}
-            <TextButton text={i18n.t('forgot password')} textStyle={styles.forgotPassword} />
-            <Button primary text={i18n.t('login')} onPress={onPressLogin} loading={loading} disabled={!password || (!email && true)} />
+            <TextButton text={t('forgot password')} textStyle={styles.forgotPassword} />
+            <Button primary text={t('login')} onPress={handleSubmit} loading={loading} disabled={!values.password || (!values.email && true)} />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />
-              <Text style={styles.orLoginUsing}>{i18n.t('or login using')}</Text>
+              <Text style={styles.orLoginUsing}>{t('or login using')}</Text>
               <Line lineStyle={{ flex: 1 }} />
             </View>
             <View style={styles.socialLoginContainer}>
@@ -62,20 +105,20 @@ export const LoginScreen = () => {
             </View>
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
-                <Text style={styles.registerText}>{i18n.t(`you don't have an account`)}</Text>
+                <Text style={styles.registerText}>{t(`you don't have an account`)}</Text>
                 <TouchableOpacity onPress={onPressUserRegister}>
                   <Text style={styles.registerButtonText}> Sign Up</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.registerTextContainer}>
-                <Text style={styles.registerText}>{i18n.t('become an organiser')}</Text>
+                <Text style={styles.registerText}>{t('become an organiser')}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
-                  <Text style={styles.registerButtonText}> {i18n.t('click here')}</Text>
+                  <Text style={styles.registerButtonText}> {t('click here')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
             <TouchableOpacity>
-              <Text style={styles.privacyText}>{i18n.t('privacy and terms')}</Text>
+              <Text style={styles.privacyText}>{t('privacy and terms')}</Text>
             </TouchableOpacity>
           </View>
         </Container>
@@ -173,6 +216,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: SIZES.xs,
     position: 'absolute',
-    marginTop: HEIGHT_DEVICE / 50,
+    marginTop: SIZE,
   },
 });

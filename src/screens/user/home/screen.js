@@ -3,9 +3,21 @@ import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../components/index';
 import { getEvents } from '../../../services/events';
+import * as Location from 'expo-location';
 
 export const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync({});
+      if (status === 'granted') {
+        const location = await Location.getCurrentPositionAsync({});
+        console.log('Coordinates', location.coords);
+      }
+    })();
+  }, []);
+
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

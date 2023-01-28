@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
+import { View, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
@@ -13,25 +14,35 @@ import { selectUser, selectUserId } from '../../../store/user';
 import { requestCameraPermission } from '../../../utils/permissions';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
-export const EditUserScreen = () => {
+export const EditOrganiserScreen = () => {
   useEffect(requestCameraPermission, []);
+  const navigation = useNavigation();
 
   const user = useSelector(selectUser);
+  console.log(user)
   const userId = useSelector(selectUserId);
 
   const [loading, setLoading] = useState(false);
 
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
-      name: user.name,
-      bio: user.bio,
       username: user.username,
+      bio: user.bio,
+      address: user.address,
       file: user.profilePic,
     },
     validationSchema: object().shape({
-      name: string().required('Name is a required field'),
-      bio: string().required('Address is a required field'),
-      username: string().required('Description is a required field'),
+      username: string()
+        .required('Username is a required field')
+        .min(6, 'Username must be at least 6 characters')
+        .max(20, "Username can't be more than 20 characters")
+        .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
+          if (!value) {
+            return false;
+          }
+          return !value.match(/[A-Z]/);
+        }),
+      address: string().required('Address is a required field'),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -42,6 +53,7 @@ export const EditUserScreen = () => {
         setLoading(true);
         await validateForm(data);
         await userUpdate(data, userId);
+        navigation.goBack();
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -76,6 +88,7 @@ export const EditUserScreen = () => {
   console.log('file', values.file);
   return (
     <Container>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <KeyboardAvoidingView behavior="padding">
         <Header title="Edit Profile" onPress={handleSubmit} loading={loading} />
         <View style={styles.container}>
@@ -91,11 +104,12 @@ export const EditUserScreen = () => {
             </View>
             <TextButton text="Upload an image" textStyle={styles.upload} onPress={pickImage} />
           </Row>
-          <InputText label="Name" formik={formik} formikName="name" maxLength={30} />
           <InputText label="Username" formik={formik} formikName="username" />
-          <InputText label="Bio" formik={formik} formikName="bio" multiline />
+          <InputText label="Address" formik={formik} formikName="address" />
+          <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
         </View>
       </KeyboardAvoidingView>
+      </ScrollView>
     </Container>
   );
 };
@@ -123,6 +137,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.xs,
     marginTop: SIZE / 2,
-    marginBottom: SIZE
+    marginBottom: SIZE,
   },
 });

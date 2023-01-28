@@ -5,11 +5,13 @@ import { useSelector } from 'react-redux';
 
 import { LogoText } from '../assets';
 import { selectUser } from '../store/user';
-import i18n from '../utils/locales/i18n';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE } from '../utils/theme';
+import { useTranslation } from 'react-i18next';
 
 export const HomeHeader = ({ data }) => {
   const userinfo = useSelector(selectUser);
+  const { t } = useTranslation()
+  console.log(t('welcome'))
 
   return (
     <View>
@@ -19,7 +21,7 @@ export const HomeHeader = ({ data }) => {
             <View style={styles.TextContainer}>
               <Image style={styles.imageProfile} resizeMode="contain" source={{ uri: userinfo.profilePic }} />
               <View style={styles.text}>
-                <Text style={styles.welcome}>{i18n.t('welcome')}</Text>
+                <Text style={styles.welcome}>{t('welcome')}</Text>
                 <Text style={styles.federico}>{userinfo.username}</Text>
               </View>
             </View>

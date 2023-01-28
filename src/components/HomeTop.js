@@ -1,7 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Button, IconButton } from '../components/index';
+import { ROUTES } from '../navigation/Navigation';
 import { FONTS, HEIGHT_DEVICE, SIZE } from '../utils/theme';
 
 export const HomeTop = () => {
@@ -9,7 +11,7 @@ export const HomeTop = () => {
     <View style={styles.container}>
       <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} />
       <Button gradient text="Lovere" />
-      <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} />
+      <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2}/>
     </View>
   );
 };
