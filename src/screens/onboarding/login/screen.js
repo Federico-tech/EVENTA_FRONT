@@ -1,20 +1,20 @@
 import { useNavigation } from '@react-navigation/native';
+import { useFormik } from 'formik';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { object, string } from 'yup';
-import { useFormik } from 'formik';
 
 import { Button, Container, InputText, Line, SocialLoginButton, TextButton, Row } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
-import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const [error, setError] = useState();
 
@@ -36,10 +36,10 @@ export const LoginScreen = () => {
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
-      // email: 'riccardo@gmail.com',
-      // password: 'dezzolo10',
-      email: 'coco@gmail.com',
-      password: 'cococlub10',
+      email: 'riccardo@gmail.com',
+      password: 'dezzolo10',
+      // email: 'coco@gmail.com',
+      // password: 'cococlub10',
     },
     validationSchema: object().shape({
       email: string().required('Email is a required field').email('This is not a valid email'),

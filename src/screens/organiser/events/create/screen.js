@@ -5,13 +5,13 @@ import { useFormik } from 'formik';
 import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
-import { useTranslation } from 'react-i18next';
 
 import { InputText, TextButton } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
@@ -27,7 +27,7 @@ export const CreateEventScreen = ({ route }) => {
   const organiserId = useSelector(selectUserId);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
@@ -175,7 +175,13 @@ export const CreateEventScreen = ({ route }) => {
               maxLength={10}
               placeholder="dd/MM/yyyy"
             />
-            <InputText label={t('start time')} formik={{ ...formik, onChangeText: onChangeTime }} formikName="startTime" maxLength={5} placeholder="HH:mm" />
+            <InputText
+              label={t('start time')}
+              formik={{ ...formik, onChangeText: onChangeTime }}
+              formikName="startTime"
+              maxLength={5}
+              placeholder="HH:mm"
+            />
             <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>
         </ScrollView>

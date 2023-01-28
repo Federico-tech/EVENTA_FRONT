@@ -1,9 +1,10 @@
+import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../components/index';
 import { getEvents } from '../../../services/events';
-import * as Location from 'expo-location';
+import { userUpdate } from '../../../services/users';
 
 export const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -14,10 +15,14 @@ export const HomeScreen = () => {
       if (status === 'granted') {
         const location = await Location.getCurrentPositionAsync({});
         console.log('Coordinates', location.coords);
+        const position = {
+          type: 'Point',
+          coordinates: [location.coords.latitude, location.coords.longitude],
+        };
+        await userUpdate({ ...position });
       }
     })();
   }, []);
-
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

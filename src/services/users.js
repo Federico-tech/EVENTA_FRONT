@@ -1,8 +1,8 @@
 import base64 from 'base-64';
 
+import { mainAxios, noAuthAxios } from '../core/axios';
 import { store } from '../store';
 import { setUserInfo, updateUserInfo } from '../store/user';
-import { mainAxios, noAuthAxios } from '../core/axios';
 
 export const loginUser = async (email, password) => {
   try {
