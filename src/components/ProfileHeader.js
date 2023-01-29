@@ -12,7 +12,6 @@ import { IconButton } from './Button';
 
 export const ProfileHeader = ({ myProfile }) => {
   const user = useSelector(selectUser);
-  console.log('User', user)
   const navigation = useNavigation();
   return (
     <View style={{ height: SIZE * 15 }}>

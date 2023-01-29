@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -80,11 +81,15 @@ export const EditUserScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
+    console.log(image);
     if (!image.canceled) {
-      await setFieldValue('file', image.assets[0].uri);
+      const manipulatedImage = await ImageManipulator.manipulateAsync(image.assets[0].uri, [{ resize: { width: 150, height: 150 } }], {
+        format: ImageManipulator.SaveFormat.PNG,
+      });
+      await setFieldValue('file', manipulatedImage.uri);
     }
   };
-  console.log('file', values.file);
+
   return (
     <Container>
       <KeyboardAvoidingView behavior="padding">
@@ -104,7 +109,7 @@ export const EditUserScreen = () => {
           </Row>
           <InputText label="Name" formik={formik} formikName="name" />
           <InputText label="Username" formik={formik} formikName="username" />
-          <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={30} />
+          <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={90} />
         </View>
       </KeyboardAvoidingView>
     </Container>

@@ -1,30 +1,34 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { DateTime } from 'luxon';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { DateTime } from 'luxon';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { COLORS, FONTS, HEIGHT_DEVICE, SHADOWS, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 
-export const EventCard = ({data}) => {
-
+export const EventCard = ({ data }) => {
   const navigation = useNavigation();
   const dateTime = DateTime.fromISO(data.date);
-  const formDate = dateTime.toFormat('ccc d LLL yyyy')
-  console.log(data.coverImage)
+  const formDate = dateTime.toFormat('ccc d LLL yyyy');
+  console.log('Organiser', data);
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>
       <View style={styles.cardContainer}>
-        <Image source={{uri: data.coverImage}} style={styles.eventImage} />
+        <Image source={{ uri: data.coverImage }} style={styles.eventImage} resizeMode="cover" />
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
-            <Image resizeMode="contain" style={styles.organiserImage} />
+            <Image resizeMode="contain" style={styles.organiserImage} source={{ uri: data.organiser.profilePic }} />
             <View style={styles.textContainer}>
               <Text style={styles.textDate}> {formDate} </Text>
               <Text style={styles.textTitle}> {data.name} </Text>
-              <Text style={styles.textAdress}> {data.address} </Text>
+              <View style={{ width: SIZE * 20 }}>
+                <Text style={styles.textAdress} numberOfLines={1} ellipsizeMode="tail">
+                  {' '}
+                  {data.address}{' '}
+                </Text>
+              </View>
             </View>
           </View>
           <View style={styles.likeContainer}>
@@ -39,31 +43,34 @@ export const EventCard = ({data}) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: 'white',
-    width: WIDTH_DEVICE / 1.1,
-    height: HEIGHT_DEVICE / 2.2,
-    marginTop: HEIGHT_DEVICE / 70,
+    height: SIZE * 34,
+    backgroundColor: COLORS.white,
+    width: WIDTH_DEVICE * 0.9,
+    marginHorizontal: WIDTH_DEVICE / 20,
+    marginTop: SIZE * 2,
     alignSelf: 'center',
     borderRadius: SIZES.xxs,
+    
     ...SHADOWS.light,
   },
-
   eventImage: {
-    width: WIDTH_DEVICE / 1.1,
-    height: HEIGHT_DEVICE / 2.7,
+    width: '100%',
+    aspectRatio: 1,
     borderRadius: SIZES.xxs,
   },
 
   organiserImage: {
-    width: WIDTH_DEVICE / 8,
-    height: HEIGHT_DEVICE / 16,
+    width: SIZE * 4,
+    aspectRatio: 1,
+    borderRadius: 100,
   },
 
   descContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    marginTop: HEIGHT_DEVICE / 90,
+    justifyContent: 'flex-start',
+    marginTop: SIZE,
+    paddingHorizontal: SIZE,
   },
 
   informationContainer: {
@@ -74,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'center',
-    marginLeft: WIDTH_DEVICE / 100,
+    marginLeft: SIZE / 2,
   },
 
   textDate: {

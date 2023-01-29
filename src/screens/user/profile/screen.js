@@ -1,25 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { ProfileHeader, Container, Row, Button } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
 import { selectUser } from '../../../store/user';
-import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 
 export const ProfileScreen = () => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Container>
       <ProfileHeader myProfile />
       <Row alignCenter>
         <Text style={styles.userName}>{user.name}</Text>
-        {!user.bio ? <Text style={styles.noDesc}>{t('description')} </Text> : <Text style={styles.desc}>{user.bio}</Text>}
+        <View>{!user.bio ? <Text style={styles.noDesc}>{t('description')} </Text> : <Text style={styles.desc}>{user.bio}</Text>}</View>
       </Row>
       <Row row spaceAround style={styles.followRow}>
         <Row alignCenter style={styles.boxFollow}>
@@ -63,7 +62,6 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xs,
     marginTop: SIZE * 0.5,
     textAlign: 'center',
-    flexWrap: 'wrap',
     width: WIDTH_DEVICE / 2,
   },
   followRow: {

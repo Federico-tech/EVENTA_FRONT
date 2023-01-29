@@ -1,10 +1,13 @@
 import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../components/index';
 import { getEvents } from '../../../services/events';
 import { userUpdate } from '../../../services/users';
+import { selectEvents } from '../../../store/event';
+import { SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -17,29 +20,31 @@ export const HomeScreen = () => {
         console.log('Coordinates', location.coords);
         const position = {
           type: 'Point',
-          coordinates: [location.coords.latitude, location.coords.longitude],
+          coordinates: [location.coords.longitude, location.coords.latitude],
         };
-        await userUpdate({ ...position });
+        await userUpdate({ position });
       }
     })();
   }, []);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1500);
-  }, []);
+    await getEvents();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
-    getEvents();
+    onRefresh();
   }, []);
+
+  const { data } = useSelector(selectEvents);
+  console.log('data', data);
 
   return (
     <Container>
       <HomeHeader />
       <FlatList
-        //data={data}
+        data={data}
         renderItem={({ item }) => <EventCard data={item} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
@@ -52,5 +57,10 @@ export const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  map: {
+    height: SIZE * 17,
+    marginHorizontal: WIDTH_DEVICE / 20,
+    marginTop: SIZE,
+    borderRadius: SIZES.xxs,
+  },
 });

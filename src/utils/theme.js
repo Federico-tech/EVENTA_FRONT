@@ -43,9 +43,9 @@ export const SHADOWS = {
     Color: COLORS.gray,
     shadowOffset: {
       width: 0,
-      height: 3.5,
+      height: 2,
     },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.04,
     shadowRadius: 1,
 
     elevation: 3,

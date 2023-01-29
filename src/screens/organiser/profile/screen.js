@@ -1,20 +1,19 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Text, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Button, Container, ProfileHeader, Row, ReadMoreButton } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
 import { selectUser } from '../../../store/user';
-import { useTranslation } from 'react-i18next';
-
 import { SIZE, WIDTH_DEVICE, FONTS, SIZES, COLORS } from '../../../utils/theme';
 
 export const OrganiserProfileScreen = () => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Container>
       <ProfileHeader myProfile />
@@ -35,12 +34,7 @@ export const OrganiserProfileScreen = () => {
           <Text style={styles.address}>{user.address}</Text>
           {!user.bio ? <Text style={styles.noDesc}>{t('description')} </Text> : <ReadMoreButton text={user.bio} style={styles.desc} />}
         </Row>
-        <Button
-          secondary
-          containerStyle={styles.button}
-          text={t('edit profile')}
-          onPress={() => navigation.navigate(ROUTES.EditOrganiserScreen)}
-        />
+        <Button secondary containerStyle={styles.button} text={t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditOrganiserScreen)} />
       </View>
     </Container>
   );

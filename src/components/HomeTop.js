@@ -1,17 +1,28 @@
-import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import MapView from 'react-native-maps';
 
-import { Button, IconButton } from '../components/index';
-import { ROUTES } from '../navigation/Navigation';
-import { FONTS, HEIGHT_DEVICE, SIZE } from '../utils/theme';
+import { IconButton, Row } from '../components/index';
+import { FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 
 export const HomeTop = () => {
   return (
-    <View style={styles.container}>
-      <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} />
-      <Button gradient text="Lovere" />
-      <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2}/>
+    <View>
+      <View style={styles.container}>
+        <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} />
+        <Row alignCenter>
+          <TouchableOpacity>
+            <Row row alignCenter>
+              <Text style={styles.place}>Lovere</Text>
+              <Ionicons name="chevron-down" size={SIZE * 2} />
+            </Row>
+          </TouchableOpacity>
+          <View style={styles.lineButton} />
+        </Row>
+        <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} />
+      </View>
+      <MapView style={styles.map} />
     </View>
   );
 };
@@ -30,5 +41,21 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'relative',
+  },
+  lineButton: {
+    width: SIZE * 10,
+    height: SIZE / 8,
+    backgroundColor: 'black',
+  },
+  place: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.lg,
+    marginBottom: SIZE / 5,
+  },
+  map: {
+    height: SIZE * 17,
+    marginHorizontal: WIDTH_DEVICE / 20,
+    marginTop: SIZE,
+    borderRadius: SIZES.xxs,
   },
 });

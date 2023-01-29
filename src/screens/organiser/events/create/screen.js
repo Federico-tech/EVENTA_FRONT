@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import _, { size } from 'lodash';
@@ -13,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { InputText, TextButton } from '../../../../components';
+import { Container, InputText, TextButton } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { createEvent } from '../../../../services/events';
 import { selectUserId } from '../../../../store/user';
@@ -117,7 +118,10 @@ export const CreateEventScreen = ({ route }) => {
       quality: 1,
     });
     if (!image.canceled) {
-      await setFieldValue('file', image.assets[0].uri);
+      const manipulatedImage = await ImageManipulator.manipulateAsync(image.assets[0].uri, [{ resize: { width: 750, height: 750 } }], {
+        format: ImageManipulator.SaveFormat.PNG,
+      });
+      await setFieldValue('file', manipulatedImage.uri);
     }
   };
 
@@ -147,46 +151,48 @@ export const CreateEventScreen = ({ route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView behavior="padding">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>{t('create event')}</Text>
-          <View>
-            <TouchableOpacity onPress={pickImage}>
-              <View style={styles.uploadImage}>
-                {!values.file ? (
-                  <>
-                    <Ionicons name="add" size={50} />
-                    <Text>{t('pick an image')}</Text>
-                  </>
-                ) : (
-                  <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
-                )}
-              </View>
-              <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
-            </TouchableOpacity>
-            <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
-            <InputText label={t('address')} formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
-            <InputText label={t('description')} formik={formik} formikName="description" multiline />
-            <InputText
-              label={t('date')}
-              formik={{ ...formik, onChangeText: onChangeDate }}
-              formikName="startDate"
-              maxLength={10}
-              placeholder="dd/MM/yyyy"
-            />
-            <InputText
-              label={t('start time')}
-              formik={{ ...formik, onChangeText: onChangeTime }}
-              formikName="startTime"
-              maxLength={5}
-              placeholder="HH:mm"
-            />
-            <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <Container>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView behavior="padding">
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={styles.title}>{t('create event')}</Text>
+            <View>
+              <TouchableOpacity onPress={pickImage}>
+                <View style={styles.uploadImage}>
+                  {!values.file ? (
+                    <>
+                      <Ionicons name="add" size={50} />
+                      <Text>{t('pick an image')}</Text>
+                    </>
+                  ) : (
+                    <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+                  )}
+                </View>
+                <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
+              </TouchableOpacity>
+              <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
+              <InputText label={t('address')} formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
+              <InputText label={t('description')} formik={formik} formikName="description" multiline />
+              <InputText
+                label={t('date')}
+                formik={{ ...formik, onChangeText: onChangeDate }}
+                formikName="startDate"
+                maxLength={10}
+                placeholder="dd/MM/yyyy"
+              />
+              <InputText
+                label={t('start time')}
+                formik={{ ...formik, onChangeText: onChangeTime }}
+                formikName="startTime"
+                maxLength={5}
+                placeholder="HH:mm"
+              />
+              <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </Container>
   );
 };
 

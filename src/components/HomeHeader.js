@@ -1,17 +1,16 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { LogoText } from '../assets';
 import { selectUser } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE } from '../utils/theme';
-import { useTranslation } from 'react-i18next';
 
 export const HomeHeader = ({ data }) => {
   const userinfo = useSelector(selectUser);
-  const { t } = useTranslation()
-  console.log(t('welcome'))
+  const { t } = useTranslation();
 
   return (
     <View>
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
   },
 
   imageProfile: {
-    width: SIZE * 4,
+    width: SIZE * 4.5,
     aspectRatio: 1,
     borderRadius: 100,
   },
