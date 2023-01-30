@@ -9,3 +9,15 @@ export const fromDateAndTimeToISODate = (date, time) => {
   const [hour, minute] = time.split(':');
   return DateTime.fromObject({ year, month, day, minute, hour }).toISO();
 };
+
+export const formatDate = (data) => {
+  const dateTime = DateTime.fromISO(data);
+  const formDate = dateTime.toFormat('ccc d LLL yyyy');
+  return formDate
+}
+
+export const formatTime = (data) => {
+  const dateTime = DateTime.fromISO(data);
+  const formTime = dateTime.toFormat('HH:mm')
+  return formTime
+}

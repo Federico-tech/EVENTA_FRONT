@@ -1,34 +1,35 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React, {useState} from 'react';
+import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
-import { IconButton, Line, OrganiserInf, TextButton, ReadMoreButton } from '../../../components';
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS } from '../../../utils/theme';
+import { IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../components';
+import { formatDate, formatTime } from '../../../utils/dates';
+import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../utils/theme';
 
 export const EventDetails = ({ route, navigation }) => {
   const { data } = route.params;
-  const source = { uri: data.coverImage }
+  const source = { uri: data.coverImage };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <ScrollView showsVerticalScrollIndicator={false} >
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <View style={styles.imageContainer}>
             <Image source={source} style={styles.eventImage} resizeMode="contain" />
-            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={22} iconStyle={styles.arrowStyle} color="white" />
+            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           </View>
           <OrganiserInf data={data} />
           <Line />
           <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
             <Text style={styles.eventTitle}>{data.name}</Text>
-              <ReadMoreButton text={data.description} style={styles.description}/>
+            <ReadMoreButton text={data.description} style={styles.description} />
             <View style={styles.date}>
               <FontAwesome name="calendar-o" size={18} />
               <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                <Text style={styles.dateText}>{data.date}</Text>
-                <Text style={styles.timeText}>{data.date}</Text>
+                <Text style={styles.dateText}>{formatDate(data.date)}</Text>
+                <Text style={styles.timeText}>{formatTime(data.date)}</Text>
               </View>
             </View>
             <View style={styles.place}>
@@ -55,10 +56,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'black',
     width: WIDTH_DEVICE,
-    height: HEIGHT_DEVICE / 3.3,
+    height: SIZE * 20,
   },
   eventImage: {
-    height: HEIGHT_DEVICE / 3.3,
+    height: SIZE * 20,
     width: WIDTH_DEVICE / 1,
     alignItems: 'center',
     position: 'absolute',
@@ -66,17 +67,17 @@ const styles = StyleSheet.create({
   eventTitle: {
     fontFamily: 'InterSemiBold',
     fontSize: SIZES.xl,
-    marginTop: HEIGHT_DEVICE / 60,
+    marginTop: SIZE,
   },
   description: {
     fontFamily: FONTS.regular,
-    fontSize: SIZES.md,
-    marginTop: HEIGHT_DEVICE / 80,
+    fontSize: SIZES.sm,
+    marginTop: SIZE,
   },
   date: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: HEIGHT_DEVICE / 80,
+    marginTop: SIZE,
   },
 
   dateText: {
@@ -89,15 +90,15 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
   },
   adressText: {
-    marginLeft: WIDTH_DEVICE / 25,
+    marginLeft: SIZE,
     fontFamily: 'InterMedium',
     fontSize: SIZES.sm,
   },
   place: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: HEIGHT_DEVICE / 70,
-    marginLeft: WIDTH_DEVICE / 160,
+    marginTop: SIZE,
+    marginLeft: SIZE / 6,
   },
   peopleText: {
     marginLeft: WIDTH_DEVICE / 50,
@@ -116,6 +117,6 @@ const styles = StyleSheet.create({
   other: {
     fontFamily: 'InterRegular',
     fontSize: SIZES.sm,
-    color: COLORS.gray
-  }
+    color: COLORS.gray,
+  },
 });

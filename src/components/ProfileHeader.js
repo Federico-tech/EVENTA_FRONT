@@ -39,7 +39,7 @@ export const ProfileHeader = ({ myProfile }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: SIZE * 9,
+    height: SIZE * 9.5,
   },
   image: {
     borderRadius: 100,
@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.white,
     alignSelf: 'center',
     position: 'absolute',
-    marginTop: SIZE * 6,
+    marginTop: SIZE * 7,
   },
 });
