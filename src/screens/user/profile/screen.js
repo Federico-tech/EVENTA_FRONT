@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   userName: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.md,
-    marginTop: SIZE / 2,
   },
   noDesc: {
     fontFamily: FONTS.medium,

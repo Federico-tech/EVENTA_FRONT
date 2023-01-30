@@ -118,7 +118,7 @@ export const CreateEventScreen = ({ route }) => {
       quality: 1,
     });
     if (!image.canceled) {
-      const manipulatedImage = await ImageManipulator.manipulateAsync(image.assets[0].uri, [{ resize: { width: 750, height: 750 } }], {
+      const manipulatedImage = await ImageManipulator.manipulateAsync(image.assets[0].uri, [{ resize: { width: 500, height: 500 } }], {
         format: ImageManipulator.SaveFormat.PNG,
       });
       await setFieldValue('file', manipulatedImage.uri);
