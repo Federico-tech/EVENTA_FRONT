@@ -1,11 +1,9 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import { DateTime } from 'luxon';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { formatDate, formatTime } from '../utils/dates';
 
+import { formatDate, formatTime } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 
 export const EventCard = ({ data }) => {
@@ -105,21 +103,21 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     backgroundColor: COLORS.lightGray,
   },
-  startTime:{
+  startTime: {
     backgroundColor: COLORS.white,
     width: SIZE * 5,
-    height: SIZE * 2.5, 
+    height: SIZE * 2.5,
     position: 'absolute',
     marginTop: SIZE * 26.5,
     marginLeft: SIZE * 22,
-    borderWidth: 1, 
+    borderWidth: 1,
     borderColor: COLORS.primary,
     borderRadius: SIZES.xxs,
-    justifyContent: 'center', 
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   startTimeText: {
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.sm
-  }
+    fontSize: SIZES.sm,
+  },
 });

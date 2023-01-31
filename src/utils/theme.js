@@ -30,7 +30,7 @@ export const FONTS = {
 export const SIZE = WIDTH_DEVICE / 31;
 
 export const SIZES = {
-  xxs: SIZE * 0.7,
+  xxs: SIZE * 0.9,
   xs: SIZE,
   sm: SIZE * 1.1,
   md: SIZE * 1.25,
@@ -53,13 +53,13 @@ export const SHADOWS = {
   medium: {
     shadowColor: COLORS.gray,
     shadowOffset: {
-      width: 0,
-      height: 3,
+      width: 1,
+      height: 1,
     },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
 
-    elevation: 7,
+    elevation: 2,
   },
   dark: {
     shadowColor: COLORS.darkGray,

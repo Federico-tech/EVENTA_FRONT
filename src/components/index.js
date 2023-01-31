@@ -12,3 +12,4 @@ export * from './Container';
 export * from './Text';
 export * from './Row';
 export * from './ProfileHeader';
+export * from './MiniEventCard';
