@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
-import { IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../components';
+import { Container, IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../components';
 import { formatDate, formatTime } from '../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../utils/theme';
 
@@ -13,41 +13,43 @@ export const EventDetails = ({ route, navigation }) => {
   const source = { uri: data.coverImage };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <View style={styles.imageContainer}>
-            <Image source={source} style={styles.eventImage} resizeMode="contain" />
-            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
-          </View>
-          <OrganiserInf data={data} />
-          <Line />
-          <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-            <Text style={styles.eventTitle}>{data.name}</Text>
-            <ReadMoreButton text={data.description} style={styles.description} />
-            <View style={styles.date}>
-              <FontAwesome name="calendar-o" size={18} />
-              <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                <Text style={styles.dateText}>{formatDate(data.date)}</Text>
-                <Text style={styles.timeText}>{formatTime(data.date)}</Text>
+    <Container>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
+            <View style={styles.imageContainer}>
+              <Image source={source} style={styles.eventImage} resizeMode="contain" />
+              <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
+            </View>
+            <OrganiserInf data={data} />
+            <Line />
+            <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+              <Text style={styles.eventTitle}>{data.name}</Text>
+              <ReadMoreButton text={data.description} style={styles.description} />
+              <View style={styles.date}>
+                <FontAwesome name="calendar-o" size={18} />
+                <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
+                  <Text style={styles.dateText}>{formatDate(data.date)}</Text>
+                  <Text style={styles.timeText}>{formatTime(data.date)}</Text>
+                </View>
               </View>
+              <View style={styles.place}>
+                <Foundation name="marker" size={22} />
+                <Text style={styles.adressText}>{data.address}</Text>
+              </View>
+              <View style={styles.person}>
+                <Ionicons name="people-outline" size={24} />
+                <Text style={styles.peopleText}>
+                  22
+                  <Text style={styles.description}> of your friends are going</Text>
+                </Text>
+              </View>
+              <Text>Who's going?</Text>
             </View>
-            <View style={styles.place}>
-              <Foundation name="marker" size={22} />
-              <Text style={styles.adressText}>{data.address}</Text>
-            </View>
-            <View style={styles.person}>
-              <Ionicons name="people-outline" size={24} />
-              <Text style={styles.peopleText}>
-                22
-                <Text style={styles.description}> of your friends are going</Text>
-              </Text>
-            </View>
-            <Text>Who's going?</Text>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </Container>
   );
 };
 

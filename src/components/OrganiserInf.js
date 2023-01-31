@@ -1,8 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
-import { Button } from './Button';
+import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 
 export const OrganiserInf = ({ data }) => {
   return (
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flexDirection: 'column',
-    marginLeft: SIZE 
+    marginLeft: SIZE,
   },
   FollowButton: {
     alignContent: 'center',
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
   textName: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.lg,
-    marginBottom: SIZE / 5
+    marginBottom: SIZE / 5,
   },
   textAdress: {
     fontFamily: FONTS.medium,

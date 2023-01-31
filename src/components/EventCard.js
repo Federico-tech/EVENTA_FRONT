@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { formatDate } from '../utils/dates';
+import { formatDate, formatTime } from '../utils/dates';
 
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 
@@ -19,6 +19,9 @@ export const EventCard = ({ data }) => {
         ) : (
           <Image source={{ uri: data.coverImage }} style={styles.eventImage} resizeMode="cover" />
         )}
+        <View style={styles.startTime}>
+          <Text style={styles.startTimeText}>{formatTime(data.date)}</Text>
+        </View>
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
             <Image resizeMode="contain" style={styles.organiserImage} source={{ uri: data.organiser.profilePic }} />
@@ -33,10 +36,10 @@ export const EventCard = ({ data }) => {
               </View>
             </View>
           </View>
-          <View style={styles.likeContainer}>
+          {/* <View style={styles.likeContainer}>
             <FontAwesome name="heart" size={17} color="red" />
             <Text> {} </Text>
-          </View>
+          </View> */}
         </View>
       </View>
     </TouchableOpacity>
@@ -102,4 +105,21 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     backgroundColor: COLORS.lightGray,
   },
+  startTime:{
+    backgroundColor: COLORS.white,
+    width: SIZE * 5,
+    height: SIZE * 2.5, 
+    position: 'absolute',
+    marginTop: SIZE * 26.5,
+    marginLeft: SIZE * 22,
+    borderWidth: 1, 
+    borderColor: COLORS.primary,
+    borderRadius: SIZES.xxs,
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  startTimeText: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.sm
+  }
 });

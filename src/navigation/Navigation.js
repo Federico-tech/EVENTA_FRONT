@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
@@ -22,7 +23,6 @@ import { SearchScreen } from '../screens/user/search/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
 import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
-import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -69,6 +69,22 @@ const BottomBarIcons = ({ route }) => ({
   },
 });
 
+const screenOptions = (tabBarLabel) => ({
+  tabBarLabel,
+  tabBarLabelStyle: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.sm,
+    textTransform: 'none',
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0.17,
+    borderColor: COLORS.lightGray,
+    tabBarActiveTintColor: 'black',
+    tabBarInactiveTintColor: COLORS.darkGray,
+  },
+  tabBarIndicatorStyle: { backgroundColor: 'black' },
+  tabBarStyle: { height: SIZE * 3.3 },
+});
+
 const HomeStackNavigator = createStackNavigator();
 
 const HomeNavigator = () => {
@@ -83,63 +99,12 @@ const HomeNavigator = () => {
 const SearchTopStackNavigator = createMaterialTopTabNavigator();
 
 export const SearchTopNavigator = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <SearchTopStackNavigator.Navigator initialRouteName={ROUTES.SearchEventScreen}>
-      <SearchTopStackNavigator.Screen
-        name={ROUTES.SearchEventScreen}
-        component={SearchEventScreen}
-        options={{
-          tabBarLabel: t('event'),
-          tabBarLabelStyle: {
-            color: 'black',
-            fontFamily: FONTS.medium,
-            fontSize: SIZES.sm,
-            textTransform: 'none',
-            backgroundColor: 'transparent',
-            borderBottomWidth: 0.17,
-            borderColor: COLORS.lightGray,
-          },
-          tabBarIndicatorStyle: { backgroundColor: 'black' },
-          tabBarStyle: { height: SIZE * 3.5 },
-        }}
-      />
-      <SearchTopStackNavigator.Screen
-        name={ROUTES.SearchOrganiserScreen}
-        component={SearchOrganiserScreen}
-        options={{
-          tabBarLabel: t('organiser'),
-          tabBarLabelStyle: {
-            color: 'black',
-            fontFamily: FONTS.medium,
-            fontSize: SIZES.sm,
-            textTransform: 'none',
-            backgroundColor: 'transparent',
-            borderBottomWidth: 0.17,
-            borderColor: COLORS.lightGray,
-          },
-          tabBarIndicatorStyle: { backgroundColor: 'black' },
-          tabBarStyle: { height: SIZE * 3.5 },
-        }}
-      />
-      <SearchTopStackNavigator.Screen
-        name={ROUTES.SearchUserScreen}
-        component={SearchUserScreen}
-        options={{
-          tabBarLabel: 'Account',
-          tabBarLabelStyle: {
-            color: 'black',
-            fontFamily: FONTS.medium,
-            fontSize: SIZES.sm,
-            textTransform: 'none',
-            backgroundColor: 'transparent',
-            borderBottomWidth: 0.17,
-            borderColor: COLORS.lightGray,
-          },
-          tabBarIndicatorStyle: { backgroundColor: 'black' },
-          tabBarStyle: { height: SIZE * 3.5 },
-        }}
-      />
+      <SearchTopStackNavigator.Screen name={ROUTES.SearchEventScreen} component={SearchEventScreen} options={screenOptions(t('event'))} />
+      <SearchTopStackNavigator.Screen name={ROUTES.SearchOrganiserScreen} component={SearchOrganiserScreen} options={screenOptions(t('organiser'))} />
+      <SearchTopStackNavigator.Screen name={ROUTES.SearchUserScreen} component={SearchUserScreen} options={screenOptions('Account')} />
     </SearchTopStackNavigator.Navigator>
   );
 };

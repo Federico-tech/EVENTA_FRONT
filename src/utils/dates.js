@@ -12,12 +12,12 @@ export const fromDateAndTimeToISODate = (date, time) => {
 
 export const formatDate = (data) => {
   const dateTime = DateTime.fromISO(data);
-  const formDate = dateTime.toFormat('ccc d LLL yyyy');
-  return formDate
-}
+  const formDate = dateTime.toFormat('ccc d LLL');
+  return formDate;
+};
 
 export const formatTime = (data) => {
   const dateTime = DateTime.fromISO(data);
-  const formTime = dateTime.toFormat('HH:mm')
-  return formTime
-}
+  const formTime = dateTime.toFormat('HH:mm');
+  return formTime;
+};
