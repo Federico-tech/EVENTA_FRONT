@@ -15,8 +15,10 @@ import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
 import { SettingScreen } from '../screens/shared/settings/screen';
 import { EditUserScreen } from '../screens/user/editProfile/screen';
-import { EventDetails } from '../screens/user/eventDetails/screen';
-import { HomeScreen } from '../screens/user/home/screen';
+import { EventDetails } from '../screens/user/home/eventDetails/screen';
+import { HomeScreen } from '../screens/user/home/home/screen';
+import { LikeScreen } from '../screens/user/home/like/screen';
+import { NotificationsScreen } from '../screens/user/home/notifications/screen';
 import { MapScreen } from '../screens/user/map/screen';
 import { ProfileScreen } from '../screens/user/profile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
@@ -48,6 +50,8 @@ export const ROUTES = {
   SettingScreen: 'SettingScreen',
   EditUserScreen: 'EditUserScreen',
   EditOrganiserScreen: 'EditOrganiserScreen',
+  LikeScreen: 'LikeScreen',
+  NotificationsScreen: 'NotificationsScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -92,6 +96,8 @@ const HomeNavigator = () => {
     <HomeStackNavigator.Navigator initialRouteName={ROUTES.HomeScreen}>
       <HomeStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.LikeScreen} component={LikeScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );
 };

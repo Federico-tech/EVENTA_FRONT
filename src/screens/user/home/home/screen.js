@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Container, EventCard, HomeHeader, HomeTop } from '../../../components/index';
-import { getEvents } from '../../../services/events';
-import { userUpdate } from '../../../services/users';
-import { selectEvents } from '../../../store/event';
-import { SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { Container, EventCard, HomeHeader, HomeTop } from '../../../../components/index';
+import { getEvents } from '../../../../services/events';
+import { userUpdate } from '../../../../services/users';
+import { selectEvents } from '../../../../store/event';
+import { SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);

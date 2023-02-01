@@ -4,9 +4,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
-import { Container, IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../components';
-import { formatDate, formatTime } from '../../../utils/dates';
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../utils/theme';
+import { Container, IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../../components';
+import { formatDate, formatTime } from '../../../../utils/dates';
+import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route, navigation }) => {
   const { data } = route.params;
@@ -19,7 +19,13 @@ export const EventDetails = ({ route, navigation }) => {
           <View>
             <View style={styles.imageContainer}>
               <Image source={source} style={styles.eventImage} resizeMode="contain" />
-              <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
+              <IconButton
+                name="chevron-back-outline"
+                onPress={() => navigation.goBack()}
+                size={SIZE * 2}
+                iconStyle={styles.arrowStyle}
+                color="white"
+              />
             </View>
             <OrganiserInf data={data} />
             <Line />

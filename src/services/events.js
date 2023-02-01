@@ -1,6 +1,6 @@
+import { mainAxios } from '../core/axios';
 import { store } from '../store';
 import { setEvents } from '../store/event';
-import { mainAxios } from '../core/axios';
 
 export const createEvent = async (eventData) => {
   try {
@@ -10,15 +10,6 @@ export const createEvent = async (eventData) => {
     return await updateEventImage(eventData.file, createdEvent._id, true);
   } catch (e) {
     console.log({ errorCreateEvent: e });
-  }
-};
-
-export const getEvents = async () => {
-  try {
-    const { data } = await mainAxios.get(`events`);
-    store.dispatch(setEvents(data));
-  } catch (e) {
-    console.log({ e });
   }
 };
 
@@ -39,5 +30,25 @@ export const updateEventImage = async (image, eventId, deleteOnUploadFailed) => 
     console.debug({ errorImageEvent: e });
     deleteOnUploadFailed && (await mainAxios.delete(`events/${eventId}`));
     return Promise.reject(e);
+  }
+};
+
+export const getEvents = async () => {
+  try {
+    const { data } = await mainAxios.get(`events`);
+    store.dispatch(setEvents(data));
+  } catch (e) {
+    console.log({ e });
+  }
+};
+
+export const getOrganiserEvents = async (organiserId) => {
+  try {
+    const params = organiserId
+    const { data } = await mainAxios.get(`events`, { params });
+    console.log(data)
+    store.dispatch(setEvents(data));
+  } catch (e) {
+    console.log({ e });
   }
 };

@@ -4,16 +4,19 @@ import FlashMessage from 'react-native-flash-message';
 import { useSelector } from 'react-redux';
 
 import { Container, HomeHeader, MiniEventCard } from '../../../components';
-import { getEvents } from '../../../services/events';
+import { getEvents, getOrganiserEvents } from '../../../services/events';
 import { selectEvents } from '../../../store/event';
+import { selectUserId } from '../../../store/user';
 import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const OrganiserHome = () => {
   const [refreshing, setRefreshing] = useState(false);
 
+  const userId = useSelector(selectUserId)
+
   const onRefresh = async () => {
     setRefreshing(true);
-    await getEvents();
+    await getOrganiserEvents(userId);
     setRefreshing(false);
   };
 
@@ -22,7 +25,6 @@ export const OrganiserHome = () => {
   }, []);
 
   const { data } = useSelector(selectEvents);
-  console.log('data', data);
 
   return (
     <Container>

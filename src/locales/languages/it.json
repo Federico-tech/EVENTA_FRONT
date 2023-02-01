@@ -32,5 +32,8 @@
   "date": "Data", 
   "start time": "Orario d'inizio",
   "publish event": "Pubblica evento",
-  "create event": "Crea un nuovo evento!"
+  "create event": "Crea un nuovo evento!",
+  "likes": "Mi piace",
+  "notifications":"Notifiche",
+  "settings": "Impostazioni"
 }

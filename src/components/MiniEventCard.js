@@ -16,7 +16,7 @@ export const MiniEventCard = ({ data }) => {
       </View>
       <Line />
       <View style={styles.event}>
-        <Image source={{ uri: data.coverImage }} style={styles.coverImage} />
+        <Image source={{ uri: coverImage }} style={styles.coverImage} />
         <View style={styles.eventInformation}>
           <Text style={styles.date}>{formatDate(date)}</Text>
           <Text style={styles.name}>{name}</Text>

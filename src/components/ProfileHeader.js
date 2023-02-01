@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 

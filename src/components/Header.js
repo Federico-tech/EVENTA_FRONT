@@ -1,16 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 
-
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { IconButton } from './Button';
 import { Row } from './Row';
 import { TextButton } from './TextButton';
 
 export const Header = ({ title, onPress, loading }) => {
   const navigation = useNavigation();
-
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Row alignCenter row spaceBetween style={{ marginTop: SIZE * 4 }}>
@@ -21,7 +21,7 @@ export const Header = ({ title, onPress, loading }) => {
           <Text style={styles.title}>{title}</Text>
         </View>
         <View style={{ width: SIZE * 4, alignItems: 'center' }}>
-          <TextButton text="Fine" onPress={onPress} textStyle={styles.fine} loading={loading} />
+          <TextButton text={t('done')} onPress={onPress} textStyle={styles.fine} loading={loading} />
         </View>
       </Row>
     </View>

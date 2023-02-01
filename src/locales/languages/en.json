@@ -32,5 +32,8 @@
   "date": "Date", 
   "start time": "Start time",
   "publish event": "Publish Event", 
-  "create event": "Create a new event!"
+  "create event": "Create a new event!",
+  "likes": "Likes",
+  "notifications":"Notifications",
+  "settings": "Settings"
 }
