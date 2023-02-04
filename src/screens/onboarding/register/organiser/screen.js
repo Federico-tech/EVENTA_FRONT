@@ -27,13 +27,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
       username: string()
         .required('Username is a required field')
         .min(6, 'Username must be at least 6 characters')
-        .max(20, "Username can't be more than 20 characters")
-        .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
-          if (!value) {
-            return false;
-          }
-          return !value.match(/[A-Z]/);
-        }),
+        .max(20, "Username can't be more than 20 characters"),
       email: string().required().email('This is not a valid email'),
       address: string().required('Address is a required field'),
       password: string()

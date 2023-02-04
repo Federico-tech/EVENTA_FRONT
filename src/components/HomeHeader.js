@@ -3,16 +3,18 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { LogoText } from '../assets';
+import { ROUTES } from '../navigation/Navigation';
 import { selectUser } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../utils/theme';
 
 export const HomeHeader = ({ data }) => {
   const userinfo = useSelector(selectUser);
   const { t } = useTranslation();
+  const navigation  = useNavigation()
 
   return (
     <View>
@@ -20,13 +22,15 @@ export const HomeHeader = ({ data }) => {
         <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
-              {!userinfo.profilePic ? (
-                <View style={styles.imageView}>
-                  <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
-                </View>
-              ) : (
-                <Image style={styles.imageProfile} resizeMode="contain" source={{ uri: userinfo.profilePic }} />
-              )}
+              <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ProfileScreen)}>
+                {!userinfo.profilePic ? (
+                  <View style={styles.imageView}>
+                    <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
+                  </View>
+                ) : (
+                  <Image style={styles.imageProfile} resizeMode="contain" source={{ uri: userinfo.profilePic }} />
+                )}
+              </TouchableOpacity>
               <View style={styles.text}>
                 <Text style={styles.welcome}>{t('welcome')}</Text>
                 <Text style={styles.federico}>{userinfo.username}</Text>

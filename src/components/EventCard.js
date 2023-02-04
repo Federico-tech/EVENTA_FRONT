@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE * 2,
+    marginTop: SIZE * 1.5,
     alignSelf: 'center',
     borderRadius: SIZES.xxs,
     ...SHADOWS.light,

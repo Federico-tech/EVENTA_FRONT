@@ -1,15 +1,25 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, View, TextInput } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, TAB_BAR_HEIGHT, WIDTH_DEVICE } from '../utils/theme';
+import { setSearchFilter } from '../store/filter';
+import { COLORS, SIZE, SIZES, TAB_BAR_HEIGHT, WIDTH_DEVICE } from '../utils/theme';
 
-export const SearchBar = ({}) => {
+export const SearchBar = () => {
+  const { t } = useTranslation();
+  const [searchData, setSearchData] = useState('');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setSearchFilter(searchData));
+  }, [searchData]);
+
   return (
     <View style={styles.wrapper}>
       <Ionicons name="ios-search" size={20} color={COLORS.gray} style={styles.icon} />
-      <TextInput placeholder="Search" placeholderTextColor={COLORS.gray} style={styles.textInput} />
+      <TextInput placeholder={t('search')} placeholderTextColor={COLORS.gray} style={styles.textInput} onChangeText={setSearchData} />
     </View>
   );
 };
@@ -18,7 +28,7 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#DEDEDE',
     marginTop: TAB_BAR_HEIGHT + SIZE,
-    height: HEIGHT_DEVICE / 20,
+    height: SIZE * 3,
     marginHorizontal: WIDTH_DEVICE / 20,
     borderRadius: SIZES.xs,
     alignItems: 'center',

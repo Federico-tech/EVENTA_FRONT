@@ -2,7 +2,7 @@ import base64 from 'base-64';
 
 import { mainAxios, noAuthAxios } from '../core/axios';
 import { store } from '../store';
-import { setUserInfo, updateUserInfo } from '../store/user';
+import { selectUserId, setUserInfo, updateUserInfo } from '../store/user';
 
 export const loginUser = async (email, password) => {
   try {
@@ -31,7 +31,7 @@ export const organiserSignUp = async (data) => {
 
 export const userUpdate = async (data, userId) => {
   try {
-    await updateUserImage(data.file, userId);
+    //await updateUserImage(data.file, userId);
     const { data: updatedUser } = await mainAxios.put(`users/me`, data);
     store.dispatch(updateUserInfo(updatedUser));
     console.log({ updatedUser });
@@ -40,11 +40,13 @@ export const userUpdate = async (data, userId) => {
   }
 };
 
-export const updateUserImage = async (image, userId) => {
-  console.log(image);
+export const updateUserImage = async (file) => {
+  const state =  store.getState()
+  const userId = selectUserId(state)
+
   const formData = new FormData();
   formData.append('file', {
-    uri: image,
+    uri: file,
     name: 'image.png',
     type: 'image/png',
   });
@@ -52,9 +54,18 @@ export const updateUserImage = async (image, userId) => {
   console.debug({ formData });
   try {
     const { data } = await mainAxios.put(`users/${userId}/profilePic`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-    console.debug('Data', { data });
+    console.debug('userWithImageUpdated', { data });
     return data;
   } catch (e) {
     console.debug({ errorProfilePic: e });
   }
 };
+
+export const followUser = async (userId) => {
+  try {
+    const { data } = await mainAxios.post(`users/${userId}/follow`)
+    console.log(data)
+  } catch (e) {
+    console.log({ errorFollowing: e})
+  }
+}

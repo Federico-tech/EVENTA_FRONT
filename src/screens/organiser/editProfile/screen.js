@@ -36,13 +36,7 @@ export const EditOrganiserScreen = () => {
       username: string()
         .required('Username is a required field')
         .min(6, 'Username must be at least 6 characters')
-        .max(20, "Username can't be more than 20 characters")
-        .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
-          if (!value) {
-            return false;
-          }
-          return !value.match(/[A-Z]/);
-        }),
+        .max(20, "Username can't be more than 20 characters"),
       address: string().required('Address is a required field'),
     }),
     validateOnChange: false,

@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row } from '../../../components';
-import { userUpdate } from '../../../services/users';
+import { updateUserImage, userUpdate } from '../../../services/users';
 import { selectUser, selectUserId } from '../../../store/user';
 import { requestCameraPermission } from '../../../utils/permissions';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
@@ -52,6 +52,7 @@ export const EditUserScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
+        await updateUserImage(data.file)
         await userUpdate(data, userId);
         navigation.goBack();
         setLoading(false);
@@ -63,7 +64,7 @@ export const EditUserScreen = () => {
   });
 
   const onChangeText = (formikName, newValue) => {
-    setFieldValue(formikName, newValue);
+    setFieldValue(formikName, newValue); 
     setFieldError(formikName, '');
   };
 

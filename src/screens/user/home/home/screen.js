@@ -1,44 +1,20 @@
-import * as Location from 'expo-location';
-import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../../components/index';
-import { getEvents } from '../../../../services/events';
-import { userUpdate } from '../../../../services/users';
-import { selectEvents } from '../../../../store/event';
+import { updateUserCoordinates } from '../../../../utils';
+import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
-  const [refreshing, setRefreshing] = useState(false);
+  //useEffect(() => {
+  //  updateUserCoordinates();
+  //}, []);
+  const { data, getData } = useInfiniteScroll({
+    entity: 'events',
+  });
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync({});
-      if (status === 'granted') {
-        const location = await Location.getCurrentPositionAsync({});
-        console.log('Coordinates', location.coords);
-        const position = {
-          type: 'Point',
-          coordinates: [location.coords.longitude, location.coords.latitude],
-        };
-        await userUpdate({ position });
-      }
-    })();
-  }, []);
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await getEvents();
-    setRefreshing(false);
-  };
-
-  useEffect(() => {
-    onRefresh();
-  }, []);
-
-  const { data } = useSelector(selectEvents);
-  console.log('data', data);
+  console.debug({ HomeScreen: data });
 
   return (
     <Container>
@@ -47,10 +23,7 @@ export const HomeScreen = () => {
         data={data}
         renderItem={({ item }) => <EventCard data={item} />}
         keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
         ListHeaderComponent={<HomeTop />}
-        style={styles.container}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>
   );
