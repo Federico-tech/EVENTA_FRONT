@@ -16,9 +16,11 @@ export function useInfiniteScroll({ page: initialPage = 1, data: initialData = [
       limit: limit,
       ...filters,
     };
+    setRefreshing(true)
     const { data } = await mainAxios.get(entity, { params });
     setTotalData(data?.totalData || 0);
     setData(data?.data || []);
+    setRefreshing(false)
   }, [entity, filters, limit, page]);
 
   const getRefreshedData = useCallback(async () => {

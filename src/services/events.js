@@ -44,7 +44,7 @@ export const getEvents = async () => {
 
 export const getOrganiserEvents = async (organiserId) => {
   try {
-    const params = organiserId
+    const params = { organiserId };
     const { data } = await mainAxios.get(`events`, { params });
     console.log(data)
     store.dispatch(setEvents(data));

@@ -4,27 +4,21 @@ import FlashMessage from 'react-native-flash-message';
 import { useSelector } from 'react-redux';
 
 import { Container, HomeHeader, MiniEventCard } from '../../../components';
-import { getEvents, getOrganiserEvents } from '../../../services/events';
-import { selectEvents } from '../../../store/event';
+
 import { selectUserId } from '../../../store/user';
+import { useInfiniteScroll } from '../../../utils/hooks';
 import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const OrganiserHome = () => {
-  const [refreshing, setRefreshing] = useState(false);
+  
+  const organiserId = useSelector(selectUserId)
 
-  const userId = useSelector(selectUserId)
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await getOrganiserEvents(userId);
-    setRefreshing(false);
-  };
-
-  useEffect(() => {
-    onRefresh();
-  }, []);
-
-  const { data } = useSelector(selectEvents);
+  const { data, refreshing, getRefreshedData } = useInfiniteScroll({
+    entity: 'events',
+    filters: {
+      organiserId,
+    }
+  });
 
   return (
     <Container>
@@ -35,9 +29,9 @@ export const OrganiserHome = () => {
           renderItem={({ item }) => <MiniEventCard data={item} />}
           keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
           ListHeaderComponent={<Text style={styles.text}>All Your Events</Text>}
           style={styles.container}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         />
       </View>
       <FlashMessage position="top" />

@@ -27,6 +27,7 @@ export const HomeTop = () => {
         </Row>
         <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressLikes}/>
       </View>
+      <MapView style={styles.map}/>
     </View>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import { RefreshControl } from 'react-native-gesture-handler';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../../components/index';
 import { updateUserCoordinates } from '../../../../utils';
@@ -7,10 +8,11 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
-  //useEffect(() => {
-  //  updateUserCoordinates();
-  //}, []);
-  const { data, getData } = useInfiniteScroll({
+  useEffect(() => {
+   updateUserCoordinates();
+  }, []);
+  
+  const { data, refreshing, getRefreshedData } = useInfiniteScroll({
     entity: 'events',
   });
 
@@ -23,7 +25,8 @@ export const HomeScreen = () => {
         data={data}
         renderItem={({ item }) => <EventCard data={item} />}
         keyExtractor={(item) => item._id}
-        ListHeaderComponent={<HomeTop />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData}/>}
+        ListHeaderComponent={<HomeTop />} 
       />
     </Container>
   );

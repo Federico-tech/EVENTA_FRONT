@@ -52,6 +52,7 @@ export const ROUTES = {
   EditOrganiserScreen: 'EditOrganiserScreen',
   LikeScreen: 'LikeScreen',
   NotificationsScreen: 'NotificationsScreen',
+  OrganiserProfileNavigator: 'OrganiserProfileNavigator'
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -133,7 +134,7 @@ export const OrganiserProfileNavigator = () => {
   return (
     <OrganiserProfileStackNavigator.Navigator initialRouteName={ROUTES.OrganiserProfileScreen}>
       <OrganiserProfileStackNavigator.Screen
-        name={ROUTES.OrganiserProfileScreen}
+        name={ROUTES.OrganiserProfileNavigator}
         component={OrganiserProfileScreen}
         options={{ headerShown: false }}
       />
