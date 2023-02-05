@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  searchFilter: '',
+  searchFilter: undefined,
 };
 
 export const filterSlice = createSlice({
@@ -16,6 +16,6 @@ export const filterSlice = createSlice({
 
 export const { setSearchFilter } = filterSlice.actions;
 
-export const selectSearchFilter = (state) => state?.filters?.searchFilter || '';
+export const selectSearchFilter = (state) => state.filters?.searchFilter || undefined;
 
 export default filterSlice.reducer;

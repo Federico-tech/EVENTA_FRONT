@@ -16,6 +16,8 @@ export const SearchBar = () => {
     dispatch(setSearchFilter(searchData));
   }, [searchData]);
 
+  console.log('Seardch', searchData);
+
   return (
     <View style={styles.wrapper}>
       <Ionicons name="ios-search" size={20} color={COLORS.gray} style={styles.icon} />

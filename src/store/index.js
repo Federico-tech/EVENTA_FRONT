@@ -6,14 +6,14 @@ import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 
 import event from './event';
+import filters from './filter';
 import user from './user';
-import Filter from './filter';
 
 // REDUCERS
 const reducers = combineReducers({
   user,
   event,
-  Filter,
+  filters,
 });
 
 const persistConfig = {

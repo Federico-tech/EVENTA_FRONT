@@ -1,42 +1,42 @@
+import _ from 'lodash';
 import React, { useEffect } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../../components/index';
 import { updateUserCoordinates } from '../../../../utils';
 import { useInfiniteScroll } from '../../../../utils/hooks';
+// eslint-disable-next-line no-unused-vars
 import { SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
   useEffect(() => {
-   updateUserCoordinates();
+    updateUserCoordinates();
   }, []);
-  
-  const { data, refreshing, getRefreshedData } = useInfiniteScroll({
+
+  const { data, refreshing, getData, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: 'events',
+    limit: 8,
   });
 
-  console.debug({ HomeScreen: data });
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Container>
       <HomeHeader />
       <FlatList
         data={data}
+        style={{ width: WIDTH_DEVICE }}
         renderItem={({ item }) => <EventCard data={item} />}
         keyExtractor={(item) => item._id}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData}/>}
-        ListHeaderComponent={<HomeTop />} 
+        onEndReachedThreshold={0.1}
+        onEndReached={_.throttle(getMoreData, 400)}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+        ListHeaderComponent={<HomeTop />}
+        ListFooterComponent={<View>{loadMore && <ActivityIndicator />}</View>}
       />
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  map: {
-    height: SIZE * 17,
-    marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE,
-    borderRadius: SIZES.xxs,
-  },
-});
