@@ -6,7 +6,20 @@ import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } fr
 import { GoogleLogo } from '../assets';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS, SIZE } from '../utils/theme';
 
-export const Button = ({ text, onPress, loading, containerStyle, primary, wrapperStyle, textStyle, secondary, gradient, disabled, children }) => {
+export const Button = ({
+  text,
+  onPress,
+  loading,
+  containerStyle,
+  primary,
+  wrapperStyle,
+  textStyle,
+  secondary,
+  gradient,
+  disabled,
+  pressed,
+  children,
+}) => {
   const Component = gradient ? LinearGradient : View;
   return (
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
@@ -19,6 +32,7 @@ export const Button = ({ text, onPress, loading, containerStyle, primary, wrappe
           secondary && styles.secondary,
           disabled && styles.disabled,
           gradient && styles.containerGradient,
+          pressed && styles.pressed,
           containerStyle,
         ]}>
         {loading ? (
@@ -26,7 +40,14 @@ export const Button = ({ text, onPress, loading, containerStyle, primary, wrappe
         ) : (
           <>
             {!!text && (
-              <Text style={[textStyle, primary && styles.textPrimary, gradient && styles.textGradient, secondary && styles.textSecondary]}>
+              <Text
+                style={[
+                  textStyle,
+                  primary && styles.textPrimary,
+                  gradient && styles.textGradient,
+                  secondary && styles.textSecondarym,
+                  pressed && styles.textPressed,
+                ]}>
                 {text}
               </Text>
             )}
@@ -99,7 +120,7 @@ const styles = StyleSheet.create({
   textGradient: {
     fontFamily: FONTS.semiBold,
     color: 'white',
-    fontSize: SIZES.lg,
+    fontSize: SIZES.md,
   },
   onboardText: {
     color: 'white',
@@ -126,15 +147,24 @@ const styles = StyleSheet.create({
 
     ...SHADOWS.medium,
   },
-
   textSocialLogin: {
     fontFamily: FONTS.regular,
     fontSize: SIZES.md,
     color: COLORS.darkGray,
     marginLeft: WIDTH_DEVICE / 80,
   },
-  icon: {
-    // alignSelf: 'flex-start',
-    // position: 'absolute',
+  pressed: {
+    backgroundColor: COLORS.white,
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+    height: SIZE * 2.5,
+    borderRadius: SIZES.xs,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textPressed: {
+    color: COLORS.primary,
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.md,
   },
 });
