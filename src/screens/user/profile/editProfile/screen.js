@@ -8,11 +8,11 @@ import { View, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, InputText, TextButton, Header, Row } from '../../../components';
-import { updateUserImage, userUpdate } from '../../../services/users';
-import { selectUser, selectUserId } from '../../../store/user';
-import { requestCameraPermission } from '../../../utils/permissions';
-import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { Container, InputText, TextButton, Header, Row } from '../../../../components';
+import { updateUserImage, userUpdate } from '../../../../services/users';
+import { selectUser, selectUserId } from '../../../../store/user';
+import { requestCameraPermission } from '../../../../utils/permissions';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditUserScreen = () => {
   useEffect(requestCameraPermission, []);
@@ -52,7 +52,7 @@ export const EditUserScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
-        await updateUserImage(data.file)
+        await updateUserImage(data.file);
         await userUpdate(data, userId);
         navigation.goBack();
         setLoading(false);
@@ -64,7 +64,7 @@ export const EditUserScreen = () => {
   });
 
   const onChangeText = (formikName, newValue) => {
-    setFieldValue(formikName, newValue); 
+    setFieldValue(formikName, newValue);
     setFieldError(formikName, '');
   };
 

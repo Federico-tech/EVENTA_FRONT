@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { ProfileHeader, Container, Row, Button } from '../../../components';
-import { ROUTES } from '../../../navigation/Navigation';
-import { selectUser } from '../../../store/user';
-import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
+import { ProfileHeader, Container, Row, Button } from '../../../../components';
+import { ROUTES } from '../../../../navigation/Navigation';
+import { selectUser } from '../../../../store/user';
+import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const ProfileScreen = () => {
   const user = useSelector(selectUser);
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   userName: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.md,
-    marginTop: SIZE
+    marginTop: SIZE,
   },
   noDesc: {
     fontFamily: FONTS.medium,

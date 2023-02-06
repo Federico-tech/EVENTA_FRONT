@@ -14,13 +14,14 @@ import { OrganiserHome } from '../screens/organiser/home/screen';
 import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
 import { SettingScreen } from '../screens/shared/settings/screen';
-import { EditUserScreen } from '../screens/user/editProfile/screen';
 import { EventDetails } from '../screens/user/home/eventDetails/screen';
 import { HomeScreen } from '../screens/user/home/home/screen';
 import { LikeScreen } from '../screens/user/home/like/screen';
 import { NotificationsScreen } from '../screens/user/home/notifications/screen';
 import { MapScreen } from '../screens/user/map/screen';
-import { ProfileScreen } from '../screens/user/profile/screen';
+import { AccountProfileScreen } from '../screens/user/profile/accountProfile/screen';
+import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
+import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
@@ -52,7 +53,9 @@ export const ROUTES = {
   EditOrganiserScreen: 'EditOrganiserScreen',
   LikeScreen: 'LikeScreen',
   NotificationsScreen: 'NotificationsScreen',
-  OrganiserProfileNavigator: 'OrganiserProfileNavigator'
+  OrganiserProfileNavigator: 'OrganiserProfileNavigator',
+  AccountProfileScreen: 'AccountProfileScreen',
+  SearchNavigator: 'SearchNavigator',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -61,7 +64,7 @@ const BottomBarIcons = ({ route }) => ({
     let iconName;
     if (route.name === ROUTES.HomeNavigator || route.name === ROUTES.OrganiserHome) {
       iconName = focused ? 'home' : 'home-outline';
-    } else if (route.name === ROUTES.SearchScreen) {
+    } else if (route.name === ROUTES.SearchNavigator) {
       iconName = focused ? 'ios-search' : 'ios-search-outline';
     } else if (route.name === ROUTES.MapScreen) {
       iconName = focused ? 'map' : 'map-outline';
@@ -116,6 +119,17 @@ export const SearchTopNavigator = () => {
   );
 };
 
+export const SearchStackNavigator = createStackNavigator();
+
+export const SearchNavigator = () => {
+  return (
+    <SearchStackNavigator.Navigator>
+      <SearchStackNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.AccountProfileScreen} component={AccountProfileScreen} options={{ headerShown: false }} />
+    </SearchStackNavigator.Navigator>
+  );
+};
+
 const ProfileStackNavigator = createStackNavigator();
 
 export const ProfileNavigator = () => {
@@ -148,7 +162,7 @@ export const UserBottomNavigator = () => {
   return (
     <UserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
       <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
-      <UserBottomTabNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileNavigator} options={{ headerShown: false }} />
     </UserBottomTabNavigator.Navigator>

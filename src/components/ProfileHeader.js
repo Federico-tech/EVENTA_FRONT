@@ -9,15 +9,15 @@ import { selectUser } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { IconButton } from './Button';
 
-export const ProfileHeader = ({ myProfile }) => {
+export const ProfileHeader = ({ myProfile, data }) => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
   return (
     <View style={{ height: SIZE * 15 }}>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
         <View style={styles.container}>
-          {!myProfile && <IconButton name="chevron-back" color="white" size={22} />}
-          <Text style={styles.usernameText}>{user.username}</Text>
+          {!myProfile && <IconButton name="chevron-back" color="white" size={22} onPress={() => navigation.goBack()} />}
+          <Text style={styles.usernameText}>{myProfile ? user.username : data.username}</Text>
           {myProfile ? (
             <IconButton name="settings" color="white" size={20} onPress={() => navigation.navigate('SettingScreen')} />
           ) : (
@@ -26,10 +26,10 @@ export const ProfileHeader = ({ myProfile }) => {
         </View>
       </LinearGradient>
       <View style={styles.profileImage}>
-        {!user.profilePic ? (
+        {!user.profilePic || (!myProfile && !data.profilePic) ? (
           <Ionicons name="person" size={60} color={COLORS.gray} />
         ) : (
-          <Image source={{ uri: user.profilePic }} style={styles.image} resizeMode="contain" />
+          <Image source={{ uri: myProfile ? user.profilePic : data.profilePic }} style={styles.image} resizeMode="contain" />
         )}
       </View>
     </View>
