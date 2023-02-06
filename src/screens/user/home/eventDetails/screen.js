@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 
@@ -8,9 +9,10 @@ import { Container, IconButton, Line, OrganiserInf, ReadMoreButton } from '../..
 import { formatDate, formatTime } from '../../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
-export const EventDetails = ({ route, navigation }) => {
+export const EventDetails = ({ route }) => {
   const { data } = route.params;
   const source = { uri: data.coverImage };
+  const navigation = useNavigation()
 
   return (
     <Container>

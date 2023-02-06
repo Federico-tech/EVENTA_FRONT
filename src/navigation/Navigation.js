@@ -126,6 +126,7 @@ export const SearchNavigator = () => {
     <SearchStackNavigator.Navigator>
       <SearchStackNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.AccountProfileScreen} component={AccountProfileScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </SearchStackNavigator.Navigator>
   );
 };

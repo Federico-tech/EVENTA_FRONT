@@ -30,7 +30,7 @@ export const AccountProfileScreen = ({ route, navigation }) => {
         </Row>
       </Row>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Button gradient containerStyle={styles.button} text={t('edit profile')}/>
+        <Button gradient containerStyle={styles.button} text={t('follow')} />
         <Text style={styles.recent}>{t('recent events')}</Text>
       </View>
     </Container>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: SIZE,
     height: SIZE * 2.5,
-    borderRadius: SIZES.xxs
+    borderRadius: SIZES.xxs,
   },
   recent: {
     fontFamily: FONTS.semiBold,

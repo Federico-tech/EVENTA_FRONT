@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 import { formatDate } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
@@ -7,25 +8,28 @@ import { Line } from './Line';
 
 export const MiniEventCard = ({ data }) => {
   const { organiser, coverImage, date, name, address } = data;
+  const navigation = useNavigation()
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.top}>
-        <Image source={{ uri: organiser.profilePic }} style={styles.profilePic} />
-        <Text style={styles.textOrganiserName}>{organiser.username}</Text>
-      </View>
-      <Line />
-      <View style={styles.event}>
-        <Image source={{ uri: coverImage }} style={styles.coverImage} />
-        <View style={styles.eventInformation}>
-          <Text style={styles.date}>{formatDate(date)}</Text>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
-            {address}
-          </Text>
+    <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>
+      <View style={styles.wrapper}>
+        <View style={styles.top}>
+          <Image source={{ uri: organiser.profilePic }} style={styles.profilePic} />
+          <Text style={styles.textOrganiserName}>{organiser.username}</Text>
+        </View>
+        <Line />
+        <View style={styles.event}>
+          <Image source={{ uri: coverImage }} style={styles.coverImage} />
+          <View style={styles.eventInformation}>
+            <Text style={styles.date}>{formatDate(date)}</Text>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
+              {address}
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

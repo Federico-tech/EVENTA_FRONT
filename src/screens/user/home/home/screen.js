@@ -16,7 +16,7 @@ export const HomeScreen = () => {
 
   const { data, refreshing, getData, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: 'events',
-    limit: 8,
+    limit: 7,
   });
 
   useEffect(() => {

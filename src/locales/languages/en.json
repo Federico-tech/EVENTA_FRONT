@@ -35,5 +35,7 @@
   "create event": "Create a new event!",
   "likes": "Likes",
   "notifications":"Notifications",
-  "settings": "Settings"
+  "settings": "Settings",
+  "follow": "Follow",
+  "followingB": "Following"
 }

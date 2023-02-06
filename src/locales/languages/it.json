@@ -35,5 +35,7 @@
   "create event": "Crea un nuovo evento!",
   "likes": "Mi piace",
   "notifications":"Notifiche",
-  "settings": "Impostazioni"
+  "settings": "Impostazioni",
+  "follow": "Segui",
+  "followingB": "Segui già"
 }
