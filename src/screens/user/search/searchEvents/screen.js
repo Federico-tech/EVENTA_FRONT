@@ -16,6 +16,11 @@ export const SearchEventScreen = () => {
     },
   });
 
+  useEffect(() => {
+    getRefreshedData()
+  }, [name])
+  
+
   return (
     <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
       <FlatList

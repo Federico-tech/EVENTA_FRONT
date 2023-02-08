@@ -17,7 +17,7 @@ export const MiniEventCard = ({ data }) => {
           <Image source={{ uri: organiser.profilePic }} style={styles.profilePic} />
           <Text style={styles.textOrganiserName}>{organiser.username}</Text>
         </View>
-        <Line />
+        <Line lineStyle={{ backgroundColor: COLORS.backGray }} />
         <View style={styles.event}>
           <Image source={{ uri: coverImage }} style={styles.coverImage} />
           <View style={styles.eventInformation}>
@@ -41,9 +41,7 @@ const styles = StyleSheet.create({
     marginTop: SIZE,
     borderRadius: SIZES.xxs,
     width: WIDTH_DEVICE * 0.9,
-    borderWidth: 0.5,
     alignSelf: 'center',
-    borderColor: COLORS.primary,
     ...SHADOWS.medium,
   },
   top: {

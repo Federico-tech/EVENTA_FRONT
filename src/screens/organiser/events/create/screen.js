@@ -151,7 +151,7 @@ export const CreateEventScreen = ({ route }) => {
   };
 
   return (
-    <Container>
+    <Container >
       <SafeAreaView style={styles.container}>
         <KeyboardAvoidingView behavior="padding">
           <ScrollView showsVerticalScrollIndicator={false}>

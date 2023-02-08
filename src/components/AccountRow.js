@@ -1,3 +1,4 @@
+import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
@@ -6,18 +7,29 @@ import { ROUTES } from '../navigation/Navigation';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Row } from './Row';
 
-export const AccountRow = ({ data }) => {
-  const { profilePic, username, name } = data;
+export const AccountRow = ({ data, user, organiser }) => {
+  const { profilePic, username, name, address } = data;
   const navigation = useNavigation();
   const handleOnPress = () => navigation.navigate(ROUTES.AccountProfileScreen, { data });
   return (
     <TouchableOpacity onPress={handleOnPress}>
-      <View style={styles.wrapper}>
+      <View style={[user && styles.userWrapper, organiser && styles.organiserWrapper]}>
         <Row row alignCenter>
-          <Image source={{ uri: profilePic }} style={styles.profileImage} />
-          <Row style={{ paddingLeft: SIZE / 2 }}>
-            <Text style={styles.usernameText}>{username}</Text>
-            <Text style={styles.nameText}>{name}</Text>
+          {!profilePic ? (
+          <View style={styles.imageView}>
+            <FontAwesome5 name="user-alt" size={SIZE * 3.5} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
+          </View>
+          ) : (
+            <Image source={{ uri: profilePic }} style={[user && styles.profileImage, organiser && styles.organiserImage]} />
+          )}
+          <Row style={{ paddingLeft: SIZE }}>
+            <Text style={[user && styles.usernameText, organiser && styles.organiserText]}>{username}</Text>
+            {user && <Text style={styles.nameText}>{name}</Text>}
+            {organiser && 
+              <View style={{width: SIZE * 15}}>
+                <Text style={styles.addressText}>{address}</Text>
+              </View>
+            }
           </Row>
         </Row>
       </View>
@@ -25,10 +37,17 @@ export const AccountRow = ({ data }) => {
   );
 };
 
+
+
 const styles = StyleSheet.create({
-  wrapper: {
+  userWrapper: {
     marginTop: SIZE,
     height: SIZE * 3.5,
+    marginHorizontal: WIDTH_DEVICE / 20,
+  },
+  organiserWrapper: {
+    marginTop: SIZE,
+    height: SIZE * 5,
     marginHorizontal: WIDTH_DEVICE / 20,
   },
   profileImage: {
@@ -43,4 +62,23 @@ const styles = StyleSheet.create({
   nameText: {
     color: COLORS.gray,
   },
+  organiserImage: {
+    width: SIZE * 5,
+    aspectRatio: 1,
+    borderRadius: 100,
+  },
+  organiserText: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.md,
+  },
+  addressText: {
+    color: COLORS.gray,
+    fontSize: SIZES.xxs,
+    marginTop: SIZE / 5
+  },
+  imageView: {
+    width: SIZE * 3.5,
+    aspectRatio: 1,
+    borderRadius: 100
+  }
 });

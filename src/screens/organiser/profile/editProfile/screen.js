@@ -9,18 +9,18 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, InputText, TextButton, Header, Row } from '../../../components';
-import { userUpdate } from '../../../services/users';
-import { selectUser, selectUserId } from '../../../store/user';
-import { requestCameraPermission } from '../../../utils/permissions';
-import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { Container, InputText, TextButton, Header, Row } from '../../../../components';
+import { userUpdate } from '../../../../services/users';
+import { selectUser, selectUserId } from '../../../../store/user';
+import { requestCameraPermission } from '../../../../utils/permissions';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditOrganiserScreen = () => {
   useEffect(requestCameraPermission, []);
   const navigation = useNavigation();
 
   const user = useSelector(selectUser);
-  console.log(user)
+  console.log(user);
   const userId = useSelector(selectUserId);
 
   const [loading, setLoading] = useState(false);
@@ -87,28 +87,28 @@ export const EditOrganiserScreen = () => {
 
   return (
     <Container>
-      <ScrollView showsVerticalScrollIndicator={false}>
       <KeyboardAvoidingView behavior="padding">
         <Header title="Edit Profile" onPress={handleSubmit} loading={loading} />
-        <View style={styles.container}>
-          <Row alignCenter>
-            <View style={styles.imageContainer}>
-              {!values.file ? (
-                <Ionicons name="person" size={50} color={COLORS.darkGray} />
-              ) : (
-                <>
-                  <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
-                </>
-              )}
-            </View>
-            <TextButton text="Upload an image" textStyle={styles.upload} onPress={pickImage} />
-          </Row>
-          <InputText label="Username" formik={formik} formikName="username" />
-          <InputText label="Address" formik={formik} formikName="address" />
-          <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
-        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <Row alignCenter>
+              <View style={styles.imageContainer}>
+                {!values.file ? (
+                  <Ionicons name="person" size={50} color={COLORS.darkGray} />
+                ) : (
+                  <>
+                    <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
+                  </>
+                )}
+              </View>
+              <TextButton text="Upload an image" textStyle={styles.upload} onPress={pickImage} />
+            </Row>
+            <InputText label="Username" formik={formik} formikName="username" />
+            <InputText label="Address" formik={formik} formikName="address" />
+            <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
-      </ScrollView>
     </Container>
   );
 };

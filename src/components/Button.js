@@ -45,7 +45,7 @@ export const Button = ({
                   textStyle,
                   primary && styles.textPrimary,
                   gradient && styles.textGradient,
-                  secondary && styles.textSecondarym,
+                  secondary && styles.textSecondary,
                   pressed && styles.textPressed,
                 ]}>
                 {text}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   containerGradient: {
     backgroundColor: undefined,
-    height: SIZE * 3,
+    height: SIZE * 2.5,
     width: SIZE * 10,
     borderRadius: SIZES.xs,
     flexDirection: 'row',
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   textGradient: {
     fontFamily: FONTS.semiBold,
     color: 'white',
-    fontSize: SIZES.md,
+    fontSize: SIZES.sm,
   },
   onboardText: {
     color: 'white',

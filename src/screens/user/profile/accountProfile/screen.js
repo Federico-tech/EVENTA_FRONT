@@ -30,7 +30,7 @@ export const AccountProfileScreen = ({ route, navigation }) => {
         </Row>
       </Row>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Button gradient containerStyle={styles.button} text={t('follow')} />
+        <Button secondary containerStyle={styles.button} text={t('following')}/>
         <Text style={styles.recent}>{t('recent events')}</Text>
       </View>
     </Container>
