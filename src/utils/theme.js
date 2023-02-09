@@ -27,7 +27,7 @@ export const FONTS = {
   semiBold: 'InterSemiBold',
 };
 
-export const SIZE = WIDTH_DEVICE / 31;
+export const SIZE = WIDTH_DEVICE / 30;
 
 export const SIZES = {
   xxs: SIZE * 0.9,

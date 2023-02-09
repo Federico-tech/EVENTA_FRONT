@@ -20,7 +20,7 @@ import { createEvent } from '../../../../services/events';
 import { selectUserId } from '../../../../store/user';
 import { fromDateAndTimeToISODate } from '../../../../utils/dates';
 import { requestCameraPermission } from '../../../../utils/permissions';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
@@ -152,7 +152,7 @@ export const CreateEventScreen = ({ route }) => {
 
   return (
     <Container >
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <KeyboardAvoidingView behavior="padding">
           <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.title}>{t('create event')}</Text>
@@ -191,7 +191,7 @@ export const CreateEventScreen = ({ route }) => {
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
     </Container>
   );
 };
@@ -199,6 +199,7 @@ export const CreateEventScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
+    marginTop: SIZE * 3,
   },
   title: {
     fontFamily: FONTS.semiBold,
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
     height: HEIGHT_DEVICE / 6,
   },
   uploadImage: {
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: COLORS.backGray,
     width: WIDTH_DEVICE / 2,
     aspectRatio: 1,
     alignSelf: 'center',

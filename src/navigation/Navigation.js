@@ -8,6 +8,7 @@ import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { CreateEventScreen } from '../screens/organiser/events/create/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';
+import { AccountOrganiserScreen } from '../screens/organiser/profile/accountProfile/screen';
 import { EditOrganiserScreen } from '../screens/organiser/profile/editProfile/screen';
 import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
@@ -17,7 +18,7 @@ import { HomeScreen } from '../screens/user/home/home/screen';
 import { LikeScreen } from '../screens/user/home/like/screen';
 import { NotificationsScreen } from '../screens/user/home/notifications/screen';
 import { MapScreen } from '../screens/user/map/screen';
-import { AccountProfileScreen } from '../screens/user/profile/accountProfile/screen';
+import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen';
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
@@ -49,10 +50,11 @@ export const ROUTES = {
   LikeScreen: 'LikeScreen',
   NotificationsScreen: 'NotificationsScreen',
   OrganiserProfileNavigator: 'OrganiserProfileNavigator',
-  AccountProfileScreen: 'AccountProfileScreen',
+  AccountUserScreen: 'AccountUserScreen',
   SearchNavigator: 'SearchNavigator',
   AboutScreen: 'AboutScreen',
   EventProfileScreen: 'EventProfileScreen',
+  AccountOrganiserScreen: 'AccountOrganiserScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -93,7 +95,8 @@ export const SearchNavigator = () => {
   return (
     <SearchStackNavigator.Navigator>
       <SearchStackNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} options={{ headerShown: false }} />
-      <ProfileStackNavigator.Screen name={ROUTES.AccountProfileScreen} component={AccountProfileScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </SearchStackNavigator.Navigator>
   );

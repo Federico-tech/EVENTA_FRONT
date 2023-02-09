@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text as RNText, StyleSheet } from 'react-native';
 
-import { FONTS, SIZES } from '../utils/theme';
-export const Text = ({ color, style, bold, children, semiBold, ...rest }) => {
+import { COLORS, FONTS, SIZES } from '../utils/theme';
+export const Text = ({ color, style, bold, children, semiBoldSm, semiBoldMd, medium, regularSm, regularXs, ...rest }) => {
   return (
-    <RNText style={[{ color }, bold && styles.bold, semiBold && styles.semiBold, style]} {...rest}>
+    <RNText style={[{ color }, bold && styles.bold, semiBoldSm && styles.semiBoldSm, semiBoldMd && styles.semiBoldMd, medium && styles.medium, regularSm && styles.regularSm, regularXs && styles.regularXs, style]} {...rest}>
       {children}
     </RNText>
   );
@@ -15,8 +15,24 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.extraBold,
     fontSize: SIZES.lg,
   },
-  semiBold: {
+  semiBoldSm: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.sm,
+  },
+  semiBoldMd: {
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.md,
   },
+  medium: {
+    fontFamily: FONTS.medium,
+    fontSize: FONTS.sm
+  },
+  regularSm: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.sm,
+  },
+  regularXs: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.xs
+  }
 });

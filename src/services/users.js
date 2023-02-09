@@ -69,3 +69,5 @@ export const followUser = async (userId) => {
     console.log({ errorFollowing: e})
   }
 }
+
+

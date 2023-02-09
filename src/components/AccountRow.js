@@ -7,29 +7,24 @@ import { ROUTES } from '../navigation/Navigation';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Row } from './Row';
 
-export const AccountRow = ({ data, user, organiser }) => {
-  const { profilePic, username, name, address } = data;
+export const UserRow = ({ data }) => {
+  const { profilePic, username, name } = data;
   const navigation = useNavigation();
-  const handleOnPress = () => navigation.navigate(ROUTES.AccountProfileScreen, { data });
+  const handleOnPress = () => navigation.navigate(ROUTES.AccountUserScreen, { data });
   return (
     <TouchableOpacity onPress={handleOnPress}>
-      <View style={[user && styles.userWrapper, organiser && styles.organiserWrapper]}>
+      <View style={styles.userWrapper}>
         <Row row alignCenter>
           {!profilePic ? (
-          <View style={styles.imageView}>
-            <FontAwesome5 name="user-alt" size={SIZE * 3.5} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
-          </View>
+            <View style={styles.imageView}>
+              <FontAwesome5 name="user-alt" size={SIZE * 3.5} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
+            </View>
           ) : (
-            <Image source={{ uri: profilePic }} style={[user && styles.profileImage, organiser && styles.organiserImage]} />
+            <Image source={{ uri: profilePic }} style={styles.profileImage} />
           )}
           <Row style={{ paddingLeft: SIZE }}>
-            <Text style={[user && styles.usernameText, organiser && styles.organiserText]}>{username}</Text>
-            {user && <Text style={styles.nameText}>{name}</Text>}
-            {organiser && 
-              <View style={{width: SIZE * 15}}>
-                <Text style={styles.addressText}>{address}</Text>
-              </View>
-            }
+            <Text style={styles.usernameText}>{username}</Text>
+            <Text style={styles.nameText}>{name}</Text>
           </Row>
         </Row>
       </View>
@@ -37,7 +32,32 @@ export const AccountRow = ({ data, user, organiser }) => {
   );
 };
 
-
+export const OrganiserRow = ({ data }) => {
+  const { profilePic, username, address } = data;
+  const navigation = useNavigation();
+  const handleOnPress = () => navigation.navigate(ROUTES.AccountOrganiserScreen, { data });
+  return (
+    <TouchableOpacity onPress={handleOnPress}>
+      <View style={styles.organiserWrapper}>
+        <Row row alignCenter>
+          {!profilePic ? (
+            <View style={styles.imageView}>
+              <FontAwesome5 name="user-alt" size={SIZE * 3.5} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
+            </View>
+          ) : (
+            <Image source={{ uri: profilePic }} style={styles.organiserImage} />
+          )}
+          <Row style={{ paddingLeft: SIZE }}>
+            <Text style={styles.organiserText}>{username}</Text>
+            <View style={{ width: SIZE * 15 }}>
+              <Text style={styles.addressText}>{address}</Text>
+            </View>
+          </Row>
+        </Row>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   userWrapper: {
@@ -74,11 +94,11 @@ const styles = StyleSheet.create({
   addressText: {
     color: COLORS.gray,
     fontSize: SIZES.xxs,
-    marginTop: SIZE / 5
+    marginTop: SIZE / 5,
   },
   imageView: {
     width: SIZE * 3.5,
     aspectRatio: 1,
-    borderRadius: 100
-  }
+    borderRadius: 100,
+  },
 });

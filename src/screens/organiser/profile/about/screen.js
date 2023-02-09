@@ -6,12 +6,14 @@ import { Container } from '../../../../components';
 import { selectUser } from '../../../../store/user';
 import { SIZE } from '../../../../utils/theme';
 
-export const AboutScreen = () => {
+export const AboutScreen = ({ route }) => {
   const user = useSelector(selectUser);
+  const { data } = route.params;
+
   return (
     <Container>
       <View style={{ margin: SIZE }}>
-        <Text>{user.bio}</Text>
+        <Text>{data._id !== user._id ? data.bio : user.bio}</Text>
       </View>
     </Container>
   );

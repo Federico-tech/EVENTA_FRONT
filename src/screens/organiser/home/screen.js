@@ -8,6 +8,7 @@ import { Container, HomeHeader, MiniEventCard } from '../../../components';
 import { selectUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
   
@@ -19,6 +20,7 @@ export const OrganiserHome = () => {
       organiserId,
     }
   });
+  console.log(refreshing)
 
   return (
     <Container>
@@ -29,8 +31,8 @@ export const OrganiserHome = () => {
           renderItem={({ item }) => <MiniEventCard data={item} />}
           keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={<Analytics />}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-          ListHeaderComponent={<Text style={styles.text}>All Your Events</Text>}
           style={styles.container}
         />
       </View>

@@ -17,27 +17,7 @@ export const OrganiserProfileScreen = () => {
   const { t } = useTranslation();
   return (
     <Container>
-      <ProfileHeader myProfile />
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Row alignCenter>
-          <Text style={styles.userName}>{user.username}</Text>
-          <Row row alignCenter>
-            <FontAwesome5 name="map-marker-alt" size={SIZE * 1.5} style={{ marginTop: SIZE / 2 }} />
-            <Text style={styles.address}>{user.address}</Text>
-          </Row>
-        </Row>
-        <Row row spaceBetween style={{ marginTop: SIZE }}>
-          <Row alignCenter style={styles.boxFollow}>
-            <Text style={styles.number}>525</Text>
-            <Text style={styles.follow}>Followers</Text>
-          </Row>
-          <Row alignCenter style={styles.boxFollow}>
-            <Text style={styles.number}>14</Text>
-            <Text style={styles.follow}>Events</Text>
-          </Row>
-          <Button secondary containerStyle={styles.button} text={t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditOrganiserScreen)} />
-        </Row>
-      </View>
+      <ProfileHeader myProfile organiser/>
       <OrganiserTopNavigator />
     </Container>
   );

@@ -1,43 +1,38 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 
-import { ProfileHeader, Container, Row, Button } from '../../../../components';
+import { ProfileHeader, Container, Row, Button, MiniEventCard, Line } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { selectUser } from '../../../../store/user';
+import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const ProfileScreen = () => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
   const { t } = useTranslation();
+
+  const { data, refreshing, getRefreshedData} = useInfiniteScroll({
+    entity: 'events'
+  })
+
   return (
     <Container>
-      <ProfileHeader myProfile />
-      <Row alignCenter>
-        <Text style={styles.userName}>{user.name}</Text>
-        <View>{!user.bio ? <Text style={styles.noDesc}>{t('description')} </Text> : <Text style={styles.desc}>{user.bio}</Text>}</View>
-      </Row>
-      <Row row spaceAround style={styles.followRow}>
-        <Row alignCenter style={styles.boxFollow}>
-          <Text style={styles.number}>525</Text>
-          <Text style={styles.follow}>Followers</Text>
-        </Row>
-        <Row alignCenter style={styles.boxFollow}>
-          <Text style={styles.number}>125</Text>
-          <Text style={styles.follow}>{t('following')}</Text>
-        </Row>
-        <Row alignCenter style={styles.boxFollow}>
-          <Text style={styles.number}>12</Text>
-          <Text style={styles.follow}>{t('event')}</Text>
-        </Row>
-      </Row>
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <Button secondary containerStyle={styles.button} text={t('edit profile')} onPress={() => navigation.navigate(ROUTES.EditUserScreen)} />
-        <Text style={styles.recent}>{t('recent events')}</Text>
-      </View>
+      <ProfileHeader myProfile/>
+      <Text style={styles.recent}>Recent Events</Text>
+        <FlatList
+            data={data}
+            renderItem={({ item }) => <MiniEventCard data={item} />}
+            keyExtractor={(item) => item._id}
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+            style={styles.container}
+          />
     </Container>
   );
 };
@@ -49,46 +44,54 @@ const styles = StyleSheet.create({
   userName: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.md,
-    marginTop: SIZE,
   },
   noDesc: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.xs,
     color: COLORS.lightGray,
-    marginTop: SIZE * 0.5,
+    marginTop: SIZE,
   },
   desc: {
     fontFamily: FONTS.regular,
     fontSize: SIZES.xs,
-    marginTop: SIZE * 0.5,
-    textAlign: 'center',
-    width: WIDTH_DEVICE / 2,
+    width: SIZE * 15,
+    marginTop: SIZE * 3,
+    marginLeft: WIDTH_DEVICE / 20
   },
   followRow: {
-    marginTop: SIZE * 0.5,
-    paddingHorizontal: SIZE * 4,
+    marginTop: SIZE,
+    paddingHorizontal: WIDTH_DEVICE / 20,
+    justifyContent: 'space-between',
+    alignItems: 'center '
   },
   follow: {
     fontFamily: FONTS.regular,
-    fontSize: SIZES.xs,
-    marginTop: SIZE * 0.1,
+    fontSize: SIZE * 0.9,
+    alignSelf: 'flex-end',
+    marginLeft: SIZE * 0.2,
+    color: COLORS.darkGray
   },
   number: {
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.md,
   },
   button: {
-    marginHorizontal: WIDTH_DEVICE / 20,
-    width: WIDTH_DEVICE / 1.1,
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
+    width: SIZE * 13,
     marginTop: SIZE,
   },
   recent: {
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.md,
     marginTop: SIZE,
+    marginLeft: WIDTH_DEVICE / 20,
+    marginBottom: SIZE / 2
   },
   boxFollow: {
-    width: SIZE * 5,
+    marginRight: SIZE
+  },
+  info: {
+    marginLeft: SIZE * 11,
+    marginTop: SIZE / 2
   },
 });

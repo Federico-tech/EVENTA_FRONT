@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xs,
     alignItems: 'center',
     justifyContent: 'center',
+    width: SIZE * 11
   },
   disabled: {
     backgroundColor: COLORS.darkGray,

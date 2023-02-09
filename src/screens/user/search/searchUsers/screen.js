@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
 import { Container } from '../../../../components';
-import { AccountRow } from '../../../../components/AccountRow';
+import { UserRow } from '../../../../components/AccountRow';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 
@@ -19,7 +19,7 @@ export const SearchUserScreen = () => {
     <Container>
       <FlatList
         data={data}
-        renderItem={({ item }) => <AccountRow data={item} user/>}
+        renderItem={({ item }) => <UserRow data={item} user/>}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}

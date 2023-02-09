@@ -8,7 +8,7 @@ import { Line } from './Line';
 
 export const MiniEventCard = ({ data }) => {
   const { organiser, coverImage, date, name, address } = data;
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>
@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZE,
     marginTop: SIZE,
     borderRadius: SIZES.xxs,
+    borderColor: COLORS.backGray,
+    borderWidth: 0.5,
     width: WIDTH_DEVICE * 0.9,
     alignSelf: 'center',
     ...SHADOWS.medium,
