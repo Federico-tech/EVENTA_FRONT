@@ -27,6 +27,7 @@ export const EditOrganiserScreen = () => {
 
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
+      name: user.name,
       username: user.username,
       bio: user.bio,
       address: user.address,
@@ -36,7 +37,13 @@ export const EditOrganiserScreen = () => {
       username: string()
         .required('Username is a required field')
         .min(6, 'Username must be at least 6 characters')
-        .max(20, "Username can't be more than 20 characters"),
+        .max(20, "Username can't be more than 20 characters")
+        .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
+          if (!value) {
+            return false;
+          }
+          return !value.match(/[A-Z]/);
+        }),
       address: string().required('Address is a required field'),
     }),
     validateOnChange: false,
@@ -103,7 +110,8 @@ export const EditOrganiserScreen = () => {
               </View>
               <TextButton text="Upload an image" textStyle={styles.upload} onPress={pickImage} />
             </Row>
-            <InputText label="Username" formik={formik} formikName="username" />
+            <InputText label="Name" formik={formik} formikName="name" />
+            <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" />
             <InputText label="Address" formik={formik} formikName="address" />
             <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
           </View>

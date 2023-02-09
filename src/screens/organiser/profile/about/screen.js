@@ -13,7 +13,7 @@ export const AboutScreen = ({ route }) => {
   return (
     <Container>
       <View style={{ margin: SIZE }}>
-        <Text>{data._id !== user._id ? data.bio : user.bio}</Text>
+        <Text>{data !== undefined ? (data._id !== user._id ? data.bio : user.bio) : user.bio}</Text>
       </View>
     </Container>
   );

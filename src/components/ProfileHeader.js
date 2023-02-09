@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
+import { ROUTES } from '../navigation/Navigation';
 
 import { selectUser } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
@@ -15,6 +16,7 @@ export const ProfileHeader = ({ myProfile, organiser, data }) => {
   const user = useSelector(selectUser);
   const navigation = useNavigation();
   const finalData = myProfile ? user : data;
+  const handleEditProfile = () => navigation.navigate(ROUTES.EditOrganiserScreen)
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
@@ -65,7 +67,9 @@ export const ProfileHeader = ({ myProfile, organiser, data }) => {
               Following
             </Text>
           </Row>
-          <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} />
+          <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile}/>
+          {/* <Button secondary text='Following' containerStyle={{ width: SIZE * 13 }} /> */}
+          {/* <Button gradient text='Follow' containerStyle={{ width: SIZE * 13 }} /> */}
         </Row>
       </Row>
     </View>

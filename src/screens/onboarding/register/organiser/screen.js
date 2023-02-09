@@ -21,13 +21,20 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
       address: '',
       password: '',
       role: ROLES.ORGANISER,
-      name: 'org',
+      name: '',
     },
     validationSchema: object().shape({
+      name: string().required('Name is a required field'),
       username: string()
-        .required('Username is a required field')
-        .min(6, 'Username must be at least 6 characters')
-        .max(20, "Username can't be more than 20 characters"),
+      .required('Username is a required field')
+      .min(6, 'Username must be at least 6 characters')
+      .max(20, "Username can't be more than 20 characters")
+      .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
+        if (!value) {
+          return false;
+        }
+        return !value.match(/[A-Z]/);
+      }),
       email: string().required().email('This is not a valid email'),
       address: string().required('Address is a required field'),
       password: string()
@@ -93,6 +100,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
               <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
             </View>
             <Text style={styles.title}>{t('become an organiser!')}</Text>
+            <InputText formik={formik} label="Name" formikName="name" autoCapitalize="none" />
             <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
             <InputText

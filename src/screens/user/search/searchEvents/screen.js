@@ -9,16 +9,15 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 export const SearchEventScreen = () => {
   const name = useSelector(selectSearchFilter);
   
-  const { data, refreshing, getRefreshedData } = useInfiniteScroll({
-    entity: 'events',
-    filters: {
-      name
-    },
-  });
-
   useEffect(() => {
     getRefreshedData()
   }, [name])
+
+  const {data, refreshing, getRefreshedData } = useInfiniteScroll({
+    entity: 'events',
+    filters: {
+    },
+  });
   
 
   return (

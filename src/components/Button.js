@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: undefined,
     height: SIZE * 2.5,
     width: SIZE * 10,
-    borderRadius: SIZES.xs,
+    borderRadius: SIZES.xxs,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -119,9 +119,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.darkGray,
   },
   textGradient: {
-    fontFamily: FONTS.semiBold,
-    color: 'white',
+    fontFamily: FONTS.bold,
     fontSize: SIZES.sm,
+    color: COLORS.white
   },
   onboardText: {
     color: 'white',
