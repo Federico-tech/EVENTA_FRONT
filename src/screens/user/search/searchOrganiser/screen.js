@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
+
 import { Container } from '../../../../components';
-import { AccountRow, OrganiserRow } from '../../../../components/AccountRow';
+import { OrganiserRow } from '../../../../components/AccountRow';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 
@@ -11,7 +12,7 @@ export const SearchOrganiserScreen = () => {
     entity: 'users',
     filters: {
       role,
-    }
+    },
   });
 
   return (

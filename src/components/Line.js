@@ -8,7 +8,7 @@ export const Line = ({ lineStyle, shadow }) => {
     <View style={shadow && styles.shadow}>
       <View style={[styles.line, lineStyle]} />
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

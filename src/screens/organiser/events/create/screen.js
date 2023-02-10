@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
@@ -151,7 +150,7 @@ export const CreateEventScreen = ({ route }) => {
   };
 
   return (
-    <Container >
+    <Container>
       <View style={styles.container}>
         <KeyboardAvoidingView behavior="padding">
           <ScrollView showsVerticalScrollIndicator={false}>

@@ -1,11 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
-import { ROUTES } from '../navigation/Navigation';
 
+import { ROUTES } from '../navigation/Navigation';
+import { getFollowers, getFollowing } from '../services/follow';
 import { selectUser } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
@@ -13,10 +14,29 @@ import { Row } from './Row';
 import { Text } from './Text';
 
 export const ProfileHeader = ({ myProfile, organiser, data }) => {
+  const [followers, setFollowers] = useState('');
+  const [following, setFollowing] = useState('');
+
   const user = useSelector(selectUser);
   const navigation = useNavigation();
   const finalData = myProfile ? user : data;
-  const handleEditProfile = () => navigation.navigate(ROUTES.EditOrganiserScreen)
+  const userId = finalData._id;
+
+  useEffect(() => {
+    const followersData = async () => {
+      const followers = await getFollowers(userId);
+      setFollowers(followers);
+    };
+    followersData();
+    const followingData = async () => {
+      const following = await getFollowing(userId);
+      setFollowing(following);
+    };
+    followingData();
+  }, []);
+
+  const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
+
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
@@ -56,18 +76,18 @@ export const ProfileHeader = ({ myProfile, organiser, data }) => {
         )}
         <Row spaceBetween row style={styles.followerRow}>
           <Row alignCenter style={styles.boxFollower}>
-            <Text semiBoldSm>525</Text>
+            <Text semiBoldSm>{followers.totalData}</Text>
             <Text color={COLORS.darkGray} regularXs>
               Followers
             </Text>
           </Row>
           <Row alignCenter>
-            <Text semiBoldSm>425</Text>
+            <Text semiBoldSm>{following.totalData}</Text>
             <Text color={COLORS.darkGray} regularXs>
               Following
             </Text>
           </Row>
-          <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile}/>
+          <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
           {/* <Button secondary text='Following' containerStyle={{ width: SIZE * 13 }} /> */}
           {/* <Button gradient text='Follow' containerStyle={{ width: SIZE * 13 }} /> */}
         </Row>
@@ -114,7 +134,7 @@ const styles = StyleSheet.create({
     marginLeft: WIDTH_DEVICE / 20,
   },
   name: {
-    paddingLeft: SIZE * 9.5,
+    paddingLeft: SIZE * 10,
     paddingTop: SIZE,
   },
   bio: {

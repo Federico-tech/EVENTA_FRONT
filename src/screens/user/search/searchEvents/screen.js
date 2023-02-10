@@ -8,17 +8,15 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 
 export const SearchEventScreen = () => {
   const name = useSelector(selectSearchFilter);
-  
-  useEffect(() => {
-    getRefreshedData()
-  }, [name])
 
-  const {data, refreshing, getRefreshedData } = useInfiniteScroll({
+  useEffect(() => {
+    getRefreshedData();
+  }, [name]);
+
+  const { data, refreshing, getRefreshedData } = useInfiniteScroll({
     entity: 'events',
-    filters: {
-    },
+    filters: {},
   });
-  
 
   return (
     <Container style={{ alignItems: 'center', justifyContent: 'center' }}>

@@ -1,12 +1,8 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { View, Text, StyleSheet } from 'react-native';
 
-import { Button, Container, ProfileHeader, Row } from '../../../../components';
-import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { Container, ProfileHeader } from '../../../../components';
 
-export const AccountUserScreen = ({ route, navigation }) => {
-  const { t } = useTranslation();
+export const AccountUserScreen = ({ route }) => {
   const { data } = route.params;
   return (
     <Container>
@@ -14,7 +10,3 @@ export const AccountUserScreen = ({ route, navigation }) => {
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  
-});

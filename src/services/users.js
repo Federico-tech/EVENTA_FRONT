@@ -41,8 +41,8 @@ export const userUpdate = async (data, userId) => {
 };
 
 export const updateUserImage = async (file) => {
-  const state =  store.getState()
-  const userId = selectUserId(state)
+  const state = store.getState();
+  const userId = selectUserId(state);
 
   const formData = new FormData();
   formData.append('file', {
@@ -63,11 +63,9 @@ export const updateUserImage = async (file) => {
 
 export const followUser = async (userId) => {
   try {
-    const { data } = await mainAxios.post(`users/${userId}/follow`)
-    console.log(data)
+    const { data } = await mainAxios.post(`users/${userId}/follow`);
+    console.log(data);
   } catch (e) {
-    console.log({ errorFollowing: e})
+    console.log({ errorFollowing: e });
   }
-}
-
-
+};

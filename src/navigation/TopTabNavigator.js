@@ -42,11 +42,16 @@ export const SearchTopNavigator = () => {
 
 export const OrganiserTopNavigator = ({ data }) => {
   const { t } = useTranslation();
-  console.log('DataOrganiser', data)
+  console.log('DataOrganiser', data);
   return (
     <OrganiserTopStackNavigator.Navigator initialRouteName={ROUTES.EventProfileScreen}>
       <OrganiserTopStackNavigator.Screen name={ROUTES.EventProfileScreen} component={EventProfileScreen} options={screenOptions(t('event'))} />
-      <OrganiserTopStackNavigator.Screen name={ROUTES.AboutScreen} component={AboutScreen} options={screenOptions('About')} initialParams={{data}}/>
+      <OrganiserTopStackNavigator.Screen
+        name={ROUTES.AboutScreen}
+        component={AboutScreen}
+        options={screenOptions('About')}
+        initialParams={{ data }}
+      />
     </OrganiserTopStackNavigator.Navigator>
   );
 };

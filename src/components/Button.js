@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xs,
     alignItems: 'center',
     justifyContent: 'center',
-    width: SIZE * 11
+    width: SIZE * 11,
   },
   disabled: {
     backgroundColor: COLORS.darkGray,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   textGradient: {
     fontFamily: FONTS.bold,
     fontSize: SIZES.sm,
-    color: COLORS.white
+    color: COLORS.white,
   },
   onboardText: {
     color: 'white',

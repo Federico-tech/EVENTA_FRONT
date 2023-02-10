@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { object, string } from 'yup';
 
@@ -7,12 +8,11 @@ import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Con
 import { ROUTES } from '../../../../navigation/Navigation';
 import { loginUser, organiserSignUp } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
-import { useTranslation } from 'react-i18next';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const OrganiserSignUpScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
@@ -26,15 +26,15 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
       username: string()
-      .required('Username is a required field')
-      .min(6, 'Username must be at least 6 characters')
-      .max(20, "Username can't be more than 20 characters")
-      .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
-        if (!value) {
-          return false;
-        }
-        return !value.match(/[A-Z]/);
-      }),
+        .required('Username is a required field')
+        .min(6, 'Username must be at least 6 characters')
+        .max(20, "Username can't be more than 20 characters")
+        .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
+          if (!value) {
+            return false;
+          }
+          return !value.match(/[A-Z]/);
+        }),
       email: string().required().email('This is not a valid email'),
       address: string().required('Address is a required field'),
       password: string()
@@ -103,14 +103,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
             <InputText formik={formik} label="Name" formikName="name" autoCapitalize="none" />
             <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
-            <InputText
-              formik={formik}
-              label={t('address')}
-              formikName="address"
-              pointerEvents="none"
-              onPress={onPressAddress}
-              touchableOpacity
-            />
+            <InputText formik={formik} label={t('address')} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
             <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
             <Text style={styles.passwordReq}>{t('password requirements')}</Text>
             <Button loading={loading} primary text={t('register')} onPress={handleSubmit} />

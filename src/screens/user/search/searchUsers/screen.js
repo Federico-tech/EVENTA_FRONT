@@ -12,14 +12,14 @@ export const SearchUserScreen = () => {
     entity: 'users',
     filters: {
       role,
-    }
+    },
   });
 
   return (
     <Container>
       <FlatList
         data={data}
-        renderItem={({ item }) => <UserRow data={item} user/>}
+        renderItem={({ item }) => <UserRow data={item} user />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
