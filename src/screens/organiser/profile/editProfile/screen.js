@@ -11,7 +11,7 @@ import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row } from '../../../../components';
 import { userUpdate } from '../../../../services/users';
-import { selectUser, selectUserId } from '../../../../store/user';
+import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
@@ -19,9 +19,9 @@ export const EditOrganiserScreen = () => {
   useEffect(requestCameraPermission, []);
   const navigation = useNavigation();
 
-  const user = useSelector(selectUser);
+  const user = useSelector(selectCurrentUser);
   console.log(user);
-  const userId = useSelector(selectUserId);
+  const userId = useSelector(selectCurrentUserId);
 
   const [loading, setLoading] = useState(false);
 

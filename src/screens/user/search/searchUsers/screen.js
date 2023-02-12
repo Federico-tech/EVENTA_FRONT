@@ -19,7 +19,7 @@ export const SearchUserScreen = () => {
     <Container>
       <FlatList
         data={data}
-        renderItem={({ item }) => <UserRow data={item} user />}
+        renderItem={({ item }) => <UserRow data={item} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}

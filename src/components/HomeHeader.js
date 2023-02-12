@@ -8,11 +8,11 @@ import { useSelector } from 'react-redux';
 
 import { LogoText } from '../assets';
 import { ROUTES } from '../navigation/Navigation';
-import { selectUser } from '../store/user';
+import { selectCurrentUser } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../utils/theme';
 
 export const HomeHeader = ({ data }) => {
-  const userinfo = useSelector(selectUser);
+  const userinfo = useSelector(selectCurrentUser);
   const { t } = useTranslation();
   const navigation  = useNavigation()
 

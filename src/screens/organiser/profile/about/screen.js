@@ -3,11 +3,11 @@ import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Container } from '../../../../components';
-import { selectUser } from '../../../../store/user';
+import { selectCurrentUser } from '../../../../store/user';
 import { SIZE } from '../../../../utils/theme';
 
 export const AboutScreen = ({ route }) => {
-  const user = useSelector(selectUser);
+  const user = useSelector(selectCurrentUser);
   const { data } = route.params;
 
   return (

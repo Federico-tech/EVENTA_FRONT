@@ -5,14 +5,14 @@ import { useSelector } from 'react-redux';
 
 import { Container, HomeHeader, MiniEventCard } from '../../../components';
 
-import { selectUserId } from '../../../store/user';
+import { selectCurrentUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
   
-  const organiserId = useSelector(selectUserId)
+  const organiserId = useSelector(selectCurrentUserId)
 
   const { data, refreshing, getRefreshedData } = useInfiniteScroll({
     entity: 'events',

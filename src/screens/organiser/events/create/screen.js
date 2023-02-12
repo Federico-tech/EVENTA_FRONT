@@ -16,7 +16,7 @@ import { object, string } from 'yup';
 import { Container, InputText, TextButton } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { createEvent } from '../../../../services/events';
-import { selectUserId } from '../../../../store/user';
+import { selectCurrentUserId } from '../../../../store/user';
 import { fromDateAndTimeToISODate } from '../../../../utils/dates';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
@@ -24,7 +24,7 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../.
 export const CreateEventScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
 
-  const organiserId = useSelector(selectUserId);
+  const organiserId = useSelector(selectCurrentUserId);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();

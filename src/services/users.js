@@ -2,7 +2,7 @@ import base64 from 'base-64';
 
 import { mainAxios, noAuthAxios } from '../core/axios';
 import { store } from '../store';
-import { selectUserId, setUserInfo, updateUserInfo } from '../store/user';
+import { selectCurrentUserId, setUserInfo, setUserSelected, updateUserInfo } from '../store/user';
 
 export const loginUser = async (email, password) => {
   try {
@@ -42,7 +42,7 @@ export const userUpdate = async (data, userId) => {
 
 export const updateUserImage = async (file) => {
   const state = store.getState();
-  const userId = selectUserId(state);
+  const userId = selectCurrentUserId(state);
 
   const formData = new FormData();
   formData.append('file', {
@@ -61,11 +61,22 @@ export const updateUserImage = async (file) => {
   }
 };
 
-export const followUser = async (userId) => {
+export const refreshSelectedUser = async (user) => {
   try {
-    const { data } = await mainAxios.post(`users/${userId}/follow`);
-    console.log(data);
+    const { data } = await mainAxios.get(`users/${user._id}`);
+    console.debug({ refreshSelectedUser: data });
+    store.dispatch(setUserSelected(data));
   } catch (e) {
-    console.log({ errorFollowing: e });
+    console.log({ e });
+  }
+};
+
+export const refreschCurrentUser = async (user) => {
+  try {
+    const { data } = await mainAxios.get(`users/${user._id}`);
+    console.debug({ refreschCurrentUser: data });
+    store.dispatch(updateUserInfo(data));
+  } catch (e) {
+    console.log({ e });
   }
 };

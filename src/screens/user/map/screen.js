@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../../../store/user';
+import { selectCurrentUser } from '../../../store/user';
 
 export const MapScreen = () => {
-  const { position } = useSelector(selectUser)
+  const { position } = useSelector(selectCurrentUser)
   console.log('position', position)
   const [latitude, longitude] = position.coordinates
   console.log([latitude, longitude])

@@ -5,14 +5,14 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { awaitRehydrate } from '../store';
-import { selectIsAuthenticated, selectUserRole } from '../store/user';
+import { selectIsAuthenticated, selectCurrentUserRole } from '../store/user';
 import { ROLES } from '../utils/conts';
 import { AuthNavigator, OrganiserStack, UserBottomNavigator, UserStack } from './Navigation';
 
 const AppNavigator = () => {
   const [rehydrated, setRehydrated] = useState(false);
   const isLogged = useSelector(selectIsAuthenticated);
-  const role = useSelector(selectUserRole);
+  const role = useSelector(selectCurrentUserRole);
 
   useEffect(() => {
     const componentDidMount = async () => {

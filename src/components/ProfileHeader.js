@@ -1,48 +1,68 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
-import { getFollowers, getFollowing } from '../services/follow';
-import { selectUser } from '../store/user';
+import { checkFollowing, follow, unFollow } from '../services/follow';
+import { followUser } from '../services/users';
+import { selectCurrentUser, selectCurrentUserId } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
 import { Row } from './Row';
 import { Text } from './Text';
 
-export const ProfileHeader = ({ myProfile, organiser, data }) => {
-  const [followers, setFollowers] = useState('');
-  const [following, setFollowing] = useState('');
-
-  const user = useSelector(selectUser);
-  const navigation = useNavigation();
-  const finalData = myProfile ? user : data;
-  const userId = finalData._id;
+export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
+  const [user, setUser] = useState({...initialUser})
+  const [isFollowing, setIsFollowing] = useState();
+  const myId = useSelector(selectCurrentUserId)
+  const otherUserId = user?._id
 
   useEffect(() => {
-    const followersData = async () => {
-      const followers = await getFollowers(userId);
-      setFollowers(followers);
-    };
-    followersData();
-    const followingData = async () => {
-      const following = await getFollowing(userId);
-      setFollowing(following);
-    };
-    followingData();
-  }, []);
+    if(!_.isEqual(user, initialUser)) {
+      setUser({...initialUser})
+    }
+  }, [initialUser]) 
+
+  const navigation = useNavigation();
+
+  const onPressFollow = () => {
+    follow()
+    setUser((prevUser) => ({
+      ...prevUser,
+      followers: prevUser.followers + 1
+    }))
+    setIsFollowing(true)
+  }
+
+  const onPressUnfollow = () => {
+    unFollow()
+    setUser((prevUser) => ({
+      ...prevUser,
+      followers : prevUser.followers - 1
+    }))
+    setIsFollowing(false)
+  }
+
+  useEffect(() => {
+    checkFollowing(myId, otherUserId)
+      .then((result) => {
+        setIsFollowing(result);
+      })
+  },[]);
+
+  console.log(isFollowing)
 
   const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
-
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
         <View style={styles.container}>
           {!myProfile && <IconButton name="chevron-back" color="white" size={SIZE * 2} onPress={() => navigation.goBack()} />}
-          <Text style={styles.usernameText}>{finalData.username}</Text>
+          <Text style={styles.usernameText}>{user.username}</Text>
           {myProfile ? (
             <IconButton name="settings-sharp" color="white" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
           ) : (
@@ -51,45 +71,49 @@ export const ProfileHeader = ({ myProfile, organiser, data }) => {
         </View>
       </LinearGradient>
       <View style={styles.profileImage}>
-        {!finalData.profilePic ? (
+        {!user.profilePic ? (
           <Ionicons name="person" size={60} color={COLORS.gray} />
         ) : (
-          <Image source={{ uri: finalData.profilePic }} style={styles.image} resizeMode="contain" />
+          <Image source={{ uri: user.profilePic }} style={styles.image} resizeMode="contain" />
         )}
       </View>
       <Row style={styles.name}>
-        <Text semiBoldMd>{finalData.name}</Text>
+        <Text semiBoldMd>{user.name}</Text>
         <Text medium color={COLORS.darkGray}>
-          @{finalData.username}
+          @{user.username}
         </Text>
       </Row>
       <Row style={styles.bio}>
         {organiser ? (
           <Row row>
             <Ionicons name="pin" size={SIZE * 1.5} />
-            <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{finalData.address}</Text>
+            <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
           </Row>
         ) : (
           <Text regularXs style={{ width: SIZE * 15 }}>
-            {finalData.bio}
+            {user.bio}
           </Text>
         )}
         <Row spaceBetween row style={styles.followerRow}>
           <Row alignCenter style={styles.boxFollower}>
-            <Text semiBoldSm>{followers.totalData}</Text>
+            <Text semiBoldSm>{user.followers || 0}</Text>
             <Text color={COLORS.darkGray} regularXs>
               Followers
             </Text>
           </Row>
           <Row alignCenter>
-            <Text semiBoldSm>{following.totalData}</Text>
+            <Text semiBoldSm>{user.followed || 0}</Text>
             <Text color={COLORS.darkGray} regularXs>
               Following
             </Text>
           </Row>
-          <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
-          {/* <Button secondary text='Following' containerStyle={{ width: SIZE * 13 }} /> */}
-          {/* <Button gradient text='Follow' containerStyle={{ width: SIZE * 13 }} /> */}
+          {myProfile ? (
+            <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
+          ) : isFollowing ? (
+            <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} />
+          ) : (
+            <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} />
+          )}
         </Row>
       </Row>
     </View>

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   userInfo: {},
+  userSelected: {},
   token: null,
 };
 
@@ -13,6 +14,9 @@ export const userSlice = createSlice({
       state.userInfo = action.payload.user;
       state.token = action.payload.token;
     },
+    setUserSelected: (state, action) => {
+      state.userSelected = action.payload;
+    },
     updateUserInfo: (state, action) => {
       state.userInfo = action.payload;
     },
@@ -20,11 +24,12 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUserInfo, logoutUserSlice, updateUserInfo } = userSlice.actions;
+export const { setUserInfo, setUserSelected, logoutUserSlice, updateUserInfo } = userSlice.actions;
 
-export const selectUser = (state) => state.user?.userInfo;
-export const selectUserId = (state) => state.user?.userInfo?._id;
-export const selectUserRole = (state) => state.user?.userInfo?.role || 'user';
+export const selectCurrentUser = (state) => state.user?.userInfo;
+export const selectSelectedUser = (state) => state.user?.userSelected;
+export const selectCurrentUserId = (state) => state.user?.userInfo?._id;
+export const selectCurrentUserRole = (state) => state.user?.userInfo?.role || 'user';
 export const selectToken = (state) => state.user?.token;
 export const selectIsAuthenticated = (state) => !!state.user?.token;
 
