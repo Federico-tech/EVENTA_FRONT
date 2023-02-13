@@ -1,7 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { setSelectedEvent } from '../store/event';
 
+import { setUserSelected } from '../store/user';
 import { formatDate } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Line } from './Line';
@@ -9,9 +12,15 @@ import { Line } from './Line';
 export const MiniEventCard = ({ data }) => {
   const { organiser, coverImage, date, name, address } = data;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const handlePress = () => {
+    dispatch(setUserSelected(data.organiser));
+    dispatch(setSelectedEvent(data));
+    navigation.navigate('EventDetails', { data });
+  };
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>
+    <TouchableOpacity onPress={handlePress}>
       <View style={styles.wrapper}>
         <View style={styles.top}>
           <Image source={{ uri: organiser.profilePic }} style={styles.profilePic} />

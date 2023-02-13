@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { checkFollowing, follow, unFollow } from '../services/follow';
@@ -11,7 +10,6 @@ export const FollowButton = () => {
 
   const myId = useSelector(selectCurrentUserId);
   const otherUserId = useSelector(selectSelectedUserId);
-  console.log(otherUserId);
 
   const onPressFollow = () => {
     follow();

@@ -4,17 +4,39 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import { Container, IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../../components';
+import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../../components';
 import { checkFollowing } from '../../../../services/follow';
+import { checkPartecipating, getRefreshEvent, partecipate, unpartecipate } from '../../../../services/participants';
+import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
+import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { formatDate, formatTime } from '../../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route }) => {
+  const [isPartecipating, setIsPartecipating] = useState();
 
-  const { data } = route.params;
-  const source = { uri: data.coverImage };
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const event = useSelector(selectSelectedEvent);
+  const source = { uri: event.coverImage };
+
+  useEffect(() => {
+    checkPartecipating().then((result) => {
+      console.log(result);
+      setIsPartecipating(result);
+    });
+  }, []);
+
+  const onPressPartecipate = () => {
+    partecipate()
+    setIsPartecipating(true)
+  }
+
+  const onPressUnpartecipate = () => {
+    unpartecipate()
+    setIsPartecipating(false)
+  }
 
   return (
     <Container>
@@ -31,33 +53,38 @@ export const EventDetails = ({ route }) => {
                 color="white"
               />
             </View>
-            <OrganiserInf data={data} />
+            <OrganiserInf data={event} />
             <Line />
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-              <Text style={styles.eventTitle}>{data.name}</Text>
-              <ReadMoreButton text={data.description} style={styles.description} />
+              <Text style={styles.eventTitle}>{event.name}</Text>
+              <ReadMoreButton text={event.description} style={styles.description} />
               <View style={styles.date}>
                 <FontAwesome name="calendar-o" size={18} />
                 <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                  <Text style={styles.dateText}>{formatDate(data.date)}</Text>
-                  <Text style={styles.timeText}>{formatTime(data.date)}</Text>
+                  <Text style={styles.dateText}>{formatDate(event.date)}</Text>
+                  <Text style={styles.timeText}>{formatTime(event.date)}</Text>
                 </View>
               </View>
               <View style={styles.place}>
                 <Foundation name="marker" size={22} />
-                <Text style={styles.adressText}>{data.address}</Text>
+                <Text style={styles.adressText}>{event.address}</Text>
               </View>
               <View style={styles.person}>
                 <Ionicons name="people-outline" size={24} />
                 <Text style={styles.peopleText}>
-                  22
+                  {event.partecipants.length}
                   <Text style={styles.description}> of your friends are going</Text>
                 </Text>
               </View>
-              <Text>Who's going?</Text>
+              <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
           </View>
         </ScrollView>
+        {isPartecipating ? (
+          <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate}/>
+        ) : (
+          <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate}/>
+        )}
       </SafeAreaView>
     </Container>
   );
@@ -83,7 +110,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: FONTS.regular,
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     marginTop: SIZE,
   },
   date: {
@@ -94,7 +121,7 @@ const styles = StyleSheet.create({
 
   dateText: {
     fontFamily: 'InterMedium',
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
   },
   timeText: {
     fontFamily: 'InterRegular',
@@ -104,7 +131,7 @@ const styles = StyleSheet.create({
   adressText: {
     marginLeft: SIZE,
     fontFamily: 'InterMedium',
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
   },
   place: {
     flexDirection: 'row',
@@ -115,7 +142,7 @@ const styles = StyleSheet.create({
   peopleText: {
     marginLeft: WIDTH_DEVICE / 50,
     fontFamily: 'InterMedium',
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
   },
   person: {
     flexDirection: 'row',
@@ -128,7 +155,16 @@ const styles = StyleSheet.create({
   },
   other: {
     fontFamily: 'InterRegular',
-    fontSize: SIZES.sm,
+    fontSize: SIZES.xs,
     color: COLORS.gray,
+  },
+  partButton: {
+    width: WIDTH_DEVICE * 0.9,
+    marginHorizontal: WIDTH_DEVICE / 20,
+    marginBottom: SIZE,
+  },
+  whoGoing: {
+    marginTop: SIZE,
+    fontFamily: FONTS.semiBold,
   },
 });

@@ -15,43 +15,42 @@ import { Row } from './Row';
 import { Text } from './Text';
 
 export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
-  const [user, setUser] = useState({...initialUser})
+  const [user, setUser] = useState({ ...initialUser });
   const [isFollowing, setIsFollowing] = useState();
-  const myId = useSelector(selectCurrentUserId)
-  const otherUserId = user?._id
+  const myId = useSelector(selectCurrentUserId);
+  const otherUserId = user?._id;
 
   useEffect(() => {
-    if(!_.isEqual(user, initialUser)) {
-      setUser({...initialUser})
+    if (!_.isEqual(user, initialUser)) {
+      setUser({ ...initialUser });
     }
-  }, [initialUser]) 
+  }, [initialUser]);
 
   const navigation = useNavigation();
 
   const onPressFollow = () => {
-    follow()
+    follow();
     setUser((prevUser) => ({
       ...prevUser,
-      followers: prevUser.followers + 1
-    }))
-    setIsFollowing(true)
-  }
+      followers: prevUser.followers + 1,
+    }));
+    setIsFollowing(true);
+  };
 
   const onPressUnfollow = () => {
-    unFollow()
+    unFollow();
     setUser((prevUser) => ({
       ...prevUser,
-      followers : prevUser.followers - 1
-    }))
-    setIsFollowing(false)
-  }
+      followers: prevUser.followers - 1,
+    }));
+    setIsFollowing(false);
+  };
 
   useEffect(() => {
-    checkFollowing(myId, otherUserId)
-      .then((result) => {
-        setIsFollowing(result);
-      })
-  },[]);
+    checkFollowing(myId, otherUserId).then((result) => {
+      setIsFollowing(result);
+    });
+  }, []);
 
   const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
   return (

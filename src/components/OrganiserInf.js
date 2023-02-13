@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
-import { checkFollowing, follow, unFollow } from '../services/follow';
-import { selectCurrentUserId, selectSelectedUserId } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
-import { Button } from './Button';
 import { FollowButton } from './FollowButton';
 
 export const OrganiserInf = ({ data }) => {
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.informationContainer}>
