@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   containerGradient: {
     backgroundColor: undefined,
     height: SIZE * 2.5,
-    width: SIZE * 10,
+    width: SIZE * 9.5,
     borderRadius: SIZES.xxs,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
   secondary: {
     backgroundColor: COLORS.backGray,
     height: SIZE * 2.5,
-    borderRadius: SIZES.xs,
+    borderRadius: SIZES.xxs,
     alignItems: 'center',
     justifyContent: 'center',
-    width: SIZE * 11,
+    width: SIZE * 9.5,
   },
   disabled: {
     backgroundColor: COLORS.darkGray,

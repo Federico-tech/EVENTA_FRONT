@@ -2,15 +2,23 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 
+import { setUserSelected } from '../store/user';
 import { formatDate, formatTime } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 
 export const EventCard = ({ data }) => {
   const navigation = useNavigation();
+  console.log('EventDetails', data.organiser);
+  const dispatch = useDispatch();
+  const handleOnPress = () => {
+    dispatch(setUserSelected(data.organiser));
+    navigation.navigate('EventDetails', { data });
+  };
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { data })}>
+    <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.cardContainer}>
         {!data.coverImage || data.coverImage === '' ? (
           <View style={styles.eventImageView} />

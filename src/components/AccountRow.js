@@ -40,11 +40,10 @@ export const UserRow = ({ data }) => {
 
 export const OrganiserRow = ({ data }) => {
   const { profilePic, username, address } = data;
-  //const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const navigation = useNavigation();
   const handleOnPress = () => {
-    console.debug('data')
-    //dispatch(setUserSelected(data))
+    dispatch(setUserSelected(data))
     navigation.navigate(ROUTES.AccountOrganiserScreen, { data });
   }
   return (

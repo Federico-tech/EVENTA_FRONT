@@ -8,8 +8,7 @@ import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { checkFollowing, follow, unFollow } from '../services/follow';
-import { followUser } from '../services/users';
-import { selectCurrentUser, selectCurrentUserId } from '../store/user';
+import { selectCurrentUserId } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
 import { Row } from './Row';
@@ -53,8 +52,6 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
         setIsFollowing(result);
       })
   },[]);
-
-  console.log(isFollowing)
 
   const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
   return (

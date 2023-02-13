@@ -28,6 +28,7 @@ export const { setUserInfo, setUserSelected, logoutUserSlice, updateUserInfo } =
 
 export const selectCurrentUser = (state) => state.user?.userInfo;
 export const selectSelectedUser = (state) => state.user?.userSelected;
+export const selectSelectedUserId = (state) => state.user?.userSelected?._id;
 export const selectCurrentUserId = (state) => state.user?.userInfo?._id;
 export const selectCurrentUserRole = (state) => state.user?.userInfo?.role || 'user';
 export const selectToken = (state) => state.user?.token;

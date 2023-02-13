@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
+import { checkFollowing, follow, unFollow } from '../services/follow';
+import { selectCurrentUserId, selectSelectedUserId } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
+import { Button } from './Button';
+import { FollowButton } from './FollowButton';
 
 export const OrganiserInf = ({ data }) => {
+  
   return (
     <View style={styles.container}>
       <View style={styles.informationContainer}>
@@ -11,9 +17,10 @@ export const OrganiserInf = ({ data }) => {
         <View style={styles.textContainer}>
           <Text style={styles.textName}>{data.organiser.username}</Text>
           <View style={{ width: SIZE * 13 }}>
-            <Text style={styles.textAdress}>{data.organiser.address}</Text>
+            <Text style={styles.textAdress}>@{data.organiser.name}</Text>
           </View>
         </View>
+        <FollowButton />
       </View>
     </View>
   );
@@ -21,12 +28,12 @@ export const OrganiserInf = ({ data }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: SIZE * 5,
+    width: SIZE * 4,
     aspectRatio: 1,
     borderRadius: 100,
   },
   container: {
-    height: SIZE * 5,
+    height: SIZE * 4,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -35,10 +42,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flexDirection: 'column',
-    marginLeft: SIZE,
-  },
-  FollowButton: {
-    alignContent: 'center',
+    marginLeft: SIZE / 2,
   },
   informationContainer: {
     flexDirection: 'row',
@@ -47,7 +51,6 @@ const styles = StyleSheet.create({
   textName: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.lg,
-    marginBottom: SIZE / 5,
   },
   textAdress: {
     fontFamily: FONTS.medium,

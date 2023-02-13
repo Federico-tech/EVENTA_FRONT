@@ -41,7 +41,8 @@ export const checkFollowing = async (myId, userId) => {
     console.log(userId);
     const params = { followedId, followerId };
     const { data: checkFollow } = await mainAxios.get(`follow`, { params });
-    return await checkFollow.totalData === 1;
+    console.log('Totaldata', checkFollow)
+    return checkFollow.totalData === 1;
   } catch (e) {
     console.log({ errorCheckFollow: e });
   }
