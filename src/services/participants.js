@@ -1,17 +1,7 @@
 import { mainAxios } from '../core/axios';
 import { store } from '../store';
-import { selectSelectedEventId, setSelectedEvent } from '../store/event';
+import { selectSelectedEventId } from '../store/event';
 import { selectCurrentUserId } from '../store/user';
-
-export const getRefreshEvent = (event) => {
-  try {
-    const { data } = mainAxios.get(`events/${event?._id}`);
-    console.log('EventSelected', data);
-    store.dispatch(setSelectedEvent(data));
-  } catch (e) {
-    console.log({ errorGetPartecipants: e });
-  }
-};
 
 export const partecipate = () => {
   const state = store.getState();
@@ -41,9 +31,21 @@ export const checkPartecipating = async () => {
   const userId = selectCurrentUserId(state);
   try {
     const params = { eventId, userId };
-    const { data } = await mainAxios.get('partecipants', { params });
+    const { data } = await mainAxios.get('participants', { params });
     return data.totalData === 1;
   } catch (e) {
     console.log({ errorCheckPartecipating: e });
+  }
+};
+
+export const getEventParticipants = async () => {
+  const state = store.getState();
+  const eventId = selectSelectedEventId(state);
+  try {
+    const params = { eventId };
+    const { data: participants } = await mainAxios.get(`participants`, { params });
+    return participants.data;
+  } catch (e) {
+    console.log({ errorGetParticipants: e });
   }
 };

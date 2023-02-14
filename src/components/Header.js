@@ -8,7 +8,7 @@ import { IconButton } from './Button';
 import { Row } from './Row';
 import { TextButton } from './TextButton';
 
-export const Header = ({ title, onPress, loading }) => {
+export const Header = ({ title, onPress, loading, done }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   return (
@@ -20,9 +20,13 @@ export const Header = ({ title, onPress, loading }) => {
         <View>
           <Text style={styles.title}>{title}</Text>
         </View>
-        <View style={{ width: SIZE * 4, alignItems: 'center' }}>
-          <TextButton text={t('done')} onPress={onPress} textStyle={styles.fine} loading={loading} />
-        </View>
+        {done ? (
+          <View style={{ width: SIZE * 4, alignItems: 'center' }}>
+            <TextButton text={t('done')} onPress={onPress} textStyle={styles.fine} loading={loading} />
+          </View>
+        ) : (
+          <View style={{ width: SIZE * 4, alignItems: 'center' }} />
+        )}
       </Row>
     </View>
   );

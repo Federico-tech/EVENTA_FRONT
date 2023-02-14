@@ -1,6 +1,6 @@
 import { mainAxios } from '../core/axios';
 import { store } from '../store';
-import { setEvents } from '../store/event';
+import { setEvents, setSelectedEvent } from '../store/event';
 
 export const createEvent = async (eventData) => {
   try {
@@ -46,9 +46,20 @@ export const getOrganiserEvents = async (organiserId) => {
   try {
     const params = { organiserId };
     const { data } = await mainAxios.get(`events`, { params });
-    console.log(data)
+    console.log(data);
     store.dispatch(setEvents(data));
   } catch (e) {
     console.log({ e });
+  }
+};
+
+export const getRefreshedEvent = async (event) => {
+  console.log(event);
+  try {
+    const { data } = await mainAxios.get(`events/${event?._id}`);
+    console.log('EventSelected', data);
+    store.dispatch(setSelectedEvent(data.event));
+  } catch (e) {
+    console.log({ errorGetPartecipants: e });
   }
 };

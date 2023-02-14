@@ -6,37 +6,46 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton } from '../../../../components';
-import { checkFollowing } from '../../../../services/follow';
-import { checkPartecipating, getRefreshEvent, partecipate, unpartecipate } from '../../../../services/participants';
-import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
-import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
+import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
+import { UserRow } from '../../../../components/AccountRow';
+import { ROUTES } from '../../../../navigation/Navigation';
+import { checkPartecipating, getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
+import { selectSelectedEvent } from '../../../../store/event';
 import { formatDate, formatTime } from '../../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route }) => {
   const [isPartecipating, setIsPartecipating] = useState();
+  const [participants, setParticipants] = useState();
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
-  const source = { uri: event.coverImage };
 
   useEffect(() => {
     checkPartecipating().then((result) => {
-      console.log(result);
       setIsPartecipating(result);
     });
   }, []);
 
+  useEffect(() => {
+    getEventParticipants().then((result) => {
+      setParticipants(result);
+    });
+  }, []);
+
   const onPressPartecipate = () => {
-    partecipate()
-    setIsPartecipating(true)
-  }
+    partecipate();
+    setIsPartecipating(true);
+  };
 
   const onPressUnpartecipate = () => {
-    unpartecipate()
-    setIsPartecipating(false)
-  }
+    unpartecipate();
+    setIsPartecipating(false);
+  };
+
+  const source = { uri: event.coverImage };
+
+  console.log(participants);
 
   return (
     <Container>
@@ -72,18 +81,24 @@ export const EventDetails = ({ route }) => {
               <View style={styles.person}>
                 <Ionicons name="people-outline" size={24} />
                 <Text style={styles.peopleText}>
-                  {event.partecipants.length}
+                  {event.participants}
                   <Text style={styles.description}> of your friends are going</Text>
                 </Text>
               </View>
               <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
+            <Row>
+              {participants && <UserRow data={participants?.[0]?.user} />}
+              {participants?.length >= 2 && <UserRow data={participants?.[1]?.user} />}
+              {participants?.length === 3 && <UserRow data={participants?.[2]?.user} />}
+            </Row>
+            <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)}/>
           </View>
         </ScrollView>
         {isPartecipating ? (
-          <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate}/>
+          <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate} />
         ) : (
-          <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate}/>
+          <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />
         )}
       </SafeAreaView>
     </Container>
@@ -166,5 +181,13 @@ const styles = StyleSheet.create({
   whoGoing: {
     marginTop: SIZE,
     fontFamily: FONTS.semiBold,
+  },
+  viewMore: {
+    color: COLORS.primary,
+    fontSize: SIZES.sm,
+    fontFamily: FONTS.medium,
+    alignSelf: 'center',
+    marginTop: SIZE / 2,
+    marginBottom: SIZE / 2,
   },
 });

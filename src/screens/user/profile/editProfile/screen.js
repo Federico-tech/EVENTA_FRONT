@@ -94,7 +94,7 @@ export const EditUserScreen = () => {
   return (
     <Container>
       <KeyboardAvoidingView behavior="padding">
-        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} />
+        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
         <View style={styles.container}>
           <Row alignCenter>
             <View style={styles.imageContainer}>

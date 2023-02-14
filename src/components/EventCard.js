@@ -3,9 +3,8 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import { getRefreshEvent } from '../services/participants';
-import { setSelectedEvent } from '../store/event';
 
+import { getRefreshedEvent } from '../services/events';
 import { setUserSelected } from '../store/user';
 import { formatDate, formatTime } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
@@ -15,8 +14,8 @@ export const EventCard = ({ data }) => {
   const dispatch = useDispatch();
   const handleOnPress = () => {
     dispatch(setUserSelected(data.organiser));
-    dispatch(setSelectedEvent(data))
     navigation.navigate('EventDetails', { data });
+    getRefreshedEvent(data);
   };
 
   return (

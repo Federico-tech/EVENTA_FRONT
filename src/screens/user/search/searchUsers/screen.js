@@ -8,11 +8,12 @@ import { selectSearchFilter } from '../../../../store/filter';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
+import _ from 'lodash'
 
 export const SearchUserScreen = () => {
   const name = useSelector(selectSearchFilter);
   const role = ROLES.USER;
-  const { data, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
+  const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
     entity: 'users',
     limit: 7,
     filters: {
@@ -33,6 +34,8 @@ export const SearchUserScreen = () => {
           renderItem={({ item }) => <UserRow data={item} />}
           keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={0.1}
+          onEndReached={_.throttle(getMoreData, 400)}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         />

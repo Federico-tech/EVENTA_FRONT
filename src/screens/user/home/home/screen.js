@@ -14,14 +14,10 @@ export const HomeScreen = () => {
     updateUserCoordinates();
   }, []);
 
-  const { data, refreshing, getData, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
+  const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: 'events',
     limit: 6,
   });
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <Container>
@@ -35,7 +31,7 @@ export const HomeScreen = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListHeaderComponent={<HomeTop />}
-        ListFooterComponent={<View style={{marginTop: SIZE}}>{loadMore && <ActivityIndicator />}</View>}
+        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
       />
     </Container>
   );

@@ -95,7 +95,7 @@ export const EditOrganiserScreen = () => {
   return (
     <Container>
       <KeyboardAvoidingView behavior="padding">
-        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} />
+        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <Row alignCenter>

@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
@@ -19,14 +20,13 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   const [isFollowing, setIsFollowing] = useState();
   const myId = useSelector(selectCurrentUserId);
   const otherUserId = user?._id;
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!_.isEqual(user, initialUser)) {
       setUser({ ...initialUser });
     }
   }, [initialUser]);
-
-  const navigation = useNavigation();
 
   const onPressFollow = () => {
     follow();
@@ -91,18 +91,22 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           </Text>
         )}
         <Row spaceBetween row style={styles.followerRow}>
-          <Row alignCenter style={styles.boxFollower}>
-            <Text semiBoldSm>{user.followers || 0}</Text>
-            <Text color={COLORS.darkGray} regularXs>
-              Followers
-            </Text>
-          </Row>
-          <Row alignCenter>
-            <Text semiBoldSm>{user.followed || 0}</Text>
-            <Text color={COLORS.darkGray} regularXs>
-              Following
-            </Text>
-          </Row>
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowersScreen)}>
+            <Row alignCenter style={styles.boxFollower}>
+              <Text semiBoldSm>{user.followers || 0}</Text>
+              <Text color={COLORS.darkGray} regularXs>
+                Followers
+              </Text>
+            </Row>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowingScreen)}>
+            <Row alignCenter>
+              <Text semiBoldSm>{user.followed || 0}</Text>
+              <Text color={COLORS.darkGray} regularXs>
+                Following
+              </Text>
+            </Row>
+          </TouchableOpacity>
           {myProfile ? (
             <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
           ) : isFollowing ? (
