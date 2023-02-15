@@ -7,7 +7,6 @@ import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedUser } from '../../../../store/user';
 
 export const AccountOrganiserScreen = ({ route }) => {
-  
   const userSelected = useSelector(selectSelectedUser);
 
   useEffect(() => {

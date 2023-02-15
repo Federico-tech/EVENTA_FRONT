@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -8,7 +9,6 @@ import { selectSearchFilter } from '../../../../store/filter';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
-import _ from 'lodash'
 
 export const SearchOrganiserScreen = () => {
   const name = useSelector(selectSearchFilter);

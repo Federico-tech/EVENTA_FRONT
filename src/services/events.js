@@ -54,7 +54,6 @@ export const getOrganiserEvents = async (organiserId) => {
 };
 
 export const getRefreshedEvent = async (event) => {
-  console.log(event);
   try {
     const { data } = await mainAxios.get(`events/${event?._id}`);
     console.log('EventSelected', data);

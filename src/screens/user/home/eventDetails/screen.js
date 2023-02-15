@@ -9,8 +9,9 @@ import { useSelector } from 'react-redux';
 import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
 import { ROUTES } from '../../../../navigation/Navigation';
+import { getRefreshedEvent } from '../../../../services/events';
 import { checkPartecipating, getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
-import { selectSelectedEvent } from '../../../../store/event';
+import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
 import { formatDate, formatTime } from '../../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
@@ -19,7 +20,14 @@ export const EventDetails = ({ route }) => {
   const [participants, setParticipants] = useState();
 
   const navigation = useNavigation();
+  // const { data: event } = route.params
+  // console.log('Event', event)
   const event = useSelector(selectSelectedEvent);
+  const eventId = useSelector(selectSelectedEventId);
+
+  useEffect(() => {
+    getRefreshedEvent(event);
+  }, []);
 
   useEffect(() => {
     checkPartecipating().then((result) => {
@@ -28,10 +36,10 @@ export const EventDetails = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    getEventParticipants().then((result) => {
+    getEventParticipants(eventId).then((result) => {
       setParticipants(result);
     });
-  }, []);
+  }, [event]);
 
   const onPressPartecipate = () => {
     partecipate();
@@ -44,8 +52,6 @@ export const EventDetails = ({ route }) => {
   };
 
   const source = { uri: event.coverImage };
-
-  console.log(participants);
 
   return (
     <Container>
@@ -88,11 +94,11 @@ export const EventDetails = ({ route }) => {
               <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
             <Row>
-              {participants && <UserRow data={participants?.[0]?.user} />}
+              {participants?.length >= 1 && <UserRow data={participants?.[0]?.user} />}
               {participants?.length >= 2 && <UserRow data={participants?.[1]?.user} />}
               {participants?.length === 3 && <UserRow data={participants?.[2]?.user} />}
             </Row>
-            <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)}/>
+            <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
           </View>
         </ScrollView>
         {isPartecipating ? (

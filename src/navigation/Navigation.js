@@ -14,6 +14,7 @@ import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
 import { FollowersScreen } from '../screens/shared/followers/screen';
 import { FollowingScreen } from '../screens/shared/following/screen';
+import { ParticipantsScreen } from '../screens/shared/participants/screen';
 import { SettingScreen } from '../screens/shared/settings/screen';
 import { EventDetails } from '../screens/user/home/eventDetails/screen';
 import { HomeScreen } from '../screens/user/home/home/screen';
@@ -24,7 +25,6 @@ import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
-import { ParticipantsScreen } from '../screens/shared/participants/screen';
 import { SIZE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -60,7 +60,7 @@ export const ROUTES = {
   AccountOrganiserScreen: 'AccountOrganiserScreen',
   FollowersScreen: 'FollowersScreen',
   FollowingScreen: 'FollowingScreen',
-  ParticipantsScreen: 'ParticipantsScreen'
+  ParticipantsScreen: 'ParticipantsScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -93,6 +93,7 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );
 };
@@ -106,6 +107,8 @@ export const SearchNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
     </SearchStackNavigator.Navigator>
   );
 };

@@ -1,21 +1,21 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 
 import { IconButton, Row } from '../components/index';
-import { FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { ROUTES } from '../navigation/Navigation';
+import { FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 
 export const HomeTop = () => {
-  const navigation = useNavigation()
-  const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen)
-  const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen)
+  const navigation = useNavigation();
+  const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
+  const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
   return (
     <View>
       <View style={styles.container}>
-        <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressNotification}/>
+        <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressNotification} />
         <Row alignCenter>
           <TouchableOpacity>
             <Row row alignCenter>
@@ -25,9 +25,9 @@ export const HomeTop = () => {
           </TouchableOpacity>
           <View style={styles.lineButton} />
         </Row>
-        <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressLikes}/>
+        <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressLikes} />
       </View>
-      <MapView style={styles.map}/>
+      <MapView style={styles.map} />
     </View>
   );
 };

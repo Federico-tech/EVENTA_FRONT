@@ -91,7 +91,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           </Text>
         )}
         <Row spaceBetween row style={styles.followerRow}>
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowersScreen)}>
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowersScreen, { user })}>
             <Row alignCenter style={styles.boxFollower}>
               <Text semiBoldSm>{user.followers || 0}</Text>
               <Text color={COLORS.darkGray} regularXs>
@@ -99,7 +99,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
               </Text>
             </Row>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowingScreen)}>
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowingScreen, { user })}>
             <Row alignCenter>
               <Text semiBoldSm>{user.followed || 0}</Text>
               <Text color={COLORS.darkGray} regularXs>

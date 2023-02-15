@@ -4,9 +4,9 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-import { getRefreshedEvent } from '../services/events';
+import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
-import { formatDate, formatTime } from '../utils/dates';
+import { formatDate } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 
 export const EventCard = ({ data }) => {
@@ -14,8 +14,8 @@ export const EventCard = ({ data }) => {
   const dispatch = useDispatch();
   const handleOnPress = () => {
     dispatch(setUserSelected(data.organiser));
+    dispatch(setSelectedEvent(data));
     navigation.navigate('EventDetails', { data });
-    getRefreshedEvent(data);
   };
 
   return (
@@ -26,9 +26,6 @@ export const EventCard = ({ data }) => {
         ) : (
           <Image source={{ uri: data.coverImage }} style={styles.eventImage} resizeMode="cover" />
         )}
-        <View style={styles.startTime}>
-          <Text style={styles.startTimeText}>{formatTime(data.date)}</Text>
-        </View>
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
             <Image resizeMode="contain" style={styles.organiserImage} source={{ uri: data.organiser.profilePic }} />
@@ -55,7 +52,7 @@ export const EventCard = ({ data }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    height: SIZE * 34,
+    height: SIZE * 33,
     backgroundColor: COLORS.white,
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,

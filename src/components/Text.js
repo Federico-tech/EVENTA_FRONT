@@ -1,10 +1,21 @@
 import React from 'react';
 import { Text as RNText, StyleSheet } from 'react-native';
 
-import { COLORS, FONTS, SIZES } from '../utils/theme';
+import { FONTS, SIZES } from '../utils/theme';
 export const Text = ({ color, style, bold, children, semiBoldSm, semiBoldMd, medium, regularSm, regularXs, ...rest }) => {
   return (
-    <RNText style={[{ color }, bold && styles.bold, semiBoldSm && styles.semiBoldSm, semiBoldMd && styles.semiBoldMd, medium && styles.medium, regularSm && styles.regularSm, regularXs && styles.regularXs, style]} {...rest}>
+    <RNText
+      style={[
+        { color },
+        bold && styles.bold,
+        semiBoldSm && styles.semiBoldSm,
+        semiBoldMd && styles.semiBoldMd,
+        medium && styles.medium,
+        regularSm && styles.regularSm,
+        regularXs && styles.regularXs,
+        style,
+      ]}
+      {...rest}>
       {children}
     </RNText>
   );
@@ -25,7 +36,7 @@ const styles = StyleSheet.create({
   },
   medium: {
     fontFamily: FONTS.medium,
-    fontSize: FONTS.sm
+    fontSize: FONTS.sm,
   },
   regularSm: {
     fontFamily: FONTS.regular,
@@ -33,6 +44,6 @@ const styles = StyleSheet.create({
   },
   regularXs: {
     fontFamily: FONTS.regular,
-    fontSize: SIZES.xs
-  }
+    fontSize: SIZES.xs,
+  },
 });

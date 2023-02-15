@@ -14,7 +14,7 @@ import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../util
 export const HomeHeader = ({ data }) => {
   const userinfo = useSelector(selectCurrentUser);
   const { t } = useTranslation();
-  const navigation  = useNavigation()
+  const navigation = useNavigation();
 
   return (
     <View>

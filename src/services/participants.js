@@ -38,9 +38,7 @@ export const checkPartecipating = async () => {
   }
 };
 
-export const getEventParticipants = async () => {
-  const state = store.getState();
-  const eventId = selectSelectedEventId(state);
+export const getEventParticipants = async (eventId) => {
   try {
     const params = { eventId };
     const { data: participants } = await mainAxios.get(`participants`, { params });

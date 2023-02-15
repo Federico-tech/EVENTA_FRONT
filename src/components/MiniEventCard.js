@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { getRefreshedEvent } from '../services/events';
+import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { formatDate } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
@@ -17,7 +17,7 @@ export const MiniEventCard = ({ data }) => {
   const dispatch = useDispatch();
   const handlePress = () => {
     dispatch(setUserSelected(data.organiser));
-    getRefreshedEvent(data);
+    dispatch(setSelectedEvent(data));
     navigation.navigate('EventDetails', { data });
   };
 

@@ -11,12 +11,12 @@ import { Row } from './Row';
 
 export const UserRow = ({ data }) => {
   const { profilePic, username, name } = data;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleOnPress = () => {
-    dispatch(setUserSelected(data))
+    dispatch(setUserSelected(data));
     navigation.navigate(ROUTES.AccountUserScreen, { data });
-  }
+  };
   return (
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.userWrapper}>
@@ -40,12 +40,12 @@ export const UserRow = ({ data }) => {
 
 export const OrganiserRow = ({ data }) => {
   const { profilePic, username, address } = data;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleOnPress = () => {
-    dispatch(setUserSelected(data))
+    dispatch(setUserSelected(data));
     navigation.navigate(ROUTES.AccountOrganiserScreen, { data });
-  }
+  };
   return (
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.organiserWrapper}>
@@ -112,6 +112,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: COLORS.gray,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
