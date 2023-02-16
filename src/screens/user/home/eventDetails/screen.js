@@ -98,7 +98,9 @@ export const EventDetails = ({ route }) => {
               {participants?.length >= 2 && <UserRow data={participants?.[1]?.user} />}
               {participants?.length === 3 && <UserRow data={participants?.[2]?.user} />}
             </Row>
-            <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+            {participants?.length === 3 && (
+              <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+            )}
           </View>
         </ScrollView>
         {isPartecipating ? (

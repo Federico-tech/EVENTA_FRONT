@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { checkFollowing, follow, unFollow } from '../services/follow';
-import { selectCurrentUserId } from '../store/user';
+import { selectCurrentUser, selectCurrentUserId } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
 import { Row } from './Row';
@@ -21,6 +21,8 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   const myId = useSelector(selectCurrentUserId);
   const otherUserId = user?._id;
   const navigation = useNavigation();
+  const currentUser = useSelector(selectCurrentUser);
+  console.log('Role', currentUser.role);
 
   useEffect(() => {
     if (!_.isEqual(user, initialUser)) {
@@ -109,10 +111,14 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           </TouchableOpacity>
           {myProfile ? (
             <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
-          ) : isFollowing ? (
-            <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} />
+          ) : currentUser.role === 'user' ? (
+            isFollowing ? (
+              <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} />
+            ) : (
+              <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} />
+            )
           ) : (
-            <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} />
+            <View style={{ width: SIZE * 13 }} />
           )}
         </Row>
       </Row>

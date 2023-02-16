@@ -15,7 +15,6 @@ export const ProfileScreen = () => {
   });
 
   const user = useSelector(selectCurrentUser);
-  console.log(user);
 
   useEffect(() => {
     refreschCurrentUser(user);

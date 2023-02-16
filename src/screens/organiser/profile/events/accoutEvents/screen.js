@@ -4,30 +4,28 @@ import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container, Header } from '../../../components';
-import { UserRow } from '../../../components/AccountRow';
-import { selectSelectedEventId } from '../../../store/event';
-import { useInfiniteScroll } from '../../../utils/hooks';
-import { SIZE, WIDTH_DEVICE } from '../../../utils/theme';
+import { Container, MiniEventCard } from '../../../../../components';
+import { selectSelectedUserId } from '../../../../../store/user';
+import { useInfiniteScroll } from '../../../../../utils/hooks';
+import { SIZE, WIDTH_DEVICE } from '../../../../../utils/theme';
 
-export const ParticipantsScreen = () => {
-  const eventId = useSelector(selectSelectedEventId);
+export const EventsAccountScreen = () => {
+  const organiserId = useSelector(selectSelectedUserId);
 
-  const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
-    entity: 'participants',
-    limit: 20,
+  const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
+    entity: 'events',
+    limit: 7,
     filters: {
-      eventId,
+      organiserId,
     },
   });
 
   return (
     <Container>
-      <Header title="Participants" />
       <FlatList
         data={data}
         style={{ width: WIDTH_DEVICE }}
-        renderItem={({ item }) => <UserRow data={item.user} />}
+        renderItem={({ item }) => <MiniEventCard data={item} />}
         keyExtractor={(item) => item._id}
         onEndReachedThreshold={0.1}
         onEndReached={_.throttle(getMoreData, 400)}
