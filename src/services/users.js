@@ -29,7 +29,7 @@ export const organiserSignUp = async (data) => {
   }
 };
 
-export const userUpdate = async (data, userId) => {
+export const userUpdate = async (data) => {
   try {
     //await updateUserImage(data.file, userId);
     const { data: updatedUser } = await mainAxios.put(`users/me`, data);
@@ -41,6 +41,7 @@ export const userUpdate = async (data, userId) => {
 };
 
 export const updateUserImage = async (file) => {
+  console.log(file);
   const state = store.getState();
   const userId = selectCurrentUserId(state);
 

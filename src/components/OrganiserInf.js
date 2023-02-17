@@ -2,14 +2,17 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
+import { selectCurrentUserRole } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { FollowButton } from './FollowButton';
 import { Row } from './Row';
 
 export const OrganiserInf = ({ data }) => {
   const navigation = useNavigation();
+  const role = useSelector(selectCurrentUserRole)
 
   return (
     <View style={styles.container}>
@@ -25,7 +28,7 @@ export const OrganiserInf = ({ data }) => {
             </View>
           </Row>
         </TouchableOpacity>
-        <FollowButton />
+        {role === 'user' && <FollowButton />}
       </View>
     </View>
   );

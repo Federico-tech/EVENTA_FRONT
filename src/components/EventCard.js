@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
-import { formatDate } from '../utils/dates';
+import { EVENT_DATE_FORMAT, formatDate } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 
 export const EventCard = ({ data }) => {
@@ -30,7 +30,7 @@ export const EventCard = ({ data }) => {
           <View style={styles.informationContainer}>
             <Image resizeMode="contain" style={styles.organiserImage} source={{ uri: data.organiser.profilePic }} />
             <View style={styles.textContainer}>
-              <Text style={styles.textDate}> {formatDate(data.date)} </Text>
+              <Text style={styles.textDate}> {formatDate(data.date, EVENT_DATE_FORMAT)} </Text>
               <Text style={styles.textTitle}> {data.name} </Text>
               <View style={{ width: SIZE * 20 }}>
                 <Text style={styles.textAdress} numberOfLines={1} ellipsizeMode="tail">

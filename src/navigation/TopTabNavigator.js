@@ -25,7 +25,6 @@ const screenOptions = (tabBarLabel) => ({
     backgroundColor: 'transparent',
     borderBottomWidth: 0.17,
     borderColor: COLORS.lightGray,
-    tabBarActiveTintColor: 'black',
     tabBarInactiveTintColor: COLORS.darkGray,
   },
   tabBarIndicatorStyle: { backgroundColor: 'black' },

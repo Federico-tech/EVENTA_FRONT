@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 
 export const DATE_FORMAT = 'dd/MM/yyyy';
 export const TIME_FORMAT = 'HH:mm';
+export const EVENT_DATE_FORMAT = 'ccc d LLL';
 export const DATE_TIME_FORMAT = `${DATE_FORMAT} ${TIME_FORMAT}`;
 
 export const fromDateAndTimeToISODate = (date, time) => {
@@ -10,14 +11,8 @@ export const fromDateAndTimeToISODate = (date, time) => {
   return DateTime.fromObject({ year, month, day, minute, hour }).toISO();
 };
 
-export const formatDate = (data) => {
+export const formatDate = (data, format) => {
   const dateTime = DateTime.fromISO(data);
-  const formDate = dateTime.toFormat('ccc d LLL');
+  const formDate = dateTime.toFormat(format);
   return formDate;
-};
-
-export const formatTime = (data) => {
-  const dateTime = DateTime.fromISO(data);
-  const formTime = dateTime.toFormat('HH:mm');
-  return formTime;
 };

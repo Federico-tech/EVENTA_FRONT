@@ -12,7 +12,8 @@ import { ROUTES } from '../../../../navigation/Navigation';
 import { getRefreshedEvent } from '../../../../services/events';
 import { checkPartecipating, getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
-import { formatDate, formatTime } from '../../../../utils/dates';
+import { selectCurrentUserId, selectCurrentUserRole } from '../../../../store/user';
+import { EVENT_DATE_FORMAT, formatDate, formatTime, TIME_FORMAT } from '../../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route }) => {
@@ -20,10 +21,11 @@ export const EventDetails = ({ route }) => {
   const [participants, setParticipants] = useState();
 
   const navigation = useNavigation();
-  // const { data: event } = route.params
-  // console.log('Event', event)
   const event = useSelector(selectSelectedEvent);
   const eventId = useSelector(selectSelectedEventId);
+  const role = useSelector(selectCurrentUserRole);
+  const eventOrganiserId = event.organiserId;
+  const userId = useSelector(selectCurrentUserId);
 
   useEffect(() => {
     getRefreshedEvent(event);
@@ -67,6 +69,15 @@ export const EventDetails = ({ route }) => {
                 iconStyle={styles.arrowStyle}
                 color="white"
               />
+              {eventOrganiserId == userId && (
+                <IconButton
+                  name="md-ellipsis-horizontal-sharp"
+                  size={SIZE * 2}
+                  iconStyle={styles.dots}
+                  color="white"
+                  onPress={() => navigation.navigate(ROUTES.EditEventScreen)}
+                />
+              )}
             </View>
             <OrganiserInf data={event} />
             <Line />
@@ -76,8 +87,8 @@ export const EventDetails = ({ route }) => {
               <View style={styles.date}>
                 <FontAwesome name="calendar-o" size={18} />
                 <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                  <Text style={styles.dateText}>{formatDate(event.date)}</Text>
-                  <Text style={styles.timeText}>{formatTime(event.date)}</Text>
+                  <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+                  <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
                 </View>
               </View>
               <View style={styles.place}>
@@ -103,11 +114,12 @@ export const EventDetails = ({ route }) => {
             )}
           </View>
         </ScrollView>
-        {isPartecipating ? (
-          <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate} />
-        ) : (
-          <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />
-        )}
+        {role === 'user' &&
+          (isPartecipating ? (
+            <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate} />
+          ) : (
+            <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />
+          ))}
       </SafeAreaView>
     </Container>
   );
@@ -173,8 +185,12 @@ const styles = StyleSheet.create({
     marginTop: HEIGHT_DEVICE / 70,
   },
   arrowStyle: {
-    marginHorizontal: WIDTH_DEVICE / 40,
-    marginTop: HEIGHT_DEVICE / 100,
+    marginLeft: WIDTH_DEVICE / 40,
+    marginTop: SIZE / 2,
+  },
+  dots: {
+    marginTop: SIZE / 2,
+    marginLeft: SIZE * 24.5,
   },
   other: {
     fontFamily: 'InterRegular',

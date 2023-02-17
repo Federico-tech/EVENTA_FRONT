@@ -7,40 +7,42 @@ import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, InputText, TextButton } from '../../../../components';
+import { Container, Header, InputText } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
-import { createEvent } from '../../../../services/events';
-import { selectCurrentUserId } from '../../../../store/user';
-import { fromDateAndTimeToISODate } from '../../../../utils/dates';
+import { updateEvent, updateEventImage } from '../../../../services/events';
+import { selectSelectedEvent } from '../../../../store/event';
+import { selectCurrentUser } from '../../../../store/user';
+import { fromDateAndTimeToISODate, formatDate, DATE_FORMAT, TIME_FORMAT } from '../../../../utils/dates';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const CreateEventScreen = ({ route }) => {
+export const EditEventScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
 
-  const organiserId = useSelector(selectCurrentUserId);
+  const organiser = useSelector(selectCurrentUser);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const event = useSelector(selectSelectedEvent);
 
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
-      name: '',
-      address: '',
-      description: '',
+      name: event.name,
+      address: event.address,
+      description: event.description,
       position: {
         type: 'Point',
-        coordinates: [],
+        coordinates: [event.position.coordinates[0], event.position.coordinates[1]],
       },
-      startDate: '',
-      startTime: '',
-      file: '',
+      startDate: formatDate(event.date, DATE_FORMAT),
+      startTime: formatDate(event.date, TIME_FORMAT),
+      file: event.coverImage,
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
@@ -64,19 +66,19 @@ export const CreateEventScreen = ({ route }) => {
     validateOnBlur: false,
     validateOnMount: false,
     enableReinitialize: true,
-    onSubmit: async (data, { resetForm }) => {
+    onSubmit: async (data) => {
       try {
         setLoading(true);
         const date = fromDateAndTimeToISODate(data.startDate, data.startTime);
         await validateForm(data);
-        await createEvent({ ..._.omit(data, ['startTime', 'startDate']), date, organiserId });
+        data.file !== event.coverImage && (await updateEventImage(data.file, event._id));
+        await updateEvent({ ..._.omit(data, ['startTime', 'startDate']), date, organiser });
         navigation.goBack();
         showMessage({
           message: 'Event Created Succefully',
           description: 'The event has been cerated succefully',
           type: 'success',
         });
-        resetForm();
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -148,49 +150,45 @@ export const CreateEventScreen = ({ route }) => {
       backScreenName: route.name,
     });
   };
-
   return (
     <Container>
-      <View style={styles.container}>
-        <KeyboardAvoidingView behavior="padding">
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.title}>{t('create event')}</Text>
-            <View>
-              <TouchableOpacity onPress={pickImage}>
-                <View style={styles.uploadImage}>
-                  {!values.file ? (
-                    <>
-                      <Ionicons name="add" size={50} />
-                      <Text>{t('pick an image')}</Text>
-                    </>
-                  ) : (
-                    <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
-                  )}
-                </View>
-                <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
-              </TouchableOpacity>
-              <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
-              <InputText label={t('address')} formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
-              <InputText label={t('description')} formik={formik} formikName="description" multiline />
-              <InputText
-                label={t('date')}
-                formik={{ ...formik, onChangeText: onChangeDate }}
-                formikName="startDate"
-                maxLength={10}
-                placeholder="dd/MM/yyyy"
-              />
-              <InputText
-                label={t('start time')}
-                formik={{ ...formik, onChangeText: onChangeTime }}
-                formikName="startTime"
-                maxLength={5}
-                placeholder="HH:mm"
-              />
-              <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+      <Header title="Edit event" done onPress={handleSubmit} loading={loading} />
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{ marginTop: SIZE * 2, marginHorizontal: WIDTH_DEVICE / 20, marginBottom: SIZE * 10 }}>
+            <TouchableOpacity onPress={pickImage}>
+              <View style={styles.uploadImage}>
+                {!values.file ? (
+                  <>
+                    <Ionicons name="add" size={50} />
+                    <Text>{t('pick an image')}</Text>
+                  </>
+                ) : (
+                  <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+                )}
+              </View>
+              <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
+            </TouchableOpacity>
+            <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
+            <InputText label={t('address')} formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
+            <InputText label={t('description')} formik={formik} formikName="description" multiline />
+            <InputText
+              label={t('date')}
+              formik={{ ...formik, onChangeText: onChangeDate }}
+              formikName="startDate"
+              maxLength={10}
+              placeholder="dd/MM/yyyy"
+            />
+            <InputText
+              label={t('start time')}
+              formik={{ ...formik, onChangeText: onChangeTime }}
+              formikName="startTime"
+              maxLength={5}
+              placeholder="HH:mm"
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Container>
   );
 };

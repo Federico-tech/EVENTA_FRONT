@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
-import { formatDate } from '../utils/dates';
+import { formatDate, EVENT_DATE_FORMAT } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Line } from './Line';
 import { Row } from './Row';
@@ -38,7 +38,7 @@ export const MiniEventCard = ({ data }) => {
         <View style={styles.event}>
           <Image source={{ uri: coverImage }} style={styles.coverImage} />
           <View style={styles.eventInformation}>
-            <Text style={styles.date}>{formatDate(date)}</Text>
+            <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT )}</Text>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
               {address}

@@ -7,6 +7,7 @@ import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { CreateEventScreen } from '../screens/organiser/events/create/screen';
+import { EditEventScreen } from '../screens/organiser/events/edit/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';
 import { AccountOrganiserScreen } from '../screens/organiser/profile/accountProfile/screen';
 import { EditOrganiserScreen } from '../screens/organiser/profile/editProfile/screen';
@@ -33,6 +34,7 @@ const OrganiserBottomTabNavigator = createBottomTabNavigator();
 export const ROUTES = {
   HomeScreen: 'HomeScreen',
   HomeNavigator: 'HomeNavigator',
+  OrganiserHomeNavigator: 'OrganiserHomeNavigator',
   SearchScreen: 'SearchScreen',
   ProfileScreen: 'ProfileScreen',
   MapScreen: 'MapScreen',
@@ -63,13 +65,14 @@ export const ROUTES = {
   ParticipantsScreen: 'ParticipantsScreen',
   EventsAccountScreen: 'EventsAccountScreen',
   AboutAccountScreen: 'AboutAccountScreen',
+  EditEventScreen: 'EditEventScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
   tabBarLabel: '',
   tabBarIcon: ({ focused, colour }) => {
     let iconName;
-    if (route.name === ROUTES.HomeNavigator || route.name === ROUTES.OrganiserHome) {
+    if (route.name === ROUTES.HomeNavigator || route.name === ROUTES.OrganiserHomeNavigator) {
       iconName = focused ? 'home' : 'home-outline';
     } else if (route.name === ROUTES.SearchNavigator) {
       iconName = focused ? 'ios-search' : 'ios-search-outline';
@@ -129,6 +132,18 @@ export const ProfileNavigator = () => {
   );
 };
 
+const OrganiserHomeStackNavigator = createStackNavigator();
+
+export const OrganiserHomeNavigator = () => {
+  return (
+    <OrganiserHomeStackNavigator.Navigator>
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.OrganiserHome} component={OrganiserHome} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} options={{ headerShown: false }} />
+    </OrganiserHomeStackNavigator.Navigator>
+  );
+};
+
 const OrganiserProfileStackNavigator = createStackNavigator();
 
 export const OrganiserProfileNavigator = () => {
@@ -141,6 +156,7 @@ export const OrganiserProfileNavigator = () => {
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} options={{ headerShown: false }} />
     </OrganiserProfileStackNavigator.Navigator>
   );
 };
@@ -159,7 +175,7 @@ export const UserBottomNavigator = () => {
 export const OrganiserBottomNavigator = () => {
   return (
     <OrganiserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
-      <OrganiserBottomTabNavigator.Screen name={ROUTES.OrganiserHome} component={OrganiserHome} options={{ headerShown: false }} />
+      <OrganiserBottomTabNavigator.Screen name={ROUTES.OrganiserHomeNavigator} component={OrganiserHomeNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen name={ROUTES.CreateEventScreen} component={CreateEventScreen} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />

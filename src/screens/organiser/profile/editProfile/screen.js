@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row } from '../../../../components';
-import { userUpdate } from '../../../../services/users';
+import { updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
@@ -20,7 +20,6 @@ export const EditOrganiserScreen = () => {
   const navigation = useNavigation();
 
   const user = useSelector(selectCurrentUser);
-  console.log(user);
   const userId = useSelector(selectCurrentUserId);
 
   const [loading, setLoading] = useState(false);
@@ -54,6 +53,7 @@ export const EditOrganiserScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
+        data.file !== user.profilePic && (await updateUserImage(data.file));
         await userUpdate(data, userId);
         navigation.goBack();
         setLoading(false);
