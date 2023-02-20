@@ -9,6 +9,7 @@ import { setUserSelected } from '../store/user';
 import { formatDate, EVENT_DATE_FORMAT } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Line } from './Line';
+import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 
 export const MiniEventCard = ({ data }) => {
@@ -36,7 +37,7 @@ export const MiniEventCard = ({ data }) => {
         </View>
         <Line lineStyle={{ backgroundColor: COLORS.lightGray }} />
         <View style={styles.event}>
-          <Image source={{ uri: coverImage }} style={styles.coverImage} />
+          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover"/>
           <View style={styles.eventInformation}>
             <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT )}</Text>
             <Text style={styles.name}>{name}</Text>

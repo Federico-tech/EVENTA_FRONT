@@ -8,6 +8,7 @@ import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { EVENT_DATE_FORMAT, formatDate } from '../utils/dates';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
+import { LoadingImage } from './LoadingImage';
 
 export const EventCard = ({ data }) => {
   const navigation = useNavigation();
@@ -21,11 +22,7 @@ export const EventCard = ({ data }) => {
   return (
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.cardContainer}>
-        {!data.coverImage || data.coverImage === '' ? (
-          <View style={styles.eventImageView} />
-        ) : (
-          <Image source={{ uri: data.coverImage }} style={styles.eventImage} resizeMode="cover" />
-        )}
+        <LoadingImage source={data.coverImage} style={styles.eventImage} resizeMode="cover" />
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
             <Image resizeMode="contain" style={styles.organiserImage} source={{ uri: data.organiser.profilePic }} />

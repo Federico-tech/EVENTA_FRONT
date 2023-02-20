@@ -13,3 +13,4 @@ export * from './Text';
 export * from './Row';
 export * from './ProfileHeader';
 export * from './MiniEventCard';
+export * from './LoadingImage';
