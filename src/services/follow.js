@@ -1,6 +1,7 @@
 import { mainAxios } from '../core/axios';
 import { store } from '../store';
 import { selectSelectedUser } from '../store/user';
+import { getMe } from './users';
 
 export const followUser = async (userId) => {
   try {
@@ -29,6 +30,7 @@ export const follow = async () => {
   console.log(userSelected);
   try {
     const { data: follow } = await mainAxios.post(`users/${userSelected?._id}/follow`);
+    await getMe()
     console.log(follow);
   } catch (e) {
     console.log({ ErrorFollow: e });
@@ -40,6 +42,7 @@ export const unFollow = async () => {
   const userSelected = selectSelectedUser(state);
   try {
     const { data: unfollow } = await mainAxios.delete(`users/${userSelected?._id}/unfollow`);
+    await getMe()
     console.log(unfollow);
   } catch (e) {
     console.log({ errorUnfollow: e });

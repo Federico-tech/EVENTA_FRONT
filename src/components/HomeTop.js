@@ -62,5 +62,6 @@ const styles = StyleSheet.create({
     marginHorizontal: WIDTH_DEVICE / 20,
     marginTop: SIZE,
     borderRadius: SIZES.xxs,
+    marginBottom: SIZE * 1.5,
   },
 });

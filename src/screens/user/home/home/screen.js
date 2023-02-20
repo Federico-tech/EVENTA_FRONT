@@ -24,7 +24,6 @@ export const HomeScreen = () => {
       <HomeHeader />
       <FlatList
         data={data}
-        style={{ width: WIDTH_DEVICE }}
         renderItem={({ item }) => <EventCard data={item} />}
         keyExtractor={(item) => item._id}
         onEndReachedThreshold={0.1}

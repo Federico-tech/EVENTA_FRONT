@@ -201,6 +201,8 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,
     marginBottom: SIZE,
+    position: 'absolute',
+    bottom: 0,
   },
   whoGoing: {
     marginTop: SIZE,

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
-
+import _ from 'lodash'
 import { setSearchFilter } from '../store/filter';
 import { COLORS, SIZE, SIZES, TAB_BAR_HEIGHT, WIDTH_DEVICE } from '../utils/theme';
 
@@ -13,7 +13,9 @@ export const SearchBar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setSearchFilter(searchData));
+    _.debounce(() => {
+      dispatch(setSearchFilter(searchData));
+    },500)()
   }, [searchData]);
 
   console.log('Seardch', searchData);

@@ -157,6 +157,7 @@ export const OrganiserProfileNavigator = () => {
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </OrganiserProfileStackNavigator.Navigator>
   );
 };

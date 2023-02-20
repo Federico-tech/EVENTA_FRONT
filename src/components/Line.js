@@ -13,7 +13,7 @@ export const Line = ({ lineStyle, shadow }) => {
 
 const styles = StyleSheet.create({
   line: {
-    height: HEIGHT_DEVICE / 1500,
+    height: 0.5,
     backgroundColor: COLORS.lightGray,
   },
   shadow: {

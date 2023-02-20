@@ -81,3 +81,15 @@ export const refreschCurrentUser = async (user) => {
     console.log({ e });
   }
 };
+
+export const getMe = async (data) => {
+  try {
+    const { data: updatedUser } = await mainAxios.get(`users/me`);
+    store.dispatch(updateUserInfo(updatedUser));
+    console.log({ updatedUser });
+  } catch (e) {
+    console.log({ ErrorGetMe: e });
+  }
+};
+
+

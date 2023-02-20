@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
@@ -40,12 +40,24 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   };
 
   const onPressUnfollow = () => {
-    unFollow();
-    setUser((prevUser) => ({
-      ...prevUser,
-      followers: prevUser.followers - 1,
-    }));
-    setIsFollowing(false);
+    Alert.alert('Alert Title', 'My Alert Msg', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          unFollow();
+          setUser((prevUser) => ({
+            ...prevUser,
+            followers: prevUser.followers - 1,
+          }));
+          setIsFollowing(false);
+        },
+      },
+    ]);
   };
 
   useEffect(() => {

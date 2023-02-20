@@ -23,7 +23,7 @@ export const OrganiserHome = () => {
   return (
     <Container>
       <HomeHeader />
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+      <View style={{ marginHorizontal: WIDTH_DEVICE / 20, marginBottom: SIZE * 10 }}>
         <FlatList
           data={data}
           renderItem={({ item }) => <MiniEventCard data={item} />}
