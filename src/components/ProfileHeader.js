@@ -12,6 +12,7 @@ import { checkFollowing, follow, unFollow } from '../services/follow';
 import { selectCurrentUser, selectCurrentUserId } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
+import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 
@@ -40,7 +41,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   };
 
   const onPressUnfollow = () => {
-    Alert.alert('Alert Title', 'My Alert Msg', [
+    Alert.alert('Unfollow', 'Are you sure?', [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
@@ -84,7 +85,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
         {!user.profilePic ? (
           <Ionicons name="person" size={60} color={COLORS.gray} />
         ) : (
-          <Image source={{ uri: user.profilePic }} style={styles.image} resizeMode="contain" />
+          <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" />
         )}
       </View>
       <Row style={styles.name}>

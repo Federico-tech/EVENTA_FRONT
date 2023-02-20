@@ -70,6 +70,7 @@ export const ROUTES = {
 
 const BottomBarIcons = ({ route }) => ({
   tabBarLabel: '',
+  tabBarHideOnKeyboard: true,
   tabBarIcon: ({ focused, colour }) => {
     let iconName;
     if (route.name === ROUTES.HomeNavigator || route.name === ROUTES.OrganiserHomeNavigator) {

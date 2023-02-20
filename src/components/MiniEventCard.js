@@ -37,7 +37,7 @@ export const MiniEventCard = ({ data }) => {
         </View>
         <Line lineStyle={{ backgroundColor: COLORS.lightGray }} />
         <View style={styles.event}>
-          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover"/>
+          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator />
           <View style={styles.eventInformation}>
             <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT )}</Text>
             <Text style={styles.name}>{name}</Text>

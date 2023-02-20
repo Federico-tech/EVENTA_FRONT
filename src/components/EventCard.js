@@ -22,10 +22,10 @@ export const EventCard = ({ data }) => {
   return (
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.cardContainer}>
-        <LoadingImage source={data.coverImage} style={styles.eventImage} resizeMode="cover" />
+        <LoadingImage source={data.coverImage} style={styles.eventImage} resizeMode="cover" indicator />
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
-            <Image resizeMode="contain" style={styles.organiserImage} source={{ uri: data.organiser.profilePic }} />
+            <LoadingImage resizeMode="contain" style={styles.organiserImage} source={data.organiser.profilePic} />
             <View style={styles.textContainer}>
               <Text style={styles.textDate}> {formatDate(data.date, EVENT_DATE_FORMAT)} </Text>
               <Text style={styles.textTitle}> {data.name} </Text>

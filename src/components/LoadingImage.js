@@ -3,7 +3,7 @@ import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 
 import { COLORS, SIZES } from '../utils/theme';
 
-export const LoadingImage = ({ source, style }) => {
+export const LoadingImage = ({ source, style, indicator }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoadStart = () => {
@@ -18,7 +18,7 @@ export const LoadingImage = ({ source, style }) => {
       {isLoading && (
         <>
           <View style={styles.imageView}>
-            <ActivityIndicator color={'black'}/>
+            {indicator && <ActivityIndicator color={'black'}/>}
           </View>
         </>
       )}

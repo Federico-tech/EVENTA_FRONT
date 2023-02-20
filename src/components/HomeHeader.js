@@ -10,6 +10,7 @@ import { LogoText } from '../assets';
 import { ROUTES } from '../navigation/Navigation';
 import { selectCurrentUser } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../utils/theme';
+import { LoadingImage } from './LoadingImage';
 
 export const HomeHeader = ({ data }) => {
   const userinfo = useSelector(selectCurrentUser);
@@ -28,7 +29,7 @@ export const HomeHeader = ({ data }) => {
                     <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
                   </View>
                 ) : (
-                  <Image style={styles.imageProfile} resizeMode="contain" source={{ uri: userinfo.profilePic }} />
+                  <LoadingImage style={styles.imageProfile} resizeMode="contain" source={ userinfo.profilePic} />
                 )}
               </TouchableOpacity>
               <View style={styles.text}>

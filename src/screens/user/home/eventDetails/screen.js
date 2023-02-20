@@ -19,6 +19,7 @@ import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../.
 export const EventDetails = ({ route }) => {
   const [isPartecipating, setIsPartecipating] = useState();
   const [participants, setParticipants] = useState();
+  const [numberPart, setNumberPart] = useState()
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -29,6 +30,7 @@ export const EventDetails = ({ route }) => {
 
   useEffect(() => {
     getRefreshedEvent(event);
+    setNumberPart(event.participants)
   }, []);
 
   useEffect(() => {
@@ -46,11 +48,13 @@ export const EventDetails = ({ route }) => {
   const onPressPartecipate = () => {
     partecipate();
     setIsPartecipating(true);
+    setNumberPart(numberPart + 1)
   };
 
   const onPressUnpartecipate = () => {
     unpartecipate();
     setIsPartecipating(false);
+    setNumberPart(numberPart - 1)
   };
 
   const source = { uri: event.coverImage };
@@ -59,7 +63,7 @@ export const EventDetails = ({ route }) => {
     <Container>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
+          <View style={{marginBottom: SIZE * 4}}>
             <View style={styles.imageContainer}>
               <Image source={source} style={styles.eventImage} resizeMode="contain" />
               <IconButton
@@ -98,7 +102,7 @@ export const EventDetails = ({ route }) => {
               <View style={styles.person}>
                 <Ionicons name="people-outline" size={24} />
                 <Text style={styles.peopleText}>
-                  {event.participants}
+                  {numberPart}
                   <Text style={styles.description}> of your friends are going</Text>
                 </Text>
               </View>
