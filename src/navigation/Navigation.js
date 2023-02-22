@@ -126,7 +126,7 @@ export const ProfileNavigator = () => {
     <ProfileStackNavigator.Navigator initialRouteName="ProfileHome">
       <ProfileStackNavigator.Screen name="ProfileHome" component={ProfileScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name="SettingScreen" component={SettingScreen} options={{ headerShown: false }} />
-      <ProfileStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} options={{ headerShown: false }} />
+      {/* <ProfileStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} options={{ headerShown: false }} /> */}
       <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
@@ -156,7 +156,6 @@ export const OrganiserProfileNavigator = () => {
         options={{ headerShown: false }}
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
-      <OrganiserProfileStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </OrganiserProfileStackNavigator.Navigator>
@@ -209,9 +208,23 @@ export const OrganiserStack = () => {
   return (
     <OrganiserStackNavigator.Navigator initialRouteName="organiserStack" screenOptions={{ headerShown: false }}>
       <OrganiserStackNavigator.Screen name="organiserStack" component={OrganiserBottomNavigator} />
-      <OrganiserStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
+      <OrganiserStackNavigator.Group >
         <OrganiserStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen} />
+        <OrganiserStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} />
       </OrganiserStackNavigator.Group>
     </OrganiserStackNavigator.Navigator>
+  );
+};
+
+const UserStackNavigator = createStackNavigator();
+
+export const UserStack = () => {
+  return (
+    <UserStackNavigator.Navigator initialRouteName="userStack" screenOptions={{ headerShown: false }}>
+      <UserStackNavigator.Screen name="userStack" component={UserBottomNavigator} />
+      <UserStackNavigator.Group>
+        <UserStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} />
+      </UserStackNavigator.Group>
+    </UserStackNavigator.Navigator>
   );
 };

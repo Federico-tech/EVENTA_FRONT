@@ -13,13 +13,13 @@ import { getRefreshedEvent } from '../../../../services/events';
 import { checkPartecipating, getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
 import { selectCurrentUserId, selectCurrentUserRole } from '../../../../store/user';
-import { EVENT_DATE_FORMAT, formatDate, formatTime, TIME_FORMAT } from '../../../../utils/dates';
+import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route }) => {
   const [isPartecipating, setIsPartecipating] = useState();
   const [participants, setParticipants] = useState();
-  const [numberPart, setNumberPart] = useState()
+  const [numberPart, setNumberPart] = useState();
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -30,7 +30,7 @@ export const EventDetails = ({ route }) => {
 
   useEffect(() => {
     getRefreshedEvent(event);
-    setNumberPart(event.participants)
+    setNumberPart(event.participants);
   }, []);
 
   useEffect(() => {
@@ -48,13 +48,13 @@ export const EventDetails = ({ route }) => {
   const onPressPartecipate = () => {
     partecipate();
     setIsPartecipating(true);
-    setNumberPart(numberPart + 1)
+    setNumberPart(numberPart + 1);
   };
 
   const onPressUnpartecipate = () => {
     unpartecipate();
     setIsPartecipating(false);
-    setNumberPart(numberPart - 1)
+    setNumberPart(numberPart - 1);
   };
 
   const source = { uri: event.coverImage };
@@ -63,7 +63,7 @@ export const EventDetails = ({ route }) => {
     <Container>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{marginBottom: SIZE * 4}}>
+          <View style={{ marginBottom: SIZE * 4 }}>
             <View style={styles.imageContainer}>
               <Image source={source} style={styles.eventImage} resizeMode="contain" />
               <IconButton
@@ -73,7 +73,7 @@ export const EventDetails = ({ route }) => {
                 iconStyle={styles.arrowStyle}
                 color="white"
               />
-              {eventOrganiserId == userId && (
+              {eventOrganiserId === userId && (
                 <IconButton
                   name="md-ellipsis-horizontal-sharp"
                   size={SIZE * 2}

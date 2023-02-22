@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
@@ -85,7 +85,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
         {!user.profilePic ? (
           <Ionicons name="person" size={60} color={COLORS.gray} />
         ) : (
-          <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" />
+          <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" profile />
         )}
       </View>
       <Row style={styles.name}>

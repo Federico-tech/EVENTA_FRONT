@@ -1,14 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, InputText, TextButton, Header, Row } from '../../../../components';
+import { Container, InputText, TextButton, Header, Row, Text } from '../../../../components';
 import { updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
@@ -22,6 +24,26 @@ export const EditUserScreen = () => {
   const userId = useSelector(selectCurrentUserId);
 
   const [loading, setLoading] = useState(false);
+
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = ['18%'];
+
+  const handlePresentModal = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={1}
+        animatedIndex={{
+          value: 1,
+        }}
+      />
+    ),
+    []
+  );
 
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
@@ -91,29 +113,68 @@ export const EditUserScreen = () => {
     }
   };
 
+  const deleteImage = () => {
+    setFieldValue('file', undefined);
+  };
+
   return (
-    <Container>
-      <KeyboardAvoidingView behavior="padding">
-        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
-        <View style={styles.container}>
-          <Row alignCenter>
-            <View style={styles.imageContainer}>
-              {!values.file ? (
-                <Ionicons name="person" size={50} color={COLORS.darkGray} />
-              ) : (
-                <>
-                  <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
-                </>
-              )}
+    <BottomSheetModalProvider>
+      <Container>
+        <KeyboardAvoidingView behavior="padding">
+          <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
+          <ScrollView>
+            <View style={styles.container}>
+              <Row alignCenter>
+                <View style={styles.imageContainer}>
+                  {!values.file ? (
+                    <Ionicons name="person" size={50} color={COLORS.darkGray} />
+                  ) : (
+                    <>
+                      <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
+                    </>
+                  )}
+                </View>
+                <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
+              </Row>
+              <InputText label="Name" formik={formik} formikName="name" />
+              <InputText label="Username" formik={formik} formikName="username" />
+              <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={90} />
             </View>
-            <TextButton text="Upload an image" textStyle={styles.upload} onPress={pickImage} />
-          </Row>
-          <InputText label="Name" formik={formik} formikName="name" />
-          <InputText label="Username" formik={formik} formikName="username" />
-          <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={90} />
-        </View>
-      </KeyboardAvoidingView>
-    </Container>
+          </ScrollView>
+          <View>
+            <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+              <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+                {/* <View style={styles.editImageContainer}>
+                  {!values.file ? (
+                    <Ionicons name="person" size={5} color={COLORS.darkGray} />
+                  ) : (
+                    <>
+                      <Image source={{ uri: values.file }} style={styles.editImage} resizeMode="cover" />
+                    </>
+                  )}
+                </View> */}
+                <TouchableOpacity onPress={pickImage}>
+                  <Row row alignCenter style={{ marginTop: SIZE }}>
+                    <Ionicons name="images-outline" size={SIZE * 2} />
+                    <Text regularSm style={{ marginLeft: SIZE }}>
+                      Choose From your library
+                    </Text>
+                  </Row>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={deleteImage}>
+                  <Row row alignCenter style={{ marginTop: SIZE }}>
+                    <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
+                    <Text regularSm color="red" style={{ marginLeft: SIZE }}>
+                      Delete the image
+                    </Text>
+                  </Row>
+                </TouchableOpacity>
+              </View>
+            </BottomSheetModal>
+          </View>
+        </KeyboardAvoidingView>
+      </Container>
+    </BottomSheetModalProvider>
   );
 };
 
@@ -141,5 +202,10 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xs,
     marginTop: SIZE / 2,
     marginBottom: SIZE,
+  },
+  editImage: {
+    width: SIZE * 4,
+    aspectRatio: 1,
+    borderRadius: 100,
   },
 });

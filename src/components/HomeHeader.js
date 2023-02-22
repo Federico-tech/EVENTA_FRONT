@@ -29,7 +29,7 @@ export const HomeHeader = ({ data }) => {
                     <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
                   </View>
                 ) : (
-                  <LoadingImage style={styles.imageProfile} resizeMode="contain" source={ userinfo.profilePic} />
+                  <LoadingImage style={styles.imageProfile} resizeMode="contain" source={userinfo.profilePic} profile />
                 )}
               </TouchableOpacity>
               <View style={styles.text}>

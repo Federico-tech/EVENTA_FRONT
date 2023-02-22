@@ -3,7 +3,7 @@ import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 
 import { COLORS, SIZES } from '../utils/theme';
 
-export const LoadingImage = ({ source, style, indicator }) => {
+export const LoadingImage = ({ source, style, indicator, profile }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoadStart = () => {
@@ -14,12 +14,10 @@ export const LoadingImage = ({ source, style, indicator }) => {
     setIsLoading(false);
   };
   return (
-    <View>
+    <View style={profile && styles.profile}>
       {isLoading && (
         <>
-          <View style={styles.imageView}>
-            {indicator && <ActivityIndicator color={'black'}/>}
-          </View>
+          <View style={profile ? styles.imageProfileView : styles.imageView}>{indicator && <ActivityIndicator color="black" />}</View>
         </>
       )}
       <Image source={{ uri: source }} style={style} onLoadStart={handleLoadStart} onLoadEnd={handleLoadEnd} />
@@ -38,6 +36,18 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flex: 1,
-    borderRadius: SIZES.xxs
+    borderRadius: SIZES.xxs,
+  },
+  imageProfileView: {
+    backgroundColor: COLORS.backGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flex: 1,
+    borderRadius: 100,
   },
 });
