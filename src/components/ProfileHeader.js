@@ -116,9 +116,9 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowingScreen, { user })}>
             <Row alignCenter>
-              <Text semiBoldSm>{user.followed || 0}</Text>
+              <Text semiBoldSm>{organiser ? 0 : user.followed || 0}</Text>
               <Text color={COLORS.darkGray} regularXs>
-                Following
+                {organiser ? 'Events' : 'Following'}
               </Text>
             </Row>
           </TouchableOpacity>

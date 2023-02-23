@@ -126,7 +126,6 @@ export const ProfileNavigator = () => {
     <ProfileStackNavigator.Navigator initialRouteName="ProfileHome">
       <ProfileStackNavigator.Screen name="ProfileHome" component={ProfileScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name="SettingScreen" component={SettingScreen} options={{ headerShown: false }} />
-      {/* <ProfileStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} options={{ headerShown: false }} /> */}
       <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
@@ -140,7 +139,7 @@ export const OrganiserHomeNavigator = () => {
     <OrganiserHomeStackNavigator.Navigator>
       <OrganiserHomeStackNavigator.Screen name={ROUTES.OrganiserHome} component={OrganiserHome} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
-      <OrganiserHomeStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
     </OrganiserHomeStackNavigator.Navigator>
   );
 };
@@ -156,7 +155,6 @@ export const OrganiserProfileNavigator = () => {
         options={{ headerShown: false }}
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
-      <OrganiserProfileStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </OrganiserProfileStackNavigator.Navigator>
   );
@@ -208,9 +206,10 @@ export const OrganiserStack = () => {
   return (
     <OrganiserStackNavigator.Navigator initialRouteName="organiserStack" screenOptions={{ headerShown: false }}>
       <OrganiserStackNavigator.Screen name="organiserStack" component={OrganiserBottomNavigator} />
-      <OrganiserStackNavigator.Group >
+      <OrganiserStackNavigator.Group>
         <OrganiserStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen} />
         <OrganiserStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} />
+        <OrganiserStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} />
       </OrganiserStackNavigator.Group>
     </OrganiserStackNavigator.Navigator>
   );

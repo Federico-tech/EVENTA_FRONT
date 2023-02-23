@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   medium: {
     fontFamily: FONTS.medium,
-    fontSize: FONTS.sm,
+    fontSize: SIZES.sm,
   },
   regularSm: {
     fontFamily: FONTS.regular,
