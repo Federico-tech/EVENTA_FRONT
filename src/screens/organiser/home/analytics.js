@@ -1,57 +1,87 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
-import { Container, Row } from '../../../components';
-import { COLORS, FONTS, SHADOWS, SIZE, SIZES } from '../../../utils/theme';
+import { Container, Row, Text } from '../../../components';
+import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const Analytics = () => {
   return (
     <Container>
-      <Row row spaceBetween>
-        <View style={styles.containers}>
+      <View style={styles.wrapper}>
+        <Text style={styles.title}>Lifetime Analytics</Text>
+        <Row spaceAround row style={{ marginTop: SIZE * 2, marginBottom: SIZE * 2 }}>
           <Row alignCenter>
-            <Text style={styles.number}>12</Text>
-            <Text style={styles.text}>Your Events</Text>
+            <Row row alignCenter>
+              <View style={styles.purpleDot} />
+              <Text medium color={COLORS.darkGray}>
+                Events
+              </Text>
+            </Row>
+            <Text style={styles.number}>25</Text>
           </Row>
-        </View>
-        <View style={styles.containers}>
           <Row alignCenter>
-            <Text style={styles.number}>132</Text>
-            <Text style={styles.text}>Partecipants</Text>
+            <Row row alignCenter>
+              <View style={styles.blueDot} />
+              <Text medium color={COLORS.darkGray}>
+                Part
+              </Text>
+            </Row>
+            <Text style={styles.number}>250</Text>
           </Row>
-        </View>
-      </Row>
-      <Text style={styles.events}>Recent Events</Text>
+        </Row>
+        <Row alignCenter>
+          <Row row alignCenter style={{ alignSelf: 'center' }}>
+            <View style={styles.greenDot} />
+            <Text medium color={COLORS.darkGray}>
+              Likes
+            </Text>
+          </Row>
+          <Text style={styles.number}>150</Text>
+        </Row>
+      </View>
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  containers: {
+  wrapper: {
     backgroundColor: COLORS.white,
-    width: SIZE * 13,
-    aspectRatio: 1,
-    borderRadius: SIZES.xxs,
+    marginHorizontal: WIDTH_DEVICE / 20,
+    height: SIZE * 15,
     marginTop: SIZE,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: COLORS.backGray,
-    borderWidth: 0.5,
     ...SHADOWS.medium,
+    borderRadius: 30,
   },
-  number: {
-    fontFamily: FONTS.semiBold,
-    fontSize: SIZE * 4,
-    color: COLORS.primary,
-  },
-  text: {
-    fontFamily: FONTS.medium,
-    fontSize: SIZES.xs,
-    color: COLORS.primary,
-  },
-  events: {
-    marginTop: SIZE,
+  title: {
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.lg,
+    alignSelf: 'center',
+    marginTop: SIZE,
+  },
+  purpleDot: {
+    width: SIZE / 2,
+    backgroundColor: 'darkviolet',
+    aspectRatio: 1,
+    borderRadius: 100,
+    marginRight: SIZE / 2,
+  },
+  blueDot: {
+    width: SIZE / 2,
+    backgroundColor: 'darkturquoise',
+    aspectRatio: 1,
+    borderRadius: 100,
+    marginRight: SIZE / 2,
+  },
+  greenDot: {
+    width: SIZE / 2,
+    backgroundColor: 'darkslategrey',
+    aspectRatio: 1,
+    borderRadius: 100,
+    marginRight: SIZE / 2,
+  },
+  number: {
+    fontFamily: FONTS.bold,
+    fontSize: SIZES.sm,
+    marginTop: SIZE / 2,
   },
 });

@@ -26,8 +26,8 @@ export function useInfiniteScroll({ page: initialPage = 1, data: initialData = [
 
   const getRefreshedData = useCallback(async () => {
     const params = {
-      page: page,
-      limit: limit,
+      page,
+      limit,
       ...filters,
     };
     setRefreshing(true);

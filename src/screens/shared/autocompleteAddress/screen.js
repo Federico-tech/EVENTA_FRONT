@@ -1,11 +1,9 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { Container, Text } from '../../../components';
-import { ROUTES } from '../../../navigation/Navigation';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const AddressAutocompleteScreen = ({ route, navigation }) => {
   const { title, backScreenName } = route.params;

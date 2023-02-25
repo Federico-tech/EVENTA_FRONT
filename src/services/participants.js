@@ -38,9 +38,9 @@ export const checkPartecipating = async () => {
   }
 };
 
-export const getEventParticipants = async (eventId) => {
+export const getEventParticipants = async (eventId, { queryParams = {} }) => {
   try {
-    const params = { eventId };
+    const params = { eventId, ...queryParams };
     const { data: participants } = await mainAxios.get(`participants`, { params });
     return participants.data;
   } catch (e) {

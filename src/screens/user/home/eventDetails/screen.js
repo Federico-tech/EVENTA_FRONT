@@ -40,7 +40,7 @@ export const EventDetails = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    getEventParticipants(eventId).then((result) => {
+    getEventParticipants(eventId, { limit: 3 }).then((result) => {
       setParticipants(result);
     });
   }, [event]);
@@ -109,9 +109,9 @@ export const EventDetails = ({ route }) => {
               <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
             <Row>
-              {participants?.length >= 1 && <UserRow data={participants?.[0]?.user} />}
-              {participants?.length >= 2 && <UserRow data={participants?.[1]?.user} />}
-              {participants?.length === 3 && <UserRow data={participants?.[2]?.user} />}
+              {participants?.slice(0, 3).map((participant) => (
+                <UserRow key={participant.user.id} data={participant.user} />
+              ))}
             </Row>
             {participants?.length === 3 && (
               <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />

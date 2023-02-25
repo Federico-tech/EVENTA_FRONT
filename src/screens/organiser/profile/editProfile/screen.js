@@ -53,6 +53,10 @@ export const EditOrganiserScreen = ({ route }) => {
       bio: user.bio,
       address: user.address,
       file: user.profilePic,
+      position: {
+        type: 'Point',
+        coordinates: [user.position.coordinates[0], user.position.coordinates[1]],
+      },
     },
     validationSchema: object().shape({
       username: string()
@@ -86,6 +90,18 @@ export const EditOrganiserScreen = ({ route }) => {
     },
   });
 
+  useEffect(() => {
+    const { addressInfo } = route.params || {};
+    console.debug({ addressInfo });
+    if (addressInfo) {
+      onChangeText('address', addressInfo.formatted_address);
+      onChangeText('position', {
+        type: 'Point',
+        coordinates: [addressInfo.lng, addressInfo.lat],
+      });
+    }
+  }, [route.params?.addressInfo]);
+
   const onChangeText = (formikName, newValue) => {
     setFieldValue(formikName, newValue);
     setFieldError(formikName, '');
@@ -116,7 +132,7 @@ export const EditOrganiserScreen = ({ route }) => {
 
   const onPressAddress = () => {
     navigation.navigate(ROUTES.AddressAutocompleteScreen, {
-      title: "Inserisci il tuo indirizzo",
+      title: 'Inserisci il tuo indirizzo',
       backScreenName: route.name,
     });
   };
@@ -146,22 +162,13 @@ export const EditOrganiserScreen = ({ route }) => {
               </Row>
               <InputText label="Name" formik={formik} formikName="name" />
               <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" />
-              <InputText label="Address" formik={formik} formikName="address" onPress={onPressAddress}/>
+              <InputText label="Address" formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
               <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
             </View>
           </ScrollView>
           <View>
             <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
               <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-                {/* <View style={styles.editImageContainer}>
-                  {!values.file ? (
-                    <Ionicons name="person" size={5} color={COLORS.darkGray} />
-                  ) : (
-                    <>
-                      <Image source={{ uri: values.file }} style={styles.editImage} resizeMode="cover" />
-                    </>
-                  )}
-                </View> */}
                 <TouchableOpacity onPress={pickImage}>
                   <Row row alignCenter style={{ marginTop: SIZE }}>
                     <Ionicons name="images-outline" size={SIZE * 2} />

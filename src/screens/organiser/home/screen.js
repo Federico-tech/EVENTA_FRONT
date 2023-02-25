@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { Container, HomeHeader, MiniEventCard } from '../../../components';
 import { selectCurrentUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
-import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { FONTS, SIZE, SIZES } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
@@ -23,7 +23,7 @@ export const OrganiserHome = () => {
   return (
     <Container>
       <HomeHeader />
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20, marginBottom: SIZE * 10 }}>
+      <View style={{ marginBottom: SIZE * 10 }}>
         <FlatList
           data={data}
           renderItem={({ item }) => <MiniEventCard data={item} />}
