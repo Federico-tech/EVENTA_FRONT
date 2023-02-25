@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { Container } from '../../../../components';
+import { Container, Text } from '../../../../components';
 import { OrganiserRow } from '../../../../components/AccountRow';
 import { selectSearchFilter } from '../../../../store/filter';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-import { SIZE } from '../../../../utils/theme';
+import { COLORS, SIZE } from '../../../../utils/theme';
 
 export const SearchOrganiserScreen = () => {
   const name = useSelector(selectSearchFilter);
@@ -40,6 +40,19 @@ export const SearchOrganiserScreen = () => {
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         />
       )}
+      {name && data.length === 0 && (
+        <Text color={COLORS.darkGray} medium style={styles.noFoundText}>
+          No results found for '{name}'
+        </Text>
+      )}
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  noFoundText: {
+    position: 'absolute',
+    alignSelf: 'center',
+    marginTop: SIZE,
+  },
+});

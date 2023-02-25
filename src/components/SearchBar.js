@@ -1,13 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
-import _ from 'lodash'
+
 import { setSearchFilter } from '../store/filter';
 import { COLORS, SIZE, SIZES, TAB_BAR_HEIGHT, WIDTH_DEVICE } from '../utils/theme';
 
-export const SearchBar = () => {
+export const SearchBar = ({ style }) => {
   const { t } = useTranslation();
   const [searchData, setSearchData] = useState('');
   const dispatch = useDispatch();
@@ -15,13 +16,13 @@ export const SearchBar = () => {
   useEffect(() => {
     _.debounce(() => {
       dispatch(setSearchFilter(searchData));
-    },500)()
+    }, 500)();
   }, [searchData]);
 
   console.log('Seardch', searchData);
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, style]}>
       <Ionicons name="ios-search" size={20} color={COLORS.gray} style={styles.icon} />
       <TextInput placeholder={t('search')} placeholderTextColor={COLORS.gray} style={styles.textInput} onChangeText={setSearchData} />
     </View>

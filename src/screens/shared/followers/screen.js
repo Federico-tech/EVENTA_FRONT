@@ -3,7 +3,7 @@ import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 
-import { Container, Header } from '../../../components';
+import { Container, Header, SearchBar } from '../../../components';
 import { UserRow } from '../../../components/AccountRow';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../utils/theme';
@@ -31,6 +31,7 @@ export const FollowersScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
       />
     </Container>
   );

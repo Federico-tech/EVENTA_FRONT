@@ -1,10 +1,11 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { Container, Text } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
-import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const AddressAutocompleteScreen = ({ route, navigation }) => {
   const { title, backScreenName } = route.params;
@@ -31,7 +32,7 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
       <View style={[styles.container]}>
         {!!title && (
           <View style={styles.titleRow}>
-            <Text>{title}</Text>
+            <Text medium>{title}</Text>
           </View>
         )}
         <GooglePlacesAutocomplete
@@ -42,15 +43,16 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
           }}
           enablePoweredByContainer={false}
           listUnderlayColor="transparent"
-          placeholder="Indirizzo"
+          placeholder='Search'
           numberOfLines={10}
           nearbyPlacesAPI="GooglePlacesSearch"
           textInputProps={{
-            placeholderTextColor: COLORS.white,
+            placeholderTextColor: COLORS.gray,
             borderWidth: 0.5,
             borderRadius: SIZES.xs,
             borderColor: COLORS.lightGray,
             height: HEIGHT_DEVICE / 17,
+            cursorColor: 'black'
           }}
           fetchDetails
           onPress={onPress}

@@ -4,7 +4,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container, Header } from '../../../components';
+import { Container, Header, SearchBar } from '../../../components';
 import { UserRow } from '../../../components/AccountRow';
 import { selectSelectedEventId } from '../../../store/event';
 import { useInfiniteScroll } from '../../../utils/hooks';
@@ -33,6 +33,7 @@ export const ParticipantsScreen = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
       />
     </Container>
   );

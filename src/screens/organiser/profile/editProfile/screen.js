@@ -11,12 +11,13 @@ import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row, Text } from '../../../../components';
+import { ROUTES } from '../../../../navigation/Navigation';
 import { updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const EditOrganiserScreen = () => {
+export const EditOrganiserScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
   const navigation = useNavigation();
 
@@ -113,6 +114,13 @@ export const EditOrganiserScreen = () => {
     }
   };
 
+  const onPressAddress = () => {
+    navigation.navigate(ROUTES.AddressAutocompleteScreen, {
+      title: "Inserisci il tuo indirizzo",
+      backScreenName: route.name,
+    });
+  };
+
   const deleteImage = () => {
     setFieldValue('file', undefined);
   };
@@ -138,7 +146,7 @@ export const EditOrganiserScreen = () => {
               </Row>
               <InputText label="Name" formik={formik} formikName="name" />
               <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" />
-              <InputText label="Address" formik={formik} formikName="address" />
+              <InputText label="Address" formik={formik} formikName="address" onPress={onPressAddress}/>
               <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
             </View>
           </ScrollView>
