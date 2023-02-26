@@ -51,8 +51,8 @@ export const OrganiserRow = ({ data }) => {
       <View style={styles.organiserWrapper}>
         <Row row alignCenter>
           {!profilePic ? (
-            <View style={styles.imageView}>
-              <FontAwesome5 name="user-alt" size={SIZE * 2.5} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
+            <View style={styles.imageViewOrgniser}>
+              <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
             </View>
           ) : (
             <Image source={{ uri: profilePic }} style={styles.organiserImage} />
@@ -114,4 +114,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  imageViewOrgniser: {
+    width: SIZE * 5,
+    aspectRatio: 1,
+    borderRadius: 100,
+    backgroundColor: COLORS.gray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });

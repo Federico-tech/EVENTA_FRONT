@@ -32,6 +32,8 @@ export const EditUserScreen = () => {
     bottomSheetModalRef.current?.present();
   };
 
+  const handleClosePress = () => bottomSheetModalRef.current.close()
+
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -111,10 +113,12 @@ export const EditUserScreen = () => {
       });
       await setFieldValue('file', manipulatedImage.uri);
     }
+    handleClosePress()
   };
 
   const deleteImage = () => {
     setFieldValue('file', undefined);
+    handleClosePress()
   };
 
   return (

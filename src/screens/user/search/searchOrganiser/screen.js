@@ -28,7 +28,6 @@ export const SearchOrganiserScreen = () => {
 
   return (
     <Container>
-      {name && (
         <FlatList
           data={data}
           renderItem={({ item }) => <OrganiserRow data={item} organiser />}
@@ -39,7 +38,6 @@ export const SearchOrganiserScreen = () => {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         />
-      )}
       {name && data.length === 0 && (
         <Text color={COLORS.darkGray} medium style={styles.noFoundText}>
           No results found for '{name}'

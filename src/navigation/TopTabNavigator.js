@@ -2,6 +2,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { PastEventsScreen } from '../screens/organiser/events/past/screen';
+import { UpcomingEventsScreen } from '../screens/organiser/events/upcoming/screen';
 import { AboutAccountScreen } from '../screens/organiser/profile/about/accountAbout/screen';
 import { AboutScreen } from '../screens/organiser/profile/about/profileAbout/screen';
 import { EventsAccountScreen } from '../screens/organiser/profile/events/accoutEvents/screen';
@@ -15,6 +17,7 @@ import { ROUTES } from './Navigation';
 const SearchTopStackNavigator = createMaterialTopTabNavigator();
 const OrganiserTopStackNavigator = createMaterialTopTabNavigator();
 const OrganiserAccountTopStackNavigator = createMaterialTopTabNavigator();
+const OrganiserEventsTopStackNavigator = createMaterialTopTabNavigator();
 
 const screenOptions = (tabBarLabel) => ({
   tabBarLabel,
@@ -63,5 +66,18 @@ export const OrganiserAccountTopNavigator = () => {
       />
       <OrganiserAccountTopStackNavigator.Screen name={ROUTES.AboutAccountScreen} component={AboutAccountScreen} options={screenOptions('About')} />
     </OrganiserAccountTopStackNavigator.Navigator>
+  );
+};
+
+export const OrganiserEventsTopNavigator = () => {
+  return (
+    <OrganiserEventsTopStackNavigator.Navigator>
+      <OrganiserEventsTopStackNavigator.Screen
+        name={ROUTES.UpcomingEventsScreen}
+        component={UpcomingEventsScreen}
+        options={screenOptions('Upcoming events')}
+      />
+      <OrganiserEventsTopStackNavigator.Screen name={ROUTES.PastEventsScreen} component={PastEventsScreen} options={screenOptions('Past events')} />
+    </OrganiserEventsTopStackNavigator.Navigator>
   );
 };

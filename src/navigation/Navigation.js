@@ -66,6 +66,8 @@ export const ROUTES = {
   EventsAccountScreen: 'EventsAccountScreen',
   AboutAccountScreen: 'AboutAccountScreen',
   EditEventScreen: 'EditEventScreen',
+  UpcomingEventsScreen: 'UpcomingEventsScreen',
+  PastEventsScreen: 'PastEventsScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -141,6 +143,7 @@ export const OrganiserHomeNavigator = () => {
       <OrganiserHomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.OrganiserProfileScreen} component={OrganiserProfileScreen} options={{ headerShown: false }} />
     </OrganiserHomeStackNavigator.Navigator>
   );
 };

@@ -25,7 +25,6 @@ export const SearchEventScreen = () => {
 
   return (
     <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
-      {name && (
         <FlatList
           data={data}
           renderItem={({ item }) => <MiniEventCard data={item} />}
@@ -36,7 +35,6 @@ export const SearchEventScreen = () => {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         />
-      )}
       {name && data.length === 0 && (
         <Text color={COLORS.darkGray} medium style={styles.noFoundText}>
           No results found for '{name}'

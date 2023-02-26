@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
@@ -32,6 +32,8 @@ export const EditOrganiserScreen = ({ route }) => {
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
   };
+
+  const handleClosePress = () => bottomSheetModalRef.current.close()
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -79,7 +81,8 @@ export const EditOrganiserScreen = ({ route }) => {
       try {
         setLoading(true);
         await validateForm(data);
-        data.file !== user.profilePic && (await updateUserImage(data.file));
+        data.file !== user.profilePic && !!data?.file && (await updateUserImage(data.file));
+        !data?.file && (await userUpdate({ profilePic: null }, userId));
         await userUpdate(data, userId);
         navigation.goBack();
         setLoading(false);
@@ -128,6 +131,7 @@ export const EditOrganiserScreen = ({ route }) => {
       });
       await setFieldValue('file', manipulatedImage.uri);
     }
+    handleClosePress()
   };
 
   const onPressAddress = () => {
@@ -138,59 +142,58 @@ export const EditOrganiserScreen = ({ route }) => {
   };
 
   const deleteImage = () => {
-    setFieldValue('file', undefined);
+    setFieldValue('file', null);
+    handleClosePress()
   };
 
   return (
-    <BottomSheetModalProvider>
-      <Container>
-        <KeyboardAvoidingView behavior="padding">
-          <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-              <Row alignCenter>
-                <View style={styles.imageContainer}>
-                  {!values.file ? (
-                    <Ionicons name="person" size={50} color={COLORS.darkGray} />
-                  ) : (
-                    <>
-                      <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
-                    </>
-                  )}
-                </View>
-                <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
-              </Row>
-              <InputText label="Name" formik={formik} formikName="name" />
-              <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" />
-              <InputText label="Address" formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
-              <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
-            </View>
-          </ScrollView>
-          <View>
-            <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-              <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-                <TouchableOpacity onPress={pickImage}>
-                  <Row row alignCenter style={{ marginTop: SIZE }}>
-                    <Ionicons name="images-outline" size={SIZE * 2} />
-                    <Text regularSm style={{ marginLeft: SIZE }}>
-                      Choose From your library
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={deleteImage}>
-                  <Row row alignCenter style={{ marginTop: SIZE }}>
-                    <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
-                    <Text regularSm color="red" style={{ marginLeft: SIZE }}>
-                      Delete the image
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
+    <Container>
+      <KeyboardAvoidingView behavior="padding">
+        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <Row alignCenter>
+              <View style={styles.imageContainer}>
+                {!values.file ? (
+                  <Ionicons name="person" size={50} color={COLORS.darkGray} />
+                ) : (
+                  <>
+                    <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
+                  </>
+                )}
               </View>
-            </BottomSheetModal>
+              <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
+            </Row>
+            <InputText label="Name" formik={formik} formikName="name" />
+            <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" />
+            <InputText label="Address" formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
+            <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
           </View>
-        </KeyboardAvoidingView>
-      </Container>
-    </BottomSheetModalProvider>
+        </ScrollView>
+        <View>
+          <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+            <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+              <TouchableOpacity onPress={pickImage}>
+                <Row row alignCenter style={{ marginTop: SIZE }}>
+                  <Ionicons name="images-outline" size={SIZE * 2} />
+                  <Text regularSm style={{ marginLeft: SIZE }}>
+                    Choose From your library
+                  </Text>
+                </Row>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={deleteImage}>
+                <Row row alignCenter style={{ marginTop: SIZE }}>
+                  <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
+                  <Text regularSm color="red" style={{ marginLeft: SIZE }}>
+                    Delete the image
+                  </Text>
+                </Row>
+              </TouchableOpacity>
+            </View>
+          </BottomSheetModal>
+        </View>
+      </KeyboardAvoidingView>
+    </Container>
   );
 };
 

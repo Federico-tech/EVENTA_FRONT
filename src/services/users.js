@@ -30,6 +30,7 @@ export const organiserSignUp = async (data) => {
 };
 
 export const userUpdate = async (data) => {
+  console.debug({updateUserData: data})
   try {
     //await updateUserImage(data.file, userId);
     const { data: updatedUser } = await mainAxios.put(`users/me`, data);

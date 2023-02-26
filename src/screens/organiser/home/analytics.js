@@ -1,45 +1,43 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { Container, Row, Text } from '../../../components';
+import { Row, Text } from '../../../components';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const Analytics = () => {
   return (
-    <Container>
-      <View style={styles.wrapper}>
-        <Text style={styles.title}>Lifetime Analytics</Text>
-        <Row spaceAround row style={{ marginTop: SIZE * 2, marginBottom: SIZE * 2 }}>
-          <Row alignCenter>
-            <Row row alignCenter>
-              <View style={styles.purpleDot} />
-              <Text medium color={COLORS.darkGray}>
-                Events
-              </Text>
-            </Row>
-            <Text style={styles.number}>25</Text>
-          </Row>
-          <Row alignCenter>
-            <Row row alignCenter>
-              <View style={styles.blueDot} />
-              <Text medium color={COLORS.darkGray}>
-                Part
-              </Text>
-            </Row>
-            <Text style={styles.number}>250</Text>
-          </Row>
-        </Row>
+    <View style={styles.wrapper}>
+      <Text style={styles.title}>Lifetime Analytics</Text>
+      <Row spaceAround row style={{ marginTop: SIZE * 2, marginBottom: SIZE * 2 }}>
         <Row alignCenter>
-          <Row row alignCenter style={{ alignSelf: 'center' }}>
-            <View style={styles.greenDot} />
+          <Row row alignCenter>
+            <View style={styles.purpleDot} />
             <Text medium color={COLORS.darkGray}>
-              Likes
+              Events
             </Text>
           </Row>
-          <Text style={styles.number}>150</Text>
+          <Text style={styles.number}>25</Text>
         </Row>
-      </View>
-    </Container>
+        <Row alignCenter>
+          <Row row alignCenter>
+            <View style={styles.blueDot} />
+            <Text medium color={COLORS.darkGray}>
+              Partecipants
+            </Text>
+          </Row>
+          <Text style={styles.number}>250</Text>
+        </Row>
+      </Row>
+      <Row alignCenter>
+        <Row row alignCenter style={{ alignSelf: 'center' }}>
+          <View style={styles.greenDot} />
+          <Text medium color={COLORS.darkGray}>
+            Likes
+          </Text>
+        </Row>
+        <Text style={styles.number}>150</Text>
+      </Row>
+    </View>
   );
 };
 
@@ -51,6 +49,7 @@ const styles = StyleSheet.create({
     marginTop: SIZE,
     ...SHADOWS.medium,
     borderRadius: 30,
+    marginBottom: SIZE,
   },
   title: {
     fontFamily: FONTS.semiBold,

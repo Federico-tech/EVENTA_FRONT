@@ -23,7 +23,6 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   const otherUserId = user?._id;
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
-  console.log('Role', currentUser.role);
 
   useEffect(() => {
     if (!_.isEqual(user, initialUser)) {

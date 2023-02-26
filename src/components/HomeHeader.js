@@ -12,7 +12,7 @@ import { selectCurrentUser } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 
-export const HomeHeader = ({ data }) => {
+export const HomeHeader = ({ data, organiser }) => {
   const userinfo = useSelector(selectCurrentUser);
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -23,7 +23,7 @@ export const HomeHeader = ({ data }) => {
         <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
-              <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ProfileScreen)}>
+              <TouchableOpacity onPress={() => navigation.navigate(organiser ? ROUTES.OrganiserProfileScreen : ROUTES.ProfileScreen)}>
                 {!userinfo.profilePic ? (
                   <View style={styles.imageView}>
                     <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
