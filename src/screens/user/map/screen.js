@@ -1,17 +1,20 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Row, Text } from '../../../components';
-import { selectCurrentUser } from '../../../store/user';
+import { ProfileHeader, Row, Text } from '../../../components';
+import { MapBottomSheet } from '../../../components/MapBottomSheet';
+import { refreshSelectedUser } from '../../../services/users';
+import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, SIZE } from '../../../utils/theme';
 
 export const MapScreen = () => {
+  const dispatch = useDispatch();
   const { data } = useInfiniteScroll({
     entity: 'users',
     filters: {
@@ -21,10 +24,12 @@ export const MapScreen = () => {
   const user = useSelector(selectCurrentUser);
 
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = ['50%'];
+  const snapPoints = useMemo(() => ['50%', '95%'], []);
 
-  const handlePresentModal = () => {
+  const handlePresentModal = ({ user }) => {
     bottomSheetModalRef.current?.present();
+    refreshSelectedUser(user)
+    dispatch(setUserSelected(user))
   };
 
   const renderBackdrop = useCallback(
@@ -48,8 +53,8 @@ export const MapScreen = () => {
         initialRegion={{
           latitude: user.position.coordinates[1],
           longitude: user.position.coordinates[0],
-          latitudeDelta: 10,
-          longitudeDelta: 10,
+          latitudeDelta: 1,
+          longitudeDelta: 1,
         }}
         customMapStyle={mapStyle}>
         {data.map((user) => (
@@ -59,7 +64,7 @@ export const MapScreen = () => {
               latitude: user.position.coordinates[1],
               longitude: user.position.coordinates[0],
             }}
-            onPress={handlePresentModal}>
+            onPress={() => handlePresentModal({user})}>
             <View style={{ alignItems: 'center', height: SIZE * 8}}>
 
               <View style={styles.marker}>
@@ -74,9 +79,7 @@ export const MapScreen = () => {
       </MapView>
       <View>
         <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-          <View>
-            <Text>Ciao</Text>
-          </View>
+          <MapBottomSheet />
         </BottomSheetModal>
       </View>
     </View>
