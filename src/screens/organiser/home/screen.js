@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container, HomeHeader, MiniEventCard, Text } from '../../../components';
+import { Button, Container, HomeHeader, MiniEventCard, Text } from '../../../components';
 import { selectCurrentUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
@@ -13,6 +13,7 @@ import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
   const organiserId = useSelector(selectCurrentUserId);
+  const [eventFilter, setEventFilter] = useState('upcoming');
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: 'events',
@@ -37,14 +38,22 @@ export const OrganiserHome = () => {
           <View>
             <Analytics />
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20, flexDirection: 'row' }}>
-              <View style={styles.buttonEnabled}>
-                <Text medium color={COLORS.white}>
+              <Button
+                secondary
+                containerStyle={[eventFilter === 'upcoming' && { backgroundColor: 'black' }, { marginRight: SIZE }]}
+                onPress={() => setEventFilter('upcoming')}>
+                <Text medium color={eventFilter === 'upcoming' ? COLORS.white : 'black'}>
                   Upcoming
                 </Text>
-              </View>
-              <View style={styles.buttonDisabled}>
-                <Text medium>Past</Text>
-              </View>
+              </Button>
+              <Button
+                secondary
+                containerStyle={[eventFilter === 'past' && { backgroundColor: 'black' }, { marginRight: SIZE, width: SIZE * 7 }]}
+                onPress={() => setEventFilter('past')}>
+                <Text medium color={eventFilter === 'past' ? COLORS.white : 'black'}>
+                  Past
+                </Text>
+              </Button>
             </View>
           </View>
         }
@@ -53,26 +62,3 @@ export const OrganiserHome = () => {
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  buttonEnabled: {
-    backgroundColor: 'black',
-    width: SIZE * 8,
-    height: SIZE * 2.5,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textEnabled: {},
-  buttonDisabled: {
-    backgroundColor: COLORS.backGray,
-    width: SIZE * 7,
-    height: SIZE * 2.5,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: SIZE,
-    borderColor: 'black',
-  },
-  textDisabled: {},
-});

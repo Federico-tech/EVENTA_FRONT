@@ -1,10 +1,10 @@
-import { PixelRatio } from 'react-native';
 import * as Location from 'expo-location';
+import { PixelRatio } from 'react-native';
 
+import { userUpdate } from '../services/users';
 import { store } from '../store';
 import { logoutUserSlice } from '../store/user';
 import { WIDTH_DEVICE } from './theme';
-import { userUpdate } from '../services/users';
 
 export const logout = () => {
   store.dispatch(logoutUserSlice());
@@ -16,7 +16,6 @@ export const Normalize = (size) => {
   return Math.round(PixelRatio.roundToNearestPixel(newSize));
 };
 
-
 export const updateUserCoordinates = async () => {
   try {
     const { status } = await Location.requestForegroundPermissionsAsync({});
@@ -27,10 +26,10 @@ export const updateUserCoordinates = async () => {
         type: 'Point',
         coordinates: [location.coords.longitude, location.coords.latitude],
       };
-      console.log({position})
+      console.log({ position });
       await userUpdate({ position });
     }
   } catch (e) {
-    console.log({e})
+    console.log({ e });
   }
-}
+};

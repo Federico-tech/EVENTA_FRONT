@@ -19,6 +19,7 @@ export const Button = ({
   disabled,
   pressed,
   children,
+  black,
 }) => {
   const Component = gradient ? LinearGradient : View;
   return (
@@ -33,6 +34,7 @@ export const Button = ({
           disabled && styles.disabled,
           gradient && styles.containerGradient,
           pressed && styles.pressed,
+          black && styles.black,
           containerStyle,
         ]}>
         {loading ? (
@@ -114,6 +116,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: SIZE * 9.5,
+  },
+  black: {
+    backgroundColor: 'black',
+    width: SIZE * 8,
+    height: SIZE * 2.5,
+    borderRadius: SIZES.xxs,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   disabled: {
     backgroundColor: COLORS.darkGray,

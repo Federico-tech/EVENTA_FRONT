@@ -8,9 +8,10 @@ import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { checkFollowing, follow, unFollow } from '../services/follow';
+import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
-import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, SIZE, WIDTH_DEVICE } from '../utils/theme';
 import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { MiniEventCard } from './MiniEventCard';
@@ -23,6 +24,7 @@ export const MapBottomSheet = () => {
   const role = useSelector(selectCurrentUserRole);
   const navigation = useNavigation();
   const [isFollowing, setIsFollowing] = useState();
+  const [numFollowers, setNumFollowers] = useState();
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: 'events',
@@ -32,9 +34,16 @@ export const MapBottomSheet = () => {
     limit: 7,
   });
 
+  useEffect(() => {
+    refreshSelectedUser(user);
+    setNumFollowers(user.followers);
+    console.log('Followers', numFollowers);
+  }, []);
+
   const onPressFollow = () => {
     follow();
     setIsFollowing(true);
+    setNumFollowers(numFollowers + 1);
   };
 
   const onPressUnfollow = () => {
@@ -49,6 +58,7 @@ export const MapBottomSheet = () => {
         onPress: () => {
           unFollow();
           setIsFollowing(false);
+          setNumFollowers(numFollowers - 1);
         },
       },
     ]);
@@ -61,8 +71,6 @@ export const MapBottomSheet = () => {
   }, []);
 
   const handleEditProfile = () => navigation.navigate(ROUTES.EditOrganiserScreen);
-
-  console.log('TotalData', data)
 
   return (
     <View>
@@ -99,7 +107,7 @@ export const MapBottomSheet = () => {
               <Row spaceBetween row style={styles.followerRow}>
                 <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowersScreen, { user })}>
                   <Row alignCenter style={styles.boxFollower}>
-                    <Text semiBoldSm>{user.followers || 0}</Text>
+                    <Text semiBoldSm>{numFollowers || 0}</Text>
                     <Text color={COLORS.darkGray} regularXs>
                       Followers
                     </Text>
@@ -126,7 +134,6 @@ export const MapBottomSheet = () => {
                 )}
               </Row>
             </Row>
-            
           </View>
         }
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}

@@ -4,13 +4,14 @@ import { View, Image, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ProfileHeader, Row, Text } from '../../../components';
+import { Button, Row, Text } from '../../../components';
 import { MapBottomSheet } from '../../../components/MapBottomSheet';
 import { refreshSelectedUser } from '../../../services/users';
 import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
+import SwitchSelector from "react-native-switch-selector";
 import { COLORS, SIZE } from '../../../utils/theme';
 
 export const MapScreen = () => {
@@ -28,8 +29,8 @@ export const MapScreen = () => {
 
   const handlePresentModal = ({ user }) => {
     bottomSheetModalRef.current?.present();
-    refreshSelectedUser(user)
-    dispatch(setUserSelected(user))
+    refreshSelectedUser(user);
+    dispatch(setUserSelected(user));
   };
 
   const renderBackdrop = useCallback(
@@ -48,7 +49,7 @@ export const MapScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <MapView
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%',zIndex: 1}}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
           latitude: user.position.coordinates[1],
@@ -64,14 +65,13 @@ export const MapScreen = () => {
               latitude: user.position.coordinates[1],
               longitude: user.position.coordinates[0],
             }}
-            onPress={() => handlePresentModal({user})}>
-            <View style={{ alignItems: 'center', height: SIZE * 8}}>
-
+            onPress={() => handlePresentModal({ user })}>
+            <View style={{ alignItems: 'center', height: SIZE * 8 }}>
               <View style={styles.marker}>
-              <Image source={{ uri: user.profilePic }} style={styles.profileImage} />
+                <Image source={{ uri: user.profilePic }} style={styles.profileImage} />
               </View>
-              <Row alignCenter justifyCenter style={{marginTop: SIZE}}>
-                <Text medium >{user.name}</Text>
+              <Row alignCenter justifyCenter style={{ marginTop: SIZE }}>
+                <Text medium>{user.name}</Text>
               </Row>
             </View>
           </Marker>
@@ -103,6 +103,30 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     borderBottomLeftRadius: 30,
     backgroundColor: COLORS.white,
-    transform: [{ rotateZ: '45deg' }]
-  }
+    transform: [{ rotateZ: '45deg' }],
+  },
+  filterButtonLeft: {
+    width: SIZE * 8,
+    height: SIZE * 2.5,
+    alignSelf: 'center',
+    backgroundColor: 'black',
+    zIndex: 2,
+    marginTop: SIZE * 4,
+    borderTopLeftRadius: 110,
+    borderBottomLeftRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  filterButtonRight: {
+    width: SIZE * 8,
+    height: SIZE * 2.5,
+    alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    zIndex: 2,
+    marginTop: SIZE * 4,
+    borderTopRightRadius: 100,
+    borderBottomRightRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
