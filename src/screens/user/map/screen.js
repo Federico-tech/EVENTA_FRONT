@@ -6,17 +6,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Row, Text, MapBottomSheet, EventBottomSheet } from '../../../components';
 import { refreshSelectedUser } from '../../../services/users';
+import { getRefreshedEvent } from '../../../services/events';
 import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, SIZE } from '../../../utils/theme';
+import { setSelectedEvent } from '../../../store/event';
 
 export const MapScreen = () => {
   const [filter, setFilter] = useState('events');
   const [snap, setSnap] = useState(false);
 
   const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
   const entity = filter === 'organisers' ? 'users' : 'events';
   const { data, getData } = useInfiniteScroll({
     entity,
@@ -27,19 +30,24 @@ export const MapScreen = () => {
   useEffect(() => {
     getData();
   }, [filter]);
-  const user = useSelector(selectCurrentUser);
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['50%', '95%'], []);
 
-  const handlePresentModal = ({ user }) => {
+  const handlePresentModalOrganiser = ({ user }) => {
     bottomSheetModalRef.current?.present();
     refreshSelectedUser(user);
     dispatch(setUserSelected(user));
   };
 
-  const renderBackdrop = useCallback(
+  const handlePresentModalEvents = ({ event }) => {
+    bottomSheetModalRef.current?.present();
+    getRefreshedEvent(event);
+    dispatch(setSelectedEvent(event));
+  };
 
+
+  const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
         {...props}
@@ -52,14 +60,16 @@ export const MapScreen = () => {
     []
   );
 
-  const handleAnimate = useCallback((index) => {
-    if(index === 1){
-      setSnap(true)
-    }else  {
-      setSnap(false)
-    }
-  }, [snap]);
-  
+  const handleAnimate = useCallback(
+    (index) => {
+      if (index === 1) {
+        setSnap(true);
+      } else {
+        setSnap(false);
+      }
+    },
+    [snap]
+  );
 
   const eventsByCoordinate = Object.values(
     data.reduce((acc, event) => {
@@ -86,10 +96,14 @@ export const MapScreen = () => {
         initialRegion={{
           latitude: user.position.coordinates[1],
           longitude: user.position.coordinates[0],
-          latitudeDelta: 1,
-          longitudeDelta: 1,
+          latitudeDelta: 0.3,
+          longitudeDelta: 0.3,
         }}
         customMapStyle={mapStyle}>
+          <Marker coordinate={{
+            latitude: user.position.coordinates[1],
+            longitude: user.position.coordinates[0],
+          }}/>
         {filter === 'organisers'
           ? data.map((user) => (
               <Marker
@@ -98,7 +112,7 @@ export const MapScreen = () => {
                   latitude: user.position.coordinates[1],
                   longitude: user.position.coordinates[0],
                 }}
-                onPress={() => handlePresentModal({ user })}>
+                onPress={() => handlePresentModalOrganiser({ user })}>
                 <View style={{ alignItems: 'center', height: SIZE * 8 }}>
                   <View style={styles.marker}>
                     <Image source={{ uri: user.profilePic }} style={styles.profileImage} />
@@ -117,7 +131,7 @@ export const MapScreen = () => {
                   longitude: event.position.coordinates[0],
                 }}
                 tracksViewChanges
-                onPress={() => handlePresentModal({ event })}>
+                onPress={() => handlePresentModalEvents({ event })}>
                 <View style={{ alignItems: 'center', height: SIZE * 8 }}>
                   <View style={styles.marker}>
                     <Image source={{ uri: event.coverImage }} style={styles.profileImage} />
@@ -155,7 +169,7 @@ export const MapScreen = () => {
           snapPoints={snapPoints}
           backdropComponent={renderBackdrop}
           onChange={handleAnimate}>
-          {filter === 'organisers' ? <MapBottomSheet scroll={snap}/> : <EventBottomSheet />}
+          {filter === 'organisers' ? <MapBottomSheet scroll={snap} /> : <EventBottomSheet />}
         </BottomSheetModal>
       </View>
     </View>

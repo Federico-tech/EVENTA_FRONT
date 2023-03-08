@@ -34,12 +34,6 @@ export const MapBottomSheet = ({ scroll }) => {
     limit: 7,
   });
 
-  useEffect(() => {
-    refreshSelectedUser(user);
-    setNumFollowers(user.followers);
-    console.log('Followers', numFollowers);
-  }, [numFollowers]);
-
   const onPressFollow = () => {
     follow();
     setIsFollowing(true);
@@ -65,10 +59,15 @@ export const MapBottomSheet = ({ scroll }) => {
   };
 
   useEffect(() => {
+    refreshSelectedUser(user);
+  }, []);
+
+  useEffect(() => {
+    setNumFollowers(user.followers);
     checkFollowing(myId, user._id).then((result) => {
       setIsFollowing(result);
     });
-  }, []);
+  }, [user]);
 
   const handleEditProfile = () => navigation.navigate(ROUTES.EditOrganiserScreen);
 

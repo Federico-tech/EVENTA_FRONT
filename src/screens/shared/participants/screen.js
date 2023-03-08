@@ -28,7 +28,6 @@ export const ParticipantsScreen = () => {
     getRefreshedData();
   }, [name]);
 
-  console.log('item', data)
 
   return (
     <Container>
@@ -43,7 +42,6 @@ export const ParticipantsScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
-        ListEmptyComponent={<Text>NO FOUND</Text>}
       />
     </Container>
   );

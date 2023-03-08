@@ -69,7 +69,6 @@ export const EventDetails = ({ route }) => {
   };
 
   const source = { uri: event.coverImage };
-  console.log(numberPart)
 
   return (
     <Container>

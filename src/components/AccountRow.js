@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
   userWrapper: {
     marginTop: SIZE,
     height: SIZE * 3.5,
-    marginHorizontal: WIDTH_DEVICE / 20,
   },
   organiserWrapper: {
     marginTop: SIZE,
