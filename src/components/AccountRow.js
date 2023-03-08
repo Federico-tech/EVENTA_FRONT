@@ -10,6 +10,7 @@ import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Row } from './Row';
 
 export const UserRow = ({ data }) => {
+  
   const { profilePic, username, name } = data;
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -121,5 +122,5 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.gray,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });

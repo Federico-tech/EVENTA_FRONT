@@ -14,3 +14,5 @@ export * from './Row';
 export * from './ProfileHeader';
 export * from './MiniEventCard';
 export * from './LoadingImage';
+export * from './EventBottomSheet';
+export * from './MapBottomSheet';

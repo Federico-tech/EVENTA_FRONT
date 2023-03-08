@@ -18,7 +18,7 @@ import { MiniEventCard } from './MiniEventCard';
 import { Row } from './Row';
 import { Text } from './Text';
 
-export const MapBottomSheet = () => {
+export const MapBottomSheet = ({ scroll }) => {
   const user = useSelector(selectSelectedUser);
   const myId = useSelector(selectCurrentUserId);
   const role = useSelector(selectCurrentUserRole);
@@ -38,7 +38,7 @@ export const MapBottomSheet = () => {
     refreshSelectedUser(user);
     setNumFollowers(user.followers);
     console.log('Followers', numFollowers);
-  }, []);
+  }, [numFollowers]);
 
   const onPressFollow = () => {
     follow();
@@ -82,6 +82,7 @@ export const MapBottomSheet = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         showsVerticalScrollIndicator={false}
+        scrollEnabled={scroll}
         ListHeaderComponent={
           <View>
             <Row row alignCenter>

@@ -3,7 +3,7 @@ import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
@@ -20,6 +20,7 @@ export const EventDetails = ({ route }) => {
   const [isPartecipating, setIsPartecipating] = useState();
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -30,8 +31,11 @@ export const EventDetails = ({ route }) => {
 
   useEffect(() => {
     getRefreshedEvent(event);
+  }, [numberPart]);
+
+  useEffect(() => {
     setNumberPart(event.participants);
-  }, []);
+  }, [event, numberPart]);
 
   useEffect(() => {
     checkPartecipating().then((result) => {
@@ -40,10 +44,17 @@ export const EventDetails = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    getEventParticipants(eventId, { limit: 3 }).then((result) => {
-      setParticipants(result);
-    });
-  }, [event]);
+    setLoading(true);
+    getEventParticipants(eventId, { limit: 3 })
+      .then((result) => {
+        setParticipants(result);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, [numberPart]);
 
   const onPressPartecipate = () => {
     partecipate();
@@ -58,6 +69,7 @@ export const EventDetails = ({ route }) => {
   };
 
   const source = { uri: event.coverImage };
+  console.log(numberPart)
 
   return (
     <Container>
@@ -109,9 +121,7 @@ export const EventDetails = ({ route }) => {
               <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
             <Row>
-              {participants?.slice(0, 3).map((participant) => (
-                <UserRow key={participant.user.id} data={participant.user} />
-              ))}
+              {loading ? <ActivityIndicator style={{marginTop: SIZE}}/> : participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)}  
             </Row>
             {participants?.length === 3 && (
               <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
