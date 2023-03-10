@@ -28,6 +28,7 @@ export const FollowingScreen = ({ route }) => {
           renderItem={({ item }) => <UserRow data={item?.followed} />}
           keyExtractor={(item) => item._id}
           onEndReachedThreshold={0.1}
+          showsVerticalScrollIndicator={false}
           onEndReached={_.throttle(getMoreData, 400)}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}

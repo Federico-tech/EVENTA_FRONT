@@ -32,7 +32,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
     setUser((prevUser) => ({
       ...prevUser,
       followers: prevUser.followers + 1,
-      isFollowing: true
+      isFollowing: true,
     }));
   };
 
@@ -50,7 +50,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           setUser((prevUser) => ({
             ...prevUser,
             followers: prevUser.followers - 1,
-            isFollowing: false
+            isFollowing: false,
           }));
         },
       },

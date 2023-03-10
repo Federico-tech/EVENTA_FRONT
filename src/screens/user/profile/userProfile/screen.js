@@ -11,7 +11,7 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 import { FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const ProfileScreen = () => {
-  const myId = useSelector(selectCurrentUserId)
+  const myId = useSelector(selectCurrentUserId);
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: `users/${myId}/events`,
     limit: 6,

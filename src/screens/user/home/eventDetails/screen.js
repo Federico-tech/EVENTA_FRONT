@@ -10,7 +10,7 @@ import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton, Row,
 import { UserRow } from '../../../../components/AccountRow';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { getRefreshedEvent } from '../../../../services/events';
-import { checkPartecipating, getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
+import { getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
 import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
 import { selectCurrentUserId, selectCurrentUserRole } from '../../../../store/user';
@@ -29,15 +29,15 @@ export const EventDetails = ({ route }) => {
   const role = useSelector(selectCurrentUserRole);
   const eventOrganiserId = event.organiserId;
   const userId = useSelector(selectCurrentUserId);
-  const organiser = event.organiser
+  const organiser = event.organiser;
 
   useEffect(() => {
     getRefreshedEvent(event);
-    refreshSelectedUser(organiser)
+    refreshSelectedUser(organiser);
   }, [numberPart]);
 
   useEffect(() => {
-    setIsPartecipating(event.isParticipating)
+    setIsPartecipating(event.isParticipating);
   }, [event]);
 
   useEffect(() => {
@@ -96,9 +96,9 @@ export const EventDetails = ({ route }) => {
               )}
             </View>
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-              <OrganiserInf organiser={organiser}/>
+              <OrganiserInf organiser={organiser} />
               <View style={{ marginHorizontal: 0 }}>
-                <Line lineStyle={{ marginBottom: 0}}/>
+                <Line lineStyle={{ marginBottom: 0 }} />
               </View>
               <View>
                 <Text style={styles.eventTitle}>{event.name}</Text>

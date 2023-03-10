@@ -1,40 +1,73 @@
 import { FontAwesome, Foundation, Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { getRefreshedEvent } from '../services/events';
-import { checkPartecipating, getEventParticipants } from '../services/participants';
+import { follow, unFollow } from '../services/follow';
+import { getEventParticipants, partecipate, unpartecipate } from '../services/participants';
+import { refreshSelectedUser } from '../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../store/event';
-import { selectCurrentUserId, selectCurrentUserRole } from '../store/user';
+import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../utils/dates';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { UserRow } from './AccountRow';
-import { FollowButton } from './FollowButton';
+import { Button } from './Button';
 import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 import { ReadMoreButton } from './TextButton';
 
-export const EventBottomSheet = () => {
+export const EventBottomSheet = ({ scroll }) => {
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
+  const [isPartecipating, setIsPartecipating] = useState();
+  const [isFollowing, setIsFollowing] = useState();
 
   const event = useSelector(selectSelectedEvent);
   const eventId = useSelector(selectSelectedEventId);
+  const organiser = useSelector(selectSelectedUser);
   const role = useSelector(selectCurrentUserRole);
   const eventOrganiserId = event.organiserId;
   const userId = useSelector(selectCurrentUserId);
 
   useEffect(() => {
     getRefreshedEvent(event);
+    refreshSelectedUser(event.organiser);
   }, [numberPart]);
 
   useEffect(() => {
     setNumberPart(event.participants);
   }, [event, numberPart]);
+
+  useEffect(() => {
+    setIsPartecipating(event.isParticipating);
+    setIsFollowing(organiser.isFollowing);
+  }, []);
+
+  const onPressParticipate = () => {
+    partecipate();
+    setIsPartecipating(true);
+    setNumberPart(numberPart + 1);
+  };
+
+  const onPressUnparticipate = () => {
+    unpartecipate();
+    setIsPartecipating(false);
+    setNumberPart(numberPart - 1);
+  };
+
+  const onPressFollow = () => {
+    follow();
+    setIsFollowing(true);
+  };
+  const onPressUnfollow = () => {
+    unFollow();
+    setIsFollowing(false);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -50,60 +83,75 @@ export const EventBottomSheet = () => {
   }, [numberPart]);
 
   return (
-    <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-      <Row row alignCenter style={{ marginBottom: SIZE }}>
-        <LoadingImage source={event.organiser.profilePic} style={styles.image} />
-        <Row style={{ marginLeft: SIZE }}>
-          <Text medium>{event.organiser.username}</Text>
-          <Text color={COLORS.gray}>{event.organiser.name}</Text>
-        </Row>
-        <View style={{ marginLeft: SIZE * 3 }}>
-          <FollowButton />
-        </View>
-      </Row>
-      <Line />
-      <Row row alignCenter style={{ marginTop: SIZE }}>
-        <LoadingImage source={event.coverImage} style={styles.eventImage} />
-        <Row style={{ marginLeft: SIZE, width: SIZE * 15 }}>
-          <Text color={COLORS.gray} style={{ fontSize: SIZES.xs }}>
-            {formatDate(event.date, EVENT_DATE_FORMAT)}
-          </Text>
-          <Text medium>{event.name}</Text>
-          <Text color={COLORS.gray} style={{ fontSize: SIZES.xs }} numberOfLines={1} ellipsizeMode="tail">
-            {event.address}
-          </Text>
-        </Row>
-      </Row>
-      <View>
-        <ReadMoreButton text={event.description} style={styles.description} />
-        <View style={styles.date}>
-          <FontAwesome name="calendar-o" size={18} />
-          <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-            <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
-            <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
+    <ScrollView scrollEnabled={scroll}>
+      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+        <Row row alignCenter style={{ marginBottom: SIZE }} spaceBetween>
+          <Row row alignCenter>
+            <LoadingImage source={event.organiser.profilePic} style={styles.image} />
+            <Row style={{ marginLeft: SIZE }}>
+              <Text medium>{event.organiser.username}</Text>
+              <Text color={COLORS.gray}>{event.organiser.name}</Text>
+            </Row>
+          </Row>
+          <View>
+            {role === 'user' && 
+            (isFollowing ? (
+              <Button secondary text="Following" onPress={onPressUnfollow} />
+            ) : (
+              <Button gradient text="Follow" onPress={onPressFollow} />
+            ))}
           </View>
-        </View>
-        <View style={styles.place}>
-          <Foundation name="marker" size={22} />
-          <Text style={styles.adressText}>{event.address}</Text>
-        </View>
-        <View style={styles.person}>
-          <Ionicons name="people-outline" size={24} />
-          <Text style={styles.peopleText}>
-            {numberPart}
-            <Text style={styles.description}> of your friends are going</Text>
-          </Text>
-        </View>
-        <Text style={styles.whoGoing}>Who's going?</Text>
-        <Row>
-          {loading ? (
-            <ActivityIndicator style={{ marginTop: SIZE }} />
-          ) : (
-            participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
-          )}
         </Row>
+        <Line />
+        <Row row alignCenter style={{ marginTop: SIZE }}>
+          <LoadingImage source={event.coverImage} style={styles.eventImage} />
+          <Row style={{ marginLeft: SIZE, width: SIZE * 15 }}>
+            <Text color={COLORS.gray} style={{ fontSize: SIZES.xs }}>
+              {formatDate(event.date, EVENT_DATE_FORMAT)}
+            </Text>
+            <Text medium>{event.name}</Text>
+            <Text color={COLORS.gray} style={{ fontSize: SIZES.xs }} numberOfLines={1} ellipsizeMode="tail">
+              {event.address}
+            </Text>
+          </Row>
+        </Row>
+        <View>
+          <ReadMoreButton text={event.description} style={styles.description} />
+          <View style={styles.date}>
+            <FontAwesome name="calendar-o" size={18} />
+            <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
+              <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+              <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
+            </View>
+          </View>
+          <View style={styles.place}>
+            <Foundation name="marker" size={22} />
+            <Text style={styles.adressText}>{event.address}</Text>
+          </View>
+          <View style={styles.person}>
+            <Ionicons name="people-outline" size={24} />
+            <Text style={styles.peopleText}>
+              {numberPart}
+              <Text style={styles.description}> of your friends are going</Text>
+            </Text>
+          </View>
+          {role === 'user' && (
+          isPartecipating ? (
+            <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnparticipate} />
+          ) : (
+            <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressParticipate} />
+          ))}
+          <Text style={styles.whoGoing}>Who's going?</Text>
+          <Row>
+            {loading ? (
+              <ActivityIndicator style={{ marginTop: SIZE }} />
+            ) : (
+              participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+            )}
+          </Row>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -183,10 +231,7 @@ const styles = StyleSheet.create({
   },
   partButton: {
     width: WIDTH_DEVICE * 0.9,
-    marginHorizontal: WIDTH_DEVICE / 20,
-    marginBottom: SIZE,
-    position: 'absolute',
-    bottom: 0,
+    marginTop: SIZE,
   },
   whoGoing: {
     marginTop: SIZE,

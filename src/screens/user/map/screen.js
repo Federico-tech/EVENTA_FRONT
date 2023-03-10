@@ -5,14 +5,14 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Row, Text, MapBottomSheet, EventBottomSheet } from '../../../components';
-import { refreshSelectedUser } from '../../../services/users';
 import { getRefreshedEvent } from '../../../services/events';
+import { refreshSelectedUser } from '../../../services/users';
+import { setSelectedEvent } from '../../../store/event';
 import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
-import { setSelectedEvent } from '../../../store/event';
 
 export const MapScreen = () => {
   const [filter, setFilter] = useState('events');
@@ -32,7 +32,8 @@ export const MapScreen = () => {
   }, [filter]);
 
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['50%', '95%'], []);
+  const eventSnapPoints = useMemo(() => ['60%', '95%'], []);
+  const organiserSnapPoints = useMemo(() => ['50%', '95%'], []);
 
   const handlePresentModalOrganiser = ({ user }) => {
     bottomSheetModalRef.current?.present();
@@ -45,7 +46,6 @@ export const MapScreen = () => {
     getRefreshedEvent(event);
     dispatch(setSelectedEvent(event));
   };
-
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -100,12 +100,13 @@ export const MapScreen = () => {
           longitudeDelta: 0.3,
         }}
         customMapStyle={mapStyle}>
-          <Marker coordinate={{
+        <Marker
+          coordinate={{
             latitude: user.position.coordinates[1],
             longitude: user.position.coordinates[0],
           }}>
-            <View style={styles.myPos}/>
-          </Marker>
+          <View style={styles.myPos} />
+        </Marker>
         {filter === 'organisers'
           ? data.map((user) => (
               <Marker
@@ -168,10 +169,10 @@ export const MapScreen = () => {
           enablePanDownToClose
           ref={bottomSheetModalRef}
           index={0}
-          snapPoints={snapPoints}
+          snapPoints={filter === 'organisers' ? organiserSnapPoints : eventSnapPoints}
           backdropComponent={renderBackdrop}
           onChange={handleAnimate}>
-          {filter === 'organisers' ? <MapBottomSheet scroll={snap} /> : <EventBottomSheet />}
+          {filter === 'organisers' ? <MapBottomSheet scroll={snap} /> : <EventBottomSheet scroll={snap} />}
         </BottomSheetModal>
       </View>
     </View>
@@ -209,6 +210,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 3,
     borderColor: COLORS.white,
-    backgroundColor: COLORS.primary
+    backgroundColor: COLORS.primary,
   },
 });
