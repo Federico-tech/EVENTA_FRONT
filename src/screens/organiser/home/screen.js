@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { DateTime } from 'luxon';
 import React, { useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
@@ -14,11 +15,12 @@ import { Analytics } from './analytics';
 export const OrganiserHome = () => {
   const organiserId = useSelector(selectCurrentUserId);
   const [eventFilter, setEventFilter] = useState('upcoming');
+  const currentDate = DateTime.now().toISO();
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: 'events',
     filters: {
-      organiserId,
+      'date.$lt': currentDate,
     },
     limit: 10,
   });

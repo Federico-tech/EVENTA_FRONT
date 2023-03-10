@@ -11,7 +11,7 @@ import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
-import { COLORS, SIZE } from '../../../utils/theme';
+import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 import { setSelectedEvent } from '../../../store/event';
 
 export const MapScreen = () => {
@@ -103,7 +103,9 @@ export const MapScreen = () => {
           <Marker coordinate={{
             latitude: user.position.coordinates[1],
             longitude: user.position.coordinates[0],
-          }}/>
+          }}>
+            <View style={styles.myPos}/>
+          </Marker>
         {filter === 'organisers'
           ? data.map((user) => (
               <Marker
@@ -200,5 +202,13 @@ const styles = StyleSheet.create({
     marginTop: SIZE * 3,
     width: SIZE * 20,
     alignSelf: 'center',
+  },
+  myPos: {
+    width: SIZE * 1.5,
+    aspectRatio: 1,
+    borderRadius: 100,
+    borderWidth: 3,
+    borderColor: COLORS.white,
+    backgroundColor: COLORS.primary
   },
 });

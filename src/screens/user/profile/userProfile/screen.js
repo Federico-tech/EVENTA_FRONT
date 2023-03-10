@@ -6,13 +6,14 @@ import { useSelector } from 'react-redux';
 
 import { ProfileHeader, Container, MiniEventCard } from '../../../../components';
 import { refreschCurrentUser } from '../../../../services/users';
-import { selectCurrentUser } from '../../../../store/user';
+import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const ProfileScreen = () => {
+  const myId = useSelector(selectCurrentUserId)
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
-    entity: 'events',
+    entity: `users/${myId}/events`,
     limit: 6,
   });
 
@@ -27,7 +28,7 @@ export const ProfileScreen = () => {
       <ProfileHeader myProfile user={user} />
       <Text style={styles.recent}>Recent Events</Text>
       <FlatList
-        data={data}
+        data={data.event}
         renderItem={({ item }) => <MiniEventCard data={item} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}

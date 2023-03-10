@@ -8,7 +8,7 @@ import { UserRow } from '../../../../components/AccountRow';
 import { selectSearchFilter } from '../../../../store/filter';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-import { COLORS, SIZE } from '../../../../utils/theme';
+import { COLORS, SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const SearchUserScreen = () => {
   const name = useSelector(selectSearchFilter);
@@ -28,21 +28,23 @@ export const SearchUserScreen = () => {
 
   return (
     <Container>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <UserRow data={item} />}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={0.1}
-        onEndReached={_.throttle(getMoreData, 400)}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-      />
-      {name && data.length === 0 && (
-        <Text color={COLORS.darkGray} medium style={styles.noFoundText}>
-          No results found for '{name}'
-        </Text>
-      )}
+      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <UserRow data={item} />}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={0.1}
+          onEndReached={_.throttle(getMoreData, 400)}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+          ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        />
+        {name && data.length === 0 && (
+          <Text color={COLORS.darkGray} medium style={styles.noFoundText}>
+            No results found for '{name}'
+          </Text>
+        )}
+      </View>
     </Container>
   );
 };

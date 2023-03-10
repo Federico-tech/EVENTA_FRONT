@@ -11,6 +11,7 @@ import { UserRow } from '../../../../components/AccountRow';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { getRefreshedEvent } from '../../../../services/events';
 import { checkPartecipating, getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
+import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
 import { selectCurrentUserId, selectCurrentUserRole } from '../../../../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
@@ -28,20 +29,20 @@ export const EventDetails = ({ route }) => {
   const role = useSelector(selectCurrentUserRole);
   const eventOrganiserId = event.organiserId;
   const userId = useSelector(selectCurrentUserId);
+  const organiser = event.organiser
 
   useEffect(() => {
     getRefreshedEvent(event);
+    refreshSelectedUser(organiser)
   }, [numberPart]);
+
+  useEffect(() => {
+    setIsPartecipating(event.isParticipating)
+  }, [event]);
 
   useEffect(() => {
     setNumberPart(event.participants);
   }, [event, numberPart]);
-
-  useEffect(() => {
-    checkPartecipating().then((result) => {
-      setIsPartecipating(result);
-    });
-  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -94,37 +95,45 @@ export const EventDetails = ({ route }) => {
                 />
               )}
             </View>
-            <OrganiserInf data={event} />
-            <Line />
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-              <Text style={styles.eventTitle}>{event.name}</Text>
-              <ReadMoreButton text={event.description} style={styles.description} />
-              <View style={styles.date}>
-                <FontAwesome name="calendar-o" size={18} />
-                <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                  <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
-                  <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
+              <OrganiserInf organiser={organiser}/>
+              <View style={{ marginHorizontal: 0 }}>
+                <Line lineStyle={{ marginBottom: 0}}/>
+              </View>
+              <View>
+                <Text style={styles.eventTitle}>{event.name}</Text>
+                <ReadMoreButton text={event.description} style={styles.description} />
+                <View style={styles.date}>
+                  <FontAwesome name="calendar-o" size={18} />
+                  <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
+                    <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+                    <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
+                  </View>
                 </View>
+                <View style={styles.place}>
+                  <Foundation name="marker" size={22} />
+                  <Text style={styles.adressText}>{event.address}</Text>
+                </View>
+                <View style={styles.person}>
+                  <Ionicons name="people-outline" size={24} />
+                  <Text style={styles.peopleText}>
+                    {numberPart}
+                    <Text style={styles.description}> of your friends are going</Text>
+                  </Text>
+                </View>
+                <Text style={styles.whoGoing}>Who's going?</Text>
               </View>
-              <View style={styles.place}>
-                <Foundation name="marker" size={22} />
-                <Text style={styles.adressText}>{event.address}</Text>
-              </View>
-              <View style={styles.person}>
-                <Ionicons name="people-outline" size={24} />
-                <Text style={styles.peopleText}>
-                  {numberPart}
-                  <Text style={styles.description}> of your friends are going</Text>
-                </Text>
-              </View>
-              <Text style={styles.whoGoing}>Who's going?</Text>
+              <Row>
+                {loading ? (
+                  <ActivityIndicator style={{ marginTop: SIZE }} />
+                ) : (
+                  participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+                )}
+              </Row>
+              {participants?.length === 3 && (
+                <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+              )}
             </View>
-            <Row>
-              {loading ? <ActivityIndicator style={{marginTop: SIZE}}/> : participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)}  
-            </Row>
-            {participants?.length === 3 && (
-              <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
-            )}
           </View>
         </ScrollView>
         {role === 'user' &&

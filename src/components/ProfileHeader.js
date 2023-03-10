@@ -8,8 +8,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
-import { checkFollowing, follow, unFollow } from '../services/follow';
-import { selectCurrentUser, selectCurrentUserId } from '../store/user';
+import { follow, unFollow } from '../services/follow';
+import { selectCurrentUser } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
 import { LoadingImage } from './LoadingImage';
@@ -18,9 +18,6 @@ import { Text } from './Text';
 
 export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   const [user, setUser] = useState({ ...initialUser });
-  const [isFollowing, setIsFollowing] = useState();
-  const myId = useSelector(selectCurrentUserId);
-  const otherUserId = user?._id;
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
 
@@ -35,8 +32,8 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
     setUser((prevUser) => ({
       ...prevUser,
       followers: prevUser.followers + 1,
+      isFollowing: true
     }));
-    setIsFollowing(true);
   };
 
   const onPressUnfollow = () => {
@@ -53,18 +50,12 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           setUser((prevUser) => ({
             ...prevUser,
             followers: prevUser.followers - 1,
+            isFollowing: false
           }));
-          setIsFollowing(false);
         },
       },
     ]);
   };
-
-  useEffect(() => {
-    checkFollowing(myId, otherUserId).then((result) => {
-      setIsFollowing(result);
-    });
-  }, []);
 
   const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
   return (
@@ -124,7 +115,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           {myProfile ? (
             <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
           ) : currentUser.role === 'user' ? (
-            isFollowing ? (
+            user.isFollowing ? (
               <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} />
             ) : (
               <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} />

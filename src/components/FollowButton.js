@@ -2,31 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { checkFollowing, follow, unFollow } from '../services/follow';
-import { selectCurrentUserId, selectSelectedUserId } from '../store/user';
+import { selectCurrentUser, selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
 import { Button } from './Button';
 
 export const FollowButton = () => {
-  const [isFollowing, setIsFollowing] = useState();
+  const organiser = useSelector(selectSelectedUser)
+  console.log('Org', organiser.isFollowing)
 
-  const myId = useSelector(selectCurrentUserId);
-  const otherUserId = useSelector(selectSelectedUserId);
 
   const onPressFollow = () => {
     follow();
-    setIsFollowing(true);
   };
 
   const onPressUnfollow = () => {
     unFollow();
-    setIsFollowing(false);
   };
 
-  useEffect(() => {
-    checkFollowing(myId, otherUserId).then((result) => {
-      console.log(result);
-      setIsFollowing(result);
-    });
-  }, []);
 
-  return isFollowing ? <Button secondary text="Following" onPress={onPressUnfollow} /> : <Button gradient text="Follow" onPress={onPressFollow} />;
+  return organiser.isFollowing ? <Button secondary text="Following" onPress={onPressUnfollow} /> : <Button gradient text="Follow" onPress={onPressFollow} />;
 };

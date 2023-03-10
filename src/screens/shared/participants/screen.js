@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
@@ -9,7 +10,7 @@ import { UserRow } from '../../../components/AccountRow';
 import { selectSelectedEventId } from '../../../store/event';
 import { selectSearchFilter } from '../../../store/filter';
 import { useInfiniteScroll } from '../../../utils/hooks';
-import { SIZE } from '../../../utils/theme';
+import { SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const ParticipantsScreen = () => {
   const eventId = useSelector(selectSelectedEventId);
@@ -28,21 +29,22 @@ export const ParticipantsScreen = () => {
     getRefreshedData();
   }, [name]);
 
-
   return (
     <Container>
       <Header title="Participants" />
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <UserRow data={item.user} />}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={0.1}
-        onEndReached={_.throttle(getMoreData, 400)}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
-      />
+      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <UserRow data={item.user} />}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={0.1}
+          onEndReached={_.throttle(getMoreData, 400)}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+          ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+          ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
+        />
+      </View>
     </Container>
   );
 };

@@ -76,24 +76,3 @@ export const updateEvent = async (event) => {
     console.log({ errorUpdatingEvent: e });
   }
 };
-
-// export const updateEventImage = async (file) => {
-//   const state = store.getState();
-//   const eventId = selectSelectedEventId(state)
-
-//   const formData = new FormData();
-//   formData.append('file', {
-//     uri: file,
-//     name: 'image.png',
-//     type: 'image/png'
-//   });
-
-//   console.debug({ formData });
-//   try{
-//     const { data } = await mainAxios.put(`events/${eventId}/coverImage`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-//     console.debug('userWithImageUpdated', { data });
-//     return data;
-//   } catch (e) {
-
-//   }
-// }

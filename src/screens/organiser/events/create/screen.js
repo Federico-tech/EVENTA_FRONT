@@ -29,11 +29,6 @@ export const CreateEventScreen = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
-  //const params = {
-  // 'fromDate.$gt': DateTime.now().toISO(),
-  //   'fromDate.$lte'
-  //
-
   const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
       name: '',

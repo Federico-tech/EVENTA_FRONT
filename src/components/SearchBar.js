@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#DEDEDE',
     marginTop: TAB_BAR_HEIGHT + SIZE,
     height: SIZE * 3,
-    marginHorizontal: WIDTH_DEVICE / 20,
     borderRadius: SIZES.xs,
     alignItems: 'center',
     flexDirection: 'row',

@@ -1,34 +1,54 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
-import { selectCurrentUserRole } from '../store/user';
+import { follow, unFollow } from '../services/follow';
+import { selectCurrentUser, selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
-import { FollowButton } from './FollowButton';
+import { Button } from './Button';
 import { Row } from './Row';
 
-export const OrganiserInf = ({ data }) => {
+export const OrganiserInf = () => {
   const navigation = useNavigation();
   const role = useSelector(selectCurrentUserRole)
+  const organiser = useSelector(selectSelectedUser)
+  const [following, setFollowing] = useState()
+  console.log('Following', following)
+
+  useEffect(() => {
+    setFollowing(organiser.isFollowing)
+  }, [organiser])
+
+  const onPressFollow = () => {
+    follow()
+    setFollowing(true)
+  }
+
+  const onPressUnfollow = () => {
+    unFollow()
+    setFollowing(false)
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.informationContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(ROUTES.AccountOrganiserScreen)}>
           <Row row alignCenter>
-            <Image style={styles.image} source={{ uri: data.organiser.profilePic }} resizeMode="contain" />
+            <Image style={styles.image} source={{ uri: organiser.profilePic }} resizeMode="contain" />
             <View style={styles.textContainer}>
-              <Text style={styles.textName}>{data.organiser.username}</Text>
+              <Text style={styles.textName}>{organiser.username}</Text>
               <View style={{ width: SIZE * 13 }}>
-                <Text style={styles.textAdress}>@{data.organiser.name}</Text>
+                <Text style={styles.textAdress}>@{organiser.name}</Text>
               </View>
             </View>
           </Row>
         </TouchableOpacity>
-        {role === 'user' && <FollowButton />}
+        {role === 'user' && 
+          following ? <Button secondary text="Following" onPress={onPressUnfollow} /> : <Button gradient text="Follow" onPress={onPressFollow} />
+        }
       </View>
     </View>
   );
@@ -45,7 +65,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginHorizontal: WIDTH_DEVICE / 20,
     marginVertical: SIZE,
   },
   textContainer: {
