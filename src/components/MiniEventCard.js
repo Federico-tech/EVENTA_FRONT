@@ -12,7 +12,7 @@ import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 
-export const MiniEventCard = ({ data }) => {
+export const MiniEventCard = ({ data, closeSheet = () => {} }) => {
   const { organiser, coverImage, date, name, address, participants } = data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ export const MiniEventCard = ({ data }) => {
     dispatch(setUserSelected(data.organiser));
     dispatch(setSelectedEvent(data));
     navigation.navigate('EventDetails', { data });
+    closeSheet();
   };
 
   return (
@@ -39,7 +40,7 @@ export const MiniEventCard = ({ data }) => {
         <View style={styles.event}>
           <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator />
           <View style={styles.eventInformation}>
-            <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT )}</Text>
+            <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT)}</Text>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
               {address}

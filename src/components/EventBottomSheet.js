@@ -9,7 +9,7 @@ import { follow, unFollow } from '../services/follow';
 import { getEventParticipants, partecipate, unpartecipate } from '../services/participants';
 import { refreshSelectedUser } from '../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../store/event';
-import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../store/user';
+import { selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../utils/dates';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { UserRow } from './AccountRow';
@@ -31,8 +31,6 @@ export const EventBottomSheet = ({ scroll }) => {
   const eventId = useSelector(selectSelectedEventId);
   const organiser = useSelector(selectSelectedUser);
   const role = useSelector(selectCurrentUserRole);
-  const eventOrganiserId = event.organiserId;
-  const userId = useSelector(selectCurrentUserId);
 
   useEffect(() => {
     getRefreshedEvent(event);
@@ -46,7 +44,7 @@ export const EventBottomSheet = ({ scroll }) => {
   useEffect(() => {
     setIsPartecipating(event.isParticipating);
     setIsFollowing(organiser.isFollowing);
-  }, []);
+  }, [event]);
 
   const onPressParticipate = () => {
     partecipate();
@@ -94,12 +92,12 @@ export const EventBottomSheet = ({ scroll }) => {
             </Row>
           </Row>
           <View>
-            {role === 'user' && 
-            (isFollowing ? (
-              <Button secondary text="Following" onPress={onPressUnfollow} />
-            ) : (
-              <Button gradient text="Follow" onPress={onPressFollow} />
-            ))}
+            {role === 'user' &&
+              (isFollowing ? (
+                <Button secondary text="Following" onPress={onPressUnfollow} />
+              ) : (
+                <Button gradient text="Follow" onPress={onPressFollow} />
+              ))}
           </View>
         </Row>
         <Line />
@@ -135,12 +133,12 @@ export const EventBottomSheet = ({ scroll }) => {
               <Text style={styles.description}> of your friends are going</Text>
             </Text>
           </View>
-          {role === 'user' && (
-          isPartecipating ? (
-            <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnparticipate} />
-          ) : (
-            <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressParticipate} />
-          ))}
+          {role === 'user' &&
+            (isPartecipating ? (
+              <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnparticipate} />
+            ) : (
+              <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressParticipate} />
+            ))}
           <Text style={styles.whoGoing}>Who's going?</Text>
           <Row>
             {loading ? (

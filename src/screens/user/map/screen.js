@@ -12,7 +12,7 @@ import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
-import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
+import { COLORS, SIZE } from '../../../utils/theme';
 
 export const MapScreen = () => {
   const [filter, setFilter] = useState('events');
@@ -46,6 +46,8 @@ export const MapScreen = () => {
     getRefreshedEvent(event);
     dispatch(setSelectedEvent(event));
   };
+
+  const handleClosePress = () => bottomSheetModalRef.current.close();
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -172,7 +174,7 @@ export const MapScreen = () => {
           snapPoints={filter === 'organisers' ? organiserSnapPoints : eventSnapPoints}
           backdropComponent={renderBackdrop}
           onChange={handleAnimate}>
-          {filter === 'organisers' ? <MapBottomSheet scroll={snap} /> : <EventBottomSheet scroll={snap} />}
+          {filter === 'organisers' ? <MapBottomSheet scroll={snap} closeSheet={handleClosePress} /> : <EventBottomSheet scroll={snap} />}
         </BottomSheetModal>
       </View>
     </View>

@@ -6,15 +6,16 @@ import { useSelector } from 'react-redux';
 
 import { Container, MiniEventCard, ProfileHeader } from '../../../../components';
 import { refreshSelectedUser } from '../../../../services/users';
-import { selectSelectedUser } from '../../../../store/user';
+import { selectSelectedUser, selectSelectedUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const AccountUserScreen = ({ route }) => {
   const user = useSelector(selectSelectedUser);
+  const id = useSelector(selectSelectedUserId)
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
-    entity: 'events',
+    entity: `users/${id}/events`,
     limit: 6,
   });
 

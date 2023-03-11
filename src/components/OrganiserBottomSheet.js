@@ -18,7 +18,7 @@ import { MiniEventCard } from './MiniEventCard';
 import { Row } from './Row';
 import { Text } from './Text';
 
-export const MapBottomSheet = ({ scroll }) => {
+export const MapBottomSheet = ({ scroll, closeSheet }) => {
   const user = useSelector(selectSelectedUser);
   const myId = useSelector(selectCurrentUserId);
   const role = useSelector(selectCurrentUserRole);
@@ -71,11 +71,15 @@ export const MapBottomSheet = ({ scroll }) => {
 
   const handleEditProfile = () => navigation.navigate(ROUTES.EditOrganiserScreen);
 
+  const onPressNavigateProfile = () => {
+    navigation.navigate(ROUTES.AccountOrganiserScreen);
+    closeSheet();
+  };
   return (
     <View>
       <FlatList
         data={data}
-        renderItem={({ item }) => <MiniEventCard data={item} />}
+        renderItem={({ item }) => <MiniEventCard data={item} closeSheet={closeSheet} />}
         keyExtractor={(item) => item._id}
         onEndReachedThreshold={0.1}
         onEndReached={_.throttle(getMoreData, 400)}
@@ -84,21 +88,23 @@ export const MapBottomSheet = ({ scroll }) => {
         scrollEnabled={scroll}
         ListHeaderComponent={
           <View>
-            <Row row alignCenter>
-              <View style={styles.profileImage}>
-                {!user.profilePic ? (
-                  <Ionicons name="person" size={60} color={COLORS.gray} />
-                ) : (
-                  <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" profile />
-                )}
-              </View>
-              <Row style={styles.name}>
-                <Text semiBoldMd>{user.name}</Text>
-                <Text medium color={COLORS.darkGray}>
-                  @{user.username}
-                </Text>
+            <TouchableOpacity onPress={onPressNavigateProfile}>
+              <Row row alignCenter>
+                <View style={styles.profileImage}>
+                  {!user.profilePic ? (
+                    <Ionicons name="person" size={60} color={COLORS.gray} />
+                  ) : (
+                    <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" profile />
+                  )}
+                </View>
+                <Row style={styles.name}>
+                  <Text semiBoldMd>{user.name}</Text>
+                  <Text medium color={COLORS.darkGray}>
+                    @{user.username}
+                  </Text>
+                </Row>
               </Row>
-            </Row>
+            </TouchableOpacity>
             <Row style={styles.bio}>
               <Row row>
                 <Ionicons name="pin" size={SIZE * 1.5} />
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 100,
-    width: SIZE * 7.5,
+    width: SIZE * 6.5,
     aspectRatio: 1,
     borderWidth: 3,
     borderColor: COLORS.white,
@@ -163,7 +169,7 @@ const styles = StyleSheet.create({
   },
 
   profileImage: {
-    width: SIZE * 7.5,
+    width: SIZE * 6.5,
     aspectRatio: 1,
     backgroundColor: COLORS.lightGray,
     justifyContent: 'center',

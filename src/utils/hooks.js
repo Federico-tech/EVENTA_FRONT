@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { mainAxios } from '../core/axios';
 
-export function useInfiniteScroll({ page: initialPage = 1, data: initialData = [], entity, filters = {}, limit = 10, fetchAtCreated = true }) {
+export function useInfiniteScroll({ page: initialPage = 1, data: initialData = [], entity, filters = {}, limit, fetchAtCreated = true }) {
   const [page, setPage] = useState(initialPage);
   const [refreshing, setRefreshing] = useState(false);
   const [loadMore, setLoadMore] = useState(false);

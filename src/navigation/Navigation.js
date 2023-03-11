@@ -12,6 +12,7 @@ import { OrganiserHome } from '../screens/organiser/home/screen';
 import { AccountOrganiserScreen } from '../screens/organiser/profile/accountProfile/screen';
 import { EditOrganiserScreen } from '../screens/organiser/profile/editProfile/screen';
 import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
+import { SearchOrganiserEventsScreen } from '../screens/organiser/profile/searchEvents/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
 import { FollowersScreen } from '../screens/shared/followers/screen';
 import { FollowingScreen } from '../screens/shared/following/screen';
@@ -69,6 +70,7 @@ export const ROUTES = {
   EditEventScreen: 'EditEventScreen',
   UpcomingEventsScreen: 'UpcomingEventsScreen',
   PastEventsScreen: 'PastEventsScreen',
+  SearchOrganiserEventsScreen: 'SearchOrganiserEventsScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -118,6 +120,11 @@ export const SearchNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen
+        name={ROUTES.SearchOrganiserEventsScreen}
+        component={SearchOrganiserEventsScreen}
+        options={{ headerShown: false }}
+      />
     </SearchStackNavigator.Navigator>
   );
 };
@@ -172,6 +179,7 @@ export const MapNavigator = () => {
     <MapStackNavigator.Navigator initialRouteName={ROUTES.MapScreen}>
       <MapStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <MapStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
     </MapStackNavigator.Navigator>
   );
 };

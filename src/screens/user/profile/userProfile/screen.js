@@ -28,7 +28,7 @@ export const ProfileScreen = () => {
       <ProfileHeader myProfile user={user} />
       <Text style={styles.recent}>Recent Events</Text>
       <FlatList
-        data={data.event}
+        data={data}
         renderItem={({ item }) => <MiniEventCard data={item} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}

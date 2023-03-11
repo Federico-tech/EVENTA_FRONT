@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
 import { selectCurrentUser } from '../store/user';
+import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
 import { LoadingImage } from './LoadingImage';
@@ -20,6 +21,15 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   const [user, setUser] = useState({ ...initialUser });
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
+
+  const { data } = useInfiniteScroll({
+    entity: 'events',
+    filters: {
+      organiserId: user._id,
+    },
+  });
+
+  console.log('data', data);
 
   useEffect(() => {
     if (!_.isEqual(user, initialUser)) {
@@ -58,6 +68,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   };
 
   const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
+
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
@@ -104,9 +115,9 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
               </Text>
             </Row>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowingScreen, { user })}>
+          <TouchableOpacity onPress={() => navigation.navigate(organiser ? ROUTES.SearchOrganiserEventsScreen : (ROUTES.FollowingScreen, { user }))}>
             <Row alignCenter>
-              <Text semiBoldSm>{organiser ? 0 : user.followed || 0}</Text>
+              <Text semiBoldSm>{organiser ? data.length : user.followed || 0}</Text>
               <Text color={COLORS.darkGray} regularXs>
                 {organiser ? 'Events' : 'Following'}
               </Text>
