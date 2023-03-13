@@ -1,9 +1,11 @@
 import { FontAwesome, Foundation, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
+import { ROUTES } from '../navigation/Navigation';
 import { getRefreshedEvent } from '../services/events';
 import { follow, unFollow } from '../services/follow';
 import { getEventParticipants, partecipate, unpartecipate } from '../services/participants';
@@ -20,7 +22,7 @@ import { Row } from './Row';
 import { Text } from './Text';
 import { ReadMoreButton } from './TextButton';
 
-export const EventBottomSheet = ({ scroll }) => {
+export const EventBottomSheet = ({ scroll, closeSheet }) => {
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
@@ -31,6 +33,7 @@ export const EventBottomSheet = ({ scroll }) => {
   const eventId = useSelector(selectSelectedEventId);
   const organiser = useSelector(selectSelectedUser);
   const role = useSelector(selectCurrentUserRole);
+  const navigation = useNavigation();
 
   useEffect(() => {
     getRefreshedEvent(event);
@@ -38,13 +41,10 @@ export const EventBottomSheet = ({ scroll }) => {
   }, [numberPart]);
 
   useEffect(() => {
-    setNumberPart(event.participants);
-  }, [event, numberPart]);
-
-  useEffect(() => {
     setIsPartecipating(event.isParticipating);
     setIsFollowing(organiser.isFollowing);
-  }, [event]);
+    setNumberPart(event.participants);
+  }, [event, numberPart]);
 
   const onPressParticipate = () => {
     partecipate();
@@ -80,17 +80,24 @@ export const EventBottomSheet = ({ scroll }) => {
       });
   }, [numberPart]);
 
+  const handleOrganiserProfileNavigation = () => {
+    navigation.navigate(ROUTES.AccountOrganiserScreen);
+    closeSheet();
+  };
+
   return (
     <ScrollView scrollEnabled={scroll}>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
         <Row row alignCenter style={{ marginBottom: SIZE }} spaceBetween>
-          <Row row alignCenter>
-            <LoadingImage source={event.organiser.profilePic} style={styles.image} />
-            <Row style={{ marginLeft: SIZE }}>
-              <Text medium>{event.organiser.username}</Text>
-              <Text color={COLORS.gray}>{event.organiser.name}</Text>
+          <TouchableOpacity onPress={handleOrganiserProfileNavigation}>
+            <Row row alignCenter>
+              <LoadingImage source={event.organiser.profilePic} style={styles.image} />
+              <Row style={{ marginLeft: SIZE }}>
+                <Text medium>{event.organiser.username}</Text>
+                <Text color={COLORS.gray}>{event.organiser.name}</Text>
+              </Row>
             </Row>
-          </Row>
+          </TouchableOpacity>
           <View>
             {role === 'user' &&
               (isFollowing ? (
@@ -144,7 +151,7 @@ export const EventBottomSheet = ({ scroll }) => {
             {loading ? (
               <ActivityIndicator style={{ marginTop: SIZE }} />
             ) : (
-              participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+              participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} closeSheet={closeSheet} />)
             )}
           </Row>
         </View>

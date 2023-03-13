@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Row, Text, MapBottomSheet, EventBottomSheet, LoadingImage } from '../../../components';
+import { Button, Row, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet } from '../../../components';
 import { getRefreshedEvent } from '../../../services/events';
 import { refreshSelectedUser } from '../../../services/users';
 import { setSelectedEvent } from '../../../store/event';
@@ -189,7 +189,11 @@ export const MapScreen = () => {
           snapPoints={filter === 'organisers' ? organiserSnapPoints : eventSnapPoints}
           backdropComponent={renderBackdrop}
           onChange={handleAnimate}>
-          {filter === 'organisers' ? <MapBottomSheet scroll={snap} closeSheet={handleClosePress} /> : <EventBottomSheet scroll={snap} />}
+          {filter === 'organisers' ? (
+            <OrganiserBottomSheet scroll={snap} closeSheet={handleClosePress} />
+          ) : (
+            <EventBottomSheet scroll={snap} closeSheet={handleClosePress} />
+          )}
         </BottomSheetModal>
       </View>
     </View>

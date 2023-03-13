@@ -18,7 +18,7 @@ import { MiniEventCard } from './MiniEventCard';
 import { Row } from './Row';
 import { Text } from './Text';
 
-export const MapBottomSheet = ({ scroll, closeSheet }) => {
+export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   const user = useSelector(selectSelectedUser);
   const myId = useSelector(selectCurrentUserId);
   const role = useSelector(selectCurrentUserRole);
@@ -77,14 +77,14 @@ export const MapBottomSheet = ({ scroll, closeSheet }) => {
   };
 
   const onPressFollowers = () => {
-    navigation.navigate(ROUTES.FollowersScreen, { user })
-    closeSheet()
-  }
+    navigation.navigate(ROUTES.FollowersScreen, { user });
+    closeSheet();
+  };
 
   const onPressEvents = () => {
-    navigation.navigate(ROUTES.SearchOrganiserEventsScreen)
-    closeSheet()
-  }
+    navigation.navigate(ROUTES.SearchOrganiserEventsScreen);
+    closeSheet();
+  };
 
   return (
     <View>

@@ -37,7 +37,7 @@ export const ROUTES = {
   HomeNavigator: 'HomeNavigator',
   OrganiserHomeNavigator: 'OrganiserHomeNavigator',
   UserBottomNavigator: 'UserBottomNavigator',
-  OrganiserStack : 'OrganiserStack',
+  OrganiserStack: 'OrganiserStack',
   UserStack: 'UserStack',
   MapNavigator: 'MapNavigator',
   SearchScreen: 'SearchScreen',
@@ -187,6 +187,7 @@ export const MapNavigator = () => {
       <MapStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.SearchOrganiserEventsScreen} component={SearchOrganiserEventsScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
+      <MapStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
     </MapStackNavigator.Navigator>
   );
 };

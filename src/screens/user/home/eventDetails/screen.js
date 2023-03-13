@@ -18,11 +18,10 @@ import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/da
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route }) => {
-
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
-  const [defOrganiser, setDefOrganiser] = useState()
+  const [defOrganiser, setDefOrganiser] = useState();
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -31,20 +30,18 @@ export const EventDetails = ({ route }) => {
   const eventOrganiserId = event.organiserId;
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
-  const refOrganiser = useSelector(selectSelectedUser)
+  const refOrganiser = useSelector(selectSelectedUser);
 
   useEffect(() => {
     getRefreshedEvent(event);
-    refreshSelectedUser(organiser)
+    refreshSelectedUser(organiser);
   }, [numberPart, event.participants]);
 
   useEffect(() => {
-    if(organiser._id === refOrganiser._id){
-      setDefOrganiser(refOrganiser)
+    if (organiser._id === refOrganiser._id) {
+      setDefOrganiser(refOrganiser);
     }
-  }, [event, refOrganiser])
-
-  console.log('DefOrganiser', defOrganiser)
+  }, [event, refOrganiser]);
 
   useEffect(() => {
     setLoading(true);

@@ -1,33 +1,31 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
-import { refreshSelectedUser } from '../services/users';
-import { selectCurrentUser, selectCurrentUserRole, selectSelectedUser } from '../store/user';
-import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
+import { selectCurrentUserRole } from '../store/user';
+import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { Row } from './Row';
 
 export const OrganiserInf = ({ organiser }) => {
-
-  const [isFollowing, setIsFollowing] = useState(organiser?.isFollowing)
+  const [isFollowing, setIsFollowing] = useState(organiser?.isFollowing);
 
   const navigation = useNavigation();
-  const role = useSelector(selectCurrentUserRole)
+  const role = useSelector(selectCurrentUserRole);
 
   const onPressFollow = () => {
-    follow()
-    setIsFollowing(true)
-  }
+    follow();
+    setIsFollowing(true);
+  };
 
   const onPressUnfollow = () => {
-    unFollow()
-    setIsFollowing(false)
-  }
+    unFollow();
+    setIsFollowing(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -43,9 +41,11 @@ export const OrganiserInf = ({ organiser }) => {
             </View>
           </Row>
         </TouchableOpacity>
-        {role === 'user' && 
-          isFollowing ? <Button secondary text="Following" onPress={onPressUnfollow} /> : <Button gradient text="Follow" onPress={onPressFollow} />
-        }
+        {role === 'user' && isFollowing ? (
+          <Button secondary text="Following" onPress={onPressUnfollow} />
+        ) : (
+          <Button gradient text="Follow" onPress={onPressFollow} />
+        )}
       </View>
     </View>
   );

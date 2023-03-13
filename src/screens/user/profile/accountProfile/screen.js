@@ -12,7 +12,7 @@ import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const AccountUserScreen = ({ route }) => {
   const user = useSelector(selectSelectedUser);
-  const id = useSelector(selectSelectedUserId)
+  const id = useSelector(selectSelectedUserId);
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: `users/${id}/events`,
@@ -20,7 +20,7 @@ export const AccountUserScreen = ({ route }) => {
   });
 
   useEffect(() => {
-     refreshSelectedUser(user);
+    refreshSelectedUser(user);
   }, []);
 
   return (
