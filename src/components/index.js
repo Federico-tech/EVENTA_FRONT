@@ -16,3 +16,4 @@ export * from './MiniEventCard';
 export * from './LoadingImage';
 export * from './EventBottomSheet';
 export * from './OrganiserBottomSheet';
+export * from './HomeMap';

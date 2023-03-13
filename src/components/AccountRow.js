@@ -9,7 +9,7 @@ import { setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Row } from './Row';
 
-export const UserRow = ({ data, closeSheet }) => {
+export const UserRow = ({ data, closeSheet = () => {} }) => {
   const { profilePic, username, name } = data;
   const dispatch = useDispatch();
   const navigation = useNavigation();

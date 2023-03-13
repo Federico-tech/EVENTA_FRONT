@@ -75,6 +75,7 @@ export const ROUTES = {
   UpcomingEventsScreen: 'UpcomingEventsScreen',
   PastEventsScreen: 'PastEventsScreen',
   SearchOrganiserEventsScreen: 'SearchOrganiserEventsScreen',
+  OrganiserBottomNavigator: 'OrganiserBottomNavigator',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -86,9 +87,9 @@ const BottomBarIcons = ({ route }) => ({
       iconName = focused ? 'home' : 'home-outline';
     } else if (route.name === ROUTES.SearchNavigator) {
       iconName = focused ? 'ios-search' : 'ios-search-outline';
-    } else if (route.name === ROUTES.MapNavigator) {
+    } else if (route.name === ROUTES.MapScreen) {
       iconName = focused ? 'map' : 'map-outline';
-    } else if (route.name === ROUTES.ProfileScreenNavigator || route.name === ROUTES.OrganiserProfileScreen) {
+    } else if (route.name === ROUTES.ProfileScreen || route.name === ROUTES.OrganiserProfileScreen) {
       iconName = focused ? 'person' : 'person-outline';
     } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';
@@ -109,6 +110,8 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );
 };
@@ -143,6 +146,8 @@ export const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
   );
 };
@@ -172,7 +177,7 @@ export const OrganiserProfileNavigator = () => {
         options={{ headerShown: false }}
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
-      <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </OrganiserProfileStackNavigator.Navigator>
   );
 };
@@ -197,8 +202,8 @@ export const UserBottomNavigator = () => {
     <UserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
       <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
-      <UserBottomTabNavigator.Screen name={ROUTES.MapNavigator} component={MapNavigator} options={{ headerShown: false }} />
-      <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreenNavigator} component={ProfileNavigator} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapNavigator} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
     </UserBottomTabNavigator.Navigator>
   );
 };
@@ -209,7 +214,7 @@ export const OrganiserBottomNavigator = () => {
       <OrganiserBottomTabNavigator.Screen name={ROUTES.OrganiserHomeNavigator} component={OrganiserHomeNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen name={ROUTES.CreateEventScreen} component={CreateEventScreen} options={{ headerShown: false }} />
-      <OrganiserBottomTabNavigator.Screen name={ROUTES.MapNavigator} component={MapNavigator} options={{ headerShown: false }} />
+      <OrganiserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen
         name={ROUTES.OrganiserProfileScreen}
         component={OrganiserProfileNavigator}

@@ -1,10 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import MapView from 'react-native-maps';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { IconButton, Row } from '../components/index';
+import { HomeMap, IconButton, Row, Text } from '../components/index';
 import { ROUTES } from '../navigation/Navigation';
 import { FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 
@@ -13,7 +12,7 @@ export const HomeTop = () => {
   const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
   const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
   return (
-    <View>
+    <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
       <View style={styles.container}>
         <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressNotification} />
         <Row alignCenter>
@@ -27,7 +26,10 @@ export const HomeTop = () => {
         </Row>
         <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressLikes} />
       </View>
-      <MapView style={styles.map} />
+      <HomeMap />
+      <Text semiBoldMd style={{ marginBottom: SIZE / 2 }}>
+        Upcoming events
+      </Text>
     </View>
   );
 };
