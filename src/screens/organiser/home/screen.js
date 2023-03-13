@@ -4,16 +4,13 @@ import React, { useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
 
 import { Button, Container, HomeHeader, MiniEventCard, Text } from '../../../components';
-import { selectCurrentUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
-  const organiserId = useSelector(selectCurrentUserId);
   const [eventFilter, setEventFilter] = useState('upcoming');
   const currentDate = DateTime.now().toISO();
 

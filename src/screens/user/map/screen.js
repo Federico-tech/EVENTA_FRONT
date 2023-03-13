@@ -1,10 +1,10 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Row, Text, MapBottomSheet, EventBottomSheet } from '../../../components';
+import { Button, Row, Text, MapBottomSheet, EventBottomSheet, LoadingImage } from '../../../components';
 import { getRefreshedEvent } from '../../../services/events';
 import { refreshSelectedUser } from '../../../services/users';
 import { setSelectedEvent } from '../../../store/event';
@@ -21,7 +21,7 @@ export const MapScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
   const entity = filter === 'organisers' ? 'users' : 'events';
-  const { data, getData } = useInfiniteScroll({
+  const { data, getData, setData, refreshing } = useInfiniteScroll({
     entity,
     filters: {
       role: ROLES.ORGANISER,
@@ -30,6 +30,11 @@ export const MapScreen = () => {
   useEffect(() => {
     getData();
   }, [filter]);
+
+  const updateFilters = (f) => {
+    setData([]);
+    setFilter(f);
+  };
 
   const bottomSheetModalRef = useRef(null);
   const eventSnapPoints = useMemo(() => ['60%', '95%'], []);
@@ -73,22 +78,29 @@ export const MapScreen = () => {
     [snap]
   );
 
-  const eventsByCoordinate = Object.values(
-    data.reduce((acc, event) => {
-      const coordinate = `${event.position.coordinates[1]}_${event.position.coordinates[0]}`;
-      const currentClosest = acc[coordinate];
+  const eventsByCoordinate = useMemo(() => {
+    if (filter === 'organisers') {
+      return [];
+    }
+    return Object.values(
+      data.reduce((acc, event) => {
+        const coordinate = `${event.position.coordinates[1].toFixed(4)}_${event.position.coordinates[0].toFixed(4)}`;
+        const currentClosest = acc[coordinate];
 
-      if (
-        !currentClosest ||
-        new Date(event.date) < new Date(currentClosest.date) ||
-        (new Date(event.date) === new Date(currentClosest.date) && event._id < currentClosest._id)
-      ) {
-        acc[coordinate] = event;
-      }
+        if (
+          !currentClosest ||
+          new Date(event.date) < new Date(currentClosest.date) ||
+          (new Date(event.date) === new Date(currentClosest.date) && event._id < currentClosest._id)
+        ) {
+          acc[coordinate] = event;
+        }
 
-      return acc;
-    }, {})
-  );
+        return acc;
+      }, {})
+    );
+  }, [data, filter]);
+
+  console.debug({ eventsByCoordinate });
 
   return (
     <View style={{ flex: 1 }}>
@@ -101,6 +113,7 @@ export const MapScreen = () => {
           latitudeDelta: 0.3,
           longitudeDelta: 0.3,
         }}
+        minZoomLevel={9}
         customMapStyle={mapStyle}>
         <Marker
           coordinate={{
@@ -120,7 +133,7 @@ export const MapScreen = () => {
                 onPress={() => handlePresentModalOrganiser({ user })}>
                 <View style={{ alignItems: 'center', height: SIZE * 8 }}>
                   <View style={styles.marker}>
-                    <Image source={{ uri: user.profilePic }} style={styles.profileImage} />
+                    <LoadingImage source={user.profilePic} style={styles.profileImage} profile />
                   </View>
                   <Row alignCenter justifyCenter style={{ marginTop: SIZE }}>
                     <Text medium>{user.name}</Text>
@@ -139,7 +152,7 @@ export const MapScreen = () => {
                 onPress={() => handlePresentModalEvents({ event })}>
                 <View style={{ alignItems: 'center', height: SIZE * 8 }}>
                   <View style={styles.marker}>
-                    <Image source={{ uri: event.coverImage }} style={styles.profileImage} />
+                    <LoadingImage source={event.coverImage} style={styles.profileImage} profile />
                   </View>
                   <Row alignCenter justifyCenter style={{ marginTop: SIZE }}>
                     <Text medium>{event.name}</Text>
@@ -151,16 +164,18 @@ export const MapScreen = () => {
       <View style={{ position: 'absolute', marginTop: SIZE * 4, zIndex: 2, flexDirection: 'row', alignSelf: 'center' }}>
         <Button
           secondary
+          loading={refreshing && filter === 'events'}
           containerStyle={[filter === 'events' && { backgroundColor: 'black' }, { marginRight: SIZE }]}
-          onPress={() => setFilter('events')}>
+          onPress={() => updateFilters('events')}>
           <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
             Events
           </Text>
         </Button>
         <Button
           secondary
+          loading={refreshing && filter === 'organisers'}
           containerStyle={[filter === 'organisers' && { backgroundColor: 'black' }, { marginRight: SIZE, width: SIZE * 9 }]}
-          onPress={() => setFilter('organisers')}>
+          onPress={() => updateFilters('organisers')}>
           <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>
             Organisers
           </Text>
@@ -207,10 +222,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   myPos: {
-    width: SIZE * 1.5,
+    width: SIZE * 1.7,
     aspectRatio: 1,
     borderRadius: 100,
-    borderWidth: 3,
+    borderWidth: 3.5,
     borderColor: COLORS.white,
     backgroundColor: COLORS.primary,
   },

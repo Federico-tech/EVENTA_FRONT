@@ -56,7 +56,6 @@ export const EditUserScreen = () => {
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
-      bio: string().required('Address is a required field'),
       username: string()
         .required('Username is a required field')
         .min(6, 'Username must be at least 6 characters')
@@ -76,7 +75,8 @@ export const EditUserScreen = () => {
       try {
         setLoading(true);
         await validateForm(data);
-        await updateUserImage(data.file);
+        data.file !== user.profilePic && !!data?.file && (await updateUserImage(data.file));
+        !data?.file && (await userUpdate({ profilePic: null }, userId));
         await userUpdate(data, userId);
         navigation.goBack();
         setLoading(false);

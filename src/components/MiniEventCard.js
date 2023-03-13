@@ -11,6 +11,7 @@ import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/them
 import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
+import { ROUTES } from '../navigation/Navigation'
 
 export const MiniEventCard = ({ data, closeSheet = () => {} }) => {
   const { organiser, coverImage, date, name, address, participants } = data;
@@ -23,18 +24,28 @@ export const MiniEventCard = ({ data, closeSheet = () => {} }) => {
     closeSheet();
   };
 
+  const handleProfilePress = () => {
+    navigation.navigate(ROUTES.AccountOrganiserScreen);
+    dispatch(setUserSelected(data.organiser));
+    closeSheet();
+  };
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.wrapper}>
         <View style={styles.top}>
-          <Row row alignCenter>
-            <Image source={{ uri: organiser.profilePic }} style={styles.profilePic} />
-            <Text style={styles.textOrganiserName}>{organiser.username}</Text>
-          </Row>
-          <Row row alignCenter style={{}}>
-            <MaterialIcons name="person" size={SIZE * 2} />
-            <Text style={styles.textPart}>{participants}</Text>
-          </Row>
+          <TouchableOpacity onPress={handleProfilePress}>
+            <Row row alignCenter>
+              <Image source={{ uri: organiser.profilePic }} style={styles.profilePic} />
+              <Text style={styles.textOrganiserName}>{organiser.username}</Text>
+            </Row>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Row row alignCenter style={{}}>
+              <MaterialIcons name="person" size={SIZE * 2} />
+              <Text style={styles.textPart}>{participants}</Text>
+            </Row>
+          </TouchableOpacity>
         </View>
         <Line lineStyle={{ backgroundColor: COLORS.lightGray }} />
         <View style={styles.event}>

@@ -1,40 +1,46 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 import { Container, Header, SearchBar } from '../../../components';
 import { UserRow } from '../../../components/AccountRow';
+import { selectSearchFilter } from '../../../store/filter';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const FollowingScreen = ({ route }) => {
   const { user } = route.params;
+  const filter = useSelector(selectSearchFilter);
 
   const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
-    entity: 'follow',
+    entity: `users/${user._id}/followed`,
     filters: {
-      followerId: user?._id,
+      search: filter,
     },
     limit: 20,
   });
 
+  useEffect(() => {
+    getRefreshedData();
+  }, [filter]);
+
   return (
     <Container>
       <Header title="Following" />
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => <UserRow data={item?.followed} />}
-          keyExtractor={(item) => item._id}
-          onEndReachedThreshold={0.1}
-          showsVerticalScrollIndicator={false}
-          onEndReached={_.throttle(getMoreData, 400)}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-          ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-          ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
-        />
-      </View>
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <UserRow data={item?.follower} />}
+        style={{ marginHorizontal: WIDTH_DEVICE / 20 }}
+        keyExtractor={(item) => item._id}
+        onEndReachedThreshold={0.1}
+        showsVerticalScrollIndicator={false}
+        onEndReached={_.throttle(getMoreData, 400)}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
+      />
     </Container>
   );
 };

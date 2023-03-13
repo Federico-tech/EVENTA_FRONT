@@ -79,6 +79,7 @@ export function useInfiniteScroll({ page: initialPage = 1, data: initialData = [
     getRefreshedData,
     getMoreData,
     data,
+    setData,
     totalData,
     loadMore,
     refreshing,

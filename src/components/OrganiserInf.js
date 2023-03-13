@@ -6,30 +6,27 @@ import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
+import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUser, selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { Row } from './Row';
 
-export const OrganiserInf = () => {
+export const OrganiserInf = ({ organiser }) => {
+
+  const [isFollowing, setIsFollowing] = useState(organiser?.isFollowing)
+
   const navigation = useNavigation();
   const role = useSelector(selectCurrentUserRole)
-  const organiser = useSelector(selectSelectedUser)
-  const [following, setFollowing] = useState()
-  console.log('Following', following)
-
-  useEffect(() => {
-    setFollowing(organiser.isFollowing)
-  }, [organiser])
 
   const onPressFollow = () => {
     follow()
-    setFollowing(true)
+    setIsFollowing(true)
   }
 
   const onPressUnfollow = () => {
     unFollow()
-    setFollowing(false)
+    setIsFollowing(false)
   }
 
   return (
@@ -37,17 +34,17 @@ export const OrganiserInf = () => {
       <View style={styles.informationContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(ROUTES.AccountOrganiserScreen)}>
           <Row row alignCenter>
-            <Image style={styles.image} source={{ uri: organiser.profilePic }} resizeMode="contain" />
+            <Image style={styles.image} source={{ uri: organiser?.profilePic }} resizeMode="contain" />
             <View style={styles.textContainer}>
-              <Text style={styles.textName}>{organiser.username}</Text>
+              <Text style={styles.textName}>{organiser?.username}</Text>
               <View style={{ width: SIZE * 13 }}>
-                <Text style={styles.textAdress}>@{organiser.name}</Text>
+                <Text style={styles.textAdress}>@{organiser?.name}</Text>
               </View>
             </View>
           </Row>
         </TouchableOpacity>
         {role === 'user' && 
-          following ? <Button secondary text="Following" onPress={onPressUnfollow} /> : <Button gradient text="Follow" onPress={onPressFollow} />
+          isFollowing ? <Button secondary text="Following" onPress={onPressUnfollow} /> : <Button gradient text="Follow" onPress={onPressFollow} />
         }
       </View>
     </View>

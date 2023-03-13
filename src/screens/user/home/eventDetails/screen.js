@@ -13,15 +13,16 @@ import { getRefreshedEvent } from '../../../../services/events';
 import { getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
 import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
-import { selectCurrentUserId, selectCurrentUserRole } from '../../../../store/user';
+import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../../../../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route }) => {
-  const [isPartecipating, setIsPartecipating] = useState();
+
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
+  const [defOrganiser, setDefOrganiser] = useState()
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -30,19 +31,20 @@ export const EventDetails = ({ route }) => {
   const eventOrganiserId = event.organiserId;
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
+  const refOrganiser = useSelector(selectSelectedUser)
 
   useEffect(() => {
     getRefreshedEvent(event);
-    refreshSelectedUser(organiser);
-  }, [numberPart]);
+    refreshSelectedUser(organiser)
+  }, [numberPart, event.participants]);
 
   useEffect(() => {
-    setIsPartecipating(event.isParticipating);
-  }, [event]);
+    if(organiser._id === refOrganiser._id){
+      setDefOrganiser(refOrganiser)
+    }
+  }, [event, refOrganiser])
 
-  useEffect(() => {
-    setNumberPart(event.participants);
-  }, [event, numberPart]);
+  console.log('DefOrganiser', defOrganiser)
 
   useEffect(() => {
     setLoading(true);
@@ -55,21 +57,17 @@ export const EventDetails = ({ route }) => {
         console.error(error);
         setLoading(false);
       });
-  }, [numberPart]);
+  }, [event.participants]);
 
   const onPressPartecipate = () => {
     partecipate();
-    setIsPartecipating(true);
-    setNumberPart(numberPart + 1);
+    setNumberPart(event.participants);
   };
 
   const onPressUnpartecipate = () => {
     unpartecipate();
-    setIsPartecipating(false);
-    setNumberPart(numberPart - 1);
+    setNumberPart(event.participants);
   };
-
-  const source = { uri: event.coverImage };
 
   return (
     <Container>
@@ -77,7 +75,7 @@ export const EventDetails = ({ route }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ marginBottom: SIZE * 4 }}>
             <View style={styles.imageContainer}>
-              <Image source={source} style={styles.eventImage} resizeMode="contain" />
+              <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
               <IconButton
                 name="chevron-back-outline"
                 onPress={() => navigation.goBack()}
@@ -96,7 +94,7 @@ export const EventDetails = ({ route }) => {
               )}
             </View>
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-              <OrganiserInf organiser={organiser} />
+              <OrganiserInf organiser={defOrganiser} />
               <View style={{ marginHorizontal: 0 }}>
                 <Line lineStyle={{ marginBottom: 0 }} />
               </View>
@@ -117,7 +115,7 @@ export const EventDetails = ({ route }) => {
                 <View style={styles.person}>
                   <Ionicons name="people-outline" size={24} />
                   <Text style={styles.peopleText}>
-                    {numberPart}
+                    {event.participants}
                     <Text style={styles.description}> of your friends are going</Text>
                   </Text>
                 </View>
@@ -130,14 +128,14 @@ export const EventDetails = ({ route }) => {
                   participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
                 )}
               </Row>
-              {participants?.length === 3 && (
+              {participants?.length >= 3 && (
                 <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
               )}
             </View>
           </View>
         </ScrollView>
         {role === 'user' &&
-          (isPartecipating ? (
+          (event.isParticipating ? (
             <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate} />
           ) : (
             <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />

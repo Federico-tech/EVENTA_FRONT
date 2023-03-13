@@ -12,7 +12,7 @@ import { SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const SearchOrganiserEventsScreen = () => {
   const name = useSelector(selectSearchFilter);
-  const organiserId = useSelector(selectSelectedUserId)
+  const organiserId = useSelector(selectSelectedUserId);
   const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
     entity: 'events',
     limit: 7,

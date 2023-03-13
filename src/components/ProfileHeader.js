@@ -102,8 +102,8 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
             <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
           </Row>
         ) : (
-          <Text regularXs style={{ width: SIZE * 15 }}>
-            {user.bio}
+          <Text regularXs color={!user.bio ? COLORS.gray : 'black'} style={{ width: SIZE * 15 }}>
+            {user.bio ? user.bio : 'Description'}
           </Text>
         )}
         <Row spaceBetween row style={styles.followerRow}>
@@ -115,9 +115,9 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
               </Text>
             </Row>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate(organiser ? ROUTES.SearchOrganiserEventsScreen : (ROUTES.FollowingScreen, { user }))}>
+          <TouchableOpacity onPress={() => navigation.navigate(organiser ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { user })}>
             <Row alignCenter>
-              <Text semiBoldSm>{organiser ? data.length : user.followed || 0}</Text>
+              <Text semiBoldSm>{organiser ? data.length : user.followed}</Text>
               <Text color={COLORS.darkGray} regularXs>
                 {organiser ? 'Events' : 'Following'}
               </Text>

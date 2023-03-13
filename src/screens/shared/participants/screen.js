@@ -18,10 +18,9 @@ export const ParticipantsScreen = () => {
   const name = useSelector(selectSearchFilter);
 
   const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
-    entity: 'participants/search',
+    entity: `events/${eventId}/participants`,
     filters: {
-      eventId,
-      name,
+      search: name,
     },
   });
 
@@ -32,19 +31,18 @@ export const ParticipantsScreen = () => {
   return (
     <Container>
       <Header title="Participants" />
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => <UserRow data={item.user} />}
-          keyExtractor={(item) => item._id}
-          showsVerticalScrollIndicator={false}
-          onEndReachedThreshold={0.1}
-          onEndReached={_.throttle(getMoreData, 400)}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-          ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-          ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
-        />
-      </View>
+      <FlatList
+        data={data}
+        renderItem={({ item }) => <UserRow data={item.user} />}
+        style={{ marginHorizontal: WIDTH_DEVICE / 20 }}
+        keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
+        onEndReachedThreshold={0.1}
+        onEndReached={_.throttle(getMoreData, 400)}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
+      />
     </Container>
   );
 };

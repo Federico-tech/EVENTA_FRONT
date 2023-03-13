@@ -17,6 +17,8 @@ export const ProfileScreen = () => {
     limit: 6,
   });
 
+  console.log('data', data);
+
   const user = useSelector(selectCurrentUser);
 
   useEffect(() => {

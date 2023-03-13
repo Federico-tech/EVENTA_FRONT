@@ -75,6 +75,17 @@ export const MapBottomSheet = ({ scroll, closeSheet }) => {
     navigation.navigate(ROUTES.AccountOrganiserScreen);
     closeSheet();
   };
+
+  const onPressFollowers = () => {
+    navigation.navigate(ROUTES.FollowersScreen, { user })
+    closeSheet()
+  }
+
+  const onPressEvents = () => {
+    navigation.navigate(ROUTES.SearchOrganiserEventsScreen)
+    closeSheet()
+  }
+
   return (
     <View>
       <FlatList
@@ -111,7 +122,7 @@ export const MapBottomSheet = ({ scroll, closeSheet }) => {
                 <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
               </Row>
               <Row spaceBetween row style={styles.followerRow}>
-                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowersScreen, { user })}>
+                <TouchableOpacity onPress={onPressFollowers}>
                   <Row alignCenter style={styles.boxFollower}>
                     <Text semiBoldSm>{numFollowers || 0}</Text>
                     <Text color={COLORS.darkGray} regularXs>
@@ -119,7 +130,7 @@ export const MapBottomSheet = ({ scroll, closeSheet }) => {
                     </Text>
                   </Row>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowingScreen, { user })}>
+                <TouchableOpacity onPress={onPressEvents}>
                   <Row alignCenter>
                     <Text semiBoldSm>{data.length}</Text>
                     <Text color={COLORS.darkGray} regularXs>

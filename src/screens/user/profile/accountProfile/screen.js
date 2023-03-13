@@ -20,7 +20,7 @@ export const AccountUserScreen = ({ route }) => {
   });
 
   useEffect(() => {
-    refreshSelectedUser(user);
+     refreshSelectedUser(user);
   }, []);
 
   return (
