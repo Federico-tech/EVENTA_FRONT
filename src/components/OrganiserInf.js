@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
@@ -12,10 +12,15 @@ import { Button } from './Button';
 import { Row } from './Row';
 
 export const OrganiserInf = ({ organiser }) => {
-  const [isFollowing, setIsFollowing] = useState(organiser?.isFollowing);
+  const [isFollowing, setIsFollowing] = useState();
+  console.log('Come', organiser)
 
   const navigation = useNavigation();
   const role = useSelector(selectCurrentUserRole);
+
+  useEffect(() => {
+    setIsFollowing(organiser.isFollowing);
+  }, [organiser])
 
   const onPressFollow = () => {
     follow();

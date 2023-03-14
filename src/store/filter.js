@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   searchFilter: undefined,
+  dateFilter: undefined,
+  mapFilter: undefined,
 };
 
 export const filterSlice = createSlice({
@@ -11,11 +13,19 @@ export const filterSlice = createSlice({
     setSearchFilter: (state, action) => {
       state.searchFilter = action.payload;
     },
+    setDateFilter: (state, action) => {
+      state.dateFilter = action.payload;
+    },
+    setMapFilter: (state, action) => {
+      state.mapFilter = action.payload;
+    }
   },
 });
 
-export const { setSearchFilter } = filterSlice.actions;
+export const { setSearchFilter, setDateFilter, setMapFilter } = filterSlice.actions;
 
 export const selectSearchFilter = (state) => state.filters?.searchFilter || undefined;
+export const selectDateFilter = (state) => state.filters?.dateFilter || undefined || 'upcoming';
+export const selectMapFilter = (state) => state.filters?.mapFilter || undefined || 'events';
 
 export default filterSlice.reducer;

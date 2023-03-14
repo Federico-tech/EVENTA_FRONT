@@ -21,7 +21,7 @@ export const EventDetails = ({ route }) => {
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
-  const [defOrganiser, setDefOrganiser] = useState();
+
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -32,16 +32,19 @@ export const EventDetails = ({ route }) => {
   const organiser = event.organiser;
   const refOrganiser = useSelector(selectSelectedUser);
 
-  useEffect(() => {
-    getRefreshedEvent(event);
-    refreshSelectedUser(organiser);
-  }, [numberPart, event.participants]);
+  const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
 
   useEffect(() => {
     if (organiser._id === refOrganiser._id) {
       setDefOrganiser(refOrganiser);
     }
-  }, [event, refOrganiser]);
+  }, [refOrganiser]);
+
+  useEffect(() => {
+    getRefreshedEvent(event);
+    refreshSelectedUser(organiser);
+  }, [numberPart, event.participants]);
+
 
   useEffect(() => {
     setLoading(true);

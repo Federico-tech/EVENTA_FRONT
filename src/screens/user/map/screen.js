@@ -8,6 +8,7 @@ import { Button, Row, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet
 import { getRefreshedEvent } from '../../../services/events';
 import { refreshSelectedUser } from '../../../services/users';
 import { setSelectedEvent } from '../../../store/event';
+import { selectMapFilter, setMapFilter } from '../../../store/filter';
 import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
@@ -15,10 +16,10 @@ import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, SIZE } from '../../../utils/theme';
 
 export const MapScreen = () => {
-  const [filter, setFilter] = useState('events');
   const [snap, setSnap] = useState(false);
 
   const dispatch = useDispatch();
+  const filter = useSelector(selectMapFilter)
   const user = useSelector(selectCurrentUser);
   const entity = filter === 'organisers' ? 'users' : 'events';
   const { data, getData, setData, refreshing } = useInfiniteScroll({
@@ -33,7 +34,7 @@ export const MapScreen = () => {
 
   const updateFilters = (f) => {
     setData([]);
-    setFilter(f);
+    dispatch(setMapFilter(f));
   };
 
   const bottomSheetModalRef = useRef(null);
