@@ -33,7 +33,7 @@ export const HomeHeader = ({ data, organiser }) => {
                 )}
               </TouchableOpacity>
               <View style={styles.text}>
-                <Text style={styles.welcome}>{t('welcome')}</Text>
+                <Text style={styles.welcome}>{'Welcome back,'}</Text>
                 <Text style={styles.federico}>{userinfo.username}</Text>
               </View>
             </View>
@@ -47,7 +47,7 @@ export const HomeHeader = ({ data, organiser }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: SIZE * 9,
+    height: SIZE * 8.5,
   },
   header: {
     flex: 1,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     height: HEIGHT_DEVICE / 20,
   },
   imageProfile: {
-    width: SIZE * 4.5,
+    width: SIZE * 4,
     aspectRatio: 1,
     borderRadius: 100,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.lg,
   },
   imageView: {
-    width: SIZE * 4.5,
+    width: SIZE * 4,
     aspectRatio: 1,
     borderRadius: 100,
     backgroundColor: COLORS.lightGray,
