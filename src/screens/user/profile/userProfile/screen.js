@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import React, { useEffect } from 'react';
-import { Text, StyleSheet, ActivityIndicator, View } from 'react-native';
-import { FlatList, RefreshControl } from 'react-native-gesture-handler';
+import React, { useEffect, useRef } from 'react';
+import { Text, StyleSheet, ActivityIndicator, View, Animated } from 'react-native';
+import { FlatList, RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ProfileHeader, Container, MiniEventCard } from '../../../../components';
@@ -27,18 +27,18 @@ export const ProfileScreen = () => {
 
   return (
     <Container>
-      <ProfileHeader myProfile user={user} />
-      <Text style={styles.recent}>Recent Events</Text>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <MiniEventCard data={item} />}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={0.1}
-        onEndReached={_.throttle(getMoreData, 400)}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-      />
+        <ProfileHeader myProfile user={user} />
+        <Text style={styles.recent}>Recent Events</Text>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <MiniEventCard data={item} />}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={0.1}
+          onEndReached={_.throttle(getMoreData, 400)}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+          ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        />
     </Container>
   );
 };

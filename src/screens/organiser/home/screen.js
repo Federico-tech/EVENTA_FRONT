@@ -8,26 +8,32 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Container, HomeHeader, MiniEventCard, Text } from '../../../components';
 import { selectDateFilter, setDateFilter } from '../../../store/filter';
+import { selectCurrentUserId, selectSelectedUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
   const currentDate = DateTime.now().toISO();
-  const dispatch = useDispatch()
-  const filter = useSelector(selectDateFilter)
+  const dispatch = useDispatch();
+  const filter = useSelector(selectDateFilter);
+  const dateParam = filter === 'past' ? 'date.$lte' : 'date.$gte';
+  const organiserId = useSelector(selectCurrentUserId)
+
+  const filters = {
+    organiserId,
+    [dateParam]: currentDate,
+  };
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore, setData, getData } = useInfiniteScroll({
     entity: 'events',
-    filters: {
-      'date.$lt': currentDate,
-    },
+    filters,
     limit: 10,
   });
 
   useEffect(() => {
-    getData()
-  }, [filter])
+    getData();
+  }, [filter]);
 
   const updateFilters = (f) => {
     setData([]);
