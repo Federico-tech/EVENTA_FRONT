@@ -3,14 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, ActivityIndicator, View } from 'rea
 
 import { COLORS, FONTS, SIZES } from '../utils/theme';
 
-export const TextButton = ({ onPress, text, textStyle, loading, ...rest }) => {
+export const TextButton = ({ onPress, text, textStyle, loading, disabled, ...rest }) => {
   return (
     <View>
       {loading ? (
         <ActivityIndicator color="black" style={{ alignSelf: 'center' }} />
       ) : (
-        <TouchableOpacity onPress={onPress} disable={!onPress}>
-          <Text style={[styles.text, textStyle]} {...rest}>
+        <TouchableOpacity onPress={onPress} disabled={!onPress || disabled}>
+          <Text style={[styles.text, disabled && styles.disabled, textStyle]} {...rest}>
             {text}
           </Text>
         </TouchableOpacity>
@@ -50,4 +50,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     fontSize: SIZES.sm,
   },
+  disabled: {
+    color: COLORS.gray
+  }
 });

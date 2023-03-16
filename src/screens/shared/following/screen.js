@@ -1,46 +1,15 @@
-import _ from 'lodash';
-import React, { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { FlatList, RefreshControl } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import React from 'react';
 
 import { Container, Header, SearchBar } from '../../../components';
-import { UserRow } from '../../../components/AccountRow';
-import { selectSearchFilter } from '../../../store/filter';
-import { useInfiniteScroll } from '../../../utils/hooks';
+import { FollowingTopNavigator } from '../../../navigation/TopTabNavigator';
 import { SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 
-export const FollowingScreen = ({ route }) => {
-  const { user } = route.params;
-  const filter = useSelector(selectSearchFilter);
-
-  const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
-    entity: `users/${user._id}/followed`,
-    filters: {
-      search: filter,
-    },
-    limit: 20,
-  });
-
-  useEffect(() => {
-    getRefreshedData();
-  }, [filter]);
-
+export const FollowingScreen = () => {
   return (
     <Container>
       <Header title="Following" />
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <UserRow data={item?.follower} />}
-        style={{ marginHorizontal: WIDTH_DEVICE / 20 }}
-        keyExtractor={(item) => item._id}
-        onEndReachedThreshold={0.1}
-        showsVerticalScrollIndicator={false}
-        onEndReached={_.throttle(getMoreData, 400)}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
-      />
+      <SearchBar style={{ marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE }} />
+      <FollowingTopNavigator />
     </Container>
   );
 };

@@ -8,6 +8,8 @@ import { AboutAccountScreen } from '../screens/organiser/profile/about/accountAb
 import { AboutScreen } from '../screens/organiser/profile/about/profileAbout/screen';
 import { EventsAccountScreen } from '../screens/organiser/profile/events/accoutEvents/screen';
 import { EventProfileScreen } from '../screens/organiser/profile/events/profileEvents/screen';
+import { FollowingOrganisersScreen } from '../screens/shared/following/organisers/screen';
+import { FollowingUsersScreen } from '../screens/shared/following/users/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
 import { SearchOrganiserScreen } from '../screens/user/search/searchOrganiser/screen';
 import { SearchUserScreen } from '../screens/user/search/searchUsers/screen';
@@ -18,6 +20,7 @@ const SearchTopStackNavigator = createMaterialTopTabNavigator();
 const OrganiserTopStackNavigator = createMaterialTopTabNavigator();
 const OrganiserAccountTopStackNavigator = createMaterialTopTabNavigator();
 const OrganiserEventsTopStackNavigator = createMaterialTopTabNavigator();
+const FollowingTopStackNavigator = createMaterialTopTabNavigator();
 
 const screenOptions = (tabBarLabel) => ({
   tabBarLabel,
@@ -79,5 +82,18 @@ export const OrganiserEventsTopNavigator = () => {
       />
       <OrganiserEventsTopStackNavigator.Screen name={ROUTES.PastEventsScreen} component={PastEventsScreen} options={screenOptions('Past events')} />
     </OrganiserEventsTopStackNavigator.Navigator>
+  );
+};
+
+export const FollowingTopNavigator = () => {
+  return (
+    <FollowingTopStackNavigator.Navigator>
+      <FollowingTopStackNavigator.Screen name={ROUTES.FollowingUsersScreen} component={FollowingUsersScreen} options={screenOptions('Users')} />
+      <FollowingTopStackNavigator.Screen
+        name={ROUTES.FollowingOrganisersScreen}
+        component={FollowingOrganisersScreen}
+        options={screenOptions('Organisers')}
+      />
+    </FollowingTopStackNavigator.Navigator>
   );
 };

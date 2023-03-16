@@ -21,7 +21,7 @@ export const AccountUserScreen = ({ route }) => {
 
   useEffect(() => {
     refreshSelectedUser(user);
-  }, []);
+  }, [id]);
 
   return (
     <Container>

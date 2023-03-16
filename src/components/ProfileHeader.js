@@ -5,11 +5,11 @@ import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
-import { selectCurrentUser } from '../store/user';
+import { selectCurrentUser, setUserSelected } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
@@ -21,6 +21,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   const [user, setUser] = useState({ ...initialUser });
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
 
   const { data } = useInfiniteScroll({
     entity: 'events',
@@ -69,6 +70,11 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
 
   const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
 
+  const onPressFollowing = () => {
+    dispatch(setUserSelected(user));
+    navigation.replace(organiser ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen);
+  };
+
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
@@ -96,7 +102,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
         </Text>
       </Row>
       <Row style={styles.bio}>
-        {organiser ? (
+        {organiser || user.role === 'organiser' ? (
           <Row row>
             <Ionicons name="pin" size={SIZE * 1.5} />
             <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
@@ -107,7 +113,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           </Text>
         )}
         <Row spaceBetween row style={styles.followerRow}>
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FollowersScreen, { user })}>
+          <TouchableOpacity onPress={() => navigation.replace(ROUTES.FollowersScreen)}>
             <Row alignCenter style={styles.boxFollower}>
               <Text semiBoldSm>{user.followers || 0}</Text>
               <Text color={COLORS.darkGray} regularXs>
@@ -115,11 +121,11 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
               </Text>
             </Row>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate(organiser ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { user })}>
+          <TouchableOpacity onPress={onPressFollowing}>
             <Row alignCenter>
               <Text semiBoldSm>{organiser ? data.length : user.followed}</Text>
               <Text color={COLORS.darkGray} regularXs>
-                {organiser ? 'Events' : 'Following'}
+                {organiser || user.role === 'organiser' ? 'Events' : 'Following'}
               </Text>
             </Row>
           </TouchableOpacity>

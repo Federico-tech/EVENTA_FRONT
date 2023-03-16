@@ -76,6 +76,8 @@ export const ROUTES = {
   PastEventsScreen: 'PastEventsScreen',
   SearchOrganiserEventsScreen: 'SearchOrganiserEventsScreen',
   OrganiserBottomNavigator: 'OrganiserBottomNavigator',
+  FollowingOrganisersScreen: 'FollowingOrganisersScreen',
+  FollowingUsersScreen: 'FollowingUsersScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -143,11 +145,12 @@ export const ProfileNavigator = () => {
     <ProfileStackNavigator.Navigator initialRouteName={ROUTES.ProfileScreen}>
       <ProfileStackNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
-      <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
-      <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
   );
 };
