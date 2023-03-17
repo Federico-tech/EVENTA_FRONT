@@ -11,7 +11,6 @@ import { ROLES } from '../utils/conts';
 import { useInfiniteScroll } from '../utils/hooks';
 import mapStyle from '../utils/mapStyle.json';
 import { COLORS, SIZE, SIZES } from '../utils/theme';
-import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
@@ -45,6 +44,17 @@ export const HomeMap = () => {
     );
   }, [data]);
 
+  const mapRef = React.createRef();
+
+  const toMyPosition = () => {
+    mapRef.current.animateToRegion({
+      latitude: user.position.coordinates[1],
+      longitude: user.position.coordinates[0],
+      latitudeDelta: 0.2,
+      longitudeDelta: 0.2,
+    });
+  };
+
   console.debug({ eventsByCoordinate });
 
   return (
@@ -58,15 +68,10 @@ export const HomeMap = () => {
           latitudeDelta: 0.2,
           longitudeDelta: 0.2,
         }}
+        ref={mapRef}
         minZoomLevel={9}
-        customMapStyle={mapStyle}>
-        <Marker
-          coordinate={{
-            latitude: user.position.coordinates[1],
-            longitude: user.position.coordinates[0],
-          }}>
-          <View style={styles.myPos} />
-        </Marker>
+        customMapStyle={mapStyle}
+        showsUserLocation>
         {eventsByCoordinate.map((event) => (
           <Marker
             key={event._id}
@@ -84,18 +89,20 @@ export const HomeMap = () => {
             </View>
           </Marker>
         ))}
-        {/* <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapScreen)}> */}
-      {/* <View style={styles.mapButton}>
-            <Row>
-              <FontAwesome5 name="location-arrow" size={SIZE * 1.2} />
-            </Row>
-            <View style={{ height: 1, width: SIZE * 2.7, backgroundColor: 'black'}} />
-            <Row>
-              <MaterialIcons name="zoom-out-map" size={SIZE * 1.4} />
-            </Row>
-          </View> */}
-        {/* </TouchableOpacity> */}
       </MapView>
+      <View style={styles.mapButton}>
+        <TouchableOpacity onPress={toMyPosition}>
+          <Row>
+            <FontAwesome5 name="location-arrow" size={SIZE * 1.2} />
+          </Row>
+        </TouchableOpacity>
+        <View style={{ height: 1, width: SIZE * 2.5, backgroundColor: 'black' }} />
+        <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapNavigator)}>
+          <Row>
+            <MaterialIcons name="zoom-out-map" size={SIZE * 1.4} />
+          </Row>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -140,11 +147,15 @@ const styles = StyleSheet.create({
     paddingRight: SIZE,
   },
   mapButton: {
+    position: 'absolute',
+    width: SIZE * 2.5,
+    backgroundColor: COLORS.white,
+    zIndex: 2,
     height: SIZE * 5,
-    flexDirection: 'column',
+    borderRadius: SIZES.xxs,
     alignItems: 'center',
-    justifyContent: 'space-around',
-    marginLeft: SIZE * 5,
-    marginTop: SIZE * 20
+    justifyContent: 'space-evenly',
+    marginTop: SIZE * 14.5,
+    marginLeft: SIZE * 23.9,
   },
 });

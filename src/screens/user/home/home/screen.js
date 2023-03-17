@@ -1,20 +1,17 @@
 import { useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../../components/index';
 import { updateUserCoordinates } from '../../../../utils';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-// eslint-disable-next-line no-unused-vars
-import { SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { SIZE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
-
   const ref = React.useRef(null);
   useScrollToTop(ref);
-
 
   useEffect(() => {
     updateUserCoordinates();

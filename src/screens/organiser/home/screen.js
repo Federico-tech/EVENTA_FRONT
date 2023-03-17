@@ -1,6 +1,7 @@
+import { useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
@@ -8,18 +9,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Container, HomeHeader, MiniEventCard, Text } from '../../../components';
 import { selectDateFilter, setDateFilter } from '../../../store/filter';
-import { selectCurrentUserId, selectSelectedUserId } from '../../../store/user';
+import { selectCurrentUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
-import { useScrollToTop } from '@react-navigation/native';
 
 export const OrganiserHome = () => {
   const currentDate = DateTime.now().toISO();
   const dispatch = useDispatch();
   const filter = useSelector(selectDateFilter);
   const dateParam = filter === 'past' ? 'date.$lte' : 'date.$gte';
-  const organiserId = useSelector(selectCurrentUserId)
+  const organiserId = useSelector(selectCurrentUserId);
+
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
 
   const filters = {
     organiserId,
@@ -46,6 +49,7 @@ export const OrganiserHome = () => {
       <HomeHeader organiser />
       <FlatList
         data={data}
+        ref={ref}
         renderItem={({ item }) => <MiniEventCard data={item} />}
         keyExtractor={(item) => item._id}
         onEndReachedThreshold={0.1}
