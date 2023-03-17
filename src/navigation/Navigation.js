@@ -89,9 +89,9 @@ const BottomBarIcons = ({ route }) => ({
       iconName = focused ? 'home' : 'home-outline';
     } else if (route.name === ROUTES.SearchNavigator) {
       iconName = focused ? 'ios-search' : 'ios-search-outline';
-    } else if (route.name === ROUTES.MapScreen) {
+    } else if (route.name === ROUTES.MapNavigator) {
       iconName = focused ? 'map' : 'map-outline';
-    } else if (route.name === ROUTES.ProfileScreen || route.name === ROUTES.OrganiserProfileScreen) {
+    } else if (route.name === ROUTES.ProfileScreenNavigator || route.name === ROUTES.OrganiserProfileScreen) {
       iconName = focused ? 'person' : 'person-outline';
     } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';
@@ -151,6 +151,7 @@ export const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
   );
 };
@@ -181,6 +182,7 @@ export const OrganiserProfileNavigator = () => {
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.SearchOrganiserEventsScreen} component={SearchOrganiserEventsScreen} options={{ headerShown: false }} />
     </OrganiserProfileStackNavigator.Navigator>
   );
 };
@@ -203,10 +205,10 @@ export const MapNavigator = () => {
 export const UserBottomNavigator = () => {
   return (
     <UserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
-      <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }}/>
       <UserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
-      <UserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapNavigator} options={{ headerShown: false }} />
-      <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileNavigator} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.MapNavigator} component={MapNavigator} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreenNavigator} component={ProfileNavigator} options={{ headerShown: false }} />
     </UserBottomTabNavigator.Navigator>
   );
 };

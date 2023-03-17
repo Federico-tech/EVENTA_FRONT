@@ -8,17 +8,19 @@ import { Container } from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
 import { selectSearchFilter } from '../../../../store/filter';
 import { selectSelectedUser } from '../../../../store/user';
+import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const FollowingUsersScreen = ({ route }) => {
-  const user = useSelector(selectSelectedUser);
+  const { followingParams } = route.params
   const filter = useSelector(selectSearchFilter);
 
   const { data, refreshing, getRefreshedData, loadMore, getMoreData, getData } = useInfiniteScroll({
-    entity: `users/${user._id}/followed`,
+    entity: `users/${followingParams._id}/followed`,
     filters: {
       search: filter,
+      role: ROLES.USER
     },
     limit: 20,
   });
@@ -29,13 +31,13 @@ export const FollowingUsersScreen = ({ route }) => {
 
   useEffect(() => {
     getData();
-  }, [user]);
+  }, [followingParams]);
 
   return (
     <Container>
       <FlatList
         data={data}
-        renderItem={({ item }) => <UserRow data={item?.follower} />}
+        renderItem={({ item }) => <UserRow data={item?.followed} />}
         style={{ marginHorizontal: WIDTH_DEVICE / 20 }}
         keyExtractor={(item) => item._id}
         onEndReachedThreshold={0.1}

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
@@ -12,6 +12,7 @@ import { selectCurrentUserId, selectSelectedUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
+import { useScrollToTop } from '@react-navigation/native';
 
 export const OrganiserHome = () => {
   const currentDate = DateTime.now().toISO();

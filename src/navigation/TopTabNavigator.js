@@ -74,7 +74,7 @@ export const OrganiserAccountTopNavigator = () => {
 
 export const OrganiserEventsTopNavigator = () => {
   return (
-    <OrganiserEventsTopStackNavigator.Navigator>
+    <OrganiserEventsTopStackNavigator.Navigator >
       <OrganiserEventsTopStackNavigator.Screen
         name={ROUTES.UpcomingEventsScreen}
         component={UpcomingEventsScreen}
@@ -85,14 +85,15 @@ export const OrganiserEventsTopNavigator = () => {
   );
 };
 
-export const FollowingTopNavigator = () => {
+export const FollowingTopNavigator = ( followingParams ) => {
   return (
     <FollowingTopStackNavigator.Navigator>
-      <FollowingTopStackNavigator.Screen name={ROUTES.FollowingUsersScreen} component={FollowingUsersScreen} options={screenOptions('Users')} />
+      <FollowingTopStackNavigator.Screen name={ROUTES.FollowingUsersScreen} component={FollowingUsersScreen} options={screenOptions('Users')} initialParams={followingParams} />
       <FollowingTopStackNavigator.Screen
         name={ROUTES.FollowingOrganisersScreen}
         component={FollowingOrganisersScreen}
         options={screenOptions('Organisers')}
+        initialParams={followingParams} 
       />
     </FollowingTopStackNavigator.Navigator>
   );

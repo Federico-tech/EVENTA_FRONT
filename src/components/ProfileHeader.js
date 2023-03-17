@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
-import { selectCurrentUser, setUserSelected } from '../store/user';
+import { selectCurrentUser, selectSelectedUser, setUserSelected } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button, IconButton } from './Button';
@@ -21,7 +21,9 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
   const [user, setUser] = useState({ ...initialUser });
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
+  const selectedUser = useSelector(selectSelectedUser)
   const dispatch = useDispatch();
+  const followingParams = myProfile ? currentUser : selectedUser
 
   const { data } = useInfiniteScroll({
     entity: 'events',
@@ -70,9 +72,13 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
 
   const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
 
-  const onPressFollowing = () => {
-    dispatch(setUserSelected(user));
-    navigation.replace(organiser ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen);
+  // const onPressFollowing = () => {
+  //   dispatch(setUserSelected(user));
+  //   navigation.replace(organiser ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen);
+  // };
+
+   const onPressFollowing = () => {
+    navigation.push(organiser ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, {followingParams});
   };
 
   return (
@@ -113,7 +119,7 @@ export const ProfileHeader = ({ myProfile, organiser, user: initialUser }) => {
           </Text>
         )}
         <Row spaceBetween row style={styles.followerRow}>
-          <TouchableOpacity onPress={() => navigation.replace(ROUTES.FollowersScreen)}>
+          <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, {followingParams})}>
             <Row alignCenter style={styles.boxFollower}>
               <Text semiBoldSm>{user.followers || 0}</Text>
               <Text color={COLORS.darkGray} regularXs>

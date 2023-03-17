@@ -1,4 +1,4 @@
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
@@ -11,6 +11,7 @@ import { ROLES } from '../utils/conts';
 import { useInfiniteScroll } from '../utils/hooks';
 import mapStyle from '../utils/mapStyle.json';
 import { COLORS, SIZE, SIZES } from '../utils/theme';
+import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
@@ -83,11 +84,17 @@ export const HomeMap = () => {
             </View>
           </Marker>
         ))}
-        <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapScreen)}>
-          <View>
-            <MaterialIcons name="zoom-out-map" size={SIZE * 2} style={styles.zoomOutIcon} />
-          </View>
-        </TouchableOpacity>
+        {/* <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapScreen)}> */}
+      {/* <View style={styles.mapButton}>
+            <Row>
+              <FontAwesome5 name="location-arrow" size={SIZE * 1.2} />
+            </Row>
+            <View style={{ height: 1, width: SIZE * 2.7, backgroundColor: 'black'}} />
+            <Row>
+              <MaterialIcons name="zoom-out-map" size={SIZE * 1.4} />
+            </Row>
+          </View> */}
+        {/* </TouchableOpacity> */}
       </MapView>
     </View>
   );
@@ -131,5 +138,13 @@ const styles = StyleSheet.create({
     marginTop: SIZE * 17,
     position: 'absolute',
     paddingRight: SIZE,
+  },
+  mapButton: {
+    height: SIZE * 5,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginLeft: SIZE * 5,
+    marginTop: SIZE * 20
   },
 });

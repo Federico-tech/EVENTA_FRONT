@@ -1,5 +1,6 @@
+import { useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 
@@ -10,6 +11,11 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
+
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
+
+
   useEffect(() => {
     updateUserCoordinates();
   }, []);
@@ -23,6 +29,7 @@ export const HomeScreen = () => {
     <Container>
       <HomeHeader />
       <FlatList
+        ref={ref}
         data={data}
         renderItem={({ item }) => <EventCard data={item} />}
         keyExtractor={(item) => item._id}

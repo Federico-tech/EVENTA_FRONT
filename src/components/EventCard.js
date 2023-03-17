@@ -25,7 +25,7 @@ export const EventCard = ({ data }) => {
         <LoadingImage source={data.coverImage} style={styles.eventImage} resizeMode="cover" indicator />
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
-            <LoadingImage resizeMode="contain" style={styles.organiserImage} source={data.organiser.profilePic} />
+            <LoadingImage resizeMode="contain" style={styles.organiserImage} source={data.organiser.profilePic} profile />
             <View style={styles.textContainer}>
               <Text style={styles.textDate}> {formatDate(data.date, EVENT_DATE_FORMAT)} </Text>
               <Text style={styles.textTitle}> {data.name} </Text>

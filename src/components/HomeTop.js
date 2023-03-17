@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal, TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
+import { DateTime } from 'luxon';
 import React, { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -44,15 +45,19 @@ export const HomeTop = () => {
     []
   );
 
-  const { data, getMoreData, loadMore } = useInfiniteScroll({
+  const { data, getMoreData, loadMore, getRefreshedData } = useInfiniteScroll({
     entity: 'notes',
+    filters: {
+      'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
+    },
     limit: 10,
   });
 
   const onPressCreateNote = () => {
-    createNote({ content: note, userId })
-    handleClosePress()
-  }
+    createNote({ content: note, userId });
+    handleClosePress();
+    getRefreshedData();
+  };
 
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
@@ -106,7 +111,7 @@ export const HomeTop = () => {
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <InputText label="Write your note" maxLength={60} value={note} onChangeText={setNote} />
           <Text color={COLORS.gray}>{note?.length === null ? 60 - note?.length : 60}/60</Text>
-          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length}/>
+          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} />
         </View>
       </BottomSheetModal>
     </View>
