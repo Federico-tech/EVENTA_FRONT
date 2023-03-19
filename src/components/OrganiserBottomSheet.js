@@ -77,7 +77,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   };
 
   const onPressFollowers = () => {
-    navigation.navigate(ROUTES.FollowersScreen, { user });
+    navigation.navigate(ROUTES.FollowersScreen, { followingParams: user });
     closeSheet();
   };
 

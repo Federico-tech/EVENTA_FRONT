@@ -202,6 +202,7 @@ export const MapNavigator = () => {
       <MapStackNavigator.Screen name={ROUTES.SearchOrganiserEventsScreen} component={SearchOrganiserEventsScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
+      <MapStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
     </MapStackNavigator.Navigator>
   );
 };

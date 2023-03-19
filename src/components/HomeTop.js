@@ -45,7 +45,7 @@ export const HomeTop = () => {
     []
   );
 
-  const { data, getMoreData, loadMore, getRefreshedData } = useInfiniteScroll({
+  const { data, getMoreData, loadMore, getData } = useInfiniteScroll({
     entity: 'notes',
     filters: {
       'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
@@ -56,7 +56,7 @@ export const HomeTop = () => {
   const onPressCreateNote = () => {
     createNote({ content: note, userId });
     handleClosePress();
-    getRefreshedData();
+    getData();
   };
 
   return (

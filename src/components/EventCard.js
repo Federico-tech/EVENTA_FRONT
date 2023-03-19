@@ -1,3 +1,4 @@
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
@@ -7,40 +8,74 @@ import { useDispatch } from 'react-redux';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { EVENT_DATE_FORMAT, formatDate } from '../utils/dates';
+import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
+import { IconButton } from './Button';
 import { LoadingImage } from './LoadingImage';
+import { Row } from './Row';
+import { ROUTES } from '../navigation/Navigation';
 
-export const EventCard = ({ data }) => {
+export const EventCard = ({ eventData }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const handleOnPress = () => {
-    dispatch(setUserSelected(data.organiser));
-    dispatch(setSelectedEvent(data));
-    navigation.navigate('EventDetails', { data });
+    dispatch(setUserSelected(eventData.organiser));
+    dispatch(setSelectedEvent(eventData));
+    navigation.navigate('EventDetails', { eventData });
   };
+
+  const handleParticipantsPress = () => {
+    dispatch(setSelectedEvent(eventData));
+    navigation.navigate(ROUTES.ParticipantsScreen);
+  }
+
+  const { data, totalData } = useInfiniteScroll({
+    entity: `participants`,
+    filters: {
+      eventId: eventData._id,
+    },
+    limit: 3,
+  });
 
   return (
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.cardContainer}>
-        <LoadingImage source={data.coverImage} style={styles.eventImage} resizeMode="cover" indicator />
-        <View style={styles.descContainer}>
-          <View style={styles.informationContainer}>
-            <LoadingImage resizeMode="contain" style={styles.organiserImage} source={data.organiser.profilePic} profile />
-            <View style={styles.textContainer}>
-              <Text style={styles.textDate}> {formatDate(data.date, EVENT_DATE_FORMAT)} </Text>
-              <Text style={styles.textTitle}> {data.name} </Text>
-              <View style={{ width: SIZE * 20 }}>
-                <Text style={styles.textAdress} numberOfLines={1} ellipsizeMode="tail">
-                  {' '}
-                  {data.address}{' '}
-                </Text>
+        <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator />
+        <View style={{marginHorizontal: SIZE * 2}}>
+          <View style={styles.descContainer}>
+            <View style={styles.informationContainer}>
+              <LoadingImage resizeMode="contain" style={styles.organiserImage} source={eventData.organiser.profilePic} profile />
+              <View style={styles.textContainer}>
+                <Text style={styles.textTitle}>{eventData.name}</Text>
+                <View >
+                  <Text style={styles.textAdress} numberOfLines={1} ellipsizeMode="tail">
+                    by @{eventData.organiser.name}
+                  </Text>
+                </View>
               </View>
             </View>
+            <View style={styles.likeContainer}>
+              <Text style={{marginRight: SIZE / 3, fontFamily: FONTS.medium}}>22</Text>
+              <IconButton name="heart" iconStyle={styles.icon} size={SIZE * 2} color={'red'}/>
+            </View>
           </View>
-          {/* <View style={styles.likeContainer}>
-            <FontAwesome name="heart" size={17} color="red" />
-            <Text> {} </Text>
-          </View> */}
+          <View style={styles.line} />
+          <Row row alignCenter spaceBetween>
+            <TouchableOpacity onPress={handleParticipantsPress}>
+              <Row row alignCenter >
+                <Row row style={{ alignItems: 'center', marginLeft: SIZE }}>
+                  {data?.slice(0, 3).map((data) => (
+                    <Image key={data.user._id} source={{ uri: data.user.profilePic }} style={styles.partImage} />
+                  ))}
+                </Row>
+                <Text style={[styles.textAdress, {color: 'black'}]}>  +{totalData - data.length} participants</Text>
+              </Row>
+            </TouchableOpacity>
+            <Row row alignCenter>
+              <Feather name="calendar" size={18} color={COLORS.gray}/>
+              <Text style={styles.textAdress}>{formatDate(eventData.date, EVENT_DATE_FORMAT)}, Rogno</Text>
+            </Row>
+          </Row>
         </View>
       </View>
     </TouchableOpacity>
@@ -49,7 +84,7 @@ export const EventCard = ({ data }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    height: SIZE * 33,
+    height: SIZE * 36.5,
     backgroundColor: COLORS.white,
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,
@@ -59,6 +94,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     borderWidth: 0,
     borderColor: COLORS.lightGray,
+    alignItems: 'center',
   },
   eventImage: {
     width: '100%',
@@ -74,9 +110,8 @@ const styles = StyleSheet.create({
   descContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginTop: SIZE,
-    paddingHorizontal: SIZE,
+    justifyContent: 'space-between',
+    marginTop: SIZE / 1.5,
   },
   informationContainer: {
     flexDirection: 'row',
@@ -94,13 +129,16 @@ const styles = StyleSheet.create({
   textTitle: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.md,
+    textTransform: 'uppercase',
   },
   textAdress: {
     fontFamily: FONTS.regular,
-    fontSize: SIZES.xs,
+    fontSize: SIZES.xxs,
+    color: COLORS.gray,
   },
   likeContainer: {
     alignItems: 'center',
+    flexDirection: 'row'
   },
   eventImageView: {
     width: '100%',
@@ -108,21 +146,19 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     backgroundColor: COLORS.lightGray,
   },
-  startTime: {
-    backgroundColor: COLORS.white,
-    width: SIZE * 5,
-    height: SIZE * 2.5,
-    position: 'absolute',
-    marginTop: SIZE * 26.5,
-    marginLeft: SIZE * 22,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    borderRadius: SIZES.xxs,
-    justifyContent: 'center',
-    alignItems: 'center',
+  line: {
+    height: 0.8,
+    width: SIZE * 25,
+    backgroundColor: COLORS.lightGray,
+    alignSelf: 'center',
+    marginVertical:  SIZE / 1.5,
   },
-  startTimeText: {
-    fontFamily: FONTS.semiBold,
-    fontSize: SIZES.sm,
+  partImage: {
+    width: SIZE * 2.5,
+    aspectRatio: 1,
+    borderRadius: 100,
+    marginLeft: -SIZE,
+    borderWidth: 2.5,
+    borderColor: COLORS.white,
   },
 });

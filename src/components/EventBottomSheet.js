@@ -151,7 +151,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
             {loading ? (
               <ActivityIndicator style={{ marginTop: SIZE }} />
             ) : (
-              participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} closeSheet={closeSheet} />)
+              participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} closeSheet={closeSheet} bottomSheet/>)
             )}
           </Row>
         </View>

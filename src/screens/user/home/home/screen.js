@@ -28,7 +28,7 @@ export const HomeScreen = () => {
       <FlatList
         ref={ref}
         data={data}
-        renderItem={({ item }) => <EventCard data={item} />}
+        renderItem={({ item }) => <EventCard eventData={item} />}
         keyExtractor={(item) => item._id}
         onEndReachedThreshold={0.1}
         onEndReached={_.throttle(getMoreData, 400)}

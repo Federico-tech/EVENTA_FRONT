@@ -114,15 +114,11 @@ export const MapScreen = () => {
           latitudeDelta: 0.3,
           longitudeDelta: 0.3,
         }}
+        showsUserLocation
+        showsMyLocationButton
+        showsCompass
         minZoomLevel={9}
         customMapStyle={mapStyle}>
-        <Marker
-          coordinate={{
-            latitude: user.position.coordinates[1],
-            longitude: user.position.coordinates[0],
-          }}>
-          <View style={styles.myPos} />
-        </Marker>
         {filter === 'organisers'
           ? data.map((user) => (
               <Marker

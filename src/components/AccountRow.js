@@ -9,13 +9,13 @@ import { setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Row } from './Row';
 
-export const UserRow = ({ data, closeSheet = () => {} }) => {
+export const UserRow = ({ data, bottomSheet,  closeSheet = () => {} }) => {
   const { profilePic, username, name } = data;
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleOnPress = () => {
     dispatch(setUserSelected(data));
-    navigation.navigate(ROUTES.AccountUserScreen, { data });
+    bottomSheet ?  navigation.navigate(ROUTES.AccountUserScreen, { data }): navigation.push(ROUTES.AccountUserScreen, { data });
     closeSheet();
   };
   return (
@@ -45,7 +45,7 @@ export const OrganiserRow = ({ data }) => {
   const navigation = useNavigation();
   const handleOnPress = () => {
     dispatch(setUserSelected(data));
-    navigation.navigate(ROUTES.AccountOrganiserScreen, { data });
+    navigation.push(ROUTES.AccountOrganiserScreen, { data });
   };
   return (
     <TouchableOpacity onPress={handleOnPress}>
