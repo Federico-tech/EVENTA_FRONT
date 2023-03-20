@@ -30,7 +30,8 @@ export const HomeScreen = () => {
         data={data}
         renderItem={({ item }) => <EventCard eventData={item} />}
         keyExtractor={(item) => item._id}
-        onEndReachedThreshold={0.1}
+        showsVerticalScrollIndicator={false}
+        onEndReachedThreshold={1}
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListHeaderComponent={<HomeTop />}

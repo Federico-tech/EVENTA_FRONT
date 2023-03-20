@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Row, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet } from '../../../components';
+import { Button, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet } from '../../../components';
 import { getRefreshedEvent } from '../../../services/events';
 import { refreshSelectedUser } from '../../../services/users';
 import { setSelectedEvent } from '../../../store/event';
@@ -128,13 +128,10 @@ export const MapScreen = () => {
                   longitude: user.position.coordinates[0],
                 }}
                 onPress={() => handlePresentModalOrganiser({ user })}>
-                <View style={{ alignItems: 'center', height: SIZE * 8 }}>
+                <View style={{ alignItems: 'center', height: SIZE * 6 }}>
                   <View style={styles.marker}>
                     <LoadingImage source={user.profilePic} style={styles.profileImage} profile />
                   </View>
-                  <Row alignCenter justifyCenter style={{ marginTop: SIZE }}>
-                    <Text medium>{user.name}</Text>
-                  </Row>
                 </View>
               </Marker>
             ))
@@ -147,13 +144,10 @@ export const MapScreen = () => {
                 }}
                 tracksViewChanges
                 onPress={() => handlePresentModalEvents({ event })}>
-                <View style={{ alignItems: 'center', height: SIZE * 8 }}>
+                <View style={{ alignItems: 'center', height: SIZE * 6 }}>
                   <View style={styles.marker}>
                     <LoadingImage source={event.coverImage} style={styles.profileImage} profile />
                   </View>
-                  <Row alignCenter justifyCenter style={{ marginTop: SIZE }}>
-                    <Text medium>{event.name}</Text>
-                  </Row>
                 </View>
               </Marker>
             ))}

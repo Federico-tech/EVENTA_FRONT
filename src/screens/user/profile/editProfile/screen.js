@@ -32,7 +32,7 @@ export const EditUserScreen = () => {
     bottomSheetModalRef.current?.present();
   };
 
-  const handleClosePress = () => bottomSheetModalRef.current.close()
+  const handleClosePress = () => bottomSheetModalRef.current.close();
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -113,12 +113,12 @@ export const EditUserScreen = () => {
       });
       await setFieldValue('file', manipulatedImage.uri);
     }
-    handleClosePress()
+    handleClosePress();
   };
 
   const deleteImage = () => {
     setFieldValue('file', undefined);
-    handleClosePress()
+    handleClosePress();
   };
 
   return (
@@ -148,15 +148,6 @@ export const EditUserScreen = () => {
           <View>
             <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
               <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-                {/* <View style={styles.editImageContainer}>
-                  {!values.file ? (
-                    <Ionicons name="person" size={5} color={COLORS.darkGray} />
-                  ) : (
-                    <>
-                      <Image source={{ uri: values.file }} style={styles.editImage} resizeMode="cover" />
-                    </>
-                  )}
-                </View> */}
                 <TouchableOpacity onPress={pickImage}>
                   <Row row alignCenter style={{ marginTop: SIZE }}>
                     <Ionicons name="images-outline" size={SIZE * 2} />

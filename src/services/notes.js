@@ -10,6 +10,15 @@ export const createNote = async (data) => {
   }
 };
 
+export const deleteNote = async (noteId) => {
+  try {
+    const { date: noteCreated } = await mainAxios.delete(`notes/${noteId}`);
+    console.log({ noteCreated });
+  } catch (e) {
+    console.log({ errorCreateNote: { e } });
+  }
+};
+
 export const fire = async (noteId) => {
   try {
     const { data: fire } = await mainAxios.post(`notes/${noteId}/fire`);

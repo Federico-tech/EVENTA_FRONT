@@ -13,14 +13,13 @@ import { Row } from './Row';
 
 export const OrganiserInf = ({ organiser }) => {
   const [isFollowing, setIsFollowing] = useState();
-  console.log('Come', organiser)
 
   const navigation = useNavigation();
   const role = useSelector(selectCurrentUserRole);
 
   useEffect(() => {
     setIsFollowing(organiser.isFollowing);
-  }, [organiser])
+  }, [organiser]);
 
   const onPressFollow = () => {
     follow();

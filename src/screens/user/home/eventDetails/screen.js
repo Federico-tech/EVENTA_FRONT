@@ -22,7 +22,6 @@ export const EventDetails = ({ route }) => {
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
 
-
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
   const eventId = useSelector(selectSelectedEventId);
@@ -44,7 +43,6 @@ export const EventDetails = ({ route }) => {
     getRefreshedEvent(event);
     refreshSelectedUser(organiser);
   }, [numberPart, event.participants]);
-
 
   useEffect(() => {
     setLoading(true);

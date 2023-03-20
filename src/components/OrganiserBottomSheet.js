@@ -26,6 +26,8 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   const [isFollowing, setIsFollowing] = useState();
   const [numFollowers, setNumFollowers] = useState();
 
+  console.log('MapUser', user._id)
+
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: 'events',
     filters: {

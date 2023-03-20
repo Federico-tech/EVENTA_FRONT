@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal, TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 import { HomeMap, IconButton, InputText, Note, Row, Text, TextButton } from '../components/index';
 import { ROUTES } from '../navigation/Navigation';
-import { createNote } from '../services/notes';
+import { createNote, deleteNote } from '../services/notes';
 import { selectCurrentUser, selectCurrentUserId } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
@@ -57,7 +57,14 @@ export const HomeTop = () => {
     createNote({ content: note, userId });
     handleClosePress();
     getData();
+    setNote('')
   };
+
+  const onPressDeleteNote = (noteId) => {
+    deleteNote(noteId)
+    handleClosePress()
+    getData();
+  }
 
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
@@ -75,7 +82,7 @@ export const HomeTop = () => {
       <View style={styles.noteContainer}>
         <FlatList
           data={data}
-          renderItem={({ item }) => <Note data={item} />}
+          renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote}/>}
           keyExtractor={(item) => item._id}
           onEndReachedThreshold={0.1}
           onEndReached={_.throttle(getMoreData, 400)}

@@ -28,11 +28,11 @@ export const SearchUserScreen = () => {
 
   return (
     <Container>
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
         <FlatList
           data={data}
           renderItem={({ item }) => <UserRow data={item} />}
           keyExtractor={(item) => item._id}
+          style={{ marginHorizontal: WIDTH_DEVICE / 20 }}
           showsVerticalScrollIndicator={false}
           onEndReachedThreshold={0.1}
           onEndReached={_.throttle(getMoreData, 400)}
@@ -44,7 +44,6 @@ export const SearchUserScreen = () => {
             No results found for '{name}'
           </Text>
         )}
-      </View>
     </Container>
   );
 };

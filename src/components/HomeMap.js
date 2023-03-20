@@ -79,13 +79,10 @@ export const HomeMap = () => {
               latitude: event.position.coordinates[1],
               longitude: event.position.coordinates[0],
             }}>
-            <View style={{ alignItems: 'center', height: SIZE * 8 }}>
+            <View style={{ alignItems: 'center', height: SIZE * 6 }}>
               <View style={styles.marker}>
                 <LoadingImage source={event.coverImage} style={styles.profileImage} profile />
               </View>
-              <Row alignCenter justifyCenter style={{ marginTop: SIZE }}>
-                <Text medium>{event.name}</Text>
-              </Row>
             </View>
           </Marker>
         ))}

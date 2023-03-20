@@ -142,7 +142,7 @@ const ProfileStackNavigator = createStackNavigator();
 
 export const ProfileNavigator = () => {
   return (
-    <ProfileStackNavigator.Navigator initialRouteName={ROUTES.ProfileScreen}>
+    <ProfileStackNavigator.Navigator initialRouteName={ROUTES.ProfileScreen} >
       <ProfileStackNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
