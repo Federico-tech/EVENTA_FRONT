@@ -44,7 +44,6 @@ export const InputText = ({
   let onChangeText = inputOnChangeText;
 
   if (formik) {
-    // console.log({formikValues});
     value = formik?.values[formikName] || '';
     error = formik?.errors[formikName] || '';
     onChangeText = (newValue) => formik.onChangeText(formikName, newValue);

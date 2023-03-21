@@ -1,9 +1,12 @@
+import { AntDesign } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
@@ -32,6 +35,28 @@ export const EventDetails = ({ route }) => {
   const refOrganiser = useSelector(selectSelectedUser);
 
   const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
+
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = ['13%'];
+
+  const handlePresentModal = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
+  const handleClosePress = () => bottomSheetModalRef.current.close();
+
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={1}
+        animatedIndex={{
+          value: 1,
+        }}
+      />
+    ),
+    []
+  );
 
   useEffect(() => {
     if (organiser._id === refOrganiser._id) {
@@ -67,6 +92,11 @@ export const EventDetails = ({ route }) => {
     setNumberPart(event.participants);
   };
 
+  const onPressEditEvent = () => {
+    navigation.navigate(ROUTES.EditEventScreen);
+    handleClosePress();
+  };
+
   return (
     <Container>
       <SafeAreaView style={{ flex: 1 }}>
@@ -82,13 +112,7 @@ export const EventDetails = ({ route }) => {
                 color="white"
               />
               {eventOrganiserId === userId && (
-                <IconButton
-                  name="md-ellipsis-horizontal-sharp"
-                  size={SIZE * 2}
-                  iconStyle={styles.dots}
-                  color="white"
-                  onPress={() => navigation.navigate(ROUTES.EditEventScreen)}
-                />
+                <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
               )}
             </View>
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
@@ -108,7 +132,7 @@ export const EventDetails = ({ route }) => {
                 </View>
                 <View style={styles.place}>
                   <Foundation name="marker" size={22} />
-                  <Text style={styles.adressText}>{event.address}</Text>
+                  <Text style={styles.adressText}>{event?.address?.fullAddress}</Text>
                 </View>
                 <View style={styles.person}>
                   <Ionicons name="people-outline" size={24} />
@@ -139,6 +163,18 @@ export const EventDetails = ({ route }) => {
             <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />
           ))}
       </SafeAreaView>
+      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          <TouchableOpacity onPress={onPressEditEvent}>
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <AntDesign name="edit" size={SIZE * 2} />
+              <Text regularSm style={{ marginLeft: SIZE }}>
+                Edit this event
+              </Text>
+            </Row>
+          </TouchableOpacity>
+        </View>
+      </BottomSheetModal>
     </Container>
   );
 };

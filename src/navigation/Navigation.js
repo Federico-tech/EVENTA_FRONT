@@ -224,7 +224,7 @@ export const OrganiserBottomNavigator = () => {
       <OrganiserBottomTabNavigator.Screen name={ROUTES.OrganiserHomeNavigator} component={OrganiserHomeNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen name={ROUTES.CreateEventScreen} component={CreateEventScreen} options={{ headerShown: false }} />
-      <OrganiserBottomTabNavigator.Screen name={ROUTES.MapScreen} component={MapNavigator} options={{ headerShown: false }} />
+      <OrganiserBottomTabNavigator.Screen name={ROUTES.MapNavigator} component={MapNavigator} options={{ headerShown: false }} />
       <OrganiserBottomTabNavigator.Screen
         name={ROUTES.OrganiserProfileScreen}
         component={OrganiserProfileNavigator}

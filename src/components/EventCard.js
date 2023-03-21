@@ -9,7 +9,7 @@ import { ROUTES } from '../navigation/Navigation';
 import { like, unLike } from '../services/likes';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
-import { EVENT_DATE_FORMAT, formatDate } from '../utils/dates';
+import { EVENT_DATE_FORMAT, EVENT_DATE_FORMATR_NOYEAR, formatDate } from '../utils/dates';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
@@ -101,9 +101,9 @@ export const EventCard = ({ eventData }) => {
             </TouchableOpacity>
             <Row row alignCenter>
               <Feather name="calendar" size={18} color={COLORS.gray} />
-              <Text style={styles.textAdress}> {formatDate(eventData.date, EVENT_DATE_FORMAT)}</Text>
+              <Text style={styles.textAdress}> {formatDate(eventData.date, EVENT_DATE_FORMATR_NOYEAR)}</Text>
               <View style={styles.dot} />
-              <Text style={styles.textAdress}>Rogno</Text>
+              <Text style={styles.textAdress}>{eventData?.address?.city}</Text>
             </Row>
           </Row>
         </View>

@@ -31,10 +31,13 @@ export const EditEventScreen = ({ route }) => {
   const { t } = useTranslation();
   const event = useSelector(selectSelectedEvent);
 
-  const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
+  const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit, getFieldProps } = useFormik({
     initialValues: {
       name: event.name,
-      address: event.address,
+      address: {
+        fullAddress: event.address.fullAddress,
+        city: event.address.city,
+      },
       description: event.description,
       position: {
         type: 'Point',
@@ -46,7 +49,7 @@ export const EditEventScreen = ({ route }) => {
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
-      address: string().required('Address is a required field'),
+      address: object().required('Address is a required field'),
       description: string().required('Description is a required field'),
       startDate: string()
         .required('Date is a required field')
@@ -91,7 +94,10 @@ export const EditEventScreen = ({ route }) => {
     const { addressInfo } = route.params || {};
     console.debug({ addressInfo });
     if (addressInfo) {
-      onChangeText('address', addressInfo.formatted_address);
+      onChangeText('address', {
+        fullAddress: addressInfo.formatted_address,
+        city: addressInfo.city,
+      });
       onChangeText('position', {
         type: 'Point',
         coordinates: [addressInfo.lng, addressInfo.lat],
@@ -150,6 +156,8 @@ export const EditEventScreen = ({ route }) => {
       backScreenName: route.name,
     });
   };
+
+  console.log('Address', values.address)
   return (
     <Container>
       <Header title="Edit event" done onPress={handleSubmit} loading={loading} />
@@ -170,7 +178,14 @@ export const EditEventScreen = ({ route }) => {
               <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
             </TouchableOpacity>
             <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
-            <InputText label={t('address')} formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
+            <InputText
+              label={t('address')}
+              {...getFieldProps('address.fullAddress')}
+              formikName="address"
+              pointerEvents="none"
+              onPress={onPressAddress}
+              touchableOpacity
+            />
             <InputText label={t('description')} formik={formik} formikName="description" multiline />
             <InputText
               label={t('date')}

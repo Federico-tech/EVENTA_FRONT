@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 export const DATE_FORMAT = 'dd/MM/yyyy';
 export const TIME_FORMAT = 'HH:mm';
 export const EVENT_DATE_FORMAT = 'ccc d LLL yyyy';
+export const EVENT_DATE_FORMATR_NOYEAR = 'ccc d LLL';
 export const DATE_TIME_FORMAT = `${DATE_FORMAT} ${TIME_FORMAT}`;
 
 export const fromDateAndTimeToISODate = (date, time) => {

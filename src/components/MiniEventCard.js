@@ -14,7 +14,7 @@ import { Row } from './Row';
 import { ROUTES } from '../navigation/Navigation'
 
 export const MiniEventCard = ({ data, closeSheet = () => {} }) => {
-  const { organiser, coverImage, date, name, address, participants } = data;
+  const { organiser, coverImage, date, name, participants } = data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const handlePress = () => {
@@ -54,7 +54,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {} }) => {
             <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT)}</Text>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
-              {address}
+              {data?.address?.city}
             </Text>
           </View>
         </View>

@@ -17,13 +17,13 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
       return;
     }
     const { geometry, formatted_address } = details;
-    const city = findAddress(details.address_components,  'political')
-    const level2 = findAddress(details.address_components,  'administrative_area_level_2')
-    console.log({details, level2})
+    const city = findAddress(details.address_components, 'political')
+    console.log({details, city})
     const addressInfo = {
       lat: geometry.location.lat,
       lng: geometry.location.lng,
       formatted_address,
+      city
     };
     navigation.navigate({
       name: backScreenName,
@@ -31,6 +31,7 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
       merge: true,
     });
   };
+
 
   return (
     <Container>

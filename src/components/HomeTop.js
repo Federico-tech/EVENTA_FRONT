@@ -117,7 +117,7 @@ export const HomeTop = () => {
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <InputText label="Write your note" maxLength={60} value={note} onChangeText={setNote} />
-          <Text color={COLORS.gray}>{note?.length === null ? 60 - note?.length : 60}/60</Text>
+          <Text color={COLORS.gray}>{note?.length !== null ? 60 - note?.length : 60}/60</Text>
           <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} />
         </View>
       </BottomSheetModal>

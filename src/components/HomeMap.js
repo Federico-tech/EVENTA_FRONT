@@ -69,7 +69,6 @@ export const HomeMap = () => {
           longitudeDelta: 0.2,
         }}
         ref={mapRef}
-        minZoomLevel={9}
         customMapStyle={mapStyle}
         showsUserLocation>
         {eventsByCoordinate.map((event) => (
