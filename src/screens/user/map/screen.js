@@ -1,4 +1,5 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -13,13 +14,18 @@ import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
-import { COLORS, SIZE } from '../../../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
 
-export const MapScreen = () => {
+export const MapScreen = ({ route }) => {
   const [snap, setSnap] = useState(false);
+  const [region, setRegion] = useState({});
+  const { event } = route.params || {};
+
+  const isFocused = useIsFocused()
+  console.log('isFocused', isFocused)
 
   const dispatch = useDispatch();
-  const filter = useSelector(selectMapFilter)
+  const filter = useSelector(selectMapFilter);
   const user = useSelector(selectCurrentUser);
   const entity = filter === 'organisers' ? 'users' : 'events';
   const { data, getData, setData, refreshing } = useInfiniteScroll({
@@ -27,7 +33,8 @@ export const MapScreen = () => {
     filters: {
       role: ROLES.ORGANISER,
     },
-  });
+  })
+
   useEffect(() => {
     getData();
   }, [filter]);
@@ -36,6 +43,19 @@ export const MapScreen = () => {
     setData([]);
     dispatch(setMapFilter(f));
   };
+
+  useEffect(() => {
+    if (event) {
+      setRegion({
+        latitude: event.position.coordinates[1],
+        longitude: event.position.coordinates[0],
+        latitudeDelta: 0.3,
+        longitudeDelta: 0.3,
+      });
+      dispatch(setMapFilter('events'))
+    }
+    console.log('ciao')
+  }, [event, isFocused]);
 
   const bottomSheetModalRef = useRef(null);
   const eventSnapPoints = useMemo(() => ['60%', '95%'], []);
@@ -108,16 +128,18 @@ export const MapScreen = () => {
       <MapView
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: user.position.coordinates[1],
-          longitude: user.position.coordinates[0],
-          latitudeDelta: 0.3,
-          longitudeDelta: 0.3,
-        }}
+        initialRegion={
+          {
+            latitude: user.position.coordinates[1],
+            longitude: user.position.coordinates[0],
+            latitudeDelta: 0.3,
+            longitudeDelta: 0.3,
+          }
+        }
         showsUserLocation
         showsMyLocationButton
         showsCompass
-        minZoomLevel={9}
+        region={region}
         customMapStyle={mapStyle}>
         {filter === 'organisers'
           ? data.map((user) => (
@@ -128,10 +150,11 @@ export const MapScreen = () => {
                   longitude: user.position.coordinates[0],
                 }}
                 onPress={() => handlePresentModalOrganiser({ user })}>
-                <View style={{ alignItems: 'center', height: SIZE * 6 }}>
+                <View style={{ alignItems: 'center', height: SIZE * 7 }}>
                   <View style={styles.marker}>
                     <LoadingImage source={user.profilePic} style={styles.profileImage} profile />
                   </View>
+                  <Text style={styles.markerText}>{user.username}</Text>
                 </View>
               </Marker>
             ))
@@ -223,5 +246,16 @@ const styles = StyleSheet.create({
     borderWidth: 3.5,
     borderColor: COLORS.white,
     backgroundColor: COLORS.primary,
+  },
+  markerText: {
+    marginTop: SIZE,
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.xxs,
+    textShadowColor: 'red',
+    textShadowOffset: {
+      width: 20,
+      height: 20,
+    },
+    textShadowRadius: 21,
   },
 });

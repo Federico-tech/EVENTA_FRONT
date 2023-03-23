@@ -38,9 +38,9 @@ export const OrganiserInf = ({ organiser }) => {
           <Row row alignCenter>
             <Image style={styles.image} source={{ uri: organiser?.profilePic }} resizeMode="contain" />
             <View style={styles.textContainer}>
-              <Text style={styles.textName}>{organiser?.username}</Text>
+              <Text style={styles.textName}>{organiser?.name}</Text>
               <View style={{ width: SIZE * 13 }}>
-                <Text style={styles.textAdress}>@{organiser?.name}</Text>
+                <Text style={styles.textAdress}>@{organiser?.username}</Text>
               </View>
             </View>
           </Row>

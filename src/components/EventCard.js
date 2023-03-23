@@ -9,7 +9,7 @@ import { ROUTES } from '../navigation/Navigation';
 import { like, unLike } from '../services/likes';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
-import { EVENT_DATE_FORMAT, EVENT_DATE_FORMATR_NOYEAR, formatDate } from '../utils/dates';
+import { EVENT_DATE_FORMATR_NOYEAR, formatDate } from '../utils/dates';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
@@ -88,15 +88,18 @@ export const EventCard = ({ eventData }) => {
             </View>
           </View>
           <View style={styles.line} />
-          <Row row alignCenter spaceBetween>
+          <Row row alignCenter spaceBetween style={{height: SIZE * 2}}>
             <TouchableOpacity onPress={handleParticipantsPress}>
               <Row row alignCenter>
-                <Row row style={{ alignItems: 'center', marginLeft: SIZE }}>
+                <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && {marginLeft: 0}]}>
                   {data?.slice(0, 3).map((data) => (
                     <Image key={data?.user._id} source={{ uri: data?.user.profilePic }} style={styles.partImage} />
                   ))}
                 </Row>
-                <Text style={[styles.textAdress, { color: 'black' }]}>{totalData === 0 ? '0 participants' : (totalData <= 3 ? '' : `+${totalData - 3} participants`)}</Text>
+                <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>{totalData > 3 ? `+${totalData}` : totalData} </Text>
+                <Text style={[styles.textAdress, { color: 'black' }]}>
+                {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
+                </Text>
               </Row>
             </TouchableOpacity>
             <Row row alignCenter>
@@ -114,7 +117,7 @@ export const EventCard = ({ eventData }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    height: SIZE * 36,
+    height: SIZE * 35.8,
     backgroundColor: COLORS.white,
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,

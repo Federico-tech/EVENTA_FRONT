@@ -57,14 +57,14 @@ export const HomeTop = () => {
     createNote({ content: note, userId });
     handleClosePress();
     getData();
-    setNote('')
+    setNote('');
   };
 
   const onPressDeleteNote = (noteId) => {
-    deleteNote(noteId)
-    handleClosePress()
+    deleteNote(noteId);
+    handleClosePress();
     getData();
-  }
+  };
 
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
@@ -82,7 +82,7 @@ export const HomeTop = () => {
       <View style={styles.noteContainer}>
         <FlatList
           data={data}
-          renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote}/>}
+          renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote} />}
           keyExtractor={(item) => item._id}
           onEndReachedThreshold={0.1}
           onEndReached={_.throttle(getMoreData, 400)}
@@ -117,7 +117,7 @@ export const HomeTop = () => {
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <InputText label="Write your note" maxLength={60} value={note} onChangeText={setNote} />
-          <Text color={COLORS.gray}>{note?.length !== null ? 60 - note?.length : 60}/60</Text>
+          <Text color={COLORS.gray}>{note?.length !== undefined ? 60 - note?.length : 60}/60</Text>
           <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} />
         </View>
       </BottomSheetModal>

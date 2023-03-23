@@ -13,7 +13,7 @@ export const SearchEventScreen = () => {
 
   const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
     entity: 'events',
-    limit: 7,
+    limit: 8,
     filters: {
       q: name,
     },

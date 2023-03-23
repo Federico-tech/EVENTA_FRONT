@@ -1,12 +1,12 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
 import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
@@ -18,6 +18,7 @@ import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
 import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../../../../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
+import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 
 export const EventDetails = ({ route }) => {
@@ -33,7 +34,7 @@ export const EventDetails = ({ route }) => {
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
   const refOrganiser = useSelector(selectSelectedUser);
-
+  
   const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
 
   const bottomSheetModalRef = useRef(null);
@@ -99,70 +100,90 @@ export const EventDetails = ({ route }) => {
 
   return (
     <Container>
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ marginBottom: SIZE * 4 }}>
-            <View style={styles.imageContainer}>
-              <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
-              <IconButton
-                name="chevron-back-outline"
-                onPress={() => navigation.goBack()}
-                size={SIZE * 2}
-                iconStyle={styles.arrowStyle}
-                color="white"
-              />
-              {eventOrganiserId === userId && (
-                <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
-              )}
-            </View>
-            <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-              <OrganiserInf organiser={defOrganiser} />
-              <View style={{ marginHorizontal: 0 }}>
-                <Line lineStyle={{ marginBottom: 0 }} />
-              </View>
-              <View>
-                <Text style={styles.eventTitle}>{event.name}</Text>
-                <ReadMoreButton text={event.description} style={styles.description} />
-                <View style={styles.date}>
-                  <FontAwesome name="calendar-o" size={18} />
-                  <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                    <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
-                    <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
-                  </View>
-                </View>
-                <View style={styles.place}>
-                  <Foundation name="marker" size={22} />
-                  <Text style={styles.adressText}>{event?.address?.fullAddress}</Text>
-                </View>
-                <View style={styles.person}>
-                  <Ionicons name="people-outline" size={24} />
-                  <Text style={styles.peopleText}>
-                    {event.participants}
-                    <Text style={styles.description}> of your friends are going</Text>
-                  </Text>
-                </View>
-                <Text style={styles.whoGoing}>Who's going?</Text>
-              </View>
-              <Row>
-                {loading ? (
-                  <ActivityIndicator style={{ marginTop: SIZE }} />
-                ) : (
-                  participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
-                )}
-              </Row>
-              {participants?.length >= 3 && (
-                <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
-              )}
-            </View>
+      <StatusBar barStyle="light-content" />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ marginBottom: SIZE * 4 }}>
+          <View style={{ flex: 1 }}>
+            <Image source={{ uri: event.coverImage }} style={styles.eventBlurImage} resizeMode="cover" blurRadius={10} />
           </View>
-        </ScrollView>
-        {role === 'user' &&
-          (event.isParticipating ? (
-            <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate} />
-          ) : (
-            <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />
-          ))}
-      </SafeAreaView>
+          <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
+          <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
+          {eventOrganiserId === userId && (
+            <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
+          )}
+          <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+            <OrganiserInf organiser={defOrganiser} />
+            <View style={{ marginHorizontal: 0 }}>
+              <Line lineStyle={{ marginBottom: 0 }} />
+            </View>
+            <View>
+              <Text style={styles.eventTitle}>{event.name}</Text>
+              <ReadMoreButton text={event.description} style={styles.description} />
+              <View style={styles.date}>
+                <FontAwesome name="calendar-o" size={18} />
+                <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
+                  <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+                  <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
+                </View>
+              </View>
+              <View style={styles.place}>
+                <Foundation name="marker" size={22} />
+                <Text style={styles.adressText}>{event?.address?.fullAddress}</Text>
+              </View>
+              <View style={styles.person}>
+                <Ionicons name="people-outline" size={24} />
+                <Text style={styles.peopleText}>
+                  {event.participants}
+                  <Text style={styles.description}> of your friends are going</Text>
+                </Text>
+              </View>
+              <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
+                <MapView
+                  style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
+                  provider={PROVIDER_GOOGLE}
+                  initialRegion={{
+                    latitude: event.position.coordinates[1],
+                    longitude: event.position.coordinates[0],
+                    latitudeDelta: 0.2,
+                    longitudeDelta: 0.2,
+                  }}
+                  scrollEnabled={false}
+                  customMapStyle={mapStyle}>
+                  <Marker
+                    coordinate={{
+                      latitude: event.position.coordinates[1],
+                      longitude: event.position.coordinates[0],
+                    }}
+                    pinColor="red"
+                  />
+                </MapView>
+                <View style={styles.mapButton}>
+                  <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', {screen: ROUTES.MapScreen , params: { event }})}>
+                    <MaterialIcons name="zoom-out-map" size={SIZE * 1.4} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Text style={styles.whoGoing}>Who's going?</Text>
+            </View>
+            <Row>
+              {loading ? (
+                <ActivityIndicator style={{ marginTop: SIZE }} />
+              ) : (
+                participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+              )}
+            </Row>
+            {participants?.length >= 3 && (
+              <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+            )}
+          </View>
+        </View>
+      </ScrollView>
+      {role === 'user' &&
+        (event.isParticipating ? (
+          <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate} />
+        ) : (
+          <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />
+        ))}
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <TouchableOpacity onPress={onPressEditEvent}>
@@ -185,12 +206,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     width: WIDTH_DEVICE,
     height: SIZE * 20,
+    marginTop: SIZE * 3,
+  },
+  eventBlurImage: {
+    height: SIZE * 23,
+    width: WIDTH_DEVICE / 1,
+    alignItems: 'center',
   },
   eventImage: {
     height: SIZE * 20,
-    width: WIDTH_DEVICE / 1,
-    alignItems: 'center',
     position: 'absolute',
+    aspectRatio: 1,
+    alignSelf: 'center',
+    marginTop: SIZE * 3,
   },
   eventTitle: {
     fontFamily: 'InterSemiBold',
@@ -240,11 +268,15 @@ const styles = StyleSheet.create({
   },
   arrowStyle: {
     marginLeft: WIDTH_DEVICE / 40,
-    marginTop: SIZE / 2,
+    marginBottom: SIZE * 18,
+    bottom: 0,
+    position: 'absolute',
   },
   dots: {
-    marginTop: SIZE / 2,
-    marginLeft: SIZE * 24.5,
+    marginLeft: WIDTH_DEVICE / 40,
+    marginBottom: SIZE,
+    bottom: 0,
+    position: 'absolute',
   },
   other: {
     fontFamily: 'InterRegular',
@@ -269,5 +301,22 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: SIZE / 2,
     marginBottom: SIZE / 2,
+  },
+  blur: {
+    height: SIZE * 20,
+    width: SIZE * 20,
+  },
+
+  mapButton: {
+    position: 'absolute',
+    width: SIZE * 2.5,
+    height: SIZE * 2.5,
+    backgroundColor: COLORS.white,
+    zIndex: 2,
+    borderRadius: SIZES.xxs,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    marginTop: SIZE * 9,
+    marginLeft: SIZE * 23.9,
   },
 });
