@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { HomeMap, IconButton, InputText, Note, Row, Text, TextButton } from '../components/index';
@@ -53,12 +53,12 @@ export const HomeTop = ({ refreshing }) => {
     })
   }, [])
 
-  const { data, getMoreData, loadMore, getData } = useInfiniteScroll({
+  const { data, getMoreData, loadMore, getData, getRefreshedData } = useInfiniteScroll({
     entity: 'notes/followedNotes',
     filters: {
       'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
     },
-    limit: 2,
+    limit: 5,
   });
 
   const onPressCreateNote = async () => {
@@ -92,16 +92,17 @@ export const HomeTop = ({ refreshing }) => {
       <Text semiBoldMd>Notes</Text>
       <View style={styles.noteContainer}>
         <FlatList
-          data={[...(userNotes || []), ...(data || [])]}
+          data={refreshing ? [] : [...(userNotes || []), ...(data || [])]}
           renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote} />}
           keyExtractor={(item) => item._id}
           onEndReachedThreshold={0.1}
           onEndReached={_.throttle(getMoreData, 400)}
           horizontal
+          refreshing={refreshing}
+          onRefresh={getRefreshedData}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          refreshing={refreshing}
-          ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+          ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator/>}</View>}
           ListHeaderComponent={
             <TouchableOpacity onPress={handlePresentModal}>
               <Row justifyCenter>
@@ -122,6 +123,7 @@ export const HomeTop = ({ refreshing }) => {
             </TouchableOpacity>
           }
         />
+        {refreshing && <ActivityIndicator style={{position: 'absolute', marginTop: SIZE * 4.5, alignSelf: 'center'}}/>}
       </View>
       <Text semiBoldMd style={{ marginBottom: SIZE }}>
         Upcoming events

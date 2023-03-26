@@ -19,7 +19,7 @@ export const FollowingUsersScreen = ({ route }) => {
     entity: `users/${followingParams._id}/followed`,
     filters: {
       search: filter,
-      role: ROLES.USER
+      role: ROLES.USER,
     },
     limit: 20,
   });
@@ -39,7 +39,7 @@ export const FollowingUsersScreen = ({ route }) => {
         renderItem={({ item }) => <UserRow data={item?.followed} />}
         style={{ marginHorizontal: WIDTH_DEVICE / 20 }}
         keyExtractor={(item) => item._id}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={1}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}

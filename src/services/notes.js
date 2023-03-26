@@ -12,7 +12,8 @@ export const createNote = async (data) => {
 };
 
 export const getUserNotes = async () => {
-  const params = {'date.$gte': '2023-03-25T03:25:15.085'}
+  const params = {'date.$gte': DateTime.now().minus({ days: 1 }).toISO()}
+  console.log(params)
   try {
     const { data: userNotes } = await mainAxios.get('notes/userNotes', {params})
     console.log({userNotes})
