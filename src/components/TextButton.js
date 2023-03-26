@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
     fontSize: SIZES.sm,
   },
   disabled: {
-    color: COLORS.gray
-  }
+    color: COLORS.gray,
+  },
 });

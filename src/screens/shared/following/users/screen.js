@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { Container } from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
 import { selectSearchFilter } from '../../../../store/filter';
-import { selectSelectedUser } from '../../../../store/user';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../../utils/theme';

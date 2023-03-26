@@ -1,7 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Switch } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Container, Header, TextButton, Text, Row, Line } from '../../../components';
 import { logout } from '../../../utils/index';
@@ -9,14 +10,25 @@ import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
 
 export const SettingScreen = () => {
   const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
-  const [language, setLanguage] = useState('en');
-  console.log(language);
+  const [language, setLanguage] = useState(currentLanguage);
 
-  const switchlanguage = (lng) => {
+  const switchlanguage = async (lng) => {
     setLanguage(lng);
+    await AsyncStorage.setItem('language', lng);
     i18n.changeLanguage(lng);
   };
+
+  useEffect(() => {
+    const getLanguage = async () => {
+      const lang = await AsyncStorage.getItem('language');
+      if (lang) {
+        switchlanguage(lang)
+      }
+    };
+    getLanguage();
+  }, []);
 
   return (
     <Container>

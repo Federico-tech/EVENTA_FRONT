@@ -46,17 +46,17 @@ export const HomeTop = () => {
   );
 
   const { data, getMoreData, loadMore, getData } = useInfiniteScroll({
-    entity: 'notes',
+    entity: 'notes/home',
     filters: {
       'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
     },
     limit: 10,
   });
 
-  const onPressCreateNote = () => {
+  const onPressCreateNote = async () => {
     createNote({ content: note, userId });
     handleClosePress();
-    getData();
+    await getData();
     setNote('');
   };
 

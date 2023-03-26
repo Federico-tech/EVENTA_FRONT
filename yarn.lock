@@ -1784,9 +1784,9 @@
     rimraf "^3.0.2"
 
 "@react-native-async-storage/async-storage@^1.17.11":
-  version "1.17.11"
-  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.11.tgz#7ec329c1b9f610e344602e806b04d7c928a2341d"
-  integrity sha512-bzs45n5HNcDq6mxXnSsOHysZWn1SbbebNxldBXCQs8dSvF8Aor9KCdpm+TpnnGweK3R6diqsT8lFhX77VX0NFw==
+  version "1.17.12"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.12.tgz#a39e4df5b06795ce49b2ca5b7ca9b8faadf8e621"
+  integrity sha512-BXg4OxFdjPTRt+8MvN6jz4muq0/2zII3s7HeT/11e4Zeh3WCgk/BleLzUcDfVqF3OzFHUqEkSrb76d6Ndjd/Nw==
   dependencies:
     merge-options "^3.0.4"
 
@@ -2053,9 +2053,9 @@
   integrity sha512-iVcLIYg/XJk1p6X1rSFhNhCjAJ3ORqNT2/bJqw7I/liujeJAoz1oZ5JDoEcZaA0wMDts1txxLuqAYJmhCgU2aA==
 
 "@react-navigation/material-top-tabs@^6.5.1":
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-6.5.1.tgz#45fb467d3397bde6cfe72409159dd5a56ea85f07"
-  integrity sha512-zw+S8uORb7gPkNQioveAmcmu/QDj2ab1HXHBx9Hdf7HKm9dDXZSbdzF5kwAvBeqaTWmV6nI0hJePWaiQBvyBVA==
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-6.6.2.tgz#ff68e597451a86d26421d5f516a1aa7e1fb30048"
+  integrity sha512-qq0iyMzWApeSvhxovurhk5hluAH2VYbSObTZIKt4KbVXZ0KP8ir1tRQ+IAwkMea+hCnd26glpXRVQI+YqXH0Gw==
   dependencies:
     color "^4.2.3"
     warn-once "^0.1.0"
@@ -3619,6 +3619,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha512-7emPTl6Dpo6JRXOXjLRxck+FlLRX5847cLKEn00PLAgc3g2hTZZgr+e4c2v6QpSmLeFP3n5yUo7ft6avBK/5jQ==
+
+dequal@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/dequal/-/dequal-1.0.0.tgz#41c6065e70de738541c82cdbedea5292277a017e"
+  integrity sha512-/Nd1EQbQbI9UbSHrMiKZjFLrXSnU328iQdZKPQf78XQI6C+gutkFUeoHpG5J08Ioa6HeRbRNFpSIclh1xyG0mw==
 
 destroy@1.2.0:
   version "1.2.0"
@@ -7364,6 +7369,13 @@ react-native-codegen@^0.70.6:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-collapsible-tab-view@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-6.0.1.tgz#6979e1d6c4ebfa93c5dae3aff4cb4c605ae55b71"
+  integrity sha512-l5Nitl4Q50vCq8zDgmWanNxL0RT1bKijoh7ww/9Q1fnLrDhs/B4VjzVHLqThQ69uMkZZi8pO7jiWG22iWZu2aA==
+  dependencies:
+    use-deep-compare "^1.1.0"
+
 react-native-flash-message@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/react-native-flash-message/-/react-native-flash-message-0.4.0.tgz#22781a8d3c4d12498fb5ff778efeda2044cf6040"
@@ -7456,9 +7468,9 @@ react-native-switch-selector@^2.3.0:
     prop-types "^15.7.2"
 
 react-native-tab-view@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.3.4.tgz#856d4527f3bbf05e2649302ec80abe9f2f004666"
-  integrity sha512-rceAYWpHa6knA7tsTnnjlcOxlCErR4F+yXQPpNm125IvYFyv09YRhE5uMU2IzyPIQ1CJvADCHurF3KySzVI+4Q==
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.5.1.tgz#2ad454afc0e186b43ea8b89053f39180d480d48b"
+  integrity sha512-qdrS5t+AEhfuKQyuCXkwHu4IVppkuTvzWWlkSZKrPaSkjjIa32xrsGxt1UW9YDdro2w4AMw5hKn1hFmg/5mvzA==
   dependencies:
     use-latest-callback "^0.1.5"
 
@@ -8801,6 +8813,13 @@ url2@^0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/url2/-/url2-0.0.0.tgz#4eaabd1d5c3ac90d62ab4485c998422865a04b1a"
   integrity sha512-gb/XT1m2mnWOIbQwa5V9Dq2O07fkZbtu1K0WAAKuaNSX0c8psp2jovJTbbvPKCpimutdoK9jXOejDCtvQOoKOA==
+
+use-deep-compare@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/use-deep-compare/-/use-deep-compare-1.1.0.tgz#85580dde751f68400bf6ef7e043c7f986595cef8"
+  integrity sha512-6yY3zmKNCJ1jjIivfZMZMReZjr8e6iC6Uqtp701jvWJ6ejC/usXD+JjmslZDPJQgX8P4B1Oi5XSLHkOLeYSJsA==
+  dependencies:
+    dequal "1.0.0"
 
 use-latest-callback@^0.1.5:
   version "0.1.5"

@@ -115,9 +115,9 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
               {formatDate(event.date, EVENT_DATE_FORMAT)}
             </Text>
             <Text medium>{event.name}</Text>
-            <Text color={COLORS.gray} style={{ fontSize: SIZES.xs }} numberOfLines={1} ellipsizeMode="tail">
+            {/* <Text color={COLORS.gray} style={{ fontSize: SIZES.xs }} numberOfLines={1} ellipsizeMode="tail">
               {event.address}
-            </Text>
+            </Text> */}
           </Row>
         </Row>
         <View>
@@ -131,7 +131,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
           </View>
           <View style={styles.place}>
             <Foundation name="marker" size={22} />
-            <Text style={styles.adressText}>{event.address}</Text>
+            <Text style={styles.adressText}>{event?.address?.fullAddress}</Text>
           </View>
           <View style={styles.person}>
             <Ionicons name="people-outline" size={24} />

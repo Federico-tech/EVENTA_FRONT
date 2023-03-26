@@ -1,13 +1,12 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import _ from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PastEventsScreen } from '../screens/organiser/events/past/screen';
 import { UpcomingEventsScreen } from '../screens/organiser/events/upcoming/screen';
 import { AboutAccountScreen } from '../screens/organiser/profile/about/accountAbout/screen';
-import { AboutScreen } from '../screens/organiser/profile/about/profileAbout/screen';
 import { EventsAccountScreen } from '../screens/organiser/profile/events/accoutEvents/screen';
-import { EventProfileScreen } from '../screens/organiser/profile/events/profileEvents/screen';
 import { FollowingOrganisersScreen } from '../screens/shared/following/organisers/screen';
 import { FollowingUsersScreen } from '../screens/shared/following/users/screen';
 import { SearchEventScreen } from '../screens/user/search/searchEvents/screen';
@@ -17,7 +16,6 @@ import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 import { ROUTES } from './Navigation';
 
 const SearchTopStackNavigator = createMaterialTopTabNavigator();
-const OrganiserTopStackNavigator = createMaterialTopTabNavigator();
 const OrganiserAccountTopStackNavigator = createMaterialTopTabNavigator();
 const OrganiserEventsTopStackNavigator = createMaterialTopTabNavigator();
 const FollowingTopStackNavigator = createMaterialTopTabNavigator();
@@ -45,16 +43,6 @@ export const SearchTopNavigator = () => {
       <SearchTopStackNavigator.Screen name={ROUTES.SearchOrganiserScreen} component={SearchOrganiserScreen} options={screenOptions(t('organiser'))} />
       <SearchTopStackNavigator.Screen name={ROUTES.SearchUserScreen} component={SearchUserScreen} options={screenOptions('Account')} />
     </SearchTopStackNavigator.Navigator>
-  );
-};
-
-export const OrganiserTopNavigator = () => {
-  const { t } = useTranslation();
-  return (
-    <OrganiserTopStackNavigator.Navigator initialRouteName={ROUTES.EventProfileScreen}>
-      <OrganiserTopStackNavigator.Screen name={ROUTES.EventProfileScreen} component={EventProfileScreen} options={screenOptions(t('event'))} />
-      <OrganiserTopStackNavigator.Screen name={ROUTES.AboutScreen} component={AboutScreen} options={screenOptions('About')} />
-    </OrganiserTopStackNavigator.Navigator>
   );
 };
 

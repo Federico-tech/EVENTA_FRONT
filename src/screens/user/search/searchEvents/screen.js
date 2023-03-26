@@ -14,6 +14,7 @@ export const SearchEventScreen = () => {
   const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
     entity: 'events',
     limit: 8,
+    debug: true,
     filters: {
       q: name,
     },

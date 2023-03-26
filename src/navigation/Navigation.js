@@ -11,7 +11,7 @@ import { EditEventScreen } from '../screens/organiser/events/edit/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';
 import { AccountOrganiserScreen } from '../screens/organiser/profile/accountProfile/screen';
 import { EditOrganiserScreen } from '../screens/organiser/profile/editProfile/screen';
-import { OrganiserProfileScreen } from '../screens/organiser/profile/screen';
+import { OrganiserProfileScreen } from '../screens/organiser/profile/profile/screen';
 import { SearchOrganiserEventsScreen } from '../screens/organiser/profile/searchEvents/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
 import { FollowersScreen } from '../screens/shared/followers/screen';
@@ -114,6 +114,8 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );
 };

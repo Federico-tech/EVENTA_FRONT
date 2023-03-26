@@ -33,3 +33,9 @@ export const updateUserCoordinates = async () => {
     console.log({ e });
   }
 };
+
+export const nextTick = (callback) => {
+  setTimeout(() => {
+    callback()
+  }), 0
+}

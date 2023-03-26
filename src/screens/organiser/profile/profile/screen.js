@@ -4,23 +4,22 @@ import { useSelector } from 'react-redux';
 
 import { Container, ProfileHeader } from '../../../../components';
 import { OrganiserTopNavigator } from '../../../../navigation/TabView';
+import { refreschCurrentUser } from '../../../../services/users';
+import { selectCurrentUser } from '../../../../store/user';
 
-import { refreshSelectedUser } from '../../../../services/users';
-import { selectSelectedUser } from '../../../../store/user';
-
-export const AccountOrganiserScreen = ({ route }) => {
-  const user = useSelector(selectSelectedUser);
+export const OrganiserProfileScreen = () => {
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
-    refreshSelectedUser(user);
-  }, []);
+    refreschCurrentUser(user);
+  }, [user.followers, user.followed]);
 
   return (
     <Container>
       <View style={{ zIndex: 1 }}>
-        <ProfileHeader user={user} />
+        <ProfileHeader myProfile user={user} />
       </View>
-      <OrganiserTopNavigator user={user} account />
+      <OrganiserTopNavigator user={user} />
     </Container>
   );
 };

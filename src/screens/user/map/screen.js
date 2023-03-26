@@ -21,8 +21,8 @@ export const MapScreen = ({ route }) => {
   const [region, setRegion] = useState({});
   const { event } = route.params || {};
 
-  const isFocused = useIsFocused()
-  console.log('isFocused', isFocused)
+  const isFocused = useIsFocused();
+  console.log('isFocused', isFocused);
 
   const dispatch = useDispatch();
   const filter = useSelector(selectMapFilter);
@@ -33,7 +33,7 @@ export const MapScreen = ({ route }) => {
     filters: {
       role: ROLES.ORGANISER,
     },
-  })
+  });
 
   useEffect(() => {
     getData();
@@ -49,12 +49,12 @@ export const MapScreen = ({ route }) => {
       setRegion({
         latitude: event.position.coordinates[1],
         longitude: event.position.coordinates[0],
-        latitudeDelta: 0.3,
-        longitudeDelta: 0.3,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
       });
-      dispatch(setMapFilter('events'))
+      dispatch(setMapFilter('events'));
     }
-    console.log('ciao')
+    console.log('ciao');
   }, [event, isFocused]);
 
   const bottomSheetModalRef = useRef(null);
@@ -129,12 +129,14 @@ export const MapScreen = ({ route }) => {
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}
         initialRegion={
-          {
-            latitude: user.position.coordinates[1],
-            longitude: user.position.coordinates[0],
-            latitudeDelta: 0.3,
-            longitudeDelta: 0.3,
-          }
+          event
+            ? region
+            : {
+                latitude: user.position.coordinates[1],
+                longitude: user.position.coordinates[0],
+                latitudeDelta: 0.3,
+                longitudeDelta: 0.3,
+              }
         }
         showsUserLocation
         showsMyLocationButton

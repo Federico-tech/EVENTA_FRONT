@@ -19,6 +19,7 @@ export const HomeScreen = () => {
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: 'events/home',
+    debug: true,
     limit: 6,
   });
 
@@ -31,10 +32,9 @@ export const HomeScreen = () => {
         renderItem={({ item }) => <EventCard eventData={item} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={0.1}
         onEndReached={_.throttle(getMoreData, 400)}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListHeaderComponent={<HomeTop />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
       />
     </Container>

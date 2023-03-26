@@ -1,4 +1,4 @@
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -34,7 +34,7 @@ export const EventDetails = ({ route }) => {
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
   const refOrganiser = useSelector(selectSelectedUser);
-  
+
   const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
 
   const bottomSheetModalRef = useRef(null);
@@ -137,32 +137,30 @@ export const EventDetails = ({ route }) => {
                   <Text style={styles.description}> of your friends are going</Text>
                 </Text>
               </View>
-              <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
-                <MapView
-                  style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
-                  provider={PROVIDER_GOOGLE}
-                  initialRegion={{
-                    latitude: event.position.coordinates[1],
-                    longitude: event.position.coordinates[0],
-                    latitudeDelta: 0.2,
-                    longitudeDelta: 0.2,
-                  }}
-                  scrollEnabled={false}
-                  customMapStyle={mapStyle}>
-                  <Marker
-                    coordinate={{
+              <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })} >
+                <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
+                  <MapView
+                    style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
+                    provider={PROVIDER_GOOGLE}
+                    initialRegion={{
                       latitude: event.position.coordinates[1],
                       longitude: event.position.coordinates[0],
+                      latitudeDelta: 0.2,
+                      longitudeDelta: 0.2,
                     }}
-                    pinColor="red"
-                  />
-                </MapView>
-                <View style={styles.mapButton}>
-                  <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', {screen: ROUTES.MapScreen , params: { event }})}>
-                    <MaterialIcons name="zoom-out-map" size={SIZE * 1.4} />
-                  </TouchableOpacity>
+                    pointerEvents="auto"
+                    scrollEnabled={false}
+                    customMapStyle={mapStyle}>
+                    <Marker
+                      coordinate={{
+                        latitude: event.position.coordinates[1],
+                        longitude: event.position.coordinates[0],
+                      }}
+                      pinColor="red"
+                    />
+                  </MapView>
                 </View>
-              </View>
+              </TouchableOpacity>
               <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
             <Row>
