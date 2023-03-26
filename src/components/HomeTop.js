@@ -3,20 +3,21 @@ import { BottomSheetBackdrop, BottomSheetModal, TouchableOpacity } from '@gorhom
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { HomeMap, IconButton, InputText, Note, Row, Text, TextButton } from '../components/index';
 import { ROUTES } from '../navigation/Navigation';
-import { createNote, deleteNote } from '../services/notes';
+import { createNote, deleteNote, getUserNotes } from '../services/notes';
 import { selectCurrentUser, selectCurrentUserId } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 
-export const HomeTop = () => {
+export const HomeTop = ({ refreshing }) => {
   const [note, setNote] = useState();
+  const [userNotes, setUserNotes ] = useState()
   const navigation = useNavigation();
   const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
   const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
@@ -45,18 +46,28 @@ export const HomeTop = () => {
     []
   );
 
+  useEffect(() => {
+    getUserNotes().then((result) => {
+      console.log('result', result)
+      setUserNotes(result.data)
+    })
+  }, [])
+
   const { data, getMoreData, loadMore, getData } = useInfiniteScroll({
-    entity: 'notes/home',
+    entity: 'notes/followedNotes',
     filters: {
       'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
     },
-    limit: 10,
+    limit: 2,
   });
 
   const onPressCreateNote = async () => {
     createNote({ content: note, userId });
     handleClosePress();
-    await getData();
+    getUserNotes().then((result) => {
+      console.log('result', result)
+      setUserNotes(result.data)
+    })
     setNote('');
   };
 
@@ -81,7 +92,7 @@ export const HomeTop = () => {
       <Text semiBoldMd>Notes</Text>
       <View style={styles.noteContainer}>
         <FlatList
-          data={data}
+          data={[...(userNotes || []), ...(data || [])]}
           renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote} />}
           keyExtractor={(item) => item._id}
           onEndReachedThreshold={0.1}
@@ -89,6 +100,7 @@ export const HomeTop = () => {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
+          refreshing={refreshing}
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
           ListHeaderComponent={
             <TouchableOpacity onPress={handlePresentModal}>

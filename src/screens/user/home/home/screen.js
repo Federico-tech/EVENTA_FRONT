@@ -33,7 +33,7 @@ export const HomeScreen = () => {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
-        ListHeaderComponent={<HomeTop />}
+        ListHeaderComponent={<HomeTop refreshing={refreshing}/>}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
       />
