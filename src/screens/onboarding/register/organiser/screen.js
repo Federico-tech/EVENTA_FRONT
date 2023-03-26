@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { object, string } from 'yup';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container } from '../../../../components/index';
@@ -12,6 +13,7 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../.
 
 export const OrganiserSignUpScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
   const { t } = useTranslation();
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
@@ -55,7 +57,12 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
         setLoading(false);
       } catch (e) {
         setLoading(false);
-        console.log({ error: e.response.data });
+        setError(e.response.request.status);
+        showMessage({
+          message: 'SignUp Failed',
+          description: 'This username has already been used',
+          type: 'danger',
+        });
       }
     },
   });
@@ -93,9 +100,9 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
 
   return (
     <Container>
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView behavior="padding">
-          <ScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
             <View style={{ position: 'absolute', left: 0 }}>
               <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
             </View>
@@ -119,9 +126,10 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
             <TouchableOpacity>
               <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
             </TouchableOpacity>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      {error === 409 && <FlashMessage position="top" />}
     </Container>
   );
 };
@@ -129,6 +137,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
+    marginTop: SIZE * 3,
   },
   title: {
     fontFamily: FONTS.semiBold,

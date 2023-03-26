@@ -1,11 +1,11 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal, TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
-import { FlatList, RefreshControl } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { HomeMap, IconButton, InputText, Note, Row, Text, TextButton } from '../components/index';
@@ -17,7 +17,7 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../util
 
 export const HomeTop = ({ refreshing }) => {
   const [note, setNote] = useState();
-  const [userNotes, setUserNotes ] = useState()
+  const [userNotes, setUserNotes] = useState();
   const navigation = useNavigation();
   const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
   const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
@@ -48,10 +48,10 @@ export const HomeTop = ({ refreshing }) => {
 
   useEffect(() => {
     getUserNotes().then((result) => {
-      console.log('result', result)
-      setUserNotes(result.data)
-    })
-  }, [])
+      console.log('result', result);
+      setUserNotes(result.data);
+    });
+  }, []);
 
   const { data, getMoreData, loadMore, getData, getRefreshedData } = useInfiniteScroll({
     entity: 'notes/followedNotes',
@@ -65,15 +65,19 @@ export const HomeTop = ({ refreshing }) => {
     createNote({ content: note, userId });
     handleClosePress();
     getUserNotes().then((result) => {
-      console.log('result', result)
-      setUserNotes(result.data)
-    })
+      console.log('result', result);
+      setUserNotes(result.data);
+    });
     setNote('');
   };
 
   const onPressDeleteNote = (noteId) => {
     deleteNote(noteId);
     handleClosePress();
+    getUserNotes().then((result) => {
+      console.log('result', result);
+      setUserNotes(result.data);
+    });
     getData();
   };
 
@@ -102,7 +106,9 @@ export const HomeTop = ({ refreshing }) => {
           onRefresh={getRefreshedData}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator/>}</View>}
+          ListFooterComponent={
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator />}</View>
+          }
           ListHeaderComponent={
             <TouchableOpacity onPress={handlePresentModal}>
               <Row justifyCenter>
@@ -123,7 +129,7 @@ export const HomeTop = ({ refreshing }) => {
             </TouchableOpacity>
           }
         />
-        {refreshing && <ActivityIndicator style={{position: 'absolute', marginTop: SIZE * 4.5, alignSelf: 'center'}}/>}
+        {refreshing && <ActivityIndicator style={{ position: 'absolute', marginTop: SIZE * 4.5, alignSelf: 'center' }} />}
       </View>
       <Text semiBoldMd style={{ marginBottom: SIZE }}>
         Upcoming events

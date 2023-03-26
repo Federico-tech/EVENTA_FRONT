@@ -3,10 +3,11 @@ import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import { object, string } from 'yup';
 
-import { Button, Container, InputText, Line, SocialLoginButton, TextButton, Row } from '../../../components/index';
+import { Button, Container, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
@@ -26,7 +27,6 @@ export const LoginScreen = () => {
     } catch (e) {
       console.log({ e });
       setLoading(false);
-      setError(true);
     }
   };
 
@@ -61,7 +61,12 @@ export const LoginScreen = () => {
         setLoading(false);
       } catch (e) {
         setLoading(false);
-        console.log({ error: e.response.data });
+        setError(e.response.request.status);
+        showMessage({
+          message: 'Login failed',
+          description: 'Wrong Username or passsword',
+          type: 'danger',
+        });
       }
     },
   });
@@ -87,11 +92,11 @@ export const LoginScreen = () => {
             <Text style={styles.textLogin}>{t('login to your account')}</Text>
             <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
             <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
-            {error && (
+            {/* {error && (
               <Row>
                 <Text style={styles.error401}>{t('wrong username or password')}</Text>
               </Row>
-            )}
+            )} */}
             <TextButton text={t('forgot password')} textStyle={styles.forgotPassword} />
             <Button primary text={t('login')} onPress={handleSubmit} loading={loading} disabled={!values.password || (!values.email && true)} />
             <View style={styles.containerLine}>
@@ -123,6 +128,7 @@ export const LoginScreen = () => {
           </View>
         </Container>
       </ScrollView>
+      {error === 401 && <FlashMessage position="top" />}
     </Container>
   );
 };

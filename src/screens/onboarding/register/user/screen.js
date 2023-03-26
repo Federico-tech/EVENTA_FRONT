@@ -1,17 +1,19 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { object, string } from 'yup';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container, Row } from '../../../../components/index';
 import { organiserSignUp, loginUser } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme'
-import { useTranslation } from 'react-i18next';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const UserSingUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation()
+  const [error, setError] = useState();
+  const { t } = useTranslation();
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
@@ -19,19 +21,19 @@ export const UserSingUpScreen = ({ navigation }) => {
       email: '',
       password: '',
       name: '',
-      role: ROLES.USER
+      role: ROLES.USER,
     },
     validationSchema: object().shape({
       username: string()
-      .required('Username is a required field')
-      .min(6, 'Username must be at least 6 characters')
-      .max(20, "Username can't be more than 20 characters")
-      .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
-        if (!value) {
-          return false;
-        }
-        return !value.match(/[A-Z]/);
-      }),
+        .required('Username is a required field')
+        .min(6, 'Username must be at least 6 characters')
+        .max(20, "Username can't be more than 20 characters")
+        .test('no-uppercase', 'The username cannot contain capital letters', (value) => {
+          if (!value) {
+            return false;
+          }
+          return !value.match(/[A-Z]/);
+        }),
       email: string().required('Email is a required field').email('This is not a valid email'),
       password: string()
         .required('Password is a required field')
@@ -52,7 +54,12 @@ export const UserSingUpScreen = ({ navigation }) => {
         setLoading(false);
       } catch (e) {
         setLoading(false);
-        console.log({ error: e.response.data });
+        setError(e.response.request.status);
+        showMessage({
+          message: 'SignUp Failed',
+          description: 'This username has already been used',
+          type: 'danger',
+        });
       }
     },
   });
@@ -71,9 +78,9 @@ export const UserSingUpScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView behavior="padding">
-          <ScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
             <Row>
               <View style={{ position: 'absolute', left: 0 }}>
                 <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
@@ -96,9 +103,10 @@ export const UserSingUpScreen = ({ navigation }) => {
               <SocialLoginButton google />
             </View>
             <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      {error === 409 && <FlashMessage position="top" />}
     </Container>
   );
 };
@@ -106,6 +114,7 @@ export const UserSingUpScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
+    marginTop: SIZE * 3,
   },
   title: {
     fontFamily: FONTS.semiBold,
