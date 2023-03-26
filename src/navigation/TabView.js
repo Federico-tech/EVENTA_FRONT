@@ -1,13 +1,15 @@
-import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
-import { MaterialTabBar, Tabs } from "react-native-collapsible-tab-view";
-import { useSelector } from "react-redux";
-import { MiniEventCard, ProfileInfo, Text } from "../components";
-import { selectCurrentUserId, selectSelectedUserId } from "../store/user";
-import { useInfiniteScroll } from "../utils/hooks";
-import _ from 'lodash'
-import { RefreshControl } from "react-native-gesture-handler";
-import { COLORS, FONTS, SIZE, SIZES } from "../utils/theme";
-import { AboutScreen } from "../screens/organiser/profile/about/profileAbout/screen";
+import _ from 'lodash';
+import { useEffect } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
+import { RefreshControl } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
+
+import { MiniEventCard, ProfileInfo, Text } from '../components';
+import { AboutScreen } from '../screens/organiser/profile/about/profileAbout/screen';
+import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
+import { useInfiniteScroll } from '../utils/hooks';
+import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 
 const tabBar = (props) => (
   <MaterialTabBar
@@ -44,7 +46,7 @@ export const OrganiserTopNavigator = ({ user, account }) => {
         <ProfileInfo user={user} />
       </View>
     );
-  }
+  };
 
   return (
     <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
@@ -61,20 +63,27 @@ export const OrganiserTopNavigator = ({ user, account }) => {
       </Tabs.Tab>
       <Tabs.Tab name="About">
         <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-          <AboutScreen account={account}/>
+          <AboutScreen account={account} />
         </Tabs.ScrollView>
       </Tabs.Tab>
     </Tabs.Container>
   );
 };
 
-export const UserTopNavigator = ({ user, account }) => {
+export const UserTopNavigator = ({ user, account, isLoading }) => {
   const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
-  
-  const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
+  const updatedUser = useSelector(selectSelectedUser);
+
+  console.log('user', user);
+
+  const { data, refreshing, getRefreshedData, getMoreData, loadMore, getData } = useInfiniteScroll({
     entity: `users/${userId}/events`,
     limit: 6,
   });
+
+  useEffect(() => {
+    getData();
+  }, [updatedUser]);
 
   const MyHeader = () => {
     return (
@@ -90,17 +99,52 @@ export const UserTopNavigator = ({ user, account }) => {
         <ProfileInfo user={user} />
       </View>
     );
-  }
+  };
 
   return (
     <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
-        <Tabs.Tab name="Posts">
-        <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-          <Text>Qui ci saranno i post</Text>
-        </Tabs.ScrollView>
+      <Tabs.Tab name="Posts">
+        {isLoading ? (
+          <Tabs.ScrollView>
+            <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
+          </Tabs.ScrollView>
+        ) : (
+          <Tabs.ScrollView showsVerticalScrollIndicator={false}>
+            {account ? (
+              user.isFollowing ? (
+                <Text>Qui ci saranno i post</Text>
+              ) : (
+                <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+                  Follow this profile to see its content
+                </Text>
+              )
+            ) : (
+              <Text>Qui ci saranno i posts</Text>
+            )}
+          </Tabs.ScrollView>
+        )}
       </Tabs.Tab>
       <Tabs.Tab name="Events">
-        <Tabs.FlatList
+        {account ? (
+          user.isFollowing ? (
+            <Tabs.FlatList
+              data={data}
+              renderItem={({ item }) => <MiniEventCard data={item} />}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+              onEndReached={_.throttle(getMoreData, 400)}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+              ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+            />
+          ) : (
+            <Tabs.ScrollView>
+              <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+                Follow this profile to see its content
+              </Text>
+            </Tabs.ScrollView>
+          )
+        ) : (
+          <Tabs.FlatList
             data={data}
             renderItem={({ item }) => <MiniEventCard data={item} />}
             keyExtractor={(item) => item._id}
@@ -109,6 +153,7 @@ export const UserTopNavigator = ({ user, account }) => {
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
           />
+        )}
       </Tabs.Tab>
     </Tabs.Container>
   );

@@ -9,7 +9,7 @@ import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, Touchable
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
-import { Button, Container, IconButton, Line, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
+import { Button, Container, IconButton, Line, LoadingImage, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { getRefreshedEvent } from '../../../../services/events';
@@ -104,7 +104,7 @@ export const EventDetails = ({ route }) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: SIZE * 4 }}>
           <View style={{ flex: 1 }}>
-            <Image source={{ uri: event.coverImage }} style={styles.eventBlurImage} resizeMode="cover" blurRadius={10} />
+            <LoadingImage source={event.coverImage} style={styles.eventBlurImage} resizeMode="cover" blurRadius={10} />
           </View>
           <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />

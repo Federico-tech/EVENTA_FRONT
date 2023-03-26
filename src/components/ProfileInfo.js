@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
+import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUser, selectSelectedUser } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
@@ -45,6 +46,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
       followers: prevUser.followers + 1,
       isFollowing: true,
     }));
+    refreshSelectedUser(user);
   };
 
   const onPressUnfollow = () => {
@@ -63,6 +65,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
             followers: prevUser.followers - 1,
             isFollowing: false,
           }));
+          refreshSelectedUser(user);
         },
       },
     ]);

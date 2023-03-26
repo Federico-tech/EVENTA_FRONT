@@ -15,7 +15,7 @@ export const loginUser = async (email, password) => {
     store.dispatch(setUserInfo(data));
   } catch (e) {
     console.log({ e });
-    throw new Error('Wrong Username or password');
+    return new Promise.reject('Wrong Username or password');
   }
 };
 

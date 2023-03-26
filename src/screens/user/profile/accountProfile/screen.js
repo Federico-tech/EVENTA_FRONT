@@ -1,7 +1,5 @@
-import _ from 'lodash';
-import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { FlatList, RefreshControl } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Container, ProfileHeader } from '../../../../components';
@@ -10,19 +8,27 @@ import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedUser, selectSelectedUserId } from '../../../../store/user';
 
 export const AccountUserScreen = ({ route }) => {
+  const [isLoading, setIsloading] = useState(false);
   const user = useSelector(selectSelectedUser);
   const id = useSelector(selectSelectedUserId);
 
   useEffect(() => {
-    refreshSelectedUser(user);
+    const refresh = async () => {
+      setIsloading(true);
+      await refreshSelectedUser(user);
+      setIsloading(false);
+    };
+    refresh();
   }, [id]);
+
+  console.log('Isloading', isLoading);
 
   return (
     <Container>
-       <View style={{ zIndex: 1 }}>
+      <View style={{ zIndex: 1 }}>
         <ProfileHeader user={user} />
       </View>
-      <UserTopNavigator user={user} account />
+      <UserTopNavigator user={user} account isLoading={isLoading} />
     </Container>
   );
 };
