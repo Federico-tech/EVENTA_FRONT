@@ -24,6 +24,7 @@ export const InputText = ({
   minDate,
   maxLength,
   formik,
+  textInputStyle,
   formikName,
   touchableOpacity,
   value: inputValue,
@@ -77,7 +78,7 @@ export const InputText = ({
           <View pointerEvents={pointerEvents}>
             <TextInput
               allowFontScaling={false}
-              style={[styles.textInput, multiline && styles.multiline]}
+              style={[styles.textInput, multiline && styles.multiline, textInputStyle]}
               keyboardType={keyboardType ? keyboardType : 'default'}
               secureTextEntry={isPasswordSecure}
               value={value}

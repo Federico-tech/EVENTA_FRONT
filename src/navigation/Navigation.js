@@ -27,6 +27,8 @@ import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
+import { CreatePostScreen } from '../screens/user/posts/createPost/screen';
+import { PostsFeedScreen } from '../screens/user/posts/postsFeed/screen';
 import { SIZE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -40,6 +42,7 @@ export const ROUTES = {
   OrganiserStack: 'OrganiserStack',
   UserStack: 'UserStack',
   MapNavigator: 'MapNavigator',
+  PostsNavigator: 'PostsNavigator',
   SearchScreen: 'SearchScreen',
   ProfileScreen: 'ProfileScreen',
   ProfileScreenNavigator: 'ProfileScreenNavigator',
@@ -78,6 +81,8 @@ export const ROUTES = {
   OrganiserBottomNavigator: 'OrganiserBottomNavigator',
   FollowingOrganisersScreen: 'FollowingOrganisersScreen',
   FollowingUsersScreen: 'FollowingUsersScreen',
+  CreatePostScreen: 'PreatePostScreen',
+  PostsFeedScreen: 'PostsFeedScreen'
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -95,7 +100,9 @@ const BottomBarIcons = ({ route }) => ({
       iconName = focused ? 'person' : 'person-outline';
     } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';
-    }
+    } else if (route.name === ROUTES.PostsNavigator) {
+      iconName = focused ? 'camera' : 'camera-outline';
+    } 
     return <Ionicons name={iconName} size={SIZE * 2} colour={colour} style={{ marginTop: SIZE / 2 }} />;
   },
 });
@@ -139,6 +146,17 @@ export const SearchNavigator = () => {
     </SearchStackNavigator.Navigator>
   );
 };
+
+const PostsStackNaviagtor = createStackNavigator();
+
+export const PostsNavigator = () => {
+  return(
+    <PostsStackNaviagtor.Navigator>
+      <PostsStackNaviagtor.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
+      <PostsStackNaviagtor.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }}/>
+    </PostsStackNaviagtor.Navigator>
+  )
+}
 
 const ProfileStackNavigator = createStackNavigator();
 
@@ -214,6 +232,7 @@ export const UserBottomNavigator = () => {
     <UserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
       <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
+      <UserBottomTabNavigator.Screen name={ROUTES.PostsNavigator} component={PostsNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.MapNavigator} component={MapNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreenNavigator} component={ProfileNavigator} options={{ headerShown: false }} />
     </UserBottomTabNavigator.Navigator>

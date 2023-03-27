@@ -47,7 +47,7 @@ export const CreateEventScreen = ({ route }) => {
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
-
+      address: string().required('Address is a required field'),
       description: string().required('Description is a required field'),
       startDate: string()
         .required('Date is a required field')
@@ -187,7 +187,7 @@ export const CreateEventScreen = ({ route }) => {
                 onPress={onPressAddress}
                 touchableOpacity
               />
-              <InputText label={t('description')} formik={formik} formikName="description" multiline />
+              <InputText label={t('description')} formik={formik} formikName="description" multiline containerStyle={{ height: SIZE * 10}}/>
               <InputText
                 label={t('date')}
                 formik={{ ...formik, onChangeText: onChangeDate }}

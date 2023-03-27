@@ -4,6 +4,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import { ROUTES } from '../navigation/Navigation';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { formatDate, EVENT_DATE_FORMAT } from '../utils/dates';
@@ -11,9 +12,8 @@ import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/them
 import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
-import { ROUTES } from '../navigation/Navigation'
 
-export const MiniEventCard = ({ data, closeSheet = () => {} }) => {
+export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
   const { organiser, coverImage, date, name, participants } = data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {} }) => {
   };
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity onPress={onPress ? onPress : handlePress}>
       <View style={styles.wrapper}>
         <View style={styles.top}>
           <TouchableOpacity onPress={handleProfilePress}>
