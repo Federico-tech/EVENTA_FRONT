@@ -71,7 +71,7 @@ export const CreatePostScreen = () => {
     },
     validationSchema: object().shape({
       file: string().required('Image is a required field'),
-      eventId: string().required('You must choose an event')
+      eventId: string().required('You must choose an event'),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -122,7 +122,7 @@ export const CreatePostScreen = () => {
 
   return (
     <Container>
-      <Header title="Create your moment" done onPress={handleSubmit} loading={loading}/>
+      <Header title="Create your moment" done onPress={handleSubmit} loading={loading} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <KeyboardAvoidingView behavior="padding">
@@ -139,9 +139,8 @@ export const CreatePostScreen = () => {
               </View>
               <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
             </TouchableOpacity>
-            <InputText label="Caption" formik={formik} formikName="caption" maxLength={50} multiline textInputStyle={{ height: SIZE * 5 }} />
+            <InputText label="Caption" formik={formik} formikName="caption" maxLength={40} />
             <TextButton text="Choose the event" style={styles.chooseEvent} onPress={handlePresentModal} />
-            <Text style={[styles.requiredImage, {marginTop: SIZE}]}>{errors.eventId && touched.eventId ? errors.eventId : null}</Text>
             {event && (
               <Row row alignCenter style={{ marginTop: SIZE }}>
                 <Image source={{ uri: event.coverImage }} style={styles.eventImage} />
@@ -151,6 +150,7 @@ export const CreatePostScreen = () => {
                 </Row>
               </Row>
             )}
+            <Text style={[styles.requiredImage]}>{errors.eventId && touched.eventId ? errors.eventId : null}</Text>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>

@@ -40,6 +40,10 @@ export const LoginScreen = () => {
       password: 'dezzolo10',
       // email: 'coco@gmail.com',
       // password: 'cococlub10',
+      // email: 'filippini@gmail.com',
+      // password: 'filippini10',
+      // email: 'giulia@gmail.com',
+      // password: 'colombo10',
     },
     validationSchema: object().shape({
       email: string().required('Email is a required field').email('This is not a valid email'),

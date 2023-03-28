@@ -1,5 +1,3 @@
-
-
 export * from './Line';
 export * from './Button';
 export * from './EventCard';
@@ -20,5 +18,5 @@ export * from './EventBottomSheet';
 export * from './OrganiserBottomSheet';
 export * from './HomeMap';
 export * from './Note';
-export * from './ProfileHeader'
-
+export * from './ProfileHeader';
+export * from './PostCard';

@@ -98,6 +98,10 @@ export const EventDetails = ({ route }) => {
     handleClosePress();
   };
 
+  const onPressNaviagtePosts = () => {
+    navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event }})
+  }
+
   return (
     <Container>
       <StatusBar barStyle="light-content" />
@@ -137,6 +141,7 @@ export const EventDetails = ({ route }) => {
                   <Text style={styles.description}> of your friends are going</Text>
                 </Text>
               </View>
+              <TextButton text={'view moments'} onPress={onPressNaviagtePosts}/>
               <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })} >
                 <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
                   <MapView

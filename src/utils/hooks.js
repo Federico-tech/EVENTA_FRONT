@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
-import { nextTick } from '../utils';
+import { useCallback, useEffect, useState } from 'react';
+
 import { mainAxios } from '../core/axios';
+import { nextTick } from '../utils';
 
 export function useInfiniteScroll({
   page: initialPage = 1,
@@ -21,24 +22,24 @@ export function useInfiniteScroll({
   const [totalData, setTotalData] = useState(0);
 
   useEffect(() => {
-    console.debug('loadMoreChangd', loadMore)
-  }, [loadMore])
+    console.debug('loadMoreChangd', loadMore);
+  }, [loadMore]);
 
   const getData = useCallback(
     async (overrideFilter = {}) => {
       try {
         setRefreshing(() => true);
         const params = {
-          page: page,
-          limit: limit,
+          page,
+          limit,
           count: true,
           ...filters,
           ...overrideFilter,
         };
         const { data: result } = await mainAxios.get(entity, { params });
-        debug && console.debug({ getData: result, params })
-        const totalData = result?.totalData || 0
-        const data = result?.data || []
+        debug && console.debug({ getData: result, params });
+        const totalData = result?.totalData || 0;
+        const data = result?.data || [];
         setTotalData(totalData);
         setData(data);
         nextTick(() => setRefreshing(false));
@@ -47,7 +48,7 @@ export function useInfiniteScroll({
         setRefreshing(false);
       }
     },
-    [entity, filters, limit, page],
+    [entity, filters, limit, page]
   );
 
   const getRefreshedData = useCallback(async () => {
@@ -58,15 +59,15 @@ export function useInfiniteScroll({
       const params = {
         page: 1,
         count: true,
-        limit: limit,
+        limit,
         ...filters,
       };
       setRefreshing(true);
 
       const { data: result } = await mainAxios.get(entity, { params });
-      debug && console.debug({ getRefreshedData: result, params })
-      const totalData = result?.totalData || 0
-      const data = result?.data || []
+      debug && console.debug({ getRefreshedData: result, params });
+      const totalData = result?.totalData || 0;
+      const data = result?.data || [];
       setTotalData(totalData);
       setData(data);
       setPage(1);
@@ -87,14 +88,14 @@ export function useInfiniteScroll({
       setLoadMore(true);
       const params = {
         page: page + 1,
-        limit: limit,
+        limit,
         count: true,
         ...filters,
       };
       const { data: result } = await mainAxios.get(entity, { params });
-      debug && console.debug({ loadMore: result, params })
-      const totalData = result?.totalData || 0
-      const data = result?.data || []
+      debug && console.debug({ loadMore: result, params });
+      const totalData = result?.totalData || 0;
+      const data = result?.data || [];
       setData((prevState) => [...prevState, ...data]);
       setTotalData(totalData);
       setPage(page + 1);

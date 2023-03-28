@@ -88,17 +88,19 @@ export const EventCard = ({ eventData }) => {
             </View>
           </View>
           <View style={styles.line} />
-          <Row row alignCenter spaceBetween style={{height: SIZE * 2}}>
+          <Row row alignCenter spaceBetween style={{ height: SIZE * 2 }}>
             <TouchableOpacity onPress={handleParticipantsPress}>
               <Row row alignCenter>
-                <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && {marginLeft: 0}]}>
+                <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && { marginLeft: 0 }]}>
                   {data?.slice(0, 3).map((data) => (
                     <Image key={data?.user._id} source={{ uri: data?.user.profilePic }} style={styles.partImage} />
                   ))}
                 </Row>
-                <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>{totalData > 3 ? `+${totalData}` : totalData} </Text>
+                <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
+                  {totalData > 3 ? `+${totalData}` : totalData}{' '}
+                </Text>
                 <Text style={[styles.textAdress, { color: 'black' }]}>
-                {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
+                  {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
                 </Text>
               </Row>
             </TouchableOpacity>

@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
+import { MaterialTabBar, Tabs, useFocusedTab } from 'react-native-collapsible-tab-view';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { MiniEventCard, ProfileInfo, Text } from '../components';
+import { MiniEventCard, PostCard, ProfileInfo, Text } from '../components';
 import { AboutScreen } from '../screens/organiser/profile/about/profileAbout/screen';
 import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
@@ -31,6 +31,15 @@ export const OrganiserTopNavigator = ({ user, account }) => {
       organiserId,
     },
   });
+
+  // const { data: postData, refreshing: refreshingPost, getRefreshedData: getRefreshedPostData, getMoreData: getMorePostData, loadMore: loadMorePost } = useInfiniteScroll({
+  //   entity: 'posts',
+  //   limit: 7,
+  //   filters: {
+  //     organiserId,
+  //   },
+  // });
+
 
   const MyHeader = () => {
     return (
@@ -71,13 +80,22 @@ export const OrganiserTopNavigator = ({ user, account }) => {
 };
 
 export const UserTopNavigator = ({ user, account, isLoading }) => {
+  const [focusedTab, setFocusedTab] = useState('');
   const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
   const updatedUser = useSelector(selectSelectedUser);
 
-  console.log('user', user);
+  const handleIndexChange = (index) => {
+    const tabs = ['Posts', 'Events'];
+    setFocusedTab(tabs[index]);
+  };
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore, getData } = useInfiniteScroll({
     entity: `users/${userId}/events`,
+    limit: 6,
+  });
+
+  const { data: postData, refreshing: postRefreshing, getRefreshedData: getRefreshedPostData, getMoreData: getMorePostData, loadMorePosts, getPostData } = useInfiniteScroll({
+    entity: `users/${userId}/posts`,
     limit: 6,
   });
 
@@ -102,27 +120,42 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
   };
 
   return (
-    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
+    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar} onIndexChange={handleIndexChange}>
       <Tabs.Tab name="Posts">
-        {isLoading ? (
+      {isLoading ? (
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
           </Tabs.ScrollView>
         ) : (
-          <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-            {account ? (
-              user.isFollowing ? (
-                <Text>Qui ci saranno i post</Text>
-              ) : (
-                <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
-                  Follow this profile to see its content
-                </Text>
-              )
-            ) : (
-              <Text>Qui ci saranno i posts</Text>
-            )}
-          </Tabs.ScrollView>
-        )}
+      account ? (
+          user.isFollowing ? (
+            <Tabs.FlatList
+              data={postData}
+              renderItem={({ item }) => <PostCard postData={item} />}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+              onEndReached={_.throttle(getMorePostData, 400)}
+              refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
+              ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
+            />
+          ) : (
+            <Tabs.ScrollView>
+              <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+                Follow this profile to see its content
+              </Text>
+            </Tabs.ScrollView>
+          )
+        ) : (
+          <Tabs.FlatList
+              data={postData}
+              renderItem={({ item }) => <PostCard postData={item} />}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+              onEndReached={_.throttle(getMorePostData, 400)}
+              refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
+              ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
+            />
+        ))}
       </Tabs.Tab>
       <Tabs.Tab name="Events">
         {account ? (

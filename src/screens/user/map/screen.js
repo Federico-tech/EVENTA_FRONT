@@ -22,7 +22,6 @@ export const MapScreen = ({ route }) => {
   const { event } = route.params || {};
 
   const isFocused = useIsFocused();
-  console.log('isFocused', isFocused);
 
   const dispatch = useDispatch();
   const filter = useSelector(selectMapFilter);
@@ -54,7 +53,6 @@ export const MapScreen = ({ route }) => {
       });
       dispatch(setMapFilter('events'));
     }
-    console.log('ciao');
   }, [event, isFocused]);
 
   const bottomSheetModalRef = useRef(null);
