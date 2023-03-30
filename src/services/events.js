@@ -63,6 +63,16 @@ export const getRefreshedEvent = async (event) => {
   }
 };
 
+export const getRefreshedEventbyId = async (eventId) => {
+  try {
+    const { data } = await mainAxios.get(`events/${eventId}`);
+    console.log('EventSelected', data);
+    store.dispatch(setSelectedEvent(data.event));
+  } catch (e) {
+    console.log({ errorGetPartecipants: e });
+  }
+};
+
 export const updateEvent = async (event) => {
   console.log('Event', event);
   const state = store.getState();
@@ -74,5 +84,15 @@ export const updateEvent = async (event) => {
     console.debug({ updatedEvent });
   } catch (e) {
     console.log({ errorUpdatingEvent: e });
+  }
+};
+
+export const getEventById = async (eventId) => {
+  try {
+    const { data: event } = await mainAxios.get(`events/${eventId}`);
+    console.log({ event });
+    return event;
+  } catch (e) {
+    console.log({ getEventByIdError: e });
   }
 };

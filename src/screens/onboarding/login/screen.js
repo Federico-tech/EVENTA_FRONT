@@ -36,10 +36,10 @@ export const LoginScreen = () => {
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
-      email: 'riccardo@gmail.com',
-      password: 'dezzolo10',
-      // email: 'coco@gmail.com',
-      // password: 'cococlub10',
+      // email: 'riccardo@gmail.com',
+      // password: 'dezzolo10',
+      email: 'coco@gmail.com',
+      password: 'cococlub10',
       // email: 'filippini@gmail.com',
       // password: 'filippini10',
       // email: 'giulia@gmail.com',

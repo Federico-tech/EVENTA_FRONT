@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { MaterialTabBar, Tabs, useFocusedTab } from 'react-native-collapsible-tab-view';
+import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
@@ -39,7 +39,6 @@ export const OrganiserTopNavigator = ({ user, account }) => {
   //     organiserId,
   //   },
   // });
-
 
   const MyHeader = () => {
     return (
@@ -94,7 +93,14 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
     limit: 6,
   });
 
-  const { data: postData, refreshing: postRefreshing, getRefreshedData: getRefreshedPostData, getMoreData: getMorePostData, loadMorePosts, getPostData } = useInfiniteScroll({
+  const {
+    data: postData,
+    refreshing: postRefreshing,
+    getRefreshedData: getRefreshedPostData,
+    getMoreData: getMorePostData,
+    loadMorePosts,
+    getPostData,
+  } = useInfiniteScroll({
     entity: `users/${userId}/posts`,
     limit: 6,
   });
@@ -122,12 +128,11 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
   return (
     <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar} onIndexChange={handleIndexChange}>
       <Tabs.Tab name="Posts">
-      {isLoading ? (
+        {isLoading ? (
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
           </Tabs.ScrollView>
-        ) : (
-      account ? (
+        ) : account ? (
           user.isFollowing ? (
             <Tabs.FlatList
               data={postData}
@@ -147,15 +152,15 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
           )
         ) : (
           <Tabs.FlatList
-              data={postData}
-              renderItem={({ item }) => <PostCard postData={item} />}
-              keyExtractor={(item) => item._id}
-              showsVerticalScrollIndicator={false}
-              onEndReached={_.throttle(getMorePostData, 400)}
-              refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
-              ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
-            />
-        ))}
+            data={postData}
+            renderItem={({ item }) => <PostCard postData={item} />}
+            keyExtractor={(item) => item._id}
+            showsVerticalScrollIndicator={false}
+            onEndReached={_.throttle(getMorePostData, 400)}
+            refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
+            ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
+          />
+        )}
       </Tabs.Tab>
       <Tabs.Tab name="Events">
         {account ? (

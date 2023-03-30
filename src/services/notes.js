@@ -1,5 +1,6 @@
-import { mainAxios } from '../core/axios';
 import { DateTime } from 'luxon';
+
+import { mainAxios } from '../core/axios';
 
 export const createNote = async (data) => {
   console.debug({ note: data });
@@ -12,16 +13,16 @@ export const createNote = async (data) => {
 };
 
 export const getUserNotes = async () => {
-  const params = {'date.$gte': DateTime.now().minus({ days: 1 }).toISO()}
-  console.log(params)
+  const params = { 'date.$gte': DateTime.now().minus({ days: 1 }).toISO() };
+  console.log(params);
   try {
-    const { data: userNotes } = await mainAxios.get('notes/userNotes', {params})
-    console.log({userNotes})
-    return userNotes
-  } catch (e){
-    console.log({ errorGettinUserNotes: e})
+    const { data: userNotes } = await mainAxios.get('notes/userNotes', { params });
+    console.log({ userNotes });
+    return userNotes;
+  } catch (e) {
+    console.log({ errorGettinUserNotes: e });
   }
-}
+};
 
 export const deleteNote = async (noteId) => {
   try {

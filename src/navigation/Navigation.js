@@ -29,6 +29,7 @@ import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
 import { CreatePostScreen } from '../screens/user/posts/createPost/screen';
 import { PostsFeedScreen } from '../screens/user/posts/postsFeed/screen';
+import { ScannerScreen } from '../screens/organiser/scanner/screen';
 import { SIZE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -82,7 +83,8 @@ export const ROUTES = {
   FollowingOrganisersScreen: 'FollowingOrganisersScreen',
   FollowingUsersScreen: 'FollowingUsersScreen',
   CreatePostScreen: 'PreatePostScreen',
-  PostsFeedScreen: 'PostsFeedScreen'
+  PostsFeedScreen: 'PostsFeedScreen',
+  ScannerScreen: 'ScannerScreen'
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -186,6 +188,7 @@ export const OrganiserHomeNavigator = () => {
       <OrganiserHomeStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.OrganiserProfileScreen} component={OrganiserProfileScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.ScannerScreen} component={ScannerScreen} options={{ headerShown: false }} />
     </OrganiserHomeStackNavigator.Navigator>
   );
 };

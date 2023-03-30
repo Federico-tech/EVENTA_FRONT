@@ -24,7 +24,6 @@ export const InputText = ({
   minDate,
   maxLength,
   formik,
-  textInputStyle,
   formikName,
   touchableOpacity,
   value: inputValue,
@@ -45,6 +44,7 @@ export const InputText = ({
   let onChangeText = inputOnChangeText;
 
   if (formik) {
+    // console.log({formikValues});
     value = formik?.values[formikName] || '';
     error = formik?.errors[formikName] || '';
     onChangeText = (newValue) => formik.onChangeText(formikName, newValue);
@@ -78,7 +78,7 @@ export const InputText = ({
           <View pointerEvents={pointerEvents}>
             <TextInput
               allowFontScaling={false}
-              style={[styles.textInput, multiline && styles.multiline, textInputStyle]}
+              style={[styles.textInput, multiline && styles.multiline]}
               keyboardType={keyboardType ? keyboardType : 'default'}
               secureTextEntry={isPasswordSecure}
               value={value}

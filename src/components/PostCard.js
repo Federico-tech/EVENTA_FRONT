@@ -2,10 +2,8 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import { postLike, postUnlike } from '../services/postLikes';
-
-
-
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
@@ -33,26 +31,29 @@ export const PostCard = ({ postData }) => {
   };
 
   return (
-    <View style={styles.wrapper}>
-      <Row style={styles.topRow}>
-        <Row style={{ padding: SIZE * 0.7 }} row alignCenter spaceBetween>
-          <Row row alignCenter>
-            <LoadingImage source={postData.user.profilePic} style={{ width: SIZE * 2.5, aspectRatio: 1, borderRadius: 100 }} profile />
-            <Row>
-              <Text style={{ marginLeft: SIZE, fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
+    <TouchableOpacity>
+      <View style={styles.wrapper}>
+        <Row style={styles.topRow}>
+          <Row style={{ padding: SIZE * 0.7 }} row alignCenter spaceBetween>
+            <Row row alignCenter>
+              <LoadingImage source={postData.user.profilePic} style={{ width: SIZE * 2.5, aspectRatio: 1, borderRadius: 100 }} profile />
+              <Row>
+                <Text style={{ marginLeft: SIZE, fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
+              </Row>
             </Row>
+            <Entypo name="dots-three-horizontal" size={SIZE * 1.2} />
           </Row>
-          <Entypo name="dots-three-horizontal" size={SIZE * 1.2} />
-        </Row>
-        <LoadingImage source={postData.postImage} style={styles.image} indicator />
-        <Row style={styles.rowBottom} spaceBetween row alignCenter>
-          <Row style={{margin: SIZE / 2, width: SIZE * 22}} justifyCenter>
-            <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
-              at {postData.event.name}
-            </Text>
-            <Text regularXs style={{marginTop: SIZE / 10}}>{postData.caption}</Text>
-          </Row>
-          <View style={styles.likeContainer}>
+          <LoadingImage source={postData.postImage} style={styles.image} indicator />
+          <Row style={styles.rowBottom} spaceBetween row alignCenter>
+            <Row style={{ margin: SIZE / 2, width: SIZE * 22 }} justifyCenter>
+              <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
+                at {postData.event.name}
+              </Text>
+              <Text regularXs style={{ marginTop: SIZE / 10 }}>
+                {postData.caption}
+              </Text>
+            </Row>
+            <View style={styles.likeContainer}>
               <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{likes}</Text>
               {isLiked ? (
                 <TouchableOpacity onPress={onPressUnlike}>
@@ -64,9 +65,10 @@ export const PostCard = ({ postData }) => {
                 </TouchableOpacity>
               )}
             </View>
+          </Row>
         </Row>
-      </Row>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,
     marginBottom: SIZE,
-    marginTop: SIZE,
+    marginTop: SIZE / 2,
     ...SHADOWS.medium,
   },
   topRow: {

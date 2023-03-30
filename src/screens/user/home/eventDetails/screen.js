@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 
 import { Button, Container, IconButton, Line, LoadingImage, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
+import { DiscountModal } from '../../../../components/DiscountModal';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { getRefreshedEvent } from '../../../../services/events';
 import { getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
@@ -25,6 +26,11 @@ export const EventDetails = ({ route }) => {
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -99,8 +105,8 @@ export const EventDetails = ({ route }) => {
   };
 
   const onPressNaviagtePosts = () => {
-    navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event }})
-  }
+    navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event } });
+  };
 
   return (
     <Container>
@@ -121,7 +127,12 @@ export const EventDetails = ({ route }) => {
               <Line lineStyle={{ marginBottom: 0 }} />
             </View>
             <View>
-              <Text style={styles.eventTitle}>{event.name}</Text>
+              <Row row alignCenter spaceBetween style={{ marginTop: SIZE }}>
+                <Text style={styles.eventTitle}>{event.name}</Text>
+                {eventOrganiserId === userId && (
+                  <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} onPress={() => navigation.navigate(ROUTES.ScannerScreen)} />
+                )}
+              </Row>
               <ReadMoreButton text={event.description} style={styles.description} />
               <View style={styles.date}>
                 <FontAwesome name="calendar-o" size={18} />
@@ -141,8 +152,8 @@ export const EventDetails = ({ route }) => {
                   <Text style={styles.description}> of your friends are going</Text>
                 </Text>
               </View>
-              <TextButton text={'view moments'} onPress={onPressNaviagtePosts}/>
-              <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })} >
+              <TextButton text="view moments" onPress={onPressNaviagtePosts} />
+              <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })}>
                 <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
                   <MapView
                     style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
@@ -181,12 +192,20 @@ export const EventDetails = ({ route }) => {
           </View>
         </View>
       </ScrollView>
-      {role === 'user' &&
-        (event.isParticipating ? (
-          <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnpartecipate} />
-        ) : (
-          <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressPartecipate} />
-        ))}
+      <Row row alignCenter style={styles.partButton} spaceBetween>
+        {role === 'user' &&
+          (event.isParticipating ? (
+            <>
+              <Button secondary containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressUnpartecipate} />
+              <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
+            </>
+          ) : (
+            <>
+              <Button gradient containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressPartecipate} />
+              <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
+            </>
+          ))}
+      </Row>
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <TouchableOpacity onPress={onPressEditEvent}>
@@ -199,6 +218,7 @@ export const EventDetails = ({ route }) => {
           </TouchableOpacity>
         </View>
       </BottomSheetModal>
+      <DiscountModal isVisible={isModalVisible} onBackdropPress={() => setModalVisible(false)} event={event} />
     </Container>
   );
 };
@@ -226,7 +246,6 @@ const styles = StyleSheet.create({
   eventTitle: {
     fontFamily: 'InterSemiBold',
     fontSize: SIZES.xl,
-    marginTop: SIZE,
   },
   description: {
     fontFamily: FONTS.regular,
@@ -276,8 +295,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   dots: {
-    marginLeft: WIDTH_DEVICE / 40,
-    marginBottom: SIZE,
+    marginHorizontal: WIDTH_DEVICE / 40,
+    marginBottom: SIZE * 18,
+    alignSelf: 'flex-end',
     bottom: 0,
     position: 'absolute',
   },

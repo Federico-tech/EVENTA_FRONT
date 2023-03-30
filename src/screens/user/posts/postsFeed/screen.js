@@ -1,49 +1,47 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { useIsFocused, useNavigation, useScrollToTop } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 
-import { Container, Line, PostCard, Row, Text } from '../../../../components';
+import { Container, PostCard, Row, Text } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const PostsFeedScreen = ({route}) => {
-  const [eventFilter, setEventFilter ] = useState()
-  const [entity, setEntity ] = useState('posts/home')
+export const PostsFeedScreen = ({ route }) => {
+  const [eventFilter, setEventFilter] = useState();
+  const [entity, setEntity] = useState('posts/home');
   const navigation = useNavigation();
-  const { event } = route?.params || {}
+  const { event } = route?.params || {};
 
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
   const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData } = useInfiniteScroll({
-    entity: entity,
+    entity,
     limit: 6,
   });
 
   useEffect(() => {
     if (event) {
-      setEventFilter(event?.name)
-      setEntity(event ? `events/${event._id}/posts` : 'posts/home')
+      setEventFilter(event?.name);
+      setEntity(event ? `events/${event._id}/posts` : 'posts/home');
     }
-  }, [event])
-  
+  }, [event]);
+
   useEffect(() => {
     if (entity) {
-      getData()
+      getData();
     }
-  }, [entity, eventFilter])
+  }, [entity, eventFilter]);
 
   const deleteEventFilter = () => {
-    setEventFilter('')
-    setEntity('posts/home')
-    getData()
-  }
-
+    setEventFilter('');
+    setEntity('posts/home');
+    getData();
+  };
 
   return (
     <Container>
@@ -54,13 +52,16 @@ export const PostsFeedScreen = ({route}) => {
           </Text>
           <AntDesign name="plus" size={SIZE * 1.6} onPress={() => navigation.navigate(ROUTES.CreatePostScreen)} />
         </Row>
-        <Row row alignCenter style={{marginTop: SIZE / 4}}>
-          {eventFilter && 
-          <>
-            <Feather name='x' color={COLORS.gray} size={SIZE* 1.2} onPress={deleteEventFilter}/>
-            <Text color={COLORS.gray} regularXs> at {eventFilter.toUpperCase()}</Text>
-           </>
-          }
+        <Row row alignCenter style={{ marginTop: SIZE / 4 }}>
+          {eventFilter && (
+            <>
+              <Feather name="x" color={COLORS.gray} size={SIZE * 1.2} onPress={deleteEventFilter} />
+              <Text color={COLORS.gray} regularXs>
+                {' '}
+                at {eventFilter.toUpperCase()}
+              </Text>
+            </>
+          )}
         </Row>
       </View>
       <FlatList
@@ -81,5 +82,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: WIDTH_DEVICE / 20,
     marginTop: SIZE * 4,
+    marginBottom: SIZE
   },
 });

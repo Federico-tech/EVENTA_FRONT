@@ -2,6 +2,8 @@ import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
+import { View } from 'react-native';
+import FlashMessage from 'react-native-flash-message';
 import { Provider } from 'react-redux';
 
 import i18n from './src/locales/i18n';
@@ -30,7 +32,10 @@ const App = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <Provider store={store}>
-        <AppNavigator />
+        <View style={{ flex: 1 }}>
+          <AppNavigator />
+          <FlashMessage position="top" />
+        </View>
       </Provider>
     </I18nextProvider>
   );

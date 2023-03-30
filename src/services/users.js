@@ -73,6 +73,15 @@ export const refreshSelectedUser = async (user) => {
     console.log({ e });
   }
 };
+export const refreshSelectedUserbyId = async (userId) => {
+  try {
+    const { data } = await mainAxios.get(`users/${userId}`);
+    console.debug({ refreshSelectedUser: data });
+    store.dispatch(setUserSelected(data));
+  } catch (e) {
+    console.log({ e });
+  }
+};
 
 export const refreschCurrentUser = async (user) => {
   try {
@@ -93,3 +102,13 @@ export const getMe = async (data) => {
     console.log({ ErrorGetMe: e });
   }
 };
+
+export const getUserById = async (userId) => {
+  try {
+    const { data: user } = await mainAxios.get(`users/${userId}`)
+    console.log({ user })
+    return user
+  } catch (e){
+    console.log({ getUserByIdError: e})
+  }
+}

@@ -7,13 +7,13 @@ import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, InputText, TextButton } from '../../../../components';
+import { Container, InputText, Row, TextButton } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { createEvent } from '../../../../services/events';
 import { selectCurrentUserId } from '../../../../store/user';
@@ -23,6 +23,9 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../.
 
 export const CreateEventScreen = ({ route }) => {
   useEffect(requestCameraPermission, []);
+  const [discountEnabled, setDiscountEnabled] = useState(false);
+
+  const toggleDiscount = () => setDiscountEnabled(!discountEnabled);
 
   const organiserId = useSelector(selectCurrentUserId);
   const navigation = useNavigation();
@@ -43,6 +46,7 @@ export const CreateEventScreen = ({ route }) => {
       },
       startDate: '',
       startTime: '',
+      discount: '',
       file: '',
     },
     validationSchema: object().shape({
@@ -60,6 +64,12 @@ export const CreateEventScreen = ({ route }) => {
         .test('is-valid-date', 'Invalid date', (value) => {
           console.log(value);
           return !value || DateTime.fromFormat(value, 'HH:mm').isValid;
+        }),
+      discount: string()
+        .required('Discount is a required field')
+        .test('is-valid-discount', 'Discount must be a number between 0 and 100', (value) => {
+          const discountValue = parseFloat(value);
+          return !isNaN(discountValue) && discountValue > 0 && discountValue < 100;
         }),
       file: string().required('Image is a required field'),
     }),
@@ -160,9 +170,9 @@ export const CreateEventScreen = ({ route }) => {
 
   return (
     <Container>
-      <View style={styles.container}>
-        <KeyboardAvoidingView behavior="padding">
-          <ScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
             <Text style={styles.title}>{t('create event')}</Text>
             <View>
               <TouchableOpacity onPress={pickImage}>
@@ -187,7 +197,7 @@ export const CreateEventScreen = ({ route }) => {
                 onPress={onPressAddress}
                 touchableOpacity
               />
-              <InputText label={t('description')} formik={formik} formikName="description" multiline containerStyle={{ height: SIZE * 10}}/>
+              <InputText label={t('description')} formik={formik} formikName="description" multiline />
               <InputText
                 label={t('date')}
                 formik={{ ...formik, onChangeText: onChangeDate }}
@@ -202,11 +212,16 @@ export const CreateEventScreen = ({ route }) => {
                 maxLength={5}
                 placeholder="HH:mm"
               />
+              <Row row alignCenter style={{ marginTop: SIZE }}>
+                <Text style={styles.textDiscount}>Discount</Text>
+                <Switch value={discountEnabled} onValueChange={toggleDiscount} />
+              </Row>
+              {discountEnabled && <InputText formik={formik} formikName="discount" maxLength={30} placeholder="Enter the discount percentage" />}
               <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Container>
   );
 };
@@ -215,6 +230,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
     marginTop: SIZE * 3,
+    marginBottom: SIZE * 2,
   },
   title: {
     fontFamily: FONTS.semiBold,
@@ -261,5 +277,11 @@ const styles = StyleSheet.create({
     color: COLORS.error,
     fontSize: SIZES.sm,
     alignSelf: 'center',
+  },
+  textDiscount: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.xs,
+    color: COLORS.darkGray,
+    marginRight: SIZE,
   },
 });
