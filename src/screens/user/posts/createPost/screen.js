@@ -122,10 +122,10 @@ export const CreatePostScreen = () => {
 
   return (
     <Container>
-      <Header title="Create your moment" done onPress={handleSubmit} loading={loading} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior="height">
+        <Header title="Create your moment" done onPress={handleSubmit} loading={loading} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
             <TouchableOpacity onPress={pickImage}>
               <View style={styles.uploadImage}>
                 {!values.file ? (
@@ -151,9 +151,9 @@ export const CreatePostScreen = () => {
               </Row>
             )}
             <Text style={[styles.requiredImage]}>{errors.eventId && touched.eventId ? errors.eventId : null}</Text>
-          </KeyboardAvoidingView>
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <FlatList

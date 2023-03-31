@@ -1,4 +1,3 @@
-import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
@@ -9,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { LogoText } from '../assets';
 import { ROUTES } from '../navigation/Navigation';
 import { selectCurrentUser } from '../store/user';
-import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../utils/theme';
+import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 
 export const HomeHeader = ({ data, organiser }) => {
@@ -24,16 +23,12 @@ export const HomeHeader = ({ data, organiser }) => {
           <View style={styles.header}>
             <View style={styles.TextContainer}>
               <TouchableOpacity onPress={() => navigation.jumpTo(organiser ? ROUTES.OrganiserProfileScreen : ROUTES.ProfileScreenNavigator)}>
-                {!userinfo.profilePic ? (
-                  <View style={styles.imageView}>
-                    <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
-                  </View>
-                ) : (
-                  <LoadingImage style={styles.imageProfile} resizeMode="contain" source={userinfo.profilePic} profile />
-                )}
+                <View style={styles.imageView}>
+                  <LoadingImage profile iconSIZE={SIZE * 2.5} source={userinfo.profilePic} style={styles.imageProfile} />
+                </View>
               </TouchableOpacity>
               <View style={styles.text}>
-                <Text style={styles.welcome}>{'Welcome back,'}</Text>
+                <Text style={styles.welcome}>Welcome back,</Text>
                 <Text style={styles.federico}>{userinfo.username}</Text>
               </View>
             </View>
@@ -87,7 +82,6 @@ const styles = StyleSheet.create({
     width: SIZE * 4,
     aspectRatio: 1,
     borderRadius: 100,
-    backgroundColor: COLORS.lightGray,
     alignItems: 'center',
     justifyContent: 'center',
   },

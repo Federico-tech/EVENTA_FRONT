@@ -1,34 +1,30 @@
-import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 
-export const UserRow = ({ data, bottomSheet,  closeSheet = () => {} }) => {
+export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
   const { profilePic, username, name } = data;
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleOnPress = () => {
     dispatch(setUserSelected(data));
-    bottomSheet ?  navigation.navigate(ROUTES.AccountUserScreen, { data }): navigation.push(ROUTES.AccountUserScreen, { data });
+    bottomSheet ? navigation.navigate(ROUTES.AccountUserScreen, { data }) : navigation.push(ROUTES.AccountUserScreen, { data });
     closeSheet();
   };
   return (
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.userWrapper}>
         <Row row alignCenter>
-          {!profilePic ? (
-            <View style={styles.imageView}>
-              <FontAwesome5 name="user-alt" size={SIZE * 2.5} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
-            </View>
-          ) : (
-            <Image source={{ uri: profilePic }} style={styles.profileImage} />
-          )}
+          <View style={styles.profileImage}>
+            <LoadingImage source={profilePic} profile iconSIZE={SIZE * 2.5} style={styles.profileImage} />
+          </View>
           <Row style={{ paddingLeft: SIZE }}>
             <Text style={styles.usernameText}>{username}</Text>
             <Text style={styles.nameText}>{name}</Text>
@@ -51,13 +47,7 @@ export const OrganiserRow = ({ data }) => {
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.organiserWrapper}>
         <Row row alignCenter>
-          {!profilePic ? (
-            <View style={styles.imageViewOrgniser}>
-              <FontAwesome5 name="user-alt" size={SIZE * 3} color={COLORS.white} style={{ marginBottom: SIZE / 4 }} />
-            </View>
-          ) : (
-            <Image source={{ uri: profilePic }} style={styles.organiserImage} />
-          )}
+          <LoadingImage source={profilePic} style={styles.organiserImage} />
           <Row style={{ paddingLeft: SIZE }}>
             <Text style={styles.organiserText}>{username}</Text>
             <View style={{ width: SIZE * 15 }}>
@@ -84,6 +74,7 @@ const styles = StyleSheet.create({
     width: SIZE * 3.5,
     aspectRatio: 1,
     borderRadius: 100,
+    backgroundColor: COLORS.backGray,
   },
   usernameText: {
     fontFamily: FONTS.medium,

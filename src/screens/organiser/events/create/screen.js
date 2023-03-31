@@ -170,7 +170,7 @@ export const CreateEventScreen = ({ route }) => {
 
   return (
     <Container>
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior="height">
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <Text style={styles.title}>{t('create event')}</Text>

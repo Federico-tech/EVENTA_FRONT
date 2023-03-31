@@ -11,6 +11,7 @@ import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/them
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
+import { getRefreshedEvent } from '../services/events';
 
 export const Note = ({ data, deleteNote }) => {
 
@@ -63,7 +64,9 @@ export const Note = ({ data, deleteNote }) => {
           <View>
             <View style={styles.note}>
               <Row row alignCenter spaceBetween>
-                <LoadingImage source={data?.user.profilePic} style={styles.noteImage} profile width={SIZE * 3} />
+                <View style={styles.noteImage}>
+                  <LoadingImage source={data?.user.profilePic} style={styles.noteImage} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
+                </View>
                 <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire}>
                   <Row row alignCenter>
                     <Text regularSm style={{ fontFamily: FONTS.medium}}>{numFires}</Text>

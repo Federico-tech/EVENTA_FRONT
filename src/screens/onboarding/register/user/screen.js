@@ -78,7 +78,7 @@ export const UserSingUpScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior="height">
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <Row>

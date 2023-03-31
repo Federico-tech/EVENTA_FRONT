@@ -100,7 +100,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
 
   return (
     <Container>
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior="height">
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <View style={{ position: 'absolute', left: 0 }}>

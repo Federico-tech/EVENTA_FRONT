@@ -161,7 +161,7 @@ export const EditEventScreen = ({ route }) => {
   return (
     <Container>
       <Header title="Edit event" done onPress={handleSubmit} loading={loading} />
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior="height">
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ marginTop: SIZE * 2, marginHorizontal: WIDTH_DEVICE / 20, marginBottom: SIZE * 10 }}>
             <TouchableOpacity onPress={pickImage}>

@@ -1,7 +1,7 @@
 import { useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, View, StatusBar } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 
 import { Container, EventCard, HomeHeader, HomeTop } from '../../../../components/index';
@@ -25,6 +25,7 @@ export const HomeScreen = () => {
 
   return (
     <Container>
+      <StatusBar barStyle="light-content" />
       <HomeHeader />
       <FlatList
         ref={ref}

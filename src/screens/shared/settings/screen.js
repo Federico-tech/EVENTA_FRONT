@@ -1,8 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Switch } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Container, Header, TextButton, Text, Row, Line } from '../../../components';
 import { logout } from '../../../utils/index';
@@ -24,7 +24,7 @@ export const SettingScreen = () => {
     const getLanguage = async () => {
       const lang = await AsyncStorage.getItem('language');
       if (lang) {
-        switchlanguage(lang)
+        switchlanguage(lang);
       }
     };
     getLanguage();

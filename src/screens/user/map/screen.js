@@ -1,7 +1,7 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -123,6 +123,7 @@ export const MapScreen = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar barStyle={'dark-content'}/>
       <MapView
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}

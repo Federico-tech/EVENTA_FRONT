@@ -5,12 +5,12 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Image, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, InputText, TextButton, Header, Row, Text } from '../../../../components';
+import { Container, InputText, TextButton, Header, Row, Text, LoadingImage } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
@@ -33,7 +33,7 @@ export const EditOrganiserScreen = ({ route }) => {
     bottomSheetModalRef.current?.present();
   };
 
-  const handleClosePress = () => bottomSheetModalRef.current.close()
+  const handleClosePress = () => bottomSheetModalRef.current.close();
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -131,7 +131,7 @@ export const EditOrganiserScreen = ({ route }) => {
       });
       await setFieldValue('file', manipulatedImage.uri);
     }
-    handleClosePress()
+    handleClosePress();
   };
 
   const onPressAddress = () => {
@@ -143,24 +143,18 @@ export const EditOrganiserScreen = ({ route }) => {
 
   const deleteImage = () => {
     setFieldValue('file', null);
-    handleClosePress()
+    handleClosePress();
   };
 
   return (
     <Container>
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior="height">
         <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <Row alignCenter>
               <View style={styles.imageContainer}>
-                {!values.file ? (
-                  <Ionicons name="person" size={50} color={COLORS.darkGray} />
-                ) : (
-                  <>
-                    <Image source={{ uri: values.file }} style={styles.image} resizeMode="cover" />
-                  </>
-                )}
+                <LoadingImage source={values.file} style={styles.image} resizeMode="cover" profile />
               </View>
               <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
             </Row>

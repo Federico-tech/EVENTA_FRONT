@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import { object, string } from 'yup';
@@ -40,10 +40,6 @@ export const LoginScreen = () => {
       // password: 'dezzolo10',
       email: 'coco@gmail.com',
       password: 'cococlub10',
-      // email: 'filippini@gmail.com',
-      // password: 'filippini10',
-      // email: 'giulia@gmail.com',
-      // password: 'colombo10',
     },
     validationSchema: object().shape({
       email: string().required('Email is a required field').email('This is not a valid email'),
@@ -89,49 +85,46 @@ export const LoginScreen = () => {
 
   return (
     <Container>
-      <ScrollView>
-        <Container>
-          <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
-          <View style={styles.container}>
-            <Text style={styles.textLogin}>{t('login to your account')}</Text>
-            <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
-            <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
-            {/* {error && (
-              <Row>
-                <Text style={styles.error401}>{t('wrong username or password')}</Text>
-              </Row>
-            )} */}
-            <TextButton text={t('forgot password')} textStyle={styles.forgotPassword} />
-            <Button primary text={t('login')} onPress={handleSubmit} loading={loading} disabled={!values.password || (!values.email && true)} />
-            <View style={styles.containerLine}>
-              <Line lineStyle={{ flex: 1 }} />
-              <Text style={styles.orLoginUsing}>{t('or login using')}</Text>
-              <Line lineStyle={{ flex: 1 }} />
-            </View>
-            <View style={styles.socialLoginContainer}>
-              <SocialLoginButton apple />
-              <SocialLoginButton google />
-            </View>
-            <View style={styles.registerContainer}>
-              <View style={styles.registerTextContainer}>
-                <Text style={styles.registerText}>{t(`you don't have an account`)}</Text>
-                <TouchableOpacity onPress={onPressUserRegister}>
-                  <Text style={styles.registerButtonText}> Sign Up</Text>
-                </TouchableOpacity>
+      <KeyboardAvoidingView behavior="height">
+        <ScrollView>
+          <Container>
+            <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
+            <View style={styles.container}>
+              <Text style={styles.textLogin}>{t('login to your account')}</Text>
+              <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
+              <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
+              <TextButton text={t('forgot password')} textStyle={styles.forgotPassword} />
+              <Button primary text={t('login')} onPress={handleSubmit} loading={loading} disabled={!values.password || (!values.email && true)} />
+              <View style={styles.containerLine}>
+                <Line lineStyle={{ flex: 1 }} />
+                <Text style={styles.orLoginUsing}>{t('or login using')}</Text>
+                <Line lineStyle={{ flex: 1 }} />
               </View>
-              <View style={styles.registerTextContainer}>
-                <Text style={styles.registerText}>{t('become an organiser')}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
-                  <Text style={styles.registerButtonText}> {t('click here')}</Text>
-                </TouchableOpacity>
+              <View style={styles.socialLoginContainer}>
+                <SocialLoginButton apple />
+                <SocialLoginButton google />
               </View>
+              <View style={styles.registerContainer}>
+                <View style={styles.registerTextContainer}>
+                  <Text style={styles.registerText}>{t(`you don't have an account`)}</Text>
+                  <TouchableOpacity onPress={onPressUserRegister}>
+                    <Text style={styles.registerButtonText}> Sign Up</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.registerTextContainer}>
+                  <Text style={styles.registerText}>{t('become an organiser')}</Text>
+                  <TouchableOpacity onPress={() => navigation.navigate('OrganiserSignUpScreen')}>
+                    <Text style={styles.registerButtonText}> {t('click here')}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <TouchableOpacity>
+                <Text style={styles.privacyText}>{t('privacy and terms')}</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity>
-              <Text style={styles.privacyText}>{t('privacy and terms')}</Text>
-            </TouchableOpacity>
-          </View>
-        </Container>
-      </ScrollView>
+          </Container>
+        </ScrollView>
+      </KeyboardAvoidingView>
       {error === 401 && <FlashMessage position="top" />}
     </Container>
   );

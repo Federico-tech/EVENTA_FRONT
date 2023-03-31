@@ -1,9 +1,10 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 
-import { COLORS, SIZES } from '../utils/theme';
+import { COLORS, SIZE, SIZES } from '../utils/theme';
 
-export const LoadingImage = ({ source, style, indicator, profile, width, blurRadius }) => {
+export const LoadingImage = ({ source, style, indicator, profile, width, blurRadius, iconSIZE, containerStyle }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoadStart = () => {
@@ -13,14 +14,18 @@ export const LoadingImage = ({ source, style, indicator, profile, width, blurRad
   const handleLoadEnd = () => {
     setIsLoading(false);
   };
-  return (
+  return !source && profile ? (
+    <View style={[styles.imageProfileView, containerStyle, style, { width }]}>
+      <Ionicons name="person" size={iconSIZE ? iconSIZE : SIZE * 4} color={COLORS.lightGray} />
+    </View>
+  ) : (
     <View style={profile && styles.profile}>
       {isLoading && (
         <>
           <View style={[profile ? styles.imageProfileView : styles.imageView, { width }]}>{indicator && <ActivityIndicator color="black" />}</View>
         </>
       )}
-      <Image source={{ uri: source }} style={style} onLoadStart={handleLoadStart} onLoadEnd={handleLoadEnd} blurRadius={blurRadius}/>
+      <Image source={{ uri: source }} style={style} onLoadStart={handleLoadStart} onLoadEnd={handleLoadEnd} blurRadius={blurRadius} />
     </View>
   );
 };

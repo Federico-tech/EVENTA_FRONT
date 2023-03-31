@@ -4,11 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { HomeMap, IconButton, InputText, Note, Row, Text, TextButton } from '../components/index';
+import { HomeMap, IconButton, InputText, LoadingImage, Note, Row, Text, TextButton } from '../components/index';
 import { ROUTES } from '../navigation/Navigation';
 import { createNote, deleteNote, getUserNotes } from '../services/notes';
 import { selectCurrentUser, selectCurrentUserId } from '../store/user';
@@ -102,7 +102,7 @@ export const HomeTop = ({ refreshing }) => {
           onEndReachedThreshold={0.1}
           onEndReached={_.throttle(getMoreData, 400)}
           horizontal
-          refreshing={refreshing}
+          refreshing={refreshing && getRefreshedData}
           onRefresh={getRefreshedData}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -116,7 +116,9 @@ export const HomeTop = ({ refreshing }) => {
                   <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
                     <Row alignCenter style={{ width: SIZE * 6 }} column>
                       <Row row>
-                        <Image source={{ uri: user.profilePic }} style={styles.createNoteImage} />
+                        <View style={styles.createNoteImage}>
+                          <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} />
+                        </View>
                         <View style={styles.plusIcon}>
                           <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
                         </View>
@@ -129,7 +131,6 @@ export const HomeTop = ({ refreshing }) => {
             </TouchableOpacity>
           }
         />
-        {refreshing && <ActivityIndicator style={{ position: 'absolute', marginTop: SIZE * 4.5, alignSelf: 'center' }} />}
       </View>
       <Text semiBoldMd style={{ marginBottom: SIZE }}>
         Upcoming events
@@ -203,6 +204,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     marginBottom: SIZE,
     marginTop: SIZE,
+    backgroundColor: COLORS.backGray,
   },
   share: {
     alignSelf: 'center',

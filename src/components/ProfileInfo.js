@@ -81,11 +81,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
     <View>
       <Row row>
         <View style={styles.profileImage}>
-          {!user.profilePic ? (
-            <Ionicons name="person" size={60} color={COLORS.gray} />
-          ) : (
-            <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" profile />
-          )}
+          <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" profile />
         </View>
         <Row style={styles.name}>
           <Text semiBoldMd>{user.name}</Text>
@@ -170,8 +166,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
-    borderWidth: 4,
-    borderColor: COLORS.white,
     marginLeft: WIDTH_DEVICE / 20,
     marginTop: SIZE / 2,
   },
