@@ -116,9 +116,7 @@ export const HomeTop = ({ refreshing }) => {
                   <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
                     <Row alignCenter style={{ width: SIZE * 6 }} column>
                       <Row row>
-                        <View style={styles.createNoteImage}>
-                          <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} />
-                        </View>
+                        <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} indicator/>
                         <View style={styles.plusIcon}>
                           <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
                         </View>
@@ -199,12 +197,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.white,
   },
   createNoteImage: {
-    width: SIZE * 4,
-    aspectRatio: 1,
-    borderRadius: 100,
     marginBottom: SIZE,
     marginTop: SIZE,
-    backgroundColor: COLORS.backGray,
   },
   share: {
     alignSelf: 'center',
@@ -212,4 +206,9 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.sm,
   },
+  profilePic: {
+    width: SIZE * 4,
+    aspectRatio: 1,
+    borderRadius: 100,
+  }
 });

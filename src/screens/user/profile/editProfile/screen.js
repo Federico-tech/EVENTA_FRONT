@@ -180,7 +180,6 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   imageContainer: {
-    backgroundColor: COLORS.lightGray,
     width: SIZE * 8,
     aspectRatio: 1,
     alignSelf: 'center',

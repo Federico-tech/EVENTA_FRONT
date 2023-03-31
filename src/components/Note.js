@@ -64,9 +64,7 @@ export const Note = ({ data, deleteNote }) => {
           <View>
             <View style={styles.note}>
               <Row row alignCenter spaceBetween>
-                <View style={styles.noteImage}>
-                  <LoadingImage source={data?.user.profilePic} style={styles.noteImage} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
-                </View>
+                <LoadingImage source={data?.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
                 <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire}>
                   <Row row alignCenter>
                     <Text regularSm style={{ fontFamily: FONTS.medium}}>{numFires}</Text>

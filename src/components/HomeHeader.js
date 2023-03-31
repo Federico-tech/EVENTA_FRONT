@@ -16,6 +16,8 @@ export const HomeHeader = ({ data, organiser }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
+  console.log('Ciao', userinfo.profilePic)
+
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.container}>
@@ -23,9 +25,7 @@ export const HomeHeader = ({ data, organiser }) => {
           <View style={styles.header}>
             <View style={styles.TextContainer}>
               <TouchableOpacity onPress={() => navigation.jumpTo(organiser ? ROUTES.OrganiserProfileScreen : ROUTES.ProfileScreenNavigator)}>
-                <View style={styles.imageView}>
-                  <LoadingImage profile iconSIZE={SIZE * 2.5} source={userinfo.profilePic} style={styles.imageProfile} />
-                </View>
+                <LoadingImage source={userinfo.profilePic} width={SIZE * 4} profile iconSIZE={SIZE * 2.5}/>
               </TouchableOpacity>
               <View style={styles.text}>
                 <Text style={styles.welcome}>Welcome back,</Text>
