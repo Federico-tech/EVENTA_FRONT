@@ -123,7 +123,7 @@ export const CreatePostScreen = () => {
   return (
     <Container>
       <KeyboardAvoidingView behavior="height">
-        <Header title="Create your moment" done onPress={handleSubmit} loading={loading} />
+        <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel/>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <TouchableOpacity onPress={pickImage}>

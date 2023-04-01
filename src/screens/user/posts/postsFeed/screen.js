@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 
-import { Container, PostCard, Row, Text } from '../../../../components';
+import { Container, ListEmptyComponent, PostCard, Row, Text } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
@@ -73,6 +73,7 @@ export const PostsFeedScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListEmptyComponent={<ListEmptyComponent text="There are no new moments for you" />}
       />
     </Container>
   );
@@ -82,6 +83,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: WIDTH_DEVICE / 20,
     marginTop: SIZE * 4,
-    marginBottom: SIZE
+    marginBottom: SIZE,
   },
 });

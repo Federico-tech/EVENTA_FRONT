@@ -19,7 +19,7 @@ export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
     closeSheet();
   };
   return (
-    <TouchableOpacity onPress={handleOnPress}>
+    <TouchableOpacity onPress={handleOnPress} >
       <View style={styles.userWrapper}>
         <Row row alignCenter>
           <View style={styles.profileImage}>
@@ -44,10 +44,10 @@ export const OrganiserRow = ({ data }) => {
     navigation.push(ROUTES.AccountOrganiserScreen, { data });
   };
   return (
-    <TouchableOpacity onPress={handleOnPress}>
+    <TouchableOpacity onPress={handleOnPress} >
       <View style={styles.organiserWrapper}>
         <Row row alignCenter>
-          <LoadingImage source={profilePic} style={styles.organiserImage} />
+          <LoadingImage source={profilePic} width={SIZE * 5} profile />
           <Row style={{ paddingLeft: SIZE }}>
             <Text style={styles.organiserText}>{username}</Text>
             <View style={{ width: SIZE * 15 }}>

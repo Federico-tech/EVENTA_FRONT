@@ -80,9 +80,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
   return (
     <View>
       <Row row>
-        <View style={styles.profileImage}>
-          <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" profile />
-        </View>
+        <LoadingImage source={user.profilePic} width={SIZE * 6} viewStyle={styles.profileImage} profile />
         <Row style={styles.name}>
           <Text semiBoldMd>{user.name}</Text>
           <Text regularSm color={COLORS.darkGray}>
@@ -118,7 +116,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
               </Text>
             </Row>
           </TouchableOpacity>
-          {myProfile ? (
+          {myProfile || (currentUser._id === selectedUser._id) ? (
             <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
           ) : currentUser.role === 'user' ? (
             user.isFollowing ? (
@@ -162,10 +160,8 @@ const styles = StyleSheet.create({
   profileImage: {
     width: SIZE * 7,
     aspectRatio: 1,
-    backgroundColor: COLORS.lightGray,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 100,
     marginLeft: WIDTH_DEVICE / 20,
     marginTop: SIZE / 2,
   },

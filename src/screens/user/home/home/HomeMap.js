@@ -5,15 +5,14 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
-import { ROUTES } from '../navigation/Navigation';
-import { selectCurrentUser } from '../store/user';
-import { ROLES } from '../utils/conts';
-import { useInfiniteScroll } from '../utils/hooks';
-import mapStyle from '../utils/mapStyle.json';
-import { COLORS, SIZE, SIZES } from '../utils/theme';
-import { LoadingImage } from './LoadingImage';
-import { Row } from './Row';
-import { Text } from './Text';
+import { LoadingImage } from '../../../../components/LoadingImage';
+import { Row } from '../../../../components/Row';
+import { ROUTES } from '../../../../navigation/Navigation';
+import { selectCurrentUser } from '../../../../store/user';
+import { ROLES } from '../../../../utils/conts';
+import { useInfiniteScroll } from '../../../../utils/hooks';
+import mapStyle from '../../../../utils/mapStyle.json';
+import { COLORS, SIZE, SIZES } from '../../../../utils/theme';
 
 export const HomeMap = () => {
   const user = useSelector(selectCurrentUser);

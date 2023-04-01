@@ -14,7 +14,7 @@ import { Text } from './Text';
 import { getRefreshedEvent } from '../services/events';
 
 export const Note = ({ data, deleteNote }) => {
-
+  console.debug({ note: data})
   const userId = useSelector(selectCurrentUserId)
 
   const bottomSheetModalRef = useRef(null);
@@ -37,8 +37,8 @@ export const Note = ({ data, deleteNote }) => {
     []
   );
 
-  const [isFire, setIsFire] = useState();
-  const [numFires, setNumFires] = useState()
+  const [isFire, setIsFire] = useState(data.isFire);
+  const [numFires, setNumFires] = useState(data.fires)
   
   useEffect(() => {
     setIsFire(data.hasFired)

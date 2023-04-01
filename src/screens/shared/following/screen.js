@@ -9,7 +9,7 @@ export const FollowingScreen = ({ route }) => {
 
   return (
     <Container>
-      <Header title="Following" />
+      <Header title="Following" back />
       <SearchBar style={{ marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE }} />
       <FollowingTopNavigator followingParams={followingParams} />
     </Container>

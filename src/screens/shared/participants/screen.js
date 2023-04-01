@@ -30,7 +30,7 @@ export const ParticipantsScreen = () => {
 
   return (
     <Container>
-      <Header title="Participants" />
+      <Header title="Participants" back />
       <FlatList
         data={data}
         renderItem={({ item }) => <UserRow data={item.user} />}

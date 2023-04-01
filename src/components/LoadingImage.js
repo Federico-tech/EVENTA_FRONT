@@ -15,26 +15,28 @@ export const LoadingImage = ({ source, event, indicator, profile, width, blurRad
     setIsLoading(false);
   };
   return (
+    
     <View>
+      {isLoading && 
+        <View style={[profile && styles.loadingProfileImage, event && styles.loadingEventImage, viewStyle, { width, position: 'absolute' }]}>
+        {indicator && <ActivityIndicator color="black" />}
+      </View>}
       {(profile && !source) ? 
-        <View style={[profile && styles.loadingProfileImage, viewStyle, { width }]}>
+        <View style={[profile && styles.loadingProfileImage, viewStyle, { width }, imageStyle]}>
           <Ionicons name="person" size={iconSIZE} color={COLORS.lightGray} style={{ marginBottom: SIZE / 4 }} />
         </View>
        : 
          <View style={viewStyle}>
           <Image
             source={{ uri: source }}
-            style={[profile && styles.profileImage, event && styles.eventImage, { width }]}
+            style={[profile && styles.profileImage, event && styles.eventImage, { width }, imageStyle]}
             onLoadStart={handleLoadStart}
             onLoadEnd={handleLoadEnd}
             blurRadius={blurRadius}
           />
           </View>
         }
-        {isLoading && 
-        <View style={[profile && styles.loadingProfileImage, event && styles.eventImage, viewStyle, { width, position: 'absolute' }]}>
-        {indicator && <ActivityIndicator color="black" />}
-      </View>}
+        
     </View>
   ) 
 }

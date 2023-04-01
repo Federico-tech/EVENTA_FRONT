@@ -1,16 +1,18 @@
 import { useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, StatusBar } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 
-import { Container, EventCard, HomeHeader, HomeTop } from '../../../../components/index';
+import { Container, EventCard, HomeHeader, HomeTop, ListEmptyComponent } from '../../../../components/index';
 import { updateUserCoordinates } from '../../../../utils';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
   const ref = React.useRef(null);
+  const homeRef = React.useRef(null);
+
   useScrollToTop(ref);
 
   useEffect(() => {
@@ -23,9 +25,12 @@ export const HomeScreen = () => {
     limit: 6,
   });
 
+  const onRefresh = async () => {
+    await Promise.all([await getRefreshedData(), await homeRef?.current?.onRefresh()]);
+  };
+
   return (
     <Container>
-      <StatusBar barStyle="light-content" />
       <HomeHeader />
       <FlatList
         ref={ref}
@@ -34,9 +39,10 @@ export const HomeScreen = () => {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
-        ListHeaderComponent={<HomeTop refreshing={refreshing} />}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+        ListHeaderComponent={<HomeTop ref={homeRef} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListEmptyComponent={<ListEmptyComponent text="No upcoming events" />}
       />
     </Container>
   );

@@ -125,14 +125,12 @@ export const EditUserScreen = () => {
     <BottomSheetModalProvider>
       <Container>
         <KeyboardAvoidingView behavior="height">
-          <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
+          <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done cancel/>
           <ScrollView >
             <Container>
             <View style={styles.container}>
               <Row alignCenter>
-                <View style={styles.imageContainer}>
-                  <LoadingImage source={values.file} style={styles.image} resizeMode="cover" profile />
-                </View>
+                  <LoadingImage source={values.file} style={styles.image} profile width={SIZE * 7.5} iconSIZE={SIZE * 4}/>
                 <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
               </Row>
               <InputText label="Name" formik={formik} formikName="name" />

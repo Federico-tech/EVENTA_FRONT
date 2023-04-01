@@ -32,7 +32,7 @@ export const SettingScreen = () => {
 
   return (
     <Container>
-      <Header title={t('settings')} />
+      <Header title={t('settings')} back />
       <Row style={{ margin: SIZE }}>
         <Text semiBoldMd style={styles.notification}>
           Notifications

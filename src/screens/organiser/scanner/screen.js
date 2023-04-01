@@ -59,7 +59,7 @@ export const ScannerScreen = () => {
     <Container>
       <View style={styles.scannerContainer}>
         <View style={styles.scanner}>
-          <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={styles.scanner} />
+          <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} style={styles.scanner} />
         </View>
         <View style={[styles.scanButton, scanned ? { backgroundColor: COLORS.primary } : { backgroundColor: COLORS.gray }]}>
           <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 3} color={COLORS.white} onPress={() => setScanned(false)} />

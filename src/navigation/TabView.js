@@ -5,7 +5,7 @@ import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { MiniEventCard, PostCard, ProfileInfo, Text } from '../components';
+import { ListEmptyComponent, MiniEventCard, PostCard, ProfileInfo, Text } from '../components';
 import { AboutScreen } from '../screens/organiser/profile/about/profileAbout/screen';
 import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
@@ -67,6 +67,7 @@ export const OrganiserTopNavigator = ({ user, account }) => {
           onEndReached={_.throttle(getMoreData, 400)}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+          ListEmptyComponent={<ListEmptyComponent text={`The organizer hasn't created any events yet`} />}
         />
       </Tabs.Tab>
       <Tabs.Tab name="About">
@@ -79,14 +80,9 @@ export const OrganiserTopNavigator = ({ user, account }) => {
 };
 
 export const UserTopNavigator = ({ user, account, isLoading }) => {
-  const [focusedTab, setFocusedTab] = useState('');
   const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
+  const currentUserId = useSelector(selectCurrentUserId)
   const updatedUser = useSelector(selectSelectedUser);
-
-  const handleIndexChange = (index) => {
-    const tabs = ['Posts', 'Events'];
-    setFocusedTab(tabs[index]);
-  };
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore, getData } = useInfiniteScroll({
     entity: `users/${userId}/events`,
@@ -99,7 +95,6 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
     getRefreshedData: getRefreshedPostData,
     getMoreData: getMorePostData,
     loadMorePosts,
-    getPostData,
   } = useInfiniteScroll({
     entity: `users/${userId}/posts`,
     limit: 6,
@@ -126,13 +121,13 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
   };
 
   return (
-    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar} onIndexChange={handleIndexChange}>
+    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
       <Tabs.Tab name="Posts">
         {isLoading ? (
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
           </Tabs.ScrollView>
-        ) : account ? (
+        ) : account && userId !== currentUserId ? (
           user.isFollowing ? (
             <Tabs.FlatList
               data={postData}
@@ -142,6 +137,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               onEndReached={_.throttle(getMorePostData, 400)}
               refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
               ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
+              ListEmptyComponent={<ListEmptyComponent text={'There is no post yet'} />}
             />
           ) : (
             <Tabs.ScrollView>
@@ -159,11 +155,12 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
             onEndReached={_.throttle(getMorePostData, 400)}
             refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
+            ListEmptyComponent={<ListEmptyComponent text={'There is no post yet'} />}
           />
         )}
       </Tabs.Tab>
       <Tabs.Tab name="Events">
-        {account ? (
+        {account && userId !== currentUserId ? (
           user.isFollowing ? (
             <Tabs.FlatList
               data={data}
@@ -173,6 +170,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               onEndReached={_.throttle(getMoreData, 400)}
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
               ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+              ListEmptyComponent={<ListEmptyComponent text={`The user hasn't particited to any events yet`} />}
             />
           ) : (
             <Tabs.ScrollView>
@@ -190,6 +188,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
             onEndReached={_.throttle(getMoreData, 400)}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+            ListEmptyComponent={<ListEmptyComponent text={`The user hasn't particited to any events yet`} />}
           />
         )}
       </Tabs.Tab>

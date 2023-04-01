@@ -32,7 +32,7 @@ export const FollowersScreen = ({ route }) => {
 
   return (
     <Container>
-      <Header title="Followers" />
+      <Header title="Followers" back />
       <FlatList
         data={data}
         renderItem={({ item }) => <UserRow data={item?.follower} />}

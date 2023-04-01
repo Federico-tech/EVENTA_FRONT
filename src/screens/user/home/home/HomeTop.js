@@ -3,19 +3,19 @@ import { BottomSheetBackdrop, BottomSheetModal, TouchableOpacity } from '@gorhom
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { HomeMap, IconButton, InputText, LoadingImage, Note, Row, Text, TextButton } from '../components/index';
-import { ROUTES } from '../navigation/Navigation';
-import { createNote, deleteNote, getUserNotes } from '../services/notes';
-import { selectCurrentUser, selectCurrentUserId } from '../store/user';
-import { useInfiniteScroll } from '../utils/hooks';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { HomeMap, IconButton, InputText, LoadingImage, Note, Row, Text, TextButton } from '../../../../components/index';
+import { ROUTES } from '../../../../navigation/Navigation';
+import { createNote, deleteNote, getUserNotes } from '../../../../services/notes';
+import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
+import { useInfiniteScroll } from '../../../../utils/hooks';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const HomeTop = ({ refreshing }) => {
+export const HomeTop = forwardRef(({ ...props }, ref) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
   const navigation = useNavigation();
@@ -61,6 +61,18 @@ export const HomeTop = ({ refreshing }) => {
     limit: 5,
   });
 
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        onRefresh: () => {
+          getRefreshedData();
+        },
+      };
+    },
+    []
+  );
+
   const onPressCreateNote = async () => {
     createNote({ content: note, userId });
     handleClosePress();
@@ -96,14 +108,12 @@ export const HomeTop = ({ refreshing }) => {
       <Text semiBoldMd>Notes</Text>
       <View style={styles.noteContainer}>
         <FlatList
-          data={refreshing ? [] : [...(userNotes || []), ...(data || [])]}
+          data={[...(userNotes || []), ...(data || [])]}
           renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote} />}
           keyExtractor={(item) => item._id}
           onEndReachedThreshold={0.1}
           onEndReached={_.throttle(getMoreData, 400)}
           horizontal
-          refreshing={refreshing && getRefreshedData}
-          onRefresh={getRefreshedData}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           ListFooterComponent={
@@ -116,7 +126,7 @@ export const HomeTop = ({ refreshing }) => {
                   <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
                     <Row alignCenter style={{ width: SIZE * 6 }} column>
                       <Row row>
-                        <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} indicator/>
+                        <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} />
                         <View style={styles.plusIcon}>
                           <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
                         </View>
@@ -142,7 +152,7 @@ export const HomeTop = ({ refreshing }) => {
       </BottomSheetModal>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -210,5 +220,5 @@ const styles = StyleSheet.create({
     width: SIZE * 4,
     aspectRatio: 1,
     borderRadius: 100,
-  }
+  },
 });
