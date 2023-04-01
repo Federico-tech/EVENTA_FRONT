@@ -149,11 +149,11 @@ export const EditOrganiserScreen = ({ route }) => {
   return (
     <Container>
       <KeyboardAvoidingView behavior="height">
-        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done />
+        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done cancel />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <Row alignCenter>
-            <LoadingImage source={values.file} style={styles.image} profile width={SIZE * 7.5} iconSIZE={SIZE * 4}/>
+              <LoadingImage source={values.file} style={styles.image} profile width={SIZE * 7.5} iconSIZE={SIZE * 4} />
               <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
             </Row>
             <InputText label="Name" formik={formik} formikName="name" />

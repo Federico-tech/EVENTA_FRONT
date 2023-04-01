@@ -7,7 +7,7 @@ import FlashMessage from 'react-native-flash-message';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Container, HomeHeader, MiniEventCard, Text } from '../../../components';
+import { Button, Container, HomeHeader, ListEmptyComponent, MiniEventCard, Text } from '../../../components';
 import { selectDateFilter, setDateFilter } from '../../../store/filter';
 import { selectCurrentUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
@@ -56,6 +56,7 @@ export const OrganiserHome = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListEmptyComponent={<ListEmptyComponent text={filter === 'upcoming' ? 'There are no upcoming events' : 'There are no past events'} />}
         ListHeaderComponent={
           <View>
             <Analytics />

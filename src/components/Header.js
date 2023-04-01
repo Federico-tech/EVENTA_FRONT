@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { IconButton } from './Button';
 import { Row } from './Row';
 import { TextButton } from './TextButton';
-import { IconButton } from './Button';
 
 //onPress={() => navigation.goBack()
 
@@ -18,7 +18,7 @@ export const Header = ({ title, onPress, loading, done, cancel, back }) => {
       <Row alignCenter row spaceBetween style={{ marginTop: SIZE * 4 }}>
         {cancel && <TextButton text={t('Cancel')} onPress={() => navigation.goBack()} textStyle={styles.cancel} />}
         {back && (
-            <View style={{ width: SIZE * 4 }}>
+          <View style={{ width: SIZE * 4 }}>
             <IconButton name="chevron-back" size={SIZE * 2} onPress={() => navigation.goBack()} />
           </View>
         )}

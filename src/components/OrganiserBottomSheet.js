@@ -13,6 +13,7 @@ import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../utils/theme';
 import { Button } from './Button';
+import { ListEmptyComponent } from './ListEmptyComponent';
 import { LoadingImage } from './LoadingImage';
 import { MiniEventCard } from './MiniEventCard';
 import { Row } from './Row';
@@ -26,7 +27,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   const [isFollowing, setIsFollowing] = useState();
   const [numFollowers, setNumFollowers] = useState();
 
-  console.log('MapUser', user._id)
+  console.log('MapUser', user._id);
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: 'events',
@@ -99,17 +100,12 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         showsVerticalScrollIndicator={false}
         scrollEnabled={scroll}
+        ListEmptyComponent={<ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
         ListHeaderComponent={
           <View>
             <TouchableOpacity onPress={onPressNavigateProfile}>
               <Row row alignCenter>
-                <View style={styles.profileImage}>
-                  {!user.profilePic ? (
-                    <Ionicons name="person" size={60} color={COLORS.gray} />
-                  ) : (
-                    <LoadingImage source={user.profilePic} style={styles.image} resizeMode="contain" profile />
-                  )}
-                </View>
+                <LoadingImage source={user.profilePic} viewStyle={styles.profileImage} profile width={SIZE * 6.5} iconSIZE={SIZE * 4} />
                 <Row style={styles.name}>
                   <Text semiBoldMd>{user.name}</Text>
                   <Text medium color={COLORS.darkGray}>
@@ -183,8 +179,6 @@ const styles = StyleSheet.create({
 
   profileImage: {
     width: SIZE * 6.5,
-    aspectRatio: 1,
-    backgroundColor: COLORS.lightGray,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,

@@ -112,15 +112,15 @@ export const EventDetails = ({ route }) => {
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: SIZE * 4 }}>
-          <View style={{ flex: 1 }}>
-            <LoadingImage source={event.coverImage} style={styles.eventBlurImage} resizeMode="cover" blurRadius={10} />
+          <View style={styles.eventBlurImage}>
+            <LoadingImage source={event.coverImage} viewStyle={styles.eventBlurImage} blurRadius={10} event width={SIZE * 30}/>
           </View>
           <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           {eventOrganiserId === userId && (
             <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
           )}
-          <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          <View style={{ paddingHorizontal: WIDTH_DEVICE / 20, zIndex: 1, backgroundColor: COLORS.white }}>
             <OrganiserInf organiser={defOrganiser} />
             <View style={{ marginHorizontal: 0 }}>
               <Line lineStyle={{ marginBottom: 0 }} />
@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
     height: SIZE * 23,
     width: WIDTH_DEVICE / 1,
     alignItems: 'center',
+    zIndex: -1,
   },
   eventImage: {
     height: SIZE * 20,

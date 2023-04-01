@@ -4,7 +4,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container } from '../../../../components';
+import { Container, ListEmptyComponent } from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
 import { selectSearchFilter } from '../../../../store/filter';
 import { ROLES } from '../../../../utils/conts';
@@ -12,7 +12,7 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const FollowingUsersScreen = ({ route }) => {
-  const { followingParams } = route.params
+  const { followingParams } = route.params;
   const filter = useSelector(selectSearchFilter);
 
   const { data, refreshing, getRefreshedData, loadMore, getMoreData, getData } = useInfiniteScroll({
@@ -44,6 +44,7 @@ export const FollowingUsersScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListEmptyComponent={<ListEmptyComponent text="This account has no following" />}
       />
     </Container>
   );

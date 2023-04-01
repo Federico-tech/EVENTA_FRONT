@@ -14,7 +14,7 @@ import { Container, InputText, TextButton, Header, Row, Text, LoadingImage } fro
 import { updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
-import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditUserScreen = () => {
   useEffect(requestCameraPermission, []);
@@ -125,18 +125,18 @@ export const EditUserScreen = () => {
     <BottomSheetModalProvider>
       <Container>
         <KeyboardAvoidingView behavior="height">
-          <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done cancel/>
-          <ScrollView >
+          <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done cancel />
+          <ScrollView>
             <Container>
-            <View style={styles.container}>
-              <Row alignCenter>
-                  <LoadingImage source={values.file} style={styles.image} profile width={SIZE * 7.5} iconSIZE={SIZE * 4}/>
-                <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
-              </Row>
-              <InputText label="Name" formik={formik} formikName="name" />
-              <InputText label="Username" formik={formik} formikName="username" />
-              <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={90} />
-            </View>
+              <View style={styles.container}>
+                <Row alignCenter>
+                  <LoadingImage source={values.file} style={styles.image} profile width={SIZE * 7.5} iconSIZE={SIZE * 4} />
+                  <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
+                </Row>
+                <InputText label="Name" formik={formik} formikName="name" />
+                <InputText label="Username" formik={formik} formikName="username" />
+                <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={90} />
+              </View>
             </Container>
           </ScrollView>
           <View>

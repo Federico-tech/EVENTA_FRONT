@@ -13,6 +13,7 @@ import { AccountOrganiserScreen } from '../screens/organiser/profile/accountProf
 import { EditOrganiserScreen } from '../screens/organiser/profile/editProfile/screen';
 import { OrganiserProfileScreen } from '../screens/organiser/profile/profile/screen';
 import { SearchOrganiserEventsScreen } from '../screens/organiser/profile/searchEvents/screen';
+import { ScannerScreen } from '../screens/organiser/scanner/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
 import { FollowersScreen } from '../screens/shared/followers/screen';
 import { FollowingScreen } from '../screens/shared/following/screen';
@@ -23,13 +24,12 @@ import { HomeScreen } from '../screens/user/home/home/screen';
 import { LikeScreen } from '../screens/user/home/like/screen';
 import { NotificationsScreen } from '../screens/user/home/notifications/screen';
 import { MapScreen } from '../screens/user/map/screen';
+import { CreatePostScreen } from '../screens/user/posts/createPost/screen';
+import { PostsFeedScreen } from '../screens/user/posts/postsFeed/screen';
 import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen';
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
-import { CreatePostScreen } from '../screens/user/posts/createPost/screen';
-import { PostsFeedScreen } from '../screens/user/posts/postsFeed/screen';
-import { ScannerScreen } from '../screens/organiser/scanner/screen';
 import { SIZE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -84,7 +84,7 @@ export const ROUTES = {
   FollowingUsersScreen: 'FollowingUsersScreen',
   CreatePostScreen: 'PreatePostScreen',
   PostsFeedScreen: 'PostsFeedScreen',
-  ScannerScreen: 'ScannerScreen'
+  ScannerScreen: 'ScannerScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -104,7 +104,7 @@ const BottomBarIcons = ({ route }) => ({
       iconName = focused ? 'add-circle' : 'add-circle-outline';
     } else if (route.name === ROUTES.PostsNavigator) {
       iconName = focused ? 'camera' : 'camera-outline';
-    } 
+    }
     return <Ionicons name={iconName} size={SIZE * 2} colour={colour} style={{ marginTop: SIZE / 2 }} />;
   },
 });
@@ -114,7 +114,7 @@ const HomeStackNavigator = createStackNavigator();
 const HomeNavigator = () => {
   return (
     <HomeStackNavigator.Navigator initialRouteName={ROUTES.HomeScreen}>
-      <HomeStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }}/>
+      <HomeStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.LikeScreen} component={LikeScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
@@ -152,19 +152,19 @@ export const SearchNavigator = () => {
 const PostsStackNaviagtor = createStackNavigator();
 
 export const PostsNavigator = () => {
-  return(
+  return (
     <PostsStackNaviagtor.Navigator>
       <PostsStackNaviagtor.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }}/>
+      <PostsStackNaviagtor.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
     </PostsStackNaviagtor.Navigator>
-  )
-}
+  );
+};
 
 const ProfileStackNavigator = createStackNavigator();
 
 export const ProfileNavigator = () => {
   return (
-    <ProfileStackNavigator.Navigator initialRouteName={ROUTES.ProfileScreen} >
+    <ProfileStackNavigator.Navigator initialRouteName={ROUTES.ProfileScreen}>
       <ProfileStackNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
@@ -205,6 +205,8 @@ export const OrganiserProfileNavigator = () => {
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen
         name={ROUTES.SearchOrganiserEventsScreen}
         component={SearchOrganiserEventsScreen}

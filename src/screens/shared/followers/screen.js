@@ -4,14 +4,14 @@ import { ActivityIndicator, View } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container, Header, SearchBar } from '../../../components';
+import { Container, Header, ListEmptyComponent, SearchBar } from '../../../components';
 import { UserRow } from '../../../components/AccountRow';
 import { selectSearchFilter } from '../../../store/filter';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const FollowersScreen = ({ route }) => {
-  const { followingParams }  = route.params;
+  const { followingParams } = route.params;
   const filter = useSelector(selectSearchFilter);
 
   const { data, refreshing, getRefreshedData, loadMore, getMoreData, getData } = useInfiniteScroll({
@@ -25,7 +25,7 @@ export const FollowersScreen = ({ route }) => {
   useEffect(() => {
     getRefreshedData();
   }, [filter]);
-  
+
   useEffect(() => {
     getData();
   }, [followingParams]);
@@ -44,6 +44,7 @@ export const FollowersScreen = ({ route }) => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
+        ListEmptyComponent={<ListEmptyComponent text="This account has no followers" />}
       />
     </Container>
   );

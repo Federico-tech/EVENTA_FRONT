@@ -39,7 +39,7 @@ export const HomeScreen = () => {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
-        ListHeaderComponent={<HomeTop ref={homeRef} />}
+        ListHeaderComponent={<HomeTop ref={homeRef} mapData={data} />}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListEmptyComponent={<ListEmptyComponent text="No upcoming events" />}

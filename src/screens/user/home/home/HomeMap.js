@@ -14,19 +14,14 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, SIZE, SIZES } from '../../../../utils/theme';
 
-export const HomeMap = () => {
+export const HomeMap = ({ mapData }) => {
   const user = useSelector(selectCurrentUser);
   const navigation = useNavigation();
-  const { data } = useInfiniteScroll({
-    entity: 'events',
-    filters: {
-      role: ROLES.ORGANISER,
-    },
-  });
+  console.log('MapData', mapData)
 
   const eventsByCoordinate = useMemo(() => {
     return Object.values(
-      data.reduce((acc, event) => {
+      mapData.reduce((acc, event) => {
         const coordinate = `${event.position.coordinates[1].toFixed(4)}_${event.position.coordinates[0].toFixed(4)}`;
         const currentClosest = acc[coordinate];
 
@@ -41,7 +36,7 @@ export const HomeMap = () => {
         return acc;
       }, {})
     );
-  }, [data]);
+  }, [mapData]);
 
   const mapRef = React.createRef();
 
@@ -79,7 +74,7 @@ export const HomeMap = () => {
             }}>
             <View style={{ alignItems: 'center', height: SIZE * 6 }}>
               <View style={styles.marker}>
-                <LoadingImage source={event.coverImage} style={styles.profileImage} profile />
+                <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5}/>
               </View>
             </View>
           </Marker>

@@ -51,7 +51,7 @@ export const CreateEventScreen = ({ route }) => {
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
-      address: string().required('Address is a required field'),
+      // address: string().required('Address is a required field'),
       description: string().required('Description is a required field'),
       startDate: string()
         .required('Date is a required field')

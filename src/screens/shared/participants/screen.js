@@ -5,7 +5,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container, Header, SearchBar, Text } from '../../../components';
+import { Container, Header, ListEmptyComponent, SearchBar, Text } from '../../../components';
 import { UserRow } from '../../../components/AccountRow';
 import { selectSelectedEventId } from '../../../store/event';
 import { selectSearchFilter } from '../../../store/filter';
@@ -42,6 +42,7 @@ export const ParticipantsScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
+        ListEmptyComponent={<ListEmptyComponent text="This event has no participants" />}
       />
     </Container>
   );

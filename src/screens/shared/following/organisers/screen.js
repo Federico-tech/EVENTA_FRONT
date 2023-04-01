@@ -4,23 +4,22 @@ import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container } from '../../../../components';
-import { OrganiserRow, UserRow } from '../../../../components/AccountRow';
+import { Container, ListEmptyComponent } from '../../../../components';
+import { OrganiserRow } from '../../../../components/AccountRow';
 import { selectSearchFilter } from '../../../../store/filter';
-import { selectSelectedUser } from '../../../../store/user';
 import { ROLES } from '../../../../utils/conts';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-import { SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
+import { SIZE } from '../../../../utils/theme';
 
 export const FollowingOrganisersScreen = ({ route }) => {
-  const { followingParams } = route.params
+  const { followingParams } = route.params;
   const filter = useSelector(selectSearchFilter);
 
   const { data, refreshing, getRefreshedData, loadMore, getMoreData, getData } = useInfiniteScroll({
     entity: `users/${followingParams._id}/followed`,
     filters: {
       search: filter,
-      role: ROLES.ORGANISER
+      role: ROLES.ORGANISER,
     },
     limit: 20,
   });
@@ -30,8 +29,8 @@ export const FollowingOrganisersScreen = ({ route }) => {
   }, [filter]);
 
   useEffect(() => {
-    getData()
-  }, [followingParams])
+    getData();
+  }, [followingParams]);
 
   return (
     <Container>
@@ -44,6 +43,7 @@ export const FollowingOrganisersScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListEmptyComponent={<ListEmptyComponent text="This account has no following" />}
       />
     </Container>
   );

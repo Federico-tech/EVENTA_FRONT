@@ -42,14 +42,14 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
           </TouchableOpacity>
           <TouchableOpacity>
             <Row row alignCenter style={{}}>
-              <MaterialIcons name="person" size={SIZE * 2} />
+              <MaterialIcons name="person" size={SIZE * 2} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
               <Text style={styles.textPart}>{participants}</Text>
             </Row>
           </TouchableOpacity>
         </View>
         <Line lineStyle={{ backgroundColor: COLORS.lightGray }} />
         <View style={styles.event}>
-          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator />
+          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 7} />
           <View style={styles.eventInformation}>
             <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT)}</Text>
             <Text style={styles.name}>{name}</Text>

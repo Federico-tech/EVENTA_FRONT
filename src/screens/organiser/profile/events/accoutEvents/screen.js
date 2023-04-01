@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
-import { View, ActivityIndicator, SectionList } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container, MiniEventCard } from '../../../../../components';
-import { OrganiserAccountTopNavigator } from '../../../../../navigation/TopTabNavigator';
+import { Container, ListEmptyComponent, MiniEventCard } from '../../../../../components';
 import { selectSelectedUserId } from '../../../../../store/user';
 import { useInfiniteScroll } from '../../../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../../../utils/theme';
@@ -33,6 +32,7 @@ export const EventsAccountScreen = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListEmptyComponent={<ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
       />
     </Container>
   );

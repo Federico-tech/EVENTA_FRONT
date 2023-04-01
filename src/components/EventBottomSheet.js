@@ -91,7 +91,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
         <Row row alignCenter style={{ marginBottom: SIZE }} spaceBetween>
           <TouchableOpacity onPress={handleOrganiserProfileNavigation}>
             <Row row alignCenter>
-              <LoadingImage source={event.organiser.profilePic} style={styles.image} />
+              <LoadingImage source={event.organiser.profilePic} profile width={SIZE * 4.5} iconSIZE={SIZE * 3} />
               <Row style={{ marginLeft: SIZE }}>
                 <Text medium>{event.organiser.username}</Text>
                 <Text color={COLORS.gray}>{event.organiser.name}</Text>
@@ -109,7 +109,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
         </Row>
         <Line />
         <Row row alignCenter style={{ marginTop: SIZE }}>
-          <LoadingImage source={event.coverImage} style={styles.eventImage} />
+          <LoadingImage source={event.coverImage} event indicator width={SIZE * 10} />
           <Row style={{ marginLeft: SIZE, width: SIZE * 15 }}>
             <Text color={COLORS.gray} style={{ fontSize: SIZES.xs }}>
               {formatDate(event.date, EVENT_DATE_FORMAT)}
@@ -151,7 +151,9 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
             {loading ? (
               <ActivityIndicator style={{ marginTop: SIZE }} />
             ) : (
-              participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} closeSheet={closeSheet} bottomSheet/>)
+              participants
+                ?.slice(0, 3)
+                .map((participant) => <UserRow key={participant.user._id} data={participant.user} closeSheet={closeSheet} bottomSheet />)
             )}
           </Row>
         </View>
@@ -161,20 +163,11 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    width: SIZE * 5,
-    aspectRatio: 1,
-    borderRadius: 100,
-  },
   username: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.md,
   },
-  eventImage: {
-    width: SIZE * 10,
-    aspectRatio: 1,
-    borderRadius: SIZES.xxs,
-  },
+
   imageContainer: {
     flexDirection: 'row',
     backgroundColor: 'black',

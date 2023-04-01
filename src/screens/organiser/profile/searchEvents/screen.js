@@ -4,7 +4,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Container, Header, MiniEventCard, SearchBar } from '../../../../components';
+import { Container, Header, ListEmptyComponent, MiniEventCard, SearchBar } from '../../../../components';
 import { selectSearchFilter } from '../../../../store/filter';
 import { selectSelectedUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
@@ -28,7 +28,7 @@ export const SearchOrganiserEventsScreen = () => {
 
   return (
     <Container>
-      <Header title="Events" />
+      <Header title="Events" back />
       <FlatList
         data={data}
         renderItem={({ item }) => <MiniEventCard data={item} />}
@@ -39,6 +39,7 @@ export const SearchOrganiserEventsScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListHeaderComponent={<SearchBar style={{ marginTop: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }} />}
+        ListEmptyComponent={<ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
       />
     </Container>
   );

@@ -15,7 +15,7 @@ import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const HomeTop = forwardRef(({ ...props }, ref) => {
+export const HomeTop = forwardRef(({mapData, ...props}, ref) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
   const navigation = useNavigation();
@@ -104,7 +104,7 @@ export const HomeTop = forwardRef(({ ...props }, ref) => {
           <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressLikes} />
         </Row>
       </View>
-      <HomeMap />
+      <HomeMap mapData={mapData}/>
       <Text semiBoldMd>Notes</Text>
       <View style={styles.noteContainer}>
         <FlatList

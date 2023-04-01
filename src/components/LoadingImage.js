@@ -4,7 +4,7 @@ import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 
 import { COLORS, SIZE, SIZES } from '../utils/theme';
 
-export const LoadingImage = ({ source, event, indicator, profile, width, blurRadius, iconSIZE, imageStyle, viewStyle }) => {
+export const LoadingImage = ({ source, event, indicator, profile, width, blurRadius, iconSIZE, imageStyle, viewStyle, resizeMode }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoadStart = () => {
@@ -15,33 +15,37 @@ export const LoadingImage = ({ source, event, indicator, profile, width, blurRad
     setIsLoading(false);
   };
   return (
-    
     <View>
-      {isLoading && 
+      {isLoading && (
         <View style={[profile && styles.loadingProfileImage, event && styles.loadingEventImage, viewStyle, { width, position: 'absolute' }]}>
-        {indicator && <ActivityIndicator color="black" />}
-      </View>}
-      {(profile && !source) ? 
+          {indicator && <ActivityIndicator color="black" />}
+        </View>
+      )}
+      {profile && !source ? (
         <View style={[profile && styles.loadingProfileImage, viewStyle, { width }, imageStyle]}>
           <Ionicons name="person" size={iconSIZE} color={COLORS.lightGray} style={{ marginBottom: SIZE / 4 }} />
         </View>
-       : 
-         <View style={viewStyle}>
+      ) : (
+        <View style={viewStyle}>
           <Image
             source={{ uri: source }}
             style={[profile && styles.profileImage, event && styles.eventImage, { width }, imageStyle]}
             onLoadStart={handleLoadStart}
             onLoadEnd={handleLoadEnd}
             blurRadius={blurRadius}
+            resizeMode={resizeMode}
           />
-          </View>
-        }
-        
+        </View>
+      )}
     </View>
-  ) 
-}
+  );
+};
 const styles = StyleSheet.create({
-  eventImage: {},
+  eventImage: {
+    backgroundColor: COLORS.backGray,
+    aspectRatio: 1,
+    borderRadius: SIZES.xxs,
+  },
   profileImage: {
     width: SIZE * 2,
     aspectRatio: 1,

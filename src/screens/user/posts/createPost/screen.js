@@ -13,7 +13,7 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, Header, InputText, MiniEventCard, Row, Text, TextButton } from '../../../../components';
+import { Container, Header, InputText, ListEmptyComponent, MiniEventCard, Row, Text, TextButton } from '../../../../components';
 import { createPost } from '../../../../services/posts';
 import { selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
@@ -51,7 +51,7 @@ export const CreatePostScreen = () => {
     []
   );
 
-  const { data, refreshing, getRefreshedData, getMoreData, loadMore, getData } = useInfiniteScroll({
+  const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: `users/${userId}/events`,
     limit: 6,
   });
@@ -63,7 +63,7 @@ export const CreatePostScreen = () => {
     handleClosePress();
   };
 
-  const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit, getFieldProps } = useFormik({
+  const { values, errors, validateForm, setFieldValue, touched, setFieldError, handleSubmit } = useFormik({
     initialValues: {
       eventId: '',
       caption: '',
@@ -123,7 +123,7 @@ export const CreatePostScreen = () => {
   return (
     <Container>
       <KeyboardAvoidingView behavior="height">
-        <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel/>
+        <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <TouchableOpacity onPress={pickImage}>
@@ -164,6 +164,7 @@ export const CreatePostScreen = () => {
             onEndReached={_.throttle(getMoreData, 400)}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+            ListEmptyComponent={<ListEmptyComponent text="There are no events you have participated to in the last 2 days " />}
           />
         </View>
       </BottomSheetModal>

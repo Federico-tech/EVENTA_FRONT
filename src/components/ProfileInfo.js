@@ -71,16 +71,16 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
     ]);
   };
 
-  const handleEditProfile = () => navigation.navigate(organiser ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
+  const handleEditProfile = () => navigation.navigate(user.role === 'organiser' ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
 
   const onPressFollowing = () => {
-    navigation.push(organiser ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { followingParams });
+    navigation.push(user.role === 'organiser' ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { followingParams });
   };
 
   return (
     <View>
       <Row row>
-        <LoadingImage source={user.profilePic} width={SIZE * 6} viewStyle={styles.profileImage} profile />
+        <LoadingImage source={user.profilePic} width={SIZE * 7} viewStyle={styles.profileImage} profile iconSIZE={SIZE * 4} />
         <Row style={styles.name}>
           <Text semiBoldMd>{user.name}</Text>
           <Text regularSm color={COLORS.darkGray}>
@@ -116,7 +116,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
               </Text>
             </Row>
           </TouchableOpacity>
-          {myProfile || (currentUser._id === selectedUser._id) ? (
+          {myProfile || currentUser._id === selectedUser._id ? (
             <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
           ) : currentUser.role === 'user' ? (
             user.isFollowing ? (

@@ -60,11 +60,11 @@ export const EventCard = ({ eventData }) => {
   return (
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.cardContainer}>
-        <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator />
+        <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator event width="100%" />
         <View style={{ marginHorizontal: SIZE * 2 }}>
           <View style={styles.descContainer}>
             <View style={styles.informationContainer}>
-              <LoadingImage resizeMode="contain" style={styles.organiserImage} source={eventData.organiser?.profilePic} profile />
+              <LoadingImage source={eventData.organiser?.profilePic} profile width={SIZE * 4} />
               <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{eventData.name}</Text>
                 <View>
@@ -135,11 +135,6 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 1,
     borderRadius: SIZES.xxs,
-  },
-  organiserImage: {
-    width: SIZE * 4,
-    aspectRatio: 1,
-    borderRadius: 100,
   },
 
   descContainer: {

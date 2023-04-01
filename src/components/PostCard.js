@@ -36,14 +36,14 @@ export const PostCard = ({ postData }) => {
         <Row style={styles.topRow}>
           <Row style={{ padding: SIZE * 0.7 }} row alignCenter spaceBetween>
             <Row row alignCenter>
-              <LoadingImage source={postData.user.profilePic} style={{ width: SIZE * 2.5, aspectRatio: 1, borderRadius: 100 }} profile />
+              <LoadingImage source={postData.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
               <Row>
                 <Text style={{ marginLeft: SIZE, fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
               </Row>
             </Row>
             <Entypo name="dots-three-horizontal" size={SIZE * 1.2} />
           </Row>
-          <LoadingImage source={postData.postImage} style={styles.image} indicator />
+          <LoadingImage source={postData.postImage} style={styles.image} indicator event />
           <Row style={styles.rowBottom} spaceBetween row alignCenter>
             <Row style={{ margin: SIZE / 2, width: SIZE * 22 }} justifyCenter>
               <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
