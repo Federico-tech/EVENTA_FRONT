@@ -21,14 +21,16 @@ export const Button = ({
   children,
   black,
 }) => {
-  const Component = gradient ? LinearGradient : View;
+  const Component = !loading  && gradient ? LinearGradient : View;
   return (
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
+      <View style={[gradient && (loading && styles.secondary), containerStyle]}>
       <Component
         colors={[COLORS.gradient1, COLORS.gradient2]}
         // start={{ x: 0, y: 1 }}
         // end={{ x: 0, y: 0 }}
         style={[
+          loading && styles.secondary,
           primary && styles.container,
           secondary && styles.secondary,
           disabled && styles.disabled,
@@ -38,7 +40,7 @@ export const Button = ({
           containerStyle,
         ]}>
         {loading ? (
-          <ActivityIndicator color="white" />
+          <ActivityIndicator color={primary ? "white" : 'black'} />
         ) : (
           <>
             {!!text && (
@@ -57,6 +59,7 @@ export const Button = ({
           </>
         )}
       </Component>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
   containerGradient: {
     backgroundColor: undefined,
     height: SIZE * 2.5,
-    width: SIZE * 9.5,
+    width: SIZE * 13,
     borderRadius: SIZES.xxs,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     alignItems: 'center',
     justifyContent: 'center',
-    width: SIZE * 9.5,
+    width: SIZE * 13,
   },
   black: {
     backgroundColor: 'black',

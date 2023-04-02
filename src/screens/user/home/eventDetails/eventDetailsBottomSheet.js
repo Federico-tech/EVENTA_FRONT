@@ -7,8 +7,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AlertModal, Row, Text } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { FONTS, SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
+import { report } from '../../../../services/reports';
 
-export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet }) => {
+export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, eventId }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
   const navigation = useNavigation();
@@ -16,6 +17,12 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet }) => 
     navigation.navigate(ROUTES.EditEventScreen);
     closeSheet();
   };
+
+  const onPressReportEvent = (data) => {
+    report(data)
+    closeSheet()
+    setReportModalVisible(false)
+  }
 
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
@@ -63,6 +70,7 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet }) => 
         title="Report this event?"
         descritpion="Thank you for reporting this event. Our team will review the event and take appropriate action as necessary."
         confirmText="Report"
+        onPressConfirm={() => onPressReportEvent({type: 'event', userId: userId, objectId: eventId})}
       />
     </View>
   );

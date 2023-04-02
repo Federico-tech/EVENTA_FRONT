@@ -9,17 +9,19 @@ import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { setUserSelected } from '../store/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentUserId, setUserSelected } from '../store/user';
 import { ROUTES } from '../navigation/Navigation'
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { AlertModal } from './AlertModal';
+import { report } from '../services/reports';
 
 export const PostCard = ({ postData }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
   const [lastTap, setLastTap] = useState(null)
   const [isReportModalVisible, setReportModalVisible] = useState(false);
+  const currentUserId = useSelector(selectCurrentUserId)
 
   const bottomSheetModalRef = useRef(null);
 
@@ -77,8 +79,12 @@ export const PostCard = ({ postData }) => {
     dispatch(setUserSelected(postData.user))
     navigation.navigate(ROUTES.AccountUserScreen)
   }
-
-
+ 
+  const onPressReportPost = (data) => {
+    report(data)
+    handleClosePress()
+    setReportModalVisible(false)
+  }
 
   return (
     <TouchableWithoutFeedback onPress={handleDoubleTap}>
@@ -94,7 +100,7 @@ export const PostCard = ({ postData }) => {
               </Row>
             </TouchableOpacity>
             <TouchableOpacity onPress={handlePresentModal}>
-            <Entypo name="dots-three-horizontal" size={SIZE * 1.2} onPress={handlePresentModal}/>
+            <Entypo name="dots-three-horizontal" size={SIZE * 1.4} onPress={handlePresentModal}/>
             </TouchableOpacity>
           </Row>
           <LoadingImage source={postData.postImage} style={styles.image} indicator event />
@@ -138,6 +144,7 @@ export const PostCard = ({ postData }) => {
         title="Report this post?"
         descritpion="Thank you for reporting this post. Our team will review the event and take appropriate action as necessary."
         confirmText="Report"
+        onPressConfirm={() => onPressReportPost({ type: 'post', userId: currentUserId, objectId: postData._id })}
       />
     </TouchableWithoutFeedback>
   );

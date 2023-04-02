@@ -5,19 +5,18 @@ import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { deleteNote, fire, unfire } from '../services/notes';
+import { fire, unfire } from '../services/notes';
 import { selectCurrentUserId } from '../store/user';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
-import { getRefreshedEvent } from '../services/events';
 import { AlertModal } from './AlertModal';
+import { report } from '../services/reports';
 
 export const Note = ({ data, deleteNote }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
-  console.debug({ note: data})
   const userId = useSelector(selectCurrentUserId)
 
   const bottomSheetModalRef = useRef(null);
@@ -26,6 +25,8 @@ export const Note = ({ data, deleteNote }) => {
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
   };
+
+  const handleClosePress = () => bottomSheetModalRef.current.close();
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -60,9 +61,15 @@ export const Note = ({ data, deleteNote }) => {
     setNumFires(numFires - 1)
   };
 
+  const onPressReportNote = (data) => {
+    report(data)
+    handleClosePress()
+    setReportModalVisible(false)
+  }
+
   return (
     <View>
-      <TouchableOpacity onPress={data.user._id === userId ? handlePresentModal : () => {}}>
+      <TouchableOpacity onPress={handlePresentModal}>
         <Row justifyCenter>
           <View>
             <View style={styles.note}>
@@ -86,7 +93,7 @@ export const Note = ({ data, deleteNote }) => {
         </Row>
       </TouchableOpacity>
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-      {data.user._id === userId ? 
+      {data.user._id === userId ?
           <TouchableOpacity onPress={() => setDeleteModalVisible(true)}>
             <Row row alignCenter style={{ marginTop: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
               <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
@@ -97,9 +104,9 @@ export const Note = ({ data, deleteNote }) => {
           </TouchableOpacity>
           :
           <TouchableOpacity onPress={() => setReportModalVisible(true)}>
-            <Row row alignCenter style={{ marginTop: SIZE }}>
+            <Row row alignCenter style={{ marginTop: SIZE, marginHorizontal: WIDTH_DEVICE / 20  }}>
               <Octicons name="report" size={SIZE * 1.8} color="red" />
-              <Text regularSm color="red" style={{ marginLeft: SIZE }}>
+              <Text regularSm color="red" style={{ marginLeft: SIZE}}>
                 Report
               </Text>
             </Row>
@@ -117,9 +124,10 @@ export const Note = ({ data, deleteNote }) => {
        <AlertModal
         isVisible={isReportModalVisible}
         onBackdropPress={() => setReportModalVisible(false)}
-        title="Report this post?"
-        descritpion="You want to report this note? Our team will review the event and take appropriate action as necessary."
+        title="Report this note?"
+        descritpion="You want to report this note? Our team will review the note and take appropriate action as necessary."
         confirmText="Report"
+        onPressConfirm={() => onPressReportNote({ type: 'note', userId: userId, objectId: data._id })}
       />
     </View>
   );

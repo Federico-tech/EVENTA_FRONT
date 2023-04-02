@@ -17,12 +17,14 @@ import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 
-export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
+export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }) => {
   const [user, setUser] = useState({ ...initialUser });
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
   const selectedUser = useSelector(selectSelectedUser);
   const followingParams = myProfile ? currentUser : selectedUser;
+
+  console.log('UserLoading', loading)
 
   const { data } = useInfiniteScroll({
     entity: 'events',
@@ -77,6 +79,8 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
     navigation.push(user.role === 'organiser' ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { followingParams });
   };
 
+ 
+
   return (
     <View>
       <Row row>
@@ -120,9 +124,9 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser }) => {
             <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
           ) : currentUser.role === 'user' ? (
             user.isFollowing ? (
-              <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} />
+              <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} loading={loading}/>
             ) : (
-              <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} />
+              <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} loading={loading}/>
             )
           ) : (
             <View style={{ width: SIZE * 13 }} />

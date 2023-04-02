@@ -21,8 +21,6 @@ export const AccountUserScreen = ({ route }) => {
     refresh();
   }, [id]);
 
-  console.log('Isloading', isLoading);
-
   return (
     <Container>
       <View style={{ zIndex: 1 }}>

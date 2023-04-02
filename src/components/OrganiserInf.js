@@ -11,7 +11,7 @@ import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { Row } from './Row';
 
-export const OrganiserInf = ({ organiser }) => {
+export const OrganiserInf = ({ organiser, isLoading }) => {
   const [isFollowing, setIsFollowing] = useState();
 
   const navigation = useNavigation();
@@ -46,9 +46,9 @@ export const OrganiserInf = ({ organiser }) => {
           </Row>
         </TouchableOpacity>
         {role === 'user' && isFollowing ? (
-          <Button secondary text="Following" onPress={onPressUnfollow} />
+          <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9.5}} loading={isLoading}/>
         ) : (
-          <Button gradient text="Follow" onPress={onPressFollow} />
+          <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9.5}} loading={isLoading}/>
         )}
       </View>
     </View>

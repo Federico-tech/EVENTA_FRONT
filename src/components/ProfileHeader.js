@@ -12,6 +12,7 @@ import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { IconButton } from './Button';
 import { Row } from './Row';
+import { report } from '../services/reports';
 
 export const ProfileHeader = ({ myProfile, user }) => {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
@@ -38,6 +39,14 @@ export const ProfileHeader = ({ myProfile, user }) => {
     ),
     []
   );
+
+  const dataReport = {type: 'user', userId: currentUserId, objectId: selectedUserId}
+
+  const onPressReportUser = (data) => {
+    report(data)
+    handleClosePress()
+    setReportModalVisible(false)
+  }
   
   return (
     <View>
@@ -70,6 +79,7 @@ export const ProfileHeader = ({ myProfile, user }) => {
         title="Report this event?"
         descritpion="Thank you for reporting this event. Our team will review the event and take appropriate action as necessary."
         confirmText="Report"
+        onPressConfirm={() => onPressReportUser(dataReport)}
       />
     </View>
   );

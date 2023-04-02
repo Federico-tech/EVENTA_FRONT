@@ -104,24 +104,24 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
     getData();
   }, [updatedUser]);
 
-  const MyHeader = () => {
+  const MyHeader = ({ isLoading }) => {
     return (
       <View>
-        <ProfileInfo myProfile user={user} />
+        <ProfileInfo myProfile user={user} loading={isLoading}/>
       </View>
-    );
+    ); 
   };
 
   const AccountHeader = () => {
     return (
       <View>
-        <ProfileInfo user={user} />
+        <ProfileInfo user={user} loading={isLoading}/>
       </View>
     );
   };
 
   return (
-    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
+    <Tabs.Container renderHeader={userId !== currentUserId ? () => (<AccountHeader isLoading={isLoading}/>) : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
       <Tabs.Tab name="Posts">
         {isLoading ? (
           <Tabs.ScrollView>
