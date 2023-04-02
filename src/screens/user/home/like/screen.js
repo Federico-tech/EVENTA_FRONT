@@ -29,7 +29,7 @@ export const LikeScreen = () => {
         showsHorizontalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={<ListEmptyComponent text="There are no events you liked" />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no events you liked" />}
       />
     </Container>
   );

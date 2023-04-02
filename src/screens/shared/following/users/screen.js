@@ -44,7 +44,7 @@ export const FollowingUsersScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={<ListEmptyComponent text="This account has no following" />}
+        ListEmptyComponent={ !refreshing &&<ListEmptyComponent text="This account has no following" />}
       />
     </Container>
   );

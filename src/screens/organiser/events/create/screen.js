@@ -51,7 +51,7 @@ export const CreateEventScreen = ({ route }) => {
     },
     validationSchema: object().shape({
       name: string().required('Name is a required field'),
-      // address: string().required('Address is a required field'),
+      address: object().required('Address is a required field'),
       description: string().required('Description is a required field'),
       startDate: string()
         .required('Date is a required field')
@@ -98,6 +98,12 @@ export const CreateEventScreen = ({ route }) => {
       }
     },
   });
+
+  useEffect(() => {
+    if (!discountEnabled) {
+      setFieldValue('discount', 0);
+    }
+  }, [discountEnabled]);
 
   useEffect(() => {
     const { addressInfo } = route.params || {};
@@ -165,8 +171,6 @@ export const CreateEventScreen = ({ route }) => {
       backScreenName: route.name,
     });
   };
-
-  console.log(values.address);
 
   return (
     <Container>

@@ -39,7 +39,7 @@ export const SearchOrganiserEventsScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListHeaderComponent={<SearchBar style={{ marginTop: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }} />}
-        ListEmptyComponent={<ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
       />
     </Container>
   );

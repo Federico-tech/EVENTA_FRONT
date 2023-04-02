@@ -38,7 +38,7 @@ export const SearchUserScreen = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={<ListEmptyComponent text={`No results found for '${name}'`} />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text={`No results found for '${name}'`} />}
       />
     </Container>
   );

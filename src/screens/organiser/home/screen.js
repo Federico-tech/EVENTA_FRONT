@@ -56,7 +56,7 @@ export const OrganiserHome = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={<ListEmptyComponent text={filter === 'upcoming' ? 'There are no upcoming events' : 'There are no past events'} />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text={filter === 'upcoming' ? 'There are no upcoming events' : 'There are no past events'} />}
         ListHeaderComponent={
           <View>
             <Analytics />

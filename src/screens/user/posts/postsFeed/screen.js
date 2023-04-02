@@ -73,7 +73,7 @@ export const PostsFeedScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={<ListEmptyComponent text="There are no new moments for you" />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no new moments for you" />}
       />
     </Container>
   );

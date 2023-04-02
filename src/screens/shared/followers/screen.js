@@ -44,7 +44,7 @@ export const FollowersScreen = ({ route }) => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
-        ListEmptyComponent={<ListEmptyComponent text="This account has no followers" />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text="This account has no followers" />}
       />
     </Container>
   );

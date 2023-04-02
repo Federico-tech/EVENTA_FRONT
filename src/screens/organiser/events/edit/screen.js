@@ -9,11 +9,11 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, Switch, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
-import { Container, Header, InputText } from '../../../../components';
+import { Container, Header, InputText, Row } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { updateEvent, updateEventImage } from '../../../../services/events';
 import { selectSelectedEvent } from '../../../../store/event';
@@ -45,6 +45,7 @@ export const EditEventScreen = ({ route }) => {
       },
       startDate: formatDate(event.date, DATE_FORMAT),
       startTime: formatDate(event.date, TIME_FORMAT),
+      discount: event.discount.toString(),
       file: event.coverImage,
     },
     validationSchema: object().shape({
@@ -78,8 +79,8 @@ export const EditEventScreen = ({ route }) => {
         await updateEvent({ ..._.omit(data, ['startTime', 'startDate']), date, organiser });
         navigation.goBack();
         showMessage({
-          message: 'Event Created Succefully',
-          description: 'The event has been cerated succefully',
+          message: 'Event Updated Succefully',
+          description: 'The event has been updated succefully',
           type: 'success',
         });
         setLoading(false);
@@ -89,6 +90,14 @@ export const EditEventScreen = ({ route }) => {
       }
     },
   });
+
+  const [discountEnabled, setDiscountEnabled] = useState(values.discount !== 0);
+
+  useEffect(() => {
+    if (!discountEnabled) {
+      setFieldValue('discount', 0);
+    }
+  }, [discountEnabled]);
 
   useEffect(() => {
     const { addressInfo } = route.params || {};
@@ -157,7 +166,8 @@ export const EditEventScreen = ({ route }) => {
     });
   };
 
-  console.log('Address', values.address)
+  console.log('Discount', values.discount);
+
   return (
     <Container>
       <Header title="Edit event" done onPress={handleSubmit} loading={loading} cancel />
@@ -201,6 +211,11 @@ export const EditEventScreen = ({ route }) => {
               maxLength={5}
               placeholder="HH:mm"
             />
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <Text style={styles.textDiscount}>Discount</Text>
+              <Switch value={discountEnabled} onValueChange={setDiscountEnabled} />
+            </Row>
+            {discountEnabled && <InputText formik={formik} formikName="discount" maxLength={30} placeholder="Enter the discount percentage" />}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -258,5 +273,11 @@ const styles = StyleSheet.create({
     color: COLORS.error,
     fontSize: SIZES.sm,
     alignSelf: 'center',
+  },
+  textDiscount: {
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.xs,
+    color: COLORS.darkGray,
+    marginRight: SIZE,
   },
 });

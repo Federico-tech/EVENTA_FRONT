@@ -67,7 +67,7 @@ export const OrganiserTopNavigator = ({ user, account }) => {
           onEndReached={_.throttle(getMoreData, 400)}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
           ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-          ListEmptyComponent={<ListEmptyComponent text={`The organizer hasn't created any events yet`} />}
+          ListEmptyComponent={!refreshing && <ListEmptyComponent text={`The organizer hasn't created any events yet`} />}
         />
       </Tabs.Tab>
       <Tabs.Tab name="About">
@@ -137,7 +137,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               onEndReached={_.throttle(getMorePostData, 400)}
               refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
               ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
-              ListEmptyComponent={<ListEmptyComponent text={'There is no post yet'} />}
+              ListEmptyComponent={!refreshing && <ListEmptyComponent text={'There is no post yet'} />}
             />
           ) : (
             <Tabs.ScrollView>
@@ -155,7 +155,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
             onEndReached={_.throttle(getMorePostData, 400)}
             refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
-            ListEmptyComponent={<ListEmptyComponent text={'There is no post yet'} />}
+            ListEmptyComponent={!refreshing && <ListEmptyComponent text={'There is no post yet'} />}
           />
         )}
       </Tabs.Tab>
@@ -170,7 +170,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               onEndReached={_.throttle(getMoreData, 400)}
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
               ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-              ListEmptyComponent={<ListEmptyComponent text={`The user hasn't particited to any events yet`} />}
+              ListEmptyComponent={!refreshing && <ListEmptyComponent text={`The user hasn't particited to any events yet`} />}
             />
           ) : (
             <Tabs.ScrollView>
@@ -188,7 +188,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
             onEndReached={_.throttle(getMoreData, 400)}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-            ListEmptyComponent={<ListEmptyComponent text={`The user hasn't particited to any events yet`} />}
+            ListEmptyComponent={!refreshing && <ListEmptyComponent text={`The user hasn't particited to any events yet`} />}
           />
         )}
       </Tabs.Tab>

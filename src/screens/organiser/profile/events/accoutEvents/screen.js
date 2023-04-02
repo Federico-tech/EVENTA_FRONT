@@ -32,7 +32,7 @@ export const EventsAccountScreen = () => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={<ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
       />
     </Container>
   );

@@ -29,7 +29,7 @@ export const PastEventsScreen = () => {
         onEndReachedThreshold={0.1}
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-        ListEmptyComponent={<ListEmptyComponent text="There are no past event" />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no past event" />}
       />
     </Container>
   );

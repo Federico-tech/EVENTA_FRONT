@@ -42,7 +42,7 @@ export const ParticipantsScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListHeaderComponent={<SearchBar style={{ marginTop: SIZE }} />}
-        ListEmptyComponent={<ListEmptyComponent text="This event has no participants" />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text="This event has no participants" />}
       />
     </Container>
   );
