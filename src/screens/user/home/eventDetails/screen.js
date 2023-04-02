@@ -21,6 +21,7 @@ import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
+import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
 export const EventDetails = ({ route }) => {
   const [participants, setParticipants] = useState();
@@ -44,8 +45,6 @@ export const EventDetails = ({ route }) => {
   const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
 
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = ['13%'];
-
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
   };
@@ -99,11 +98,6 @@ export const EventDetails = ({ route }) => {
     setNumberPart(event.participants);
   };
 
-  const onPressEditEvent = () => {
-    navigation.navigate(ROUTES.EditEventScreen);
-    handleClosePress();
-  };
-
   const onPressNaviagtePosts = () => {
     navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event } });
   };
@@ -113,13 +107,11 @@ export const EventDetails = ({ route }) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: SIZE * 4 }}>
           <View style={styles.eventBlurImage}>
-            <LoadingImage source={event.coverImage} viewStyle={styles.eventBlurImage} blurRadius={10} event width={SIZE * 30}/>
+            <LoadingImage source={event.coverImage} viewStyle={styles.eventBlurImage} blurRadius={10} event width={SIZE * 30} />
           </View>
           <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
-          {eventOrganiserId === userId && (
-            <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
-          )}
+          <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
           <View style={{ paddingHorizontal: WIDTH_DEVICE / 20, zIndex: 1, backgroundColor: COLORS.white }}>
             <OrganiserInf organiser={defOrganiser} />
             <View style={{ marginHorizontal: 0 }}>
@@ -152,7 +144,8 @@ export const EventDetails = ({ route }) => {
                 </Text>
               </View>
               <TextButton text="view moments" onPress={onPressNaviagtePosts} />
-              <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event }, key: Math.floor(1, 1000000) })}>
                 <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
                   <MapView
                     style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
@@ -205,17 +198,8 @@ export const EventDetails = ({ route }) => {
             </>
           ))}
       </Row>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <TouchableOpacity onPress={onPressEditEvent}>
-            <Row row alignCenter style={{ marginTop: SIZE }}>
-              <AntDesign name="edit" size={SIZE * 2} />
-              <Text regularSm style={{ marginLeft: SIZE }}>
-                Edit this event
-              </Text>
-            </Row>
-          </TouchableOpacity>
-        </View>
+      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={organiser._id === userId ? ['17%'] : ['13%']} backdropComponent={renderBackdrop}>
+        <EventDetailsBottomSheet closeSheet={handleClosePress} userId={userId} organiserId={organiser._id}/>
       </BottomSheetModal>
       <DiscountModal isVisible={isModalVisible} onBackdropPress={() => setModalVisible(false)} event={event} />
     </Container>
@@ -300,6 +284,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     bottom: 0,
     position: 'absolute',
+    paddingRight: SIZE,
   },
   other: {
     fontFamily: 'InterRegular',

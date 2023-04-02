@@ -21,3 +21,4 @@ export * from './Note';
 export * from './ProfileHeader';
 export * from './PostCard';
 export * from './ListEmptyComponent';
+export * from './AlertModal'

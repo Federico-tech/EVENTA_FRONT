@@ -16,8 +16,6 @@ export const HomeHeader = ({ data, organiser }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  console.log('Ciao', userinfo.profilePic)
-
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.container}>

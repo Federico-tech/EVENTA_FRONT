@@ -1,17 +1,50 @@
-import { AntDesign, Entypo } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import { AntDesign, Entypo, Octicons } from '@expo/vector-icons';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { postLike, postUnlike } from '../services/postLikes';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setUserSelected } from '../store/user';
+import { ROUTES } from '../navigation/Navigation'
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { AlertModal } from './AlertModal';
 
 export const PostCard = ({ postData }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
+  const [lastTap, setLastTap] = useState(null)
+  const [isReportModalVisible, setReportModalVisible] = useState(false);
+
+  const bottomSheetModalRef = useRef(null);
+
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
+
+  const handlePresentModal = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
+  const handleClosePress = () => bottomSheetModalRef.current.close();
+
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={1}
+        animatedIndex={{
+          value: 1,
+        }}
+      />
+    ),
+    []
+  );
+  
 
   useEffect(() => {
     setLikes(postData.likes);
@@ -29,19 +62,40 @@ export const PostCard = ({ postData }) => {
     setLikes(likes - 1);
     setIsLiked(false);
   };
+  
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    const DOUBLE_PRESS_DELAY = 300;
+    if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+      isLiked ? onPressUnlike() : onPresslike();
+    } else {
+      setLastTap(now);
+    }
+  }
+
+  const onPressProfile = () => {
+    dispatch(setUserSelected(postData.user))
+    navigation.navigate(ROUTES.AccountUserScreen)
+  }
+
+
 
   return (
-    <TouchableOpacity>
+    <TouchableWithoutFeedback onPress={handleDoubleTap}>
       <View style={styles.wrapper}>
         <Row style={styles.topRow}>
           <Row style={{ padding: SIZE * 0.7 }} row alignCenter spaceBetween>
-            <Row row alignCenter>
-              <LoadingImage source={postData.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
-              <Row>
-                <Text style={{ marginLeft: SIZE, fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
+            <TouchableOpacity onPress={onPressProfile}>
+              <Row row alignCenter>
+                <LoadingImage source={postData.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
+                <Row>
+                  <Text style={{ marginLeft: SIZE, fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
+                </Row>
               </Row>
-            </Row>
-            <Entypo name="dots-three-horizontal" size={SIZE * 1.2} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handlePresentModal}>
+            <Entypo name="dots-three-horizontal" size={SIZE * 1.2} onPress={handlePresentModal}/>
+            </TouchableOpacity>
           </Row>
           <LoadingImage source={postData.postImage} style={styles.image} indicator event />
           <Row style={styles.rowBottom} spaceBetween row alignCenter>
@@ -68,7 +122,24 @@ export const PostCard = ({ postData }) => {
           </Row>
         </Row>
       </View>
-    </TouchableOpacity>
+      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['13%']} backdropComponent={renderBackdrop}>
+        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          <TouchableOpacity onPress={() => setReportModalVisible(true)}>
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <Octicons name="report" size={SIZE * 1.8} color="red" />
+              <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
+            </Row>
+          </TouchableOpacity>
+        </View>
+      </BottomSheetModal>
+      <AlertModal
+        isVisible={isReportModalVisible}
+        onBackdropPress={() => setReportModalVisible(false)}
+        title="Report this post?"
+        descritpion="Thank you for reporting this post. Our team will review the event and take appropriate action as necessary."
+        confirmText="Report"
+      />
+    </TouchableWithoutFeedback>
   );
 };
 

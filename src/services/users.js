@@ -105,10 +105,19 @@ export const getMe = async (data) => {
 
 export const getUserById = async (userId) => {
   try {
-    const { data: user } = await mainAxios.get(`users/${userId}`)
-    console.log({ user })
-    return user
-  } catch (e){
-    console.log({ getUserByIdError: e})
+    const { data: user } = await mainAxios.get(`users/${userId}`);
+    console.log({ user });
+    return user;
+  } catch (e) {
+    console.log({ getUserByIdError: e });
   }
-}
+};
+
+export const deleteMe = async () => {
+  try {
+    const { data } = await mainAxios.delete('users/me');
+    console.log(data);
+  } catch (e) {
+    console.log({ errorDeletingMe: e });
+  }
+};

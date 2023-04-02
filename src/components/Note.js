@@ -1,4 +1,4 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -12,8 +12,11 @@ import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 import { getRefreshedEvent } from '../services/events';
+import { AlertModal } from './AlertModal';
 
 export const Note = ({ data, deleteNote }) => {
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [isReportModalVisible, setReportModalVisible] = useState(false);
   console.debug({ note: data})
   const userId = useSelector(selectCurrentUserId)
 
@@ -83,15 +86,41 @@ export const Note = ({ data, deleteNote }) => {
         </Row>
       </TouchableOpacity>
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-        <TouchableOpacity onPress={() => deleteNote(data._id)}>
-          <Row row alignCenter style={{ marginTop: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
-            <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
-            <Text regularSm color="red" style={{ marginLeft: SIZE / 2 }}>
-              Delete the note
-            </Text>
-          </Row>
-        </TouchableOpacity>
+      {data.user._id === userId ? 
+          <TouchableOpacity onPress={() => setDeleteModalVisible(true)}>
+            <Row row alignCenter style={{ marginTop: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
+              <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
+              <Text regularSm color="red" style={{ marginLeft: SIZE / 2 }}>
+                Delete the note
+              </Text>
+            </Row>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity onPress={() => setReportModalVisible(true)}>
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <Octicons name="report" size={SIZE * 1.8} color="red" />
+              <Text regularSm color="red" style={{ marginLeft: SIZE }}>
+                Report
+              </Text>
+            </Row>
+          </TouchableOpacity>
+      }
         </BottomSheetModal>
+        <AlertModal
+        isVisible={isDeleteModalVisible}
+        onBackdropPress={() => setDeleteModalVisible(false)}
+        title="Delete this note?"
+        descritpion="Are you sure you want to delete this note?"
+        confirmText="Delete"
+        onPressConfirm={() => deleteNote(data._id)}
+      />
+       <AlertModal
+        isVisible={isReportModalVisible}
+        onBackdropPress={() => setReportModalVisible(false)}
+        title="Report this post?"
+        descritpion="You want to report this note? Our team will review the event and take appropriate action as necessary."
+        confirmText="Report"
+      />
     </View>
   );
 };

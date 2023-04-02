@@ -19,7 +19,7 @@ export const ScannerScreen = () => {
   const [eventName, setEventName] = useState();
   const selectedEvent = useSelector(selectSelectedEvent);
 
-  const handleBarCodeScanned = async ({ type, data }) => {
+  const handleBarCodeScanned = async ({ data }) => {
     try {
       setIsLoading(true);
       const info = JSON.parse(data);

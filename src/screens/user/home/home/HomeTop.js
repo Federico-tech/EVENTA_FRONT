@@ -8,7 +8,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { HomeMap, IconButton, InputText, LoadingImage, Note, Row, Text, TextButton } from '../../../../components/index';
+import { AlertModal, HomeMap, IconButton, InputText, LoadingImage, Note, Row, Text, TextButton } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { createNote, deleteNote, getUserNotes } from '../../../../services/notes';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';

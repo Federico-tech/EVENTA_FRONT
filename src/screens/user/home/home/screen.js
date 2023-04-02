@@ -8,6 +8,7 @@ import { Container, EventCard, HomeHeader, HomeTop, ListEmptyComponent } from '.
 import { updateUserCoordinates } from '../../../../utils';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
+import { StatusBar } from 'expo-status-bar';
 
 export const HomeScreen = () => {
   const ref = React.useRef(null);
@@ -30,6 +31,7 @@ export const HomeScreen = () => {
   };
 
   return (
+  
     <Container>
       <HomeHeader />
       <FlatList
@@ -40,9 +42,9 @@ export const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
         ListHeaderComponent={<HomeTop ref={homeRef} mapData={data} />}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={<ListEmptyComponent text="No upcoming events" />}
+        ListEmptyComponent={!refreshing && <ListEmptyComponent text="No upcoming events" />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>
   );

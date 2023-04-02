@@ -1,5 +1,4 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -15,13 +14,15 @@ import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
+import { useIsFocused } from '@react-navigation/native';
 
 export const MapScreen = ({ route }) => {
   const [snap, setSnap] = useState(false);
   const [region, setRegion] = useState({});
-  const { event } = route.params || {};
-
-  const isFocused = useIsFocused();
+  // const { event } = route.params || {};
+  const [event, setEvent ] = useState(route.params?.event || null)
+  console.log('event', event)
+  const isFocused = useIsFocused()
 
   const dispatch = useDispatch();
   const filter = useSelector(selectMapFilter);
@@ -46,14 +47,14 @@ export const MapScreen = ({ route }) => {
   useEffect(() => {
     if (event) {
       setRegion({
-        latitude: event.position.coordinates[1],
-        longitude: event.position.coordinates[0],
+        latitude: event?.position?.coordinates[1],
+        longitude: event?.position?.coordinates[0],
         latitudeDelta: 0.1,
         longitudeDelta: 0.1,
       });
       dispatch(setMapFilter('events'));
     }
-  }, [event, isFocused]);
+  }, [isFocused, event]);
 
   const bottomSheetModalRef = useRef(null);
   const eventSnapPoints = useMemo(() => ['60%', '95%'], []);

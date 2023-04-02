@@ -160,7 +160,7 @@ export const EditEventScreen = ({ route }) => {
   console.log('Address', values.address)
   return (
     <Container>
-      <Header title="Edit event" done onPress={handleSubmit} loading={loading} />
+      <Header title="Edit event" done onPress={handleSubmit} loading={loading} cancel />
       <KeyboardAvoidingView behavior="height">
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ marginTop: SIZE * 2, marginHorizontal: WIDTH_DEVICE / 20, marginBottom: SIZE * 10 }}>

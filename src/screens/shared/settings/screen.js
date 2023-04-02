@@ -4,11 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Switch } from 'react-native';
 
-import { Container, Header, TextButton, Text, Row, Line } from '../../../components';
+import { Container, Header, TextButton, Text, Row, Line, AlertModal } from '../../../components';
 import { logout } from '../../../utils/index';
 import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
+import { deleteMe } from '../../../services/users';
 
 export const SettingScreen = () => {
+  const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
 
@@ -29,6 +32,11 @@ export const SettingScreen = () => {
     };
     getLanguage();
   }, []);
+
+  const onPressDelete = () => {
+    deleteMe()
+    logout()
+  }
 
   return (
     <Container>
@@ -77,9 +85,24 @@ export const SettingScreen = () => {
       </Row>
       <Line />
       <Row style={{ margin: SIZE }} alignCenter>
-        <TextButton text="Delete account" style={styles.redButton} />
-        <TextButton text="Logout" style={styles.redButton} onPress={logout} />
+        <TextButton text="Delete account" style={styles.redButton} onPress={() => setDeleteModalVisible(!isDeleteModalVisible)} />
+        <TextButton text="Logout" style={styles.redButton} onPress={() => setLogoutModalVisible(!isLogoutModalVisible)} />
       </Row>
+      <AlertModal
+        isVisible={isLogoutModalVisible}
+        onPressConfirm={logout}
+        title="You want to log out?"
+        confirmText="Log out"
+        onBackdropPress={() => setLogoutModalVisible(false)}
+      />
+      <AlertModal
+        isVisible={isDeleteModalVisible}
+        onPressConfirm={onPressDelete}
+        title="Delete you Eventa account?"
+        confirmText="Delete"
+        descritpion="Are you sure you want to delete your account. This action is irreversible and you won't be able to recover it"
+        onBackdropPress={() => setDeleteModalVisible(false)}
+      />
     </Container>
   );
 };
