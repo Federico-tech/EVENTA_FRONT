@@ -16,6 +16,7 @@ import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
+import { ReadMoreButton } from './TextButton';
 
 export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }) => {
   const [user, setUser] = useState({ ...initialUser });
@@ -52,15 +53,6 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   };
 
   const onPressUnfollow = () => {
-    Alert.alert('Unfollow', 'Are you sure?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: () => {
           unFollow();
           setUser((prevUser) => ({
             ...prevUser,
@@ -68,9 +60,6 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
             isFollowing: false,
           }));
           refreshSelectedUser(user);
-        },
-      },
-    ]);
   };
 
   const handleEditProfile = () => navigation.navigate(user.role === 'organiser' ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
@@ -99,9 +88,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
             <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
           </Row>
         ) : (
-          <Text regularXs color={!user.bio ? COLORS.gray : 'black'} style={{ width: SIZE * 15 }}>
-            {user.bio ? user.bio : 'Description'}
-          </Text>
+          <ReadMoreButton text={user.bio ? user.bio : 'Description'} style={styles.description}/>
         )}
         <Row spaceBetween row style={styles.followerRow}>
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>

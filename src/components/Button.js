@@ -20,45 +20,46 @@ export const Button = ({
   pressed,
   children,
   black,
+  indicatorColor
 }) => {
-  const Component = !loading  && gradient ? LinearGradient : View;
+  const Component = !loading && gradient ? LinearGradient : View;
   return (
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
-      <View style={[gradient && (loading && styles.secondary), containerStyle]}>
-      <Component
-        colors={[COLORS.gradient1, COLORS.gradient2]}
-        // start={{ x: 0, y: 1 }}
-        // end={{ x: 0, y: 0 }}
-        style={[
-          loading && styles.secondary,
-          primary && styles.container,
-          secondary && styles.secondary,
-          disabled && styles.disabled,
-          gradient && styles.containerGradient,
-          pressed && styles.pressed,
-          black && styles.black,
-          containerStyle,
-        ]}>
-        {loading ? (
-          <ActivityIndicator color={primary ? "white" : 'black'} />
-        ) : (
-          <>
-            {!!text && (
-              <Text
-                style={[
-                  textStyle,
-                  primary && styles.textPrimary,
-                  gradient && styles.textGradient,
-                  secondary && styles.textSecondary,
-                  pressed && styles.textPressed,
-                ]}>
-                {text}
-              </Text>
-            )}
-            {children}
-          </>
-        )}
-      </Component>
+      <View style={[gradient && loading && styles.secondary, containerStyle]}>
+        <Component
+          colors={[COLORS.gradient1, COLORS.gradient2]}
+          // start={{ x: 0, y: 1 }}
+          // end={{ x: 0, y: 0 }}
+          style={[
+            loading && styles.secondary,
+            primary && styles.container,
+            secondary && styles.secondary,
+            disabled && styles.disabled,
+            gradient && styles.containerGradient,
+            pressed && styles.pressed,
+            black && styles.black,
+            containerStyle,
+          ]}>
+          {loading ? (
+            <ActivityIndicator color={primary ? 'white' : indicatorColor} />
+          ) : (
+            <>
+              {!!text && (
+                <Text
+                  style={[
+                    textStyle,
+                    primary && styles.textPrimary,
+                    gradient && styles.textGradient,
+                    secondary && styles.textSecondary,
+                    pressed && styles.textPressed,
+                  ]}>
+                  {text}
+                </Text>
+              )}
+              {children}
+            </>
+          )}
+        </Component>
       </View>
     </TouchableOpacity>
   );

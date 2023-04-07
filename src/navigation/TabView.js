@@ -81,7 +81,7 @@ export const OrganiserTopNavigator = ({ user, account }) => {
 
 export const UserTopNavigator = ({ user, account, isLoading }) => {
   const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
-  const currentUserId = useSelector(selectCurrentUserId)
+  const currentUserId = useSelector(selectCurrentUserId);
   const updatedUser = useSelector(selectSelectedUser);
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore, getData } = useInfiniteScroll({
@@ -100,6 +100,8 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
     limit: 6,
   });
 
+  console.debug({ postData });
+
   useEffect(() => {
     getData();
   }, [updatedUser]);
@@ -107,21 +109,24 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
   const MyHeader = ({ isLoading }) => {
     return (
       <View>
-        <ProfileInfo myProfile user={user} loading={isLoading}/>
+        <ProfileInfo myProfile user={user} loading={isLoading} />
       </View>
-    ); 
+    );
   };
 
   const AccountHeader = () => {
     return (
       <View>
-        <ProfileInfo user={user} loading={isLoading}/>
+        <ProfileInfo user={user} loading={isLoading} />
       </View>
     );
   };
 
   return (
-    <Tabs.Container renderHeader={userId !== currentUserId ? () => (<AccountHeader isLoading={isLoading}/>) : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
+    <Tabs.Container
+      renderHeader={userId !== currentUserId ? () => <AccountHeader isLoading={isLoading} /> : MyHeader}
+      tabStyle={styles.tab}
+      renderTabBar={tabBar}>
       <Tabs.Tab name="Posts">
         {isLoading ? (
           <Tabs.ScrollView>
@@ -137,7 +142,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               onEndReached={_.throttle(getMorePostData, 400)}
               refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
               ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
-              ListEmptyComponent={!refreshing && <ListEmptyComponent text={'There is no post yet'} />}
+              ListEmptyComponent={!refreshing && <ListEmptyComponent text="There is no post yet" />}
             />
           ) : (
             <Tabs.ScrollView>
@@ -155,7 +160,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
             onEndReached={_.throttle(getMorePostData, 400)}
             refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
-            ListEmptyComponent={!refreshing && <ListEmptyComponent text={'There is no post yet'} />}
+            ListEmptyComponent={!refreshing && <ListEmptyComponent text="There is no post yet" />}
           />
         )}
       </Tabs.Tab>

@@ -2,11 +2,25 @@ import React from 'react';
 import { Text as RNText, StyleSheet } from 'react-native';
 
 import { FONTS, SIZES } from '../utils/theme';
-export const Text = ({ color, style, onTextLayout, bold, children, semiBoldSm, semiBoldMd, medium, regularSm, numberOfLines, regularXs, ...rest }) => {
+export const Text = ({
+  color,
+  style,
+  onTextLayout,
+  bold,
+  children,
+  semiBoldSm,
+  semiBoldMd,
+  medium,
+  regularSm,
+  numberOfLines,
+  regularXs,
+  ...rest
+}) => {
   return (
     <RNText
-    numberOfLines={numberOfLines}
-    onTextLayout={onTextLayout}
+      numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
+      onTextLayout={onTextLayout}
       style={[
         { color },
         bold && styles.bold,

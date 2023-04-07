@@ -139,7 +139,7 @@ export const CreatePostScreen = () => {
               </View>
               <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
             </TouchableOpacity>
-            <InputText label="Caption" formik={formik} formikName="caption" maxLength={40} />
+            <InputText label="Caption" formik={formik} formikName="caption" maxLength={80} />
             <TextButton text="Choose the event" style={styles.chooseEvent} onPress={handlePresentModal} />
             {event && (
               <Row row alignCenter style={{ marginTop: SIZE }}>

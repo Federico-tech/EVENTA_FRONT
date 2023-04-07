@@ -15,6 +15,7 @@ import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
 import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 
 export const MapScreen = ({ route }) => {
   const [snap, setSnap] = useState(false);
@@ -180,7 +181,7 @@ export const MapScreen = ({ route }) => {
         <Button
           secondary
           loading={refreshing && filter === 'events'}
-          containerStyle={[filter === 'events' && { backgroundColor: 'black' }, { marginRight: SIZE }]}
+          containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE,width: SIZE * 9 }]}
           onPress={() => updateFilters('events')}>
           <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
             Events
@@ -189,7 +190,7 @@ export const MapScreen = ({ route }) => {
         <Button
           secondary
           loading={refreshing && filter === 'organisers'}
-          containerStyle={[filter === 'organisers' && { backgroundColor: 'black' }, { marginRight: SIZE, width: SIZE * 9 }]}
+          containerStyle={[filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 9 }]}
           onPress={() => updateFilters('organisers')}>
           <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>
             Organisers

@@ -192,7 +192,7 @@ export const CreateEventScreen = ({ route }) => {
                 </View>
                 <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
               </TouchableOpacity>
-              <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
+              <InputText label={t('name')} formik={formik} formikName="name" maxLength={25} />
               <InputText
                 label={t('address')}
                 {...getFieldProps('address.fullAddress')}
@@ -201,7 +201,7 @@ export const CreateEventScreen = ({ route }) => {
                 onPress={onPressAddress}
                 touchableOpacity
               />
-              <InputText label={t('description')} formik={formik} formikName="description" multiline />
+              <InputText label={t('description')} formik={formik} formikName="description" multiline maxLength={500} />
               <InputText
                 label={t('date')}
                 formik={{ ...formik, onChangeText: onChangeDate }}

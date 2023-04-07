@@ -1,32 +1,35 @@
-import { AntDesign, Entypo, Octicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons, Octicons } from '@expo/vector-icons';
+import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { ROUTES } from '../navigation/Navigation';
 import { postLike, postUnlike } from '../services/postLikes';
+import { deletePost } from '../services/posts';
+import { report } from '../services/reports';
+import { selectCurrentUserId, setUserSelected } from '../store/user';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentUserId, setUserSelected } from '../store/user';
-import { ROUTES } from '../navigation/Navigation'
-import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { AlertModal } from './AlertModal';
-import { report } from '../services/reports';
+import { showMessage } from 'react-native-flash-message';
 
 export const PostCard = ({ postData }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
-  const [lastTap, setLastTap] = useState(null)
+  const [lastTap, setLastTap] = useState(null);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
-  const currentUserId = useSelector(selectCurrentUserId)
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const currentUserId = useSelector(selectCurrentUserId);
 
   const bottomSheetModalRef = useRef(null);
 
-  const navigation = useNavigation()
-  const dispatch = useDispatch()
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
@@ -46,7 +49,6 @@ export const PostCard = ({ postData }) => {
     ),
     []
   );
-  
 
   useEffect(() => {
     setLikes(postData.likes);
@@ -64,33 +66,38 @@ export const PostCard = ({ postData }) => {
     setLikes(likes - 1);
     setIsLiked(false);
   };
-  
+
   const handleDoubleTap = () => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
-    if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+    if (lastTap && now - lastTap < DOUBLE_PRESS_DELAY) {
       isLiked ? onPressUnlike() : onPresslike();
     } else {
       setLastTap(now);
     }
-  }
+  };
 
   const onPressProfile = () => {
-    dispatch(setUserSelected(postData.user))
-    navigation.navigate(ROUTES.AccountUserScreen)
-  }
- 
-  const onPressReportPost = (data) => {
-    report(data)
-    handleClosePress()
-    setReportModalVisible(false)
-  }
+    dispatch(setUserSelected(postData.user));
+    navigation.navigate(ROUTES.AccountUserScreen);
+  };
+
+  const onPressReportPost = (data) => {
+    report(data);
+    handleClosePress();
+    setReportModalVisible(false);
+    showMessage({
+      message: 'Post reported Succefully',
+      description: 'Thank you for reporting this post.',
+      type: 'success',
+    });
+  };
 
   return (
     <TouchableWithoutFeedback onPress={handleDoubleTap}>
       <View style={styles.wrapper}>
         <Row style={styles.topRow}>
-          <Row style={{ padding: SIZE * 0.7 }} row alignCenter spaceBetween>
+          <Row style={{padding: SIZE / 2}} row alignCenter spaceBetween>
             <TouchableOpacity onPress={onPressProfile}>
               <Row row alignCenter>
                 <LoadingImage source={postData.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
@@ -100,16 +107,16 @@ export const PostCard = ({ postData }) => {
               </Row>
             </TouchableOpacity>
             <TouchableOpacity onPress={handlePresentModal}>
-            <Entypo name="dots-three-horizontal" size={SIZE * 1.4} onPress={handlePresentModal}/>
+              <Entypo name="dots-three-horizontal" size={SIZE * 1.4} onPress={handlePresentModal} />
             </TouchableOpacity>
           </Row>
           <LoadingImage source={postData.postImage} style={styles.image} indicator event />
           <Row style={styles.rowBottom} spaceBetween row alignCenter>
-            <Row style={{ margin: SIZE / 2, width: SIZE * 22 }} justifyCenter>
+            <Row justifyCenter>
               <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
                 at {postData.event.name}
               </Text>
-              <Text regularXs style={{ marginTop: SIZE / 10 }}>
+              <Text regularXs style={{ marginTop: SIZE / 10, width: SIZE * 22 }}>
                 {postData.caption}
               </Text>
             </Row>
@@ -130,12 +137,21 @@ export const PostCard = ({ postData }) => {
       </View>
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['13%']} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <TouchableOpacity onPress={() => setReportModalVisible(true)}>
-            <Row row alignCenter style={{ marginTop: SIZE }}>
-              <Octicons name="report" size={SIZE * 1.8} color="red" />
-              <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
-            </Row>
-          </TouchableOpacity>
+          {currentUserId === postData.userId ? (
+            <TouchableOpacity onPress={() => setDeleteModalVisible(true)}>
+              <Row row alignCenter style={{ marginTop: SIZE }}>
+                <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
+                <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Delete</Text>
+              </Row>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => setReportModalVisible(true)}>
+              <Row row alignCenter style={{ marginTop: SIZE }}>
+                <Octicons name="report" size={SIZE * 1.8} color="red" />
+                <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
+              </Row>
+            </TouchableOpacity>
+          )}
         </View>
       </BottomSheetModal>
       <AlertModal
@@ -146,13 +162,20 @@ export const PostCard = ({ postData }) => {
         confirmText="Report"
         onPressConfirm={() => onPressReportPost({ type: 'post', userId: currentUserId, objectId: postData._id })}
       />
+      <AlertModal
+        isVisible={isDeleteModalVisible}
+        onBackdropPress={() => setDeleteModalVisible(false)}
+        title="Delete this post?"
+        descritpion="Do you really want to delete this post? This action is irreversible."
+        confirmText="Delete"
+        onPressConfirm={() => deletePost(postData._id)}
+      />
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: SIZE * 35.5,
     backgroundColor: COLORS.white,
     borderRadius: SIZES.xxs,
     width: WIDTH_DEVICE * 0.9,
@@ -161,23 +184,18 @@ const styles = StyleSheet.create({
     marginTop: SIZE / 2,
     ...SHADOWS.medium,
   },
-  topRow: {
-    height: SIZE * 4,
-    borderTopRightRadius: SIZES.xxs,
-    borderTopLeftRadius: SIZES.xxs,
-  },
   bottomRow: {
     height: SIZE,
     backgroundColor: 'green',
     alignSelf: 'flex-end',
   },
   image: {
-    width: SIZE * 27,
+    width: '100',
     aspectRatio: 1,
     borderRadius: SIZES.xxs,
   },
   rowBottom: {
-    margin: SIZE * 0.7,
+    padding: SIZE / 2,
     alignContent: 'center',
     alignItems: 'center',
   },

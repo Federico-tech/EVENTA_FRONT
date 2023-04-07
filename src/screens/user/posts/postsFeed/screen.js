@@ -9,6 +9,7 @@ import { Container, ListEmptyComponent, PostCard, Row, Text } from '../../../../
 import { ROUTES } from '../../../../navigation/Navigation';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { Notes} from './Notes'
 
 export const PostsFeedScreen = ({ route }) => {
   const [eventFilter, setEventFilter] = useState();
@@ -73,6 +74,7 @@ export const PostsFeedScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListHeaderComponent={<Notes />}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no new moments for you" />}
       />
     </Container>

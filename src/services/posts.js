@@ -30,3 +30,12 @@ export const updatePostImage = async (image, postId, deleteOnUploadFailed) => {
     return Promise.reject(e);
   }
 };
+
+export const deletePost = async (postId) => {
+  try {
+    const { date: postDeleted } = await mainAxios.delete(`posts/${postId}`);
+    console.log({ postDeleted });
+  } catch (e) {
+    console.log({ errorDeletingPost: { e } });
+  }
+};

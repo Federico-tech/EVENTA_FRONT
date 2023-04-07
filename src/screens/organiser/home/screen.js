@@ -11,7 +11,7 @@ import { Button, Container, HomeHeader, ListEmptyComponent, MiniEventCard, Text 
 import { selectDateFilter, setDateFilter } from '../../../store/filter';
 import { selectCurrentUserId } from '../../../store/user';
 import { useInfiniteScroll } from '../../../utils/hooks';
-import { COLORS, SIZE, WIDTH_DEVICE } from '../../../utils/theme';
+import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
@@ -63,7 +63,7 @@ export const OrganiserHome = () => {
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20, flexDirection: 'row' }}>
               <Button
                 secondary
-                containerStyle={[filter === 'upcoming' && { backgroundColor: 'black' }, { marginRight: SIZE }]}
+                containerStyle={[filter === 'upcoming' && { backgroundColor: 'black', borderRadius: SIZES.xxs  }, { marginRight: SIZE, width: SIZE * 9 }]}
                 onPress={() => updateFilters('upcoming')}>
                 <Text medium color={filter === 'upcoming' ? COLORS.white : 'black'}>
                   Upcoming
@@ -71,7 +71,7 @@ export const OrganiserHome = () => {
               </Button>
               <Button
                 secondary
-                containerStyle={[filter === 'past' && { backgroundColor: 'black' }, { marginRight: SIZE, width: SIZE * 7 }]}
+                containerStyle={[filter === 'past' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 7 }]}
                 onPress={() => updateFilters('past')}>
                 <Text medium color={filter === 'past' ? COLORS.white : 'black'}>
                   Past

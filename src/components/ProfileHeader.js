@@ -13,6 +13,7 @@ import { AlertModal } from './AlertModal';
 import { IconButton } from './Button';
 import { Row } from './Row';
 import { report } from '../services/reports';
+import { showMessage } from 'react-native-flash-message';
 
 export const ProfileHeader = ({ myProfile, user }) => {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
@@ -46,6 +47,11 @@ export const ProfileHeader = ({ myProfile, user }) => {
     report(data)
     handleClosePress()
     setReportModalVisible(false)
+    showMessage({
+      message: 'User reported Succefully',
+      description: 'Thank you for reporting this user.',
+      type: 'success',
+    });
   }
   
   return (

@@ -8,6 +8,7 @@ import { AlertModal, Row, Text } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { FONTS, SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 import { report } from '../../../../services/reports';
+import { showMessage } from 'react-native-flash-message';
 
 export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, eventId }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -22,6 +23,11 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, event
     report(data)
     closeSheet()
     setReportModalVisible(false)
+    showMessage({
+      message: 'Event reported Succefully',
+      description: 'Thank you for reporting this event.',
+      type: 'success',
+    });
   }
 
   return (

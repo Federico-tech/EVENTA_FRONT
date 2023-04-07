@@ -29,7 +29,7 @@ export const deleteNote = async (noteId) => {
     const { date: noteCreated } = await mainAxios.delete(`notes/${noteId}`);
     console.log({ noteCreated });
   } catch (e) {
-    console.log({ errorCreateNote: { e } });
+    console.log({ errorDeleteNote: { e } });
   }
 };
 

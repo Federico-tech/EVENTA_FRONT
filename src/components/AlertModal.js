@@ -7,6 +7,12 @@ import { Text } from './Text';
 import { TextButton } from './TextButton';
 
 export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onPressConfirm, confirmText }) => {
+
+  const onPress = () => {
+    onPressConfirm()
+    onBackdropPress()
+  }
+  
   return (
     <Modal isVisible={isVisible} onBackdropPress={onBackdropPress} animationIn="fadeIn">
       <View style={styles.wrapper}>
@@ -17,7 +23,7 @@ export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onP
           {descritpion}
         </Text>
         <View style={styles.line} />
-        <TextButton text={confirmText} textStyle={styles.confirm} onPress={onPressConfirm} />
+        <TextButton text={confirmText} textStyle={styles.confirm} onPress={onPress} />
         <View style={styles.line} />
         <TextButton text="Cancel" textStyle={styles.cancel} onPress={onBackdropPress} />
       </View>

@@ -94,7 +94,7 @@ export const LoginScreen = () => {
               <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
               <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
               <TextButton text={t('forgot password')} textStyle={styles.forgotPassword} />
-              <Button primary text={t('login')} onPress={handleSubmit} loading={loading} disabled={!values.password || (!values.email && true)} />
+              <Button primary text={t('login')} onPress={handleSubmit} containerStyle={{ width: WIDTH_DEVICE * 0.9}} loading={loading} disabled={!values.password || (!values.email && true)} />
               <View style={styles.containerLine}>
                 <Line lineStyle={{ flex: 1 }} />
                 <Text style={styles.orLoginUsing}>{t('or login using')}</Text>

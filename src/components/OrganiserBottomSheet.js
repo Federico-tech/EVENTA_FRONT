@@ -44,21 +44,9 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   };
 
   const onPressUnfollow = () => {
-    Alert.alert('Unfollow', 'Are you sure?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: () => {
-          unFollow();
-          setIsFollowing(false);
-          setNumFollowers(numFollowers - 1);
-        },
-      },
-    ]);
+      unFollow();
+      setIsFollowing(false);
+      setNumFollowers(numFollowers - 1);
   };
 
   useEffect(() => {

@@ -58,6 +58,7 @@ export const getRefreshedEvent = async (event) => {
     const { data } = await mainAxios.get(`events/${event?._id}`);
     console.log('EventSelected', data);
     store.dispatch(setSelectedEvent(data.event));
+    return { data };
   } catch (e) {
     console.log({ errorGetPartecipants: e });
   }

@@ -33,6 +33,12 @@ export const UserSingUpScreen = ({ navigation }) => {
             return false;
           }
           return !value.match(/[A-Z]/);
+        })
+        .test('no-spaces', 'The username cannot contain blank spaces', (value) => {
+          if (!value) {
+            return false;
+          }
+          return !value.match(/\s/);
         }),
       email: string().required('Email is a required field').email('This is not a valid email'),
       password: string()
@@ -87,12 +93,12 @@ export const UserSingUpScreen = ({ navigation }) => {
               </View>
               <Text style={styles.title}>{t('create your account')}</Text>
             </Row>
-            <InputText formik={formik} label={t('name')} formikName="name" maxLength={20} />
-            <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} />
+            <InputText formik={formik} label={t('name')} formikName="name" maxLength={25} />
+            <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} noAutoCorrect />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
             <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
             <Text style={styles.passwordReq}>{t('password requirements')}</Text>
-            <Button loading={loading} primary text={t('register')} onPress={handleSubmit} />
+            <Button loading={loading} primary containerStyle={{ width: WIDTH_DEVICE * 0.9 }} text={t('register')} onPress={handleSubmit} />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />
               <Text style={styles.orLoginUsing}>{t('or register using')}</Text>

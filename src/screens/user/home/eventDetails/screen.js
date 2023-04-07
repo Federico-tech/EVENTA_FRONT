@@ -25,8 +25,10 @@ import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
 export const EventDetails = ({ route }) => {
   const [participants, setParticipants] = useState();
+
   const [numberPart, setNumberPart] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState();
+  const [isLoadingPart, setIsLoadingPart] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -42,7 +44,8 @@ export const EventDetails = ({ route }) => {
   const organiser = event.organiser;
   const refOrganiser = useSelector(selectSelectedUser);
 
-  console.log('loading', isLoading)
+  console.log('part', isParticipating);
+  const [isParticipating, setIsParticipating] = useState();
 
   const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
 
@@ -74,36 +77,43 @@ export const EventDetails = ({ route }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getRefreshedEvent(event);
-      await refreshSelectedUser(organiser);
-    }
-    setIsLoading(true)
-    fetchData()
-    setIsLoading(false)
-    
-  }, [numberPart, event.participants]);
+      try {
+        setIsLoading(true);
+        await getRefreshedEvent(event).then((result) => {
+          setIsParticipating(result.data.event.isParticipating);
+        });
+        await refreshSelectedUser(organiser);
+        setIsLoading(false);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, [eventId]);
 
   useEffect(() => {
-    setIsLoading(true);
-    getEventParticipants(eventId, { limit: 3 })
-      .then((result) => {
+    const fetchData = async () => {
+      setIsLoadingPart(true);
+      await getRefreshedEvent(event);
+      await getEventParticipants(eventId, { limit: 3 }).then((result) => {
+        console.log('result', result);
         setParticipants(result);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsLoading(false);
       });
-  }, [event.participants]);
+      setIsLoadingPart(false);
+    };
+    fetchData();
+  }, [event.participants, numberPart, isParticipating]);
 
   const onPressPartecipate = () => {
     partecipate();
     setNumberPart(event.participants);
+    setIsParticipating(true);
   };
 
   const onPressUnpartecipate = () => {
     unpartecipate();
     setNumberPart(event.participants);
+    setIsParticipating(false);
   };
 
   const onPressNaviagtePosts = () => {
@@ -121,7 +131,7 @@ export const EventDetails = ({ route }) => {
           <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
           <View style={{ paddingHorizontal: WIDTH_DEVICE / 20, zIndex: 1, backgroundColor: COLORS.white }}>
-            <OrganiserInf organiser={defOrganiser} isLoading={isLoading}/>
+            <OrganiserInf organiser={defOrganiser} isLoading={isLoading} />
             <View style={{ marginHorizontal: 0 }}>
               <Line lineStyle={{ marginBottom: 0 }} />
             </View>
@@ -180,7 +190,7 @@ export const EventDetails = ({ route }) => {
               <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
             <Row>
-              {isLoading ? (
+              {isLoadingPart ? (
                 <ActivityIndicator style={{ marginTop: SIZE }} />
               ) : (
                 participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
@@ -194,20 +204,25 @@ export const EventDetails = ({ route }) => {
       </ScrollView>
       <Row row alignCenter style={styles.partButton} spaceBetween>
         {role === 'user' &&
-          (event.isParticipating ? (
+          (isParticipating ? (
             <>
-              <Button secondary containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressUnpartecipate} loading={isLoading}/>
-              <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} loading={isLoading}/>
+              <Button secondary containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressUnpartecipate} loading={isLoading} />
+              <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
             </>
           ) : (
             <>
-              <Button gradient containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressPartecipate} loading={isLoading}/>
+              <Button gradient containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressPartecipate} loading={isLoading} />
               <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
             </>
           ))}
       </Row>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={organiser._id === userId ? ['17%'] : ['13%']} backdropComponent={renderBackdrop}>
-        <EventDetailsBottomSheet closeSheet={handleClosePress} userId={userId} organiserId={organiser._id} eventId={event._id}/>
+      <BottomSheetModal
+        enablePanDownToClose
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={organiser._id === userId ? ['17%'] : ['13%']}
+        backdropComponent={renderBackdrop}>
+        <EventDetailsBottomSheet closeSheet={handleClosePress} userId={userId} organiserId={organiser._id} eventId={event._id} />
       </BottomSheetModal>
       <DiscountModal isVisible={isModalVisible} onBackdropPress={() => setModalVisible(false)} event={event} />
     </Container>

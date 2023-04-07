@@ -24,6 +24,8 @@ export const InputText = ({
   minDate,
   maxLength,
   formik,
+  numberOfLines,
+  noAutoCorrect,
   formikName,
   touchableOpacity,
   value: inputValue,
@@ -85,7 +87,7 @@ export const InputText = ({
               editable={!disabled}
               underlineColorAndroid="transparent"
               onChangeText={onChangeText}
-              autoCorrect={!email}
+              autoCorrect={!email || noAutoCorrect}
               numberOfLines={multiline ? 5 : undefined}
               spellCheck={!email}
               {...rest}

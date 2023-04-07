@@ -2,20 +2,19 @@ import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal, TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
-import { DateTime } from 'luxon';
-import React, { useCallback, useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useCallback, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { AlertModal, HomeMap, IconButton, InputText, LoadingImage, Note, Row, Text, TextButton } from '../../../../components/index';
+import { MiniPostCard } from '../../../../components/MiniPostCard';
+import { HomeMap, IconButton, LoadingImage, Row, Text } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
-import { createNote, deleteNote, getUserNotes } from '../../../../services/notes';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const HomeTop = forwardRef(({mapData, ...props}, ref) => {
+export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
   const navigation = useNavigation();
@@ -46,19 +45,9 @@ export const HomeTop = forwardRef(({mapData, ...props}, ref) => {
     []
   );
 
-  useEffect(() => {
-    getUserNotes().then((result) => {
-      console.log('result', result);
-      setUserNotes(result.data);
-    });
-  }, []);
-
-  const { data, getMoreData, loadMore, getData, getRefreshedData } = useInfiniteScroll({
-    entity: 'notes/followedNotes',
-    filters: {
-      'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
-    },
-    limit: 5,
+  const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData } = useInfiniteScroll({
+    entity: 'posts/home',
+    limit: 6,
   });
 
   useImperativeHandle(
@@ -73,26 +62,6 @@ export const HomeTop = forwardRef(({mapData, ...props}, ref) => {
     []
   );
 
-  const onPressCreateNote = async () => {
-    createNote({ content: note, userId });
-    handleClosePress();
-    getUserNotes().then((result) => {
-      console.log('result', result);
-      setUserNotes(result.data);
-    });
-    setNote('');
-  };
-
-  const onPressDeleteNote = (noteId) => {
-    deleteNote(noteId);
-    handleClosePress();
-    getUserNotes().then((result) => {
-      console.log('result', result);
-      setUserNotes(result.data);
-    });
-    getData();
-  };
-
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
       <View style={styles.container}>
@@ -104,52 +73,50 @@ export const HomeTop = forwardRef(({mapData, ...props}, ref) => {
           <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressLikes} />
         </Row>
       </View>
-      <HomeMap mapData={mapData}/>
-      <Text semiBoldMd>Notes</Text>
+      <HomeMap mapData={mapData} />
       <View style={styles.noteContainer}>
-        <FlatList
-          data={[...(userNotes || []), ...(data || [])]}
-          renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote} />}
-          keyExtractor={(item) => item._id}
-          onEndReachedThreshold={0.1}
-          onEndReached={_.throttle(getMoreData, 400)}
-          horizontal
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          ListFooterComponent={
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator />}</View>
-          }
-          ListHeaderComponent={
-            <TouchableOpacity onPress={handlePresentModal}>
-              <Row justifyCenter>
-                <View>
-                  <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
-                    <Row alignCenter style={{ width: SIZE * 6 }} column>
-                      <Row row>
-                        <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} />
-                        <View style={styles.plusIcon}>
-                          <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
-                        </View>
+        <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostsFeedScreen)}>
+          <FlatList
+            data={data}
+            renderItem={({ item }) => <MiniPostCard postData={item} />}
+            keyExtractor={(item) => item._id}
+            onEndReachedThreshold={0.1}
+            onEndReached={_.throttle(getMoreData, 400)}
+            horizontal
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            ListFooterComponent={
+              <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator />}</View>
+            }
+            ListHeaderComponent={
+              <TouchableOpacity onPress={handlePresentModal}>
+                <Row justifyCenter>
+                  <View>
+                    <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
+                      <Row alignCenter style={{ width: SIZE * 6 }} column>
+                        <Row row>
+                          <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} />
+                          <View style={styles.plusIcon}>
+                            <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
+                          </View>
+                        </Row>
+                        <Text style={{ fontSize: SIZES.xs, textAlign: 'center' }}>Share your plans!</Text>
                       </Row>
-                      <Text style={{ fontSize: SIZES.xs, textAlign: 'center' }}>Share your plans!</Text>
-                    </Row>
+                    </View>
                   </View>
-                </View>
-              </Row>
-            </TouchableOpacity>
-          }
-        />
+                </Row>
+              </TouchableOpacity>
+            }
+          />
+        </TouchableOpacity>
       </View>
-      <Text semiBoldMd style={{ marginBottom: SIZE }}>
-        Upcoming events
-      </Text>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+      {/* <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <InputText label="Write your note" maxLength={60} value={note} onChangeText={setNote} />
-          <Text color={COLORS.gray}>{note?.length !== undefined ? 60 - note?.length : 60}/60</Text>
+          <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
+          <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>
           <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} />
         </View>
-      </BottomSheetModal>
+      </BottomSheetModal> */}
     </View>
   );
 });
@@ -189,7 +156,6 @@ const styles = StyleSheet.create({
     marginBottom: SIZE * 1.5,
   },
   noteContainer: {
-    marginTop: SIZE,
     marginRight: 0,
     marginLeft: -(WIDTH_DEVICE / 20),
     width: WIDTH_DEVICE,

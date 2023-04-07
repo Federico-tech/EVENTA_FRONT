@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, ActivityIndicator, View } from 'rea
 
 import { COLORS, FONTS, SIZES } from '../utils/theme';
 
-export const TextButton = ({ onPress, text, textStyle, loading, disabled, ...rest }) => {
+export const TextButton = ({ onPress, text, textStyle, loading, lenght, disabled, ...rest }) => {
   return (
     <View>
       {loading ? (
@@ -30,7 +30,7 @@ export const ReadMoreButton = (props, textStyle) => {
   const shouldShowMoreLess = text.length > 50;
 
   if (!isExpanded && shouldShowMoreLess) {
-    text = `${text.substring(0, 50)}...`;
+    text = `${text.substring(0, 20)}...`;
   }
 
   return (
