@@ -14,12 +14,14 @@ export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleOnPress = () => {
-    dispatch(setUserSelected(data));
-    bottomSheet ? navigation.navigate(ROUTES.AccountUserScreen, { data }) : navigation.push(ROUTES.AccountUserScreen, { data });
-    closeSheet();
+    if (data?.isDeleted) {
+      dispatch(setUserSelected(data));
+      bottomSheet ? navigation.navigate(ROUTES.AccountUserScreen, { data }) : navigation.push(ROUTES.AccountUserScreen, { data });
+      closeSheet();
+    }
   };
   return (
-    <TouchableOpacity onPress={handleOnPress} >
+    <TouchableOpacity onPress={handleOnPress} disabled={data?.isDeleted}>
       <View style={styles.userWrapper}>
         <Row row alignCenter>
           <View style={styles.profileImage}>
@@ -44,7 +46,7 @@ export const OrganiserRow = ({ data }) => {
     navigation.push(ROUTES.AccountOrganiserScreen, { data });
   };
   return (
-    <TouchableOpacity onPress={handleOnPress} >
+    <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.organiserWrapper}>
         <Row row alignCenter>
           <LoadingImage source={profilePic} width={SIZE * 5} profile />

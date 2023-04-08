@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="af6bafae-9664-456b-9c37-d5f6a14a73f7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/components/AccountRow.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AccountRow.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AlertModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AlertModal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/onboarding/register/organiser/screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/onboarding/register/organiser/screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/event.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/event.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/index.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2JoBBcATeHOKxiZdsAGBu12rYpJ" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="screen.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/screens/organiser/events/create/screen.js" working-dir="$PROJECT_DIR$/src/screens/organiser/events/create">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.screen.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="af6bafae-9664-456b-9c37-d5f6a14a73f7" name="Changes" comment="" />
+      <created>1672734423698</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1672734423698</updated>
+      <workItem from="1672734425500" duration="12806000" />
+      <workItem from="1672759319071" duration="4648000" />
+      <workItem from="1672776267430" duration="324000" />
+      <workItem from="1672776864192" duration="282000" />
+      <workItem from="1672824053706" duration="1571000" />
+      <workItem from="1672857867603" duration="79000" />
+      <workItem from="1672913866790" duration="610000" />
+      <workItem from="1673386597556" duration="851000" />
+      <workItem from="1673471407080" duration="1030000" />
+      <workItem from="1673700638138" duration="7793000" />
+      <workItem from="1676240915823" duration="1858000" />
+      <workItem from="1676751966045" duration="513000" />
+      <workItem from="1677933583887" duration="161000" />
+      <workItem from="1678376576006" duration="30000" />
+      <workItem from="1678394146387" duration="667000" />
+      <workItem from="1678616470437" duration="1880000" />
+      <workItem from="1678885128276" duration="20000" />
+      <workItem from="1680958808117" duration="297000" />
+      <workItem from="1680959156973" duration="447000" />
+    </task>
+    <task id="LOCAL-00001" summary="chore(moment): remove">
+      <created>1672734572442</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1672734572442</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat(date): ios">
+      <created>1672743752732</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1672743752732</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix(inputText)">
+      <created>1672745030105</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1672745030105</updated>
+    </task>
+    <task id="LOCAL-00004" summary="chore(*)">
+      <created>1672747131620</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1672747131620</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat(dateTime)">
+      <created>1672760372177</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1672760372177</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat(*): formik, handle better permission camera">
+      <created>1672763649669</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1672763649669</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fix(many)">
+      <created>1673387465285</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1673387465285</updated>
+    </task>
+    <task id="LOCAL-00008" summary="feat(address, image)">
+      <created>1673707877808</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1673707877808</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat(infiniteScroll): improve">
+      <created>1676243396899</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1676243396899</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="chore(moment): remove" />
+    <MESSAGE value="feat(date): ios" />
+    <MESSAGE value="fix(inputText)" />
+    <MESSAGE value="chore(*)" />
+    <MESSAGE value="feat(dateTime)" />
+    <MESSAGE value="feat(*): formik, handle better permission camera" />
+    <MESSAGE value="fix(many)" />
+    <MESSAGE value="feat(address, image)" />
+    <MESSAGE value="feat(pagination): improve" />
+    <MESSAGE value="feat(infiniteScroll): improve" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(infiniteScroll): improve" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

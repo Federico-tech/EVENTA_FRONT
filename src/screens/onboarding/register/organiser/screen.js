@@ -107,13 +107,13 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
               <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
             </View>
             <Text style={styles.title}>{t('become an organiser!')}</Text>
-            <InputText formik={formik} label="Name" formikName="name" autoCapitalize="none" maxLength={25}/>
-            <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none"  maxLength={20}/>
+            <InputText formik={formik} label="Name" formikName="name" autoCapitalize="none" maxLength={25} />
+            <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} />
             <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
             <InputText formik={formik} label={t('address')} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
             <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
             <Text style={styles.passwordReq}>{t('password requirements')}</Text>
-            <Button loading={loading} primary text={t('register')} containerStyle={{ width: WIDTH_DEVICE * 0.9}} onPress={handleSubmit} />
+            <Button loading={loading} primary text={t('register')} containerStyle={{ width: WIDTH_DEVICE * 0.9 }} onPress={handleSubmit} />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />
               <Text style={styles.orLoginUsing}>{t('or register using')}</Text>

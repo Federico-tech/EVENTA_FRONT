@@ -7,12 +7,11 @@ import { Text } from './Text';
 import { TextButton } from './TextButton';
 
 export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onPressConfirm, confirmText }) => {
-
   const onPress = () => {
-    onPressConfirm()
-    onBackdropPress()
-  }
-  
+    onPressConfirm();
+    onBackdropPress();
+  };
+
   return (
     <Modal isVisible={isVisible} onBackdropPress={onBackdropPress} animationIn="fadeIn">
       <View style={styles.wrapper}>
