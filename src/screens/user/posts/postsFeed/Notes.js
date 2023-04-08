@@ -19,6 +19,7 @@ import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../.
 export const Notes = () => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
+  const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation();
   const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
   const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
@@ -63,23 +64,27 @@ export const Notes = () => {
   });
 
   const onPressCreateNote = async () => {
-    createNote({ content: note, userId });
+    setIsLoading(true)
+    await createNote({ content: note, userId });
     handleClosePress();
-    getUserNotes().then((result) => {
+    await getUserNotes().then((result) => {
       console.log('result', result);
       setUserNotes(result.data);
     });
+    setIsLoading(false)
     setNote('');
   };
 
-  const onPressDeleteNote = (noteId) => {
-    deleteNote(noteId);
+  const onPressDeleteNote = async (noteId) => {
+    setIsLoading(true)
     handleClosePress();
-    getUserNotes().then((result) => {
+    await deleteNote(noteId);
+    await getUserNotes().then((result) => {
       console.log('result', result);
       setUserNotes(result.data);
     });
-    getData();
+    await getData();
+    setIsLoading(false)
   };
 
   return (
@@ -120,7 +125,7 @@ export const Notes = () => {
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
           <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>
-          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} />
+          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} loading={isLoading}/>
         </View>
       </BottomSheetModal>
     </View>
@@ -129,6 +134,7 @@ export const Notes = () => {
 
 const styles = StyleSheet.create({
   noteContainer: {
+    marginTop: SIZE,
     marginRight: 0,
     width: WIDTH_DEVICE,
     paddingHorizontal: WIDTH_DEVICE / 20,

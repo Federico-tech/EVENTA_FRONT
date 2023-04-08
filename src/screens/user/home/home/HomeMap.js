@@ -54,7 +54,7 @@ export const HomeMap = ({ mapData }) => {
   return (
     <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
       <MapView
-        style={{ height: SIZE * 20, zIndex: 1, borderRadius: SIZES.xxs }}
+        style={{ height: SIZE * 17.5, zIndex: 1, borderRadius: SIZES.xxs }}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
           latitude: user.position.coordinates[1],
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    marginTop: SIZE * 14.5,
+    marginTop: SIZE * 12,
     marginLeft: SIZE * 23.9,
   },
 });

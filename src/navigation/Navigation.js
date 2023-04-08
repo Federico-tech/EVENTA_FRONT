@@ -2,7 +2,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { Image } from 'react-native';
 
+import { BlueLogo } from '../assets';
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
@@ -103,7 +105,7 @@ const BottomBarIcons = ({ route }) => ({
     } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';
     } else if (route.name === ROUTES.PostsNavigator) {
-      iconName = focused ? 'camera' : 'camera-outline';
+      return <Image source={BlueLogo} style={{ width: SIZE * 2.2, height: SIZE * 2.2, marginTop: SIZE / 2 }} />;
     }
     return <Ionicons name={iconName} size={SIZE * 2} colour={colour} style={{ marginTop: SIZE / 2 }} />;
   },
@@ -230,6 +232,7 @@ export const MapNavigator = () => {
       <MapStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
+      <MapStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
     </MapStackNavigator.Navigator>
   );
 };

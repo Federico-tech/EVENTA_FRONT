@@ -8,7 +8,6 @@ import { Container, EventCard, HomeHeader, HomeTop, ListEmptyComponent } from '.
 import { updateUserCoordinates } from '../../../../utils';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
-import { StatusBar } from 'expo-status-bar';
 
 export const HomeScreen = () => {
   const ref = React.useRef(null);

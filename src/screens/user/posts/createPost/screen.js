@@ -83,7 +83,7 @@ export const CreatePostScreen = () => {
         setLoading(true);
         await validateForm(data);
         await createPost({ ...data, userId });
-        navigation.goBack();
+        navigation.goBack({ myParam: 'getData' });
         resetForm();
         setLoading(false);
       } catch (e) {

@@ -93,6 +93,12 @@ export const PostCard = ({ postData }) => {
     });
   };
 
+  const onPressDeletePost = (data) => {
+    deletePost(data._id)
+    handleClosePress();
+    setDeleteModalVisible(false);
+  }
+
   return (
     <TouchableWithoutFeedback onPress={handleDoubleTap}>
       <View style={styles.wrapper}>
@@ -168,7 +174,7 @@ export const PostCard = ({ postData }) => {
         title="Delete this post?"
         descritpion="Do you really want to delete this post? This action is irreversible."
         confirmText="Delete"
-        onPressConfirm={() => deletePost(postData._id)}
+        onPressConfirm={() => onPressDeletePost(postData)}
       />
     </TouchableWithoutFeedback>
   );

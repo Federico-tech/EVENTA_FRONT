@@ -1,22 +1,20 @@
 import { AntDesign } from '@expo/vector-icons';
-import { BottomSheetBackdrop, BottomSheetModal, TouchableOpacity } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useCallback, useRef, useState, forwardRef, useImperativeHandle } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { MiniPostCard } from '../../../../components/MiniPostCard';
-import { HomeMap, IconButton, LoadingImage, Row, Text } from '../../../../components/index';
+import { HomeMap, IconButton, LoadingImage, Row, Text, TextButton } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
-  const [note, setNote] = useState();
-  const [userNotes, setUserNotes] = useState();
   const navigation = useNavigation();
   const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
   const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
@@ -45,7 +43,7 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
     []
   );
 
-  const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData } = useInfiniteScroll({
+  const { data, getRefreshedData, refreshing } = useInfiniteScroll({
     entity: 'posts/home',
     limit: 6,
   });
@@ -75,48 +73,45 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
       </View>
       <HomeMap mapData={mapData} />
       <View style={styles.noteContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostsFeedScreen)}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => <MiniPostCard postData={item} />}
-            keyExtractor={(item) => item._id}
-            onEndReachedThreshold={0.1}
-            onEndReached={_.throttle(getMoreData, 400)}
-            horizontal
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            ListFooterComponent={
-              <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator />}</View>
-            }
-            ListHeaderComponent={
-              <TouchableOpacity onPress={handlePresentModal}>
-                <Row justifyCenter>
-                  <View>
-                    <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
-                      <Row alignCenter style={{ width: SIZE * 6 }} column>
-                        <Row row>
-                          <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} />
-                          <View style={styles.plusIcon}>
-                            <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
-                          </View>
-                        </Row>
-                        <Text style={{ fontSize: SIZES.xs, textAlign: 'center' }}>Share your plans!</Text>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <MiniPostCard postData={item} />}
+          keyExtractor={(item) => item._id}
+          horizontal
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          ListFooterComponent={
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>
+              {!refreshing && data.length !== 0 && (
+                <TextButton
+                  text="View all"
+                  textStyle={{ width: SIZE * 3, textAlign: 'center' }}
+                  onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}
+                />
+              )}
+            </View>
+          }
+          ListHeaderComponent={
+            <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
+              <Row justifyCenter>
+                <View>
+                  <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE, marginTop: SIZE }]}>
+                    <Row alignCenter style={{ width: SIZE * 6 }} column>
+                      <Row row>
+                        <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} />
+                        <View style={styles.plusIcon}>
+                          <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
+                        </View>
                       </Row>
-                    </View>
+                      <Text style={{ fontSize: SIZES.xs, textAlign: 'center' }}>Create a post!</Text>
+                    </Row>
                   </View>
-                </Row>
-              </TouchableOpacity>
-            }
-          />
-        </TouchableOpacity>
+                </View>
+              </Row>
+            </TouchableOpacity>
+          }
+        />
       </View>
-      {/* <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
-          <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>
-          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} />
-        </View>
-      </BottomSheetModal> */}
     </View>
   );
 });

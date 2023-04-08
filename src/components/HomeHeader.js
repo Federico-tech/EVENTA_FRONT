@@ -23,7 +23,7 @@ export const HomeHeader = ({ data, organiser }) => {
           <View style={styles.header}>
             <View style={styles.TextContainer}>
               <TouchableOpacity onPress={() => navigation.jumpTo(organiser ? ROUTES.OrganiserProfileScreen : ROUTES.ProfileScreenNavigator)}>
-                <LoadingImage source={userinfo.profilePic} width={SIZE * 4} profile iconSIZE={SIZE * 2.5}/>
+                <LoadingImage source={userinfo.profilePic} width={SIZE * 4} profile iconSIZE={SIZE * 2.5} />
               </TouchableOpacity>
               <View style={styles.text}>
                 <Text style={styles.welcome}>Welcome back,</Text>

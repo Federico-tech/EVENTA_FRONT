@@ -1,5 +1,5 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { useNavigation, useScrollToTop } from '@react-navigation/native';
+import { useIsFocused, useNavigation, useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
@@ -10,6 +10,7 @@ import { ROUTES } from '../../../../navigation/Navigation';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 import { Notes} from './Notes'
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const PostsFeedScreen = ({ route }) => {
   const [eventFilter, setEventFilter] = useState();
@@ -17,8 +18,12 @@ export const PostsFeedScreen = ({ route }) => {
   const navigation = useNavigation();
   const { event } = route?.params || {};
 
+  console.log('route', route.params)
+
   const ref = React.useRef(null);
   useScrollToTop(ref);
+  
+  const isFocused = useIsFocused();
 
   const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData } = useInfiniteScroll({
     entity,
@@ -36,7 +41,7 @@ export const PostsFeedScreen = ({ route }) => {
     if (entity) {
       getData();
     }
-  }, [entity, eventFilter]);
+  }, [entity, eventFilter, isFocused]);
 
   const deleteEventFilter = () => {
     setEventFilter('');
@@ -46,18 +51,19 @@ export const PostsFeedScreen = ({ route }) => {
 
   return (
     <Container>
+      <LinearGradient  start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']}>
       <View style={styles.container}>
         <Row alignCenter spaceBetween row>
-          <Text semiBoldMd style={{ fontSize: SIZES.lg }}>
+          <Text semiBoldMd style={{ fontSize: SIZES.lg }} color={COLORS.white}>
             Moments
           </Text>
-          <AntDesign name="plus" size={SIZE * 1.6} onPress={() => navigation.navigate(ROUTES.CreatePostScreen)} />
+          <AntDesign name="plus" size={SIZE * 1.6} onPress={() => navigation.navigate(ROUTES.CreatePostScreen)} color={COLORS.white}/>
         </Row>
         <Row row alignCenter style={{ marginTop: SIZE / 4 }}>
           {eventFilter && (
             <>
-              <Feather name="x" color={COLORS.gray} size={SIZE * 1.2} onPress={deleteEventFilter} />
-              <Text color={COLORS.gray} regularXs>
+              <Feather name="x" color={COLORS.white} size={SIZE * 1.2} onPress={deleteEventFilter} />
+              <Text color={COLORS.white} regularXs>
                 {' '}
                 at {eventFilter.toUpperCase()}
               </Text>
@@ -65,6 +71,7 @@ export const PostsFeedScreen = ({ route }) => {
           )}
         </Row>
       </View>
+      </LinearGradient>
       <FlatList
         ref={ref}
         data={data}

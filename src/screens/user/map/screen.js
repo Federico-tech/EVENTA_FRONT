@@ -1,6 +1,7 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,16 +15,13 @@ import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
-import { useIsFocused } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
 
 export const MapScreen = ({ route }) => {
   const [snap, setSnap] = useState(false);
   const [region, setRegion] = useState({});
   // const { event } = route.params || {};
-  const [event, setEvent ] = useState(route.params?.event || null)
-  console.log('event', event)
-  const isFocused = useIsFocused()
+  const [event, setEvent] = useState(route.params?.event || null);
+  const isFocused = useIsFocused();
 
   const dispatch = useDispatch();
   const filter = useSelector(selectMapFilter);
@@ -71,6 +69,7 @@ export const MapScreen = ({ route }) => {
     bottomSheetModalRef.current?.present();
     getRefreshedEvent(event);
     dispatch(setSelectedEvent(event));
+    dispatch(setUserSelected(event.organiser));
   };
 
   const handleClosePress = () => bottomSheetModalRef.current.close();
@@ -154,7 +153,7 @@ export const MapScreen = ({ route }) => {
                 onPress={() => handlePresentModalOrganiser({ user })}>
                 <View style={{ alignItems: 'center', height: SIZE * 7 }}>
                   <View style={styles.marker}>
-                    <LoadingImage source={user.profilePic} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5}/>
+                    <LoadingImage source={user.profilePic} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5} />
                   </View>
                   <Text style={styles.markerText}>{user.username}</Text>
                 </View>
@@ -171,7 +170,7 @@ export const MapScreen = ({ route }) => {
                 onPress={() => handlePresentModalEvents({ event })}>
                 <View style={{ alignItems: 'center', height: SIZE * 6 }}>
                   <View style={styles.marker}>
-                    <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile  width={SIZE * 4.5}/>
+                    <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile width={SIZE * 4.5} />
                   </View>
                 </View>
               </Marker>
@@ -181,7 +180,7 @@ export const MapScreen = ({ route }) => {
         <Button
           secondary
           loading={refreshing && filter === 'events'}
-          containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE,width: SIZE * 9 }]}
+          containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 9 }]}
           onPress={() => updateFilters('events')}>
           <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
             Events

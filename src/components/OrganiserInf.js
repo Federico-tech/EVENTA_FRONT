@@ -46,9 +46,9 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
           </Row>
         </TouchableOpacity>
         {role === 'user' && isFollowing ? (
-          <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9.5}} loading={isLoading}/>
+          <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
         ) : (
-          <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9.5}} loading={isLoading}/>
+          <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
         )}
       </View>
     </View>

@@ -26,6 +26,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   const [participants, setParticipants] = useState();
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
+  const [partLoading, setPartLoading] = useState(false);
   const [isPartecipating, setIsPartecipating] = useState();
   const [isFollowing, setIsFollowing] = useState();
 
@@ -36,15 +37,21 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getRefreshedEvent(event);
-    refreshSelectedUser(event.organiser);
-  }, [numberPart]);
+    const fetchData = async () => {
+      setLoading(true);
+      await getRefreshedEvent(event);
+      await refreshSelectedUser(organiser);
+      setLoading(false);
+    };
+    fetchData();
+  }, [eventId]);
 
   useEffect(() => {
+    refreshSelectedUser(event.organiser);
     setIsPartecipating(event.isParticipating);
     setIsFollowing(organiser.isFollowing);
     setNumberPart(event.participants);
-  }, [event, numberPart]);
+  }, [event]);
 
   const onPressParticipate = () => {
     partecipate();
@@ -68,17 +75,17 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    getEventParticipants(eventId, { limit: 3 })
-      .then((result) => {
+    const fetchData = async () => {
+      setPartLoading(true);
+      await getRefreshedEvent(event);
+      await getEventParticipants(eventId, { limit: 3 }).then((result) => {
+        console.log('result', result);
         setParticipants(result);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
       });
-  }, [numberPart]);
+      setPartLoading(false);
+    };
+    fetchData();
+  }, [event.participants, numberPart, isPartecipating]);
 
   const handleOrganiserProfileNavigation = () => {
     navigation.navigate(ROUTES.AccountOrganiserScreen);
@@ -101,9 +108,9 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
           <View>
             {role === 'user' &&
               (isFollowing ? (
-                <Button secondary text="Following" onPress={onPressUnfollow} />
+                <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9 }} loading={loading} />
               ) : (
-                <Button gradient text="Follow" onPress={onPressFollow} />
+                <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9 }} loading={loading} />
               ))}
           </View>
         </Row>
@@ -142,13 +149,13 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
           </View>
           {role === 'user' &&
             (isPartecipating ? (
-              <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnparticipate} />
+              <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnparticipate} loading={loading} />
             ) : (
-              <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressParticipate} />
+              <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressParticipate} loading={loading} />
             ))}
           <Text style={styles.whoGoing}>Who's going?</Text>
           <Row>
-            {loading ? (
+            {partLoading ? (
               <ActivityIndicator style={{ marginTop: SIZE }} />
             ) : (
               participants
