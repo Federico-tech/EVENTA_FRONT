@@ -48,8 +48,6 @@ mainAxios.interceptors.request.use(
   }
 );
 
-
-
 mainAxios.interceptors.response.use(
   (response) => {
     return response;
