@@ -97,3 +97,12 @@ export const getEventById = async (eventId) => {
     console.log({ getEventByIdError: e });
   }
 };
+
+export const deleteEvent = async (eventId) => {
+  try {
+    const { data } = await mainAxios.delete(`events/${eventId}`);
+    console.log(data);
+  } catch (e) {
+    console.log({ errorDeletingEvents: e });
+  }
+};

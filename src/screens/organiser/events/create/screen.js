@@ -7,9 +7,9 @@ import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, KeyboardAvoidingView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
@@ -65,12 +65,13 @@ export const CreateEventScreen = ({ route }) => {
           console.log(value);
           return !value || DateTime.fromFormat(value, 'HH:mm').isValid;
         }),
-      discount: string()
-        .required('Discount is a required field')
-        .test('is-valid-discount', 'Discount must be a number between 0 and 100', (value) => {
-          const discountValue = parseFloat(value);
-          return !isNaN(discountValue) && discountValue > 0 && discountValue < 100;
-        }),
+      discount: string().test('is-valid-discount', 'Discount must be a number between 1 and 100', (value) => {
+        if (value) {
+          return true; // skip validation if discount is empty
+        }
+        const discountValue = parseFloat(value);
+        return !isNaN(discountValue) && discountValue > 0 && discountValue < 100;
+      }),
       file: string().required('Image is a required field'),
     }),
     validateOnChange: false,
@@ -174,58 +175,56 @@ export const CreateEventScreen = ({ route }) => {
 
   return (
     <Container>
-      <KeyboardAvoidingView behavior="height">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
-            <Text style={styles.title}>{t('create event')}</Text>
-            <View>
-              <TouchableOpacity onPress={pickImage}>
-                <View style={styles.uploadImage}>
-                  {!values.file ? (
-                    <>
-                      <Ionicons name="add" size={50} />
-                      <Text>{t('pick an image')}</Text>
-                    </>
-                  ) : (
-                    <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
-                  )}
-                </View>
-                <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
-              </TouchableOpacity>
-              <InputText label={t('name')} formik={formik} formikName="name" maxLength={25} />
-              <InputText
-                label={t('address')}
-                {...getFieldProps('address.fullAddress')}
-                formikName="address"
-                pointerEvents="none"
-                onPress={onPressAddress}
-                touchableOpacity
-              />
-              <InputText label={t('description')} formik={formik} formikName="description" multiline maxLength={500} />
-              <InputText
-                label={t('date')}
-                formik={{ ...formik, onChangeText: onChangeDate }}
-                formikName="startDate"
-                maxLength={10}
-                placeholder="dd/MM/yyyy"
-              />
-              <InputText
-                label={t('start time')}
-                formik={{ ...formik, onChangeText: onChangeTime }}
-                formikName="startTime"
-                maxLength={5}
-                placeholder="HH:mm"
-              />
-              <Row row alignCenter style={{ marginTop: SIZE }}>
-                <Text style={styles.textDiscount}>Discount</Text>
-                <Switch value={discountEnabled} onValueChange={toggleDiscount} />
-              </Row>
-              {discountEnabled && <InputText formik={formik} formikName="discount" maxLength={30} placeholder="Enter the discount percentage" />}
-              <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
-            </View>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <Text style={styles.title}>{t('create event')}</Text>
+          <View>
+            <TouchableOpacity onPress={pickImage}>
+              <View style={styles.uploadImage}>
+                {!values.file ? (
+                  <>
+                    <Ionicons name="add" size={50} />
+                    <Text>{t('pick an image')}</Text>
+                  </>
+                ) : (
+                  <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+                )}
+              </View>
+              <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
+            </TouchableOpacity>
+            <InputText label={t('name')} formik={formik} formikName="name" maxLength={25} />
+            <InputText
+              label={t('address')}
+              {...getFieldProps('address.fullAddress')}
+              formikName="address"
+              pointerEvents="none"
+              onPress={onPressAddress}
+              touchableOpacity
+            />
+            <InputText label={t('description')} formik={formik} formikName="description" multiline maxLength={500} />
+            <InputText
+              label={t('date')}
+              formik={{ ...formik, onChangeText: onChangeDate }}
+              formikName="startDate"
+              maxLength={10}
+              placeholder="dd/MM/yyyy"
+            />
+            <InputText
+              label={t('start time')}
+              formik={{ ...formik, onChangeText: onChangeTime }}
+              formikName="startTime"
+              maxLength={5}
+              placeholder="HH:mm"
+            />
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <Text style={styles.textDiscount}>Discount</Text>
+              <Switch value={discountEnabled} onValueChange={toggleDiscount} />
+            </Row>
+            {discountEnabled && <InputText formik={formik} formikName="discount" maxLength={30} placeholder="Enter the discount percentage" />}
+            <TextButton text={t('publish event')} textStyle={styles.publishEvent} onPress={handleSubmit} loading={loading} />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </KeyboardAwareScrollView>
     </Container>
   );
 };

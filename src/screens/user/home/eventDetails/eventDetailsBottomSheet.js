@@ -9,6 +9,7 @@ import { ROUTES } from '../../../../navigation/Navigation';
 import { FONTS, SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 import { report } from '../../../../services/reports';
 import { showMessage } from 'react-native-flash-message';
+import { deleteEvent } from '../../../../services/events';
 
 export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, eventId }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -28,6 +29,10 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, event
       description: 'Thank you for reporting this event.',
       type: 'success',
     });
+  }
+
+  const onPressDeleteEvent = (eventId) => {
+    deleteEvent(eventId)
   }
 
   return (
@@ -69,6 +74,7 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, event
         title="Delete this event ?"
         descritpion="Are you sure you want to delete this event. The action is irreversible."
         confirmText="Delete"
+        onPressConfirm={() => onPressDeleteEvent(eventId)}
       />
       <AlertModal
         isVisible={isReportModalVisible}

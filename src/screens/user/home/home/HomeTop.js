@@ -1,16 +1,12 @@
-import { AntDesign } from '@expo/vector-icons';
-import { BottomSheetBackdrop, TouchableOpacity } from '@gorhom/bottom-sheet';
+import { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import _ from 'lodash';
-import React, { useCallback, useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
 
 import { MiniPostCard } from '../../../../components/MiniPostCard';
-import { HomeMap, IconButton, LoadingImage, Row, Text, TextButton } from '../../../../components/index';
+import { HomeMap, IconButton, Row, Text, TextButton } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
-import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
@@ -18,30 +14,6 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
   const navigation = useNavigation();
   const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
   const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
-  const user = useSelector(selectCurrentUser);
-  const userId = useSelector(selectCurrentUserId);
-
-  const bottomSheetModalRef = useRef(null);
-  const snapPoints = ['60%'];
-
-  const handlePresentModal = () => {
-    bottomSheetModalRef.current?.present();
-  };
-
-  const handleClosePress = () => bottomSheetModalRef.current.close();
-
-  const renderBackdrop = useCallback(
-    (props) => (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={1}
-        animatedIndex={{
-          value: 1,
-        }}
-      />
-    ),
-    []
-  );
 
   const { data, getRefreshedData, refreshing } = useInfiniteScroll({
     entity: 'posts/home',
@@ -72,44 +44,30 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
         </Row>
       </View>
       <HomeMap mapData={mapData} />
+      <Row alignCenter spaceBetween row>
+        <Text semiBoldSm>Moments</Text>
+        {!refreshing && data.length !== 0 && (
+          <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
+            <Row row alignCenter>
+              <TextButton
+                text="View all"
+                textStyle={{ width: SIZE * 4, textAlign: 'center', fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }}
+              />
+            </Row>
+          </TouchableOpacity>
+        )}
+      </Row>
+
       <View style={styles.noteContainer}>
         <FlatList
           data={data}
           renderItem={({ item }) => <MiniPostCard postData={item} />}
           keyExtractor={(item) => item._id}
           horizontal
+          style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          ListFooterComponent={
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>
-              {!refreshing && data.length !== 0 && (
-                <TextButton
-                  text="View all"
-                  textStyle={{ width: SIZE * 3, textAlign: 'center' }}
-                  onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}
-                />
-              )}
-            </View>
-          }
-          ListHeaderComponent={
-            <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
-              <Row justifyCenter>
-                <View>
-                  <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE, marginTop: SIZE }]}>
-                    <Row alignCenter style={{ width: SIZE * 6 }} column>
-                      <Row row>
-                        <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} />
-                        <View style={styles.plusIcon}>
-                          <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
-                        </View>
-                      </Row>
-                      <Text style={{ fontSize: SIZES.xs, textAlign: 'center' }}>Create a post!</Text>
-                    </Row>
-                  </View>
-                </View>
-              </Row>
-            </TouchableOpacity>
-          }
+          ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
         />
       </View>
     </View>
@@ -154,9 +112,8 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: -(WIDTH_DEVICE / 20),
     width: WIDTH_DEVICE,
-    paddingHorizontal: WIDTH_DEVICE / 20,
-    height: SIZE * 11,
-    marginBottom: SIZE,
+    height: SIZE * 16,
+    marginBottom: SIZE * 1.5,
   },
   plusIcon: {
     position: 'absolute',

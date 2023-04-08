@@ -1,8 +1,9 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { object, string } from 'yup';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container, Row } from '../../../../components/index';
@@ -84,34 +85,32 @@ export const UserSingUpScreen = ({ navigation }) => {
 
   return (
     <Container>
-      <KeyboardAvoidingView behavior="height">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
-            <Row>
-              <View style={{ position: 'absolute', left: 0 }}>
-                <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
-              </View>
-              <Text style={styles.title}>{t('create your account')}</Text>
-            </Row>
-            <InputText formik={formik} label={t('name')} formikName="name" maxLength={25} />
-            <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} noAutoCorrect />
-            <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
-            <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
-            <Text style={styles.passwordReq}>{t('password requirements')}</Text>
-            <Button loading={loading} primary containerStyle={{ width: WIDTH_DEVICE * 0.9 }} text={t('register')} onPress={handleSubmit} />
-            <View style={styles.containerLine}>
-              <Line lineStyle={{ flex: 1 }} />
-              <Text style={styles.orLoginUsing}>{t('or register using')}</Text>
-              <Line lineStyle={{ flex: 1 }} />
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <Row>
+            <View style={{ position: 'absolute', left: 0 }}>
+              <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
             </View>
-            <View style={styles.socialLoginContainer}>
-              <SocialLoginButton apple />
-              <SocialLoginButton google />
-            </View>
-            <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
+            <Text style={styles.title}>{t('create your account')}</Text>
+          </Row>
+          <InputText formik={formik} label={t('name')} formikName="name" maxLength={25} />
+          <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} noAutoCorrect />
+          <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
+          <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
+          <Text style={styles.passwordReq}>{t('password requirements')}</Text>
+          <Button loading={loading} primary containerStyle={{ width: WIDTH_DEVICE * 0.9 }} text={t('register')} onPress={handleSubmit} />
+          <View style={styles.containerLine}>
+            <Line lineStyle={{ flex: 1 }} />
+            <Text style={styles.orLoginUsing}>{t('or register using')}</Text>
+            <Line lineStyle={{ flex: 1 }} />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <View style={styles.socialLoginContainer}>
+            <SocialLoginButton apple />
+            <SocialLoginButton google />
+          </View>
+          <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
+        </View>
+      </KeyboardAwareScrollView>
       {error === 409 && <FlashMessage position="top" />}
     </Container>
   );
