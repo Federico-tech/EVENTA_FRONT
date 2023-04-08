@@ -5,8 +5,8 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
@@ -124,44 +124,42 @@ export const EditUserScreen = () => {
   return (
     <BottomSheetModalProvider>
       <Container>
-        <KeyboardAvoidingView behavior="height">
-          <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done cancel />
-          <ScrollView>
-            <Container>
-              <View style={styles.container}>
-                <Row alignCenter>
-                  <LoadingImage source={values.file} style={styles.image} profile width={SIZE * 7.5} iconSIZE={SIZE * 4} />
-                  <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
+        <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done cancel />
+        <KeyboardAwareScrollView behavior="height">
+          <Container>
+            <View style={styles.container}>
+              <Row alignCenter>
+                <LoadingImage source={values.file} style={styles.image} profile width={SIZE * 7.5} iconSIZE={SIZE * 4} />
+                <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
+              </Row>
+              <InputText label="Name" formik={formik} formikName="name" maxLength={25} />
+              <InputText label="Username" formik={formik} formikName="username" maxLength={20} />
+              <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={150} numberOfLines={5} />
+            </View>
+          </Container>
+        </KeyboardAwareScrollView>
+        <View>
+          <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+            <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+              <TouchableOpacity onPress={pickImage}>
+                <Row row alignCenter style={{ marginTop: SIZE }}>
+                  <Ionicons name="images-outline" size={SIZE * 2} />
+                  <Text regularSm style={{ marginLeft: SIZE }}>
+                    Choose From your library
+                  </Text>
                 </Row>
-                <InputText label="Name" formik={formik} formikName="name" maxLength={25}/>
-                <InputText label="Username" formik={formik} formikName="username" maxLength={20}/>
-                <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={150} numberOfLines={5}/>
-              </View>
-            </Container>
-          </ScrollView>
-          <View>
-            <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-              <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-                <TouchableOpacity onPress={pickImage}>
-                  <Row row alignCenter style={{ marginTop: SIZE }}>
-                    <Ionicons name="images-outline" size={SIZE * 2} />
-                    <Text regularSm style={{ marginLeft: SIZE }}>
-                      Choose From your library
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={deleteImage}>
-                  <Row row alignCenter style={{ marginTop: SIZE }}>
-                    <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
-                    <Text regularSm color="red" style={{ marginLeft: SIZE }}>
-                      Delete the image
-                    </Text>
-                  </Row>
-                </TouchableOpacity>
-              </View>
-            </BottomSheetModal>
-          </View>
-        </KeyboardAvoidingView>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={deleteImage}>
+                <Row row alignCenter style={{ marginTop: SIZE }}>
+                  <Ionicons name="ios-trash-outline" size={SIZE * 2} color="red" />
+                  <Text regularSm color="red" style={{ marginLeft: SIZE }}>
+                    Delete the image
+                  </Text>
+                </Row>
+              </TouchableOpacity>
+            </View>
+          </BottomSheetModal>
+        </View>
       </Container>
     </BottomSheetModalProvider>
   );

@@ -8,8 +8,8 @@ import _ from 'lodash';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
-import { FlatList, RefreshControl, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
+import { FlatList, RefreshControl, TouchableOpacity } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
@@ -122,38 +122,36 @@ export const CreatePostScreen = () => {
 
   return (
     <Container>
-      <KeyboardAvoidingView behavior="height">
-        <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
-            <TouchableOpacity onPress={pickImage}>
-              <View style={styles.uploadImage}>
-                {!values.file ? (
-                  <>
-                    <Ionicons name="add" size={50} />
-                    <Text>{t('pick an image')}</Text>
-                  </>
-                ) : (
-                  <Image source={{ uri: values.file }} style={{ width: SIZE * 26, aspectRatio: 1, borderRadius: SIZES.xxs }} />
-                )}
-              </View>
-              <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
-            </TouchableOpacity>
-            <InputText label="Caption" formik={formik} formikName="caption" maxLength={80} />
-            <TextButton text="Choose the event" style={styles.chooseEvent} onPress={handlePresentModal} />
-            {event && (
-              <Row row alignCenter style={{ marginTop: SIZE }}>
-                <Image source={{ uri: event.coverImage }} style={styles.eventImage} />
-                <Row style={{ marginLeft: SIZE }}>
-                  <Text style={{ textTransform: 'capitalize', fontFamily: FONTS.medium }}>{event.name}</Text>
-                  <Text color={COLORS.gray}>by {event.organiser.username}</Text>
-                </Row>
+      <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel />
+      <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={pickImage}>
+            <View style={styles.uploadImage}>
+              {!values.file ? (
+                <>
+                  <Ionicons name="add" size={50} />
+                  <Text>{t('pick an image')}</Text>
+                </>
+              ) : (
+                <Image source={{ uri: values.file }} style={{ width: SIZE * 26, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+              )}
+            </View>
+            <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
+          </TouchableOpacity>
+          <InputText label="Caption" formik={formik} formikName="caption" maxLength={80} />
+          <TextButton text="Choose the event" style={styles.chooseEvent} onPress={handlePresentModal} />
+          {event && (
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <Image source={{ uri: event.coverImage }} style={styles.eventImage} />
+              <Row style={{ marginLeft: SIZE }}>
+                <Text style={{ textTransform: 'capitalize', fontFamily: FONTS.medium }}>{event.name}</Text>
+                <Text color={COLORS.gray}>by {event.organiser.username}</Text>
               </Row>
-            )}
-            <Text style={[styles.requiredImage]}>{errors.eventId && touched.eventId ? errors.eventId : null}</Text>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+            </Row>
+          )}
+          <Text style={[styles.requiredImage]}>{errors.eventId && touched.eventId ? errors.eventId : null}</Text>
+        </View>
+      </KeyboardAwareScrollView>
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <FlatList

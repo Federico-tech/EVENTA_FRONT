@@ -7,9 +7,10 @@ import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { ScrollView, Switch, TouchableOpacity } from 'react-native-gesture-handler';
+import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
@@ -171,54 +172,52 @@ export const EditEventScreen = ({ route }) => {
   return (
     <Container>
       <Header title="Edit event" done onPress={handleSubmit} loading={loading} cancel />
-      <KeyboardAvoidingView behavior="height">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ marginTop: SIZE * 2, marginHorizontal: WIDTH_DEVICE / 20, marginBottom: SIZE * 10 }}>
-            <TouchableOpacity onPress={pickImage}>
-              <View style={styles.uploadImage}>
-                {!values.file ? (
-                  <>
-                    <Ionicons name="add" size={50} />
-                    <Text>{t('pick an image')}</Text>
-                  </>
-                ) : (
-                  <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
-                )}
-              </View>
-              <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
-            </TouchableOpacity>
-            <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
-            <InputText
-              label={t('address')}
-              {...getFieldProps('address.fullAddress')}
-              formikName="address"
-              pointerEvents="none"
-              onPress={onPressAddress}
-              touchableOpacity
-            />
-            <InputText label={t('description')} formik={formik} formikName="description" multiline />
-            <InputText
-              label={t('date')}
-              formik={{ ...formik, onChangeText: onChangeDate }}
-              formikName="startDate"
-              maxLength={10}
-              placeholder="dd/MM/yyyy"
-            />
-            <InputText
-              label={t('start time')}
-              formik={{ ...formik, onChangeText: onChangeTime }}
-              formikName="startTime"
-              maxLength={5}
-              placeholder="HH:mm"
-            />
-            <Row row alignCenter style={{ marginTop: SIZE }}>
-              <Text style={styles.textDiscount}>Discount</Text>
-              <Switch value={discountEnabled} onValueChange={setDiscountEnabled} />
-            </Row>
-            {discountEnabled && <InputText formik={formik} formikName="discount" maxLength={30} placeholder="Enter the discount percentage" />}
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ marginTop: SIZE * 2, marginHorizontal: WIDTH_DEVICE / 20, marginBottom: SIZE * 10 }}>
+          <TouchableOpacity onPress={pickImage}>
+            <View style={styles.uploadImage}>
+              {!values.file ? (
+                <>
+                  <Ionicons name="add" size={50} />
+                  <Text>{t('pick an image')}</Text>
+                </>
+              ) : (
+                <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
+              )}
+            </View>
+            <Text style={styles.requiredImage}>{errors.file && touched.file ? errors.file : null}</Text>
+          </TouchableOpacity>
+          <InputText label={t('name')} formik={formik} formikName="name" maxLength={30} />
+          <InputText
+            label={t('address')}
+            {...getFieldProps('address.fullAddress')}
+            formikName="address"
+            pointerEvents="none"
+            onPress={onPressAddress}
+            touchableOpacity
+          />
+          <InputText label={t('description')} formik={formik} formikName="description" multiline />
+          <InputText
+            label={t('date')}
+            formik={{ ...formik, onChangeText: onChangeDate }}
+            formikName="startDate"
+            maxLength={10}
+            placeholder="dd/MM/yyyy"
+          />
+          <InputText
+            label={t('start time')}
+            formik={{ ...formik, onChangeText: onChangeTime }}
+            formikName="startTime"
+            maxLength={5}
+            placeholder="HH:mm"
+          />
+          <Row row alignCenter style={{ marginTop: SIZE }}>
+            <Text style={styles.textDiscount}>Discount</Text>
+            <Switch value={discountEnabled} onValueChange={setDiscountEnabled} />
+          </Row>
+          {discountEnabled && <InputText formik={formik} formikName="discount" maxLength={30} placeholder="Enter the discount percentage" />}
+        </View>
+      </KeyboardAwareScrollView>
     </Container>
   );
 };
