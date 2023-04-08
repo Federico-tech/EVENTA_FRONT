@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 
 import i18n from './src/locales/i18n';
 import AppNavigator from './src/navigation/AppNavigator';
+import { userUpdate } from './src/services/users';
 import { store } from './src/store';
 import { registerForPushNotificationsAsync } from './src/utils/notifications';
 
@@ -26,7 +27,14 @@ const App = () => {
   });
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then((token) => {
+      if (token) {
+        setExpoPushToken(token);
+        userUpdate({ expoPushToken: token })
+          .then((res) => console.debug({ res }))
+          .catch((error) => console.debug({ errorUpdateUser: error }));
+      }
+    });
 
     notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
       setNotification(notification);
