@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import _ from 'lodash'
+
 import { Container, Text } from '../../../components';
 import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
@@ -9,21 +10,21 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
   const { title, backScreenName } = route.params;
 
   const findAddress = (address_components, type) => {
-    return _.find(address_components, a => a.types.includes(type)).long_name
-  }
+    return _.find(address_components, (a) => a.types.includes(type)).long_name;
+  };
 
   const onPress = (data, details) => {
     if (!details?.geometry) {
       return;
     }
     const { geometry, formatted_address } = details;
-    const city = findAddress(details.address_components, 'political')
-    console.log({details, city})
+    const city = findAddress(details.address_components, 'political');
+    console.log({ details, city });
     const addressInfo = {
       lat: geometry.location.lat,
       lng: geometry.location.lng,
       formatted_address,
-      city
+      city,
     };
     navigation.navigate({
       name: backScreenName,
@@ -31,7 +32,6 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
       merge: true,
     });
   };
-
 
   return (
     <Container>
@@ -49,7 +49,7 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
           }}
           enablePoweredByContainer={false}
           listUnderlayColor="transparent"
-          placeholder='Search'
+          placeholder="Search"
           numberOfLines={10}
           nearbyPlacesAPI="GooglePlacesSearch"
           textInputProps={{
@@ -58,10 +58,11 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
             borderRadius: SIZES.xs,
             borderColor: COLORS.lightGray,
             height: HEIGHT_DEVICE / 17,
-            cursorColor: 'black'
+            cursorColor: 'black',
           }}
           fetchDetails
           onPress={onPress}
+          onFail={(error) => console.debug(error)}
           query={{
             key: 'AIzaSyBPn2Qae8E0o1wVEi8pOyUVsz87eGfFQGQ',
             language: 'it',

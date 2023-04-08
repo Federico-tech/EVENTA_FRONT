@@ -1,6 +1,6 @@
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
@@ -9,8 +9,14 @@ import { Provider } from 'react-redux';
 import i18n from './src/locales/i18n';
 import AppNavigator from './src/navigation/AppNavigator';
 import { store } from './src/store';
+import { registerForPushNotificationsAsync } from './src/utils/notifications';
 
 const App = () => {
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -18,6 +24,23 @@ const App = () => {
       shouldSetBadge: false,
     }),
   });
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   const [loaded] = useFonts({
     InterBold: require('./src/assets/fonts/Inter-Bold.ttf'),
