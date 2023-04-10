@@ -44,7 +44,7 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
         </Row>
       </View>
       <HomeMap mapData={mapData} />
-      <Row alignCenter spaceBetween row>
+      <Row alignCenter spaceBetween row style={{ marginBottom: SIZE}}>
         <Text semiBoldSm>Moments</Text>
         {!refreshing && data.length !== 0 && (
           <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: -(WIDTH_DEVICE / 20),
     width: WIDTH_DEVICE,
-    height: SIZE * 16,
+    height: SIZE * 14,
     marginBottom: SIZE * 1.5,
   },
   plusIcon: {

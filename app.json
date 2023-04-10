@@ -33,7 +33,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/adaptive-icon.png",
+          "icon": "./src/assets/logos/BlueLogo.png",
           "color": "#ffffff"
         }
       ]

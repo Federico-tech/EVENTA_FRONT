@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
-import { selectCurrentUserRole } from '../store/user';
+import { selectCurrentUser, selectCurrentUserRole } from '../store/user';
 import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { Row } from './Row';
@@ -15,7 +15,8 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
   const [isFollowing, setIsFollowing] = useState();
 
   const navigation = useNavigation();
-  const role = useSelector(selectCurrentUserRole);
+  const user = useSelector(selectCurrentUser);
+  console.log('User', user);
 
   useEffect(() => {
     setIsFollowing(organiser.isFollowing);
@@ -45,11 +46,12 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
             </View>
           </Row>
         </TouchableOpacity>
-        {role === 'user' && isFollowing ? (
-          <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
-        ) : (
-          <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
-        )}
+        {user.role === 'user' &&
+          (isFollowing ? (
+            <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
+          ) : (
+            <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
+          ))}
       </View>
     </View>
   );

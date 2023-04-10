@@ -46,7 +46,7 @@ export const CreateEventScreen = ({ route }) => {
       },
       startDate: '',
       startTime: '',
-      discount: '',
+      discount: 0,
       file: '',
     },
     validationSchema: object().shape({
@@ -67,8 +67,7 @@ export const CreateEventScreen = ({ route }) => {
         }),
       discount: string().test('is-valid-discount', 'Discount must be a number between 1 and 100', (value) => {
         if (value) {
-          return true; // skip validation if discount is empty
-        }
+          return true; }
         const discountValue = parseFloat(value);
         return !isNaN(discountValue) && discountValue > 0 && discountValue < 100;
       }),

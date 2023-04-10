@@ -9,14 +9,14 @@ import { Text } from './Text';
 export const MiniPostCard = ({ postData }) => {
   return (
     <View>
+      <LoadingImage source={postData.postImage} width={SIZE * 14} event />
       <View style={styles.container}>
-        <Row row alignCenter style={{ margin: SIZE / 3 }}>
+        <Row row alignCenter style={{ margin: SIZE / 2}}>
           <LoadingImage source={postData.user.profilePic} profile width={SIZE * 2} />
-          <Text regularXs style={{ marginLeft: SIZE / 2, fontFamily: FONTS.medium }}>
+          <Text regularXs color={COLORS.white}style={{ marginLeft: SIZE / 2, fontFamily: FONTS.semiBold }}>
             {postData.user.username}
           </Text>
         </Row>
-        <LoadingImage source={postData.postImage} width={SIZE * 12} event />
       </View>
     </View>
   );
@@ -24,13 +24,9 @@ export const MiniPostCard = ({ postData }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: SIZES.xxs,
-    backgroundColor: COLORS.white,
-    marginRight: WIDTH_DEVICE / 20,
-    marginTop: SIZE,
-    ...SHADOWS.medium,
+    position: 'absolute',
   },
-  textStyle: {
+  textStyle: { 
     fontSize: SIZES.xs,
     fontFamily: FONTS.semiBold,
   },
