@@ -14,7 +14,7 @@ export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleOnPress = () => {
-    if (data?.isDeleted) {
+    if (!data?.isDeleted) {
       dispatch(setUserSelected(data));
       bottomSheet ? navigation.navigate(ROUTES.AccountUserScreen, { data }) : navigation.push(ROUTES.AccountUserScreen, { data });
       closeSheet();

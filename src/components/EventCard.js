@@ -18,6 +18,7 @@ import { Row } from './Row';
 export const EventCard = ({ eventData }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
+  const [isLikePressLoading, setIsLikePressLoading] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -45,16 +46,20 @@ export const EventCard = ({ eventData }) => {
     setIsLiked(eventData.hasLiked);
   }, [eventData]);
 
-  const onPresslike = () => {
-    like(eventData._id);
+  const onPresslike = async () => {
     setLikes(likes + 1);
     setIsLiked(true);
+    setIsLikePressLoading(true);
+    await like(eventData._id);
+    setIsLikePressLoading(false);
   };
 
-  const onPressUnlike = () => {
-    unLike(eventData._id);
+  const onPressUnlike = async () => {
     setLikes(likes - 1);
     setIsLiked(false);
+    setIsLikePressLoading(true);
+    await unLike(eventData._id);
+    setIsLikePressLoading(false);
   };
 
   return (
@@ -77,11 +82,11 @@ export const EventCard = ({ eventData }) => {
             <View style={styles.likeContainer}>
               <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{likes}</Text>
               {isLiked ? (
-                <TouchableOpacity onPress={onPressUnlike}>
+                <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
                   <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity onPress={onPresslike}>
+                <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
                   <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
                 </TouchableOpacity>
               )}

@@ -17,10 +17,11 @@ export const Button = ({
   secondary,
   gradient,
   disabled,
+  disabledStyle,
   pressed,
   children,
   black,
-  indicatorColor
+  indicatorColor,
 }) => {
   const Component = !loading && gradient ? LinearGradient : View;
   return (
@@ -34,7 +35,7 @@ export const Button = ({
             loading && styles.secondary,
             primary && styles.container,
             secondary && styles.secondary,
-            disabled && styles.disabled,
+            disabledStyle && styles.disabled,
             gradient && styles.containerGradient,
             pressed && styles.pressed,
             black && styles.black,

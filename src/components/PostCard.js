@@ -3,6 +3,7 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,11 +17,11 @@ import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
-import { showMessage } from 'react-native-flash-message';
 
 export const PostCard = ({ postData }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
+  const [isLikePressLoading, setIsLikePressLoading] = useState(false);
   const [lastTap, setLastTap] = useState(null);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -55,16 +56,20 @@ export const PostCard = ({ postData }) => {
     setIsLiked(postData.hasLiked);
   }, [postData]);
 
-  const onPresslike = () => {
-    postLike(postData._id);
+  const onPresslike = async () => {
     setLikes(likes + 1);
     setIsLiked(true);
+    setIsLikePressLoading(true);
+    await postLike(postData._id);
+    setIsLikePressLoading(false);
   };
 
-  const onPressUnlike = () => {
-    postUnlike(postData._id);
-    setLikes(likes - 1);
-    setIsLiked(false);
+  const onPressUnlike = async () => {
+    setLikes(likes + 1);
+    setIsLiked(true);
+    setIsLikePressLoading(true);
+    await postUnlike(postData._id);
+    setIsLikePressLoading(false);
   };
 
   const handleDoubleTap = () => {
@@ -94,16 +99,16 @@ export const PostCard = ({ postData }) => {
   };
 
   const onPressDeletePost = (data) => {
-    deletePost(data._id)
+    deletePost(data._id);
     handleClosePress();
     setDeleteModalVisible(false);
-  }
+  };
 
   return (
-    <TouchableWithoutFeedback onPress={handleDoubleTap}>
+    <TouchableWithoutFeedback onPress={handleDoubleTap} disabled={isLikePressLoading}>
       <View style={styles.wrapper}>
         <Row style={styles.topRow}>
-          <Row style={{padding: SIZE / 2}} row alignCenter spaceBetween>
+          <Row style={{ padding: SIZE / 2 }} row alignCenter spaceBetween>
             <TouchableOpacity onPress={onPressProfile}>
               <Row row alignCenter>
                 <LoadingImage source={postData.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
@@ -129,11 +134,11 @@ export const PostCard = ({ postData }) => {
             <View style={styles.likeContainer}>
               <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{likes}</Text>
               {isLiked ? (
-                <TouchableOpacity onPress={onPressUnlike}>
+                <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
                   <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity onPress={onPresslike}>
+                <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
                   <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
                 </TouchableOpacity>
               )}

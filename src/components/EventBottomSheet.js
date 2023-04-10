@@ -27,6 +27,8 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   const [numberPart, setNumberPart] = useState();
   const [loading, setLoading] = useState(false);
   const [partLoading, setPartLoading] = useState(false);
+  const [isFollowingPressLoading, setIsFollowingPressLoading] = useState(false);
+  const [isPartPressLoading, setIsPartPressLoading] = useState(false);
   const [isPartecipating, setIsPartecipating] = useState();
   const [isFollowing, setIsFollowing] = useState();
 
@@ -53,25 +55,33 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
     setNumberPart(event.participants);
   }, [event]);
 
-  const onPressParticipate = () => {
-    partecipate();
+  const onPressParticipate = async () => {
     setIsPartecipating(true);
     setNumberPart(numberPart + 1);
+    setIsPartPressLoading(true);
+    await partecipate();
+    setIsPartPressLoading(false);
   };
 
-  const onPressUnparticipate = () => {
-    unpartecipate();
+  const onPressUnparticipate = async () => {
     setIsPartecipating(false);
     setNumberPart(numberPart - 1);
+    setIsPartPressLoading(true);
+    await unpartecipate();
+    setIsPartPressLoading(false);
   };
 
-  const onPressFollow = () => {
-    follow();
+  const onPressFollow = async () => {
     setIsFollowing(true);
+    setIsFollowingPressLoading(true);
+    await follow();
+    setIsFollowingPressLoading(false);
   };
-  const onPressUnfollow = () => {
-    unFollow();
+  const onPressUnfollow = async () => {
     setIsFollowing(false);
+    setIsFollowingPressLoading(true);
+    await unFollow();
+    setIsFollowingPressLoading(false);
   };
 
   useEffect(() => {
@@ -108,9 +118,23 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
           <View>
             {role === 'user' &&
               (isFollowing ? (
-                <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9 }} loading={loading} />
+                <Button
+                  secondary
+                  text="Following"
+                  onPress={onPressUnfollow}
+                  containerStyle={{ width: SIZE * 9 }}
+                  loading={loading}
+                  disabled={isFollowingPressLoading}
+                />
               ) : (
-                <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9 }} loading={loading} />
+                <Button
+                  gradient
+                  text="Follow"
+                  onPress={onPressFollow}
+                  containerStyle={{ width: SIZE * 9 }}
+                  loading={loading}
+                  disabled={isFollowingPressLoading}
+                />
               ))}
           </View>
         </Row>
@@ -149,9 +173,23 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
           </View>
           {role === 'user' &&
             (isPartecipating ? (
-              <Button secondary containerStyle={styles.partButton} text="Im going" onPress={onPressUnparticipate} loading={loading} />
+              <Button
+                secondary
+                containerStyle={styles.partButton}
+                text="Im going"
+                onPress={onPressUnparticipate}
+                loading={loading}
+                disabled={isPartPressLoading}
+              />
             ) : (
-              <Button gradient containerStyle={styles.partButton} text="Im going" onPress={onPressParticipate} loading={loading} />
+              <Button
+                gradient
+                containerStyle={styles.partButton}
+                text="Im going"
+                onPress={onPressParticipate}
+                loading={loading}
+                disabled={isPartPressLoading}
+              />
             ))}
           <Text style={styles.whoGoing}>Who's going?</Text>
           <Row>

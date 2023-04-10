@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
@@ -20,12 +20,13 @@ import { ReadMoreButton } from './TextButton';
 
 export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }) => {
   const [user, setUser] = useState({ ...initialUser });
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
   const selectedUser = useSelector(selectSelectedUser);
   const followingParams = myProfile ? currentUser : selectedUser;
 
-  console.log('UserLoading', loading)
+  console.log('UserLoading', loading);
 
   const { data } = useInfiniteScroll({
     entity: 'events',
@@ -42,24 +43,28 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
     }
   }, [initialUser]);
 
-  const onPressFollow = () => {
-    follow();
+  const onPressFollow = async () => {
     setUser((prevUser) => ({
       ...prevUser,
       followers: prevUser.followers + 1,
       isFollowing: true,
     }));
+    setIsFollowLoading(true);
+    await follow();
+    setIsFollowLoading(false);
     refreshSelectedUser(user);
   };
 
-  const onPressUnfollow = () => {
-          unFollow();
-          setUser((prevUser) => ({
-            ...prevUser,
-            followers: prevUser.followers - 1,
-            isFollowing: false,
-          }));
-          refreshSelectedUser(user);
+  const onPressUnfollow = async () => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      followers: prevUser.followers - 1,
+      isFollowing: false,
+    }));
+    setIsFollowLoading(true);
+    await unFollow();
+    setIsFollowLoading(false);
+    refreshSelectedUser(user);
   };
 
   const handleEditProfile = () => navigation.navigate(user.role === 'organiser' ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
@@ -67,8 +72,6 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   const onPressFollowing = () => {
     navigation.push(user.role === 'organiser' ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { followingParams });
   };
-
- 
 
   return (
     <View>
@@ -88,7 +91,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
             <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
           </Row>
         ) : (
-          <ReadMoreButton text={user.bio ? user.bio : 'Description'} style={styles.description}/>
+          <ReadMoreButton text={user.bio ? user.bio : 'Description'} style={styles.description} />
         )}
         <Row spaceBetween row style={styles.followerRow}>
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>
@@ -111,9 +114,23 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
             <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
           ) : currentUser.role === 'user' ? (
             user.isFollowing ? (
-              <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} loading={loading}/>
+              <Button
+                secondary
+                text="Following"
+                containerStyle={{ width: SIZE * 13 }}
+                onPress={onPressUnfollow}
+                loading={loading}
+                disabled={isFollowLoading}
+              />
             ) : (
-              <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} loading={loading}/>
+              <Button
+                gradient
+                text="Follow"
+                containerStyle={{ width: SIZE * 13 }}
+                onPress={onPressFollow}
+                loading={loading}
+                disabled={isFollowLoading}
+              />
             )
           ) : (
             <View style={{ width: SIZE * 13 }} />

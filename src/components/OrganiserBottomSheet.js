@@ -25,9 +25,8 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   const role = useSelector(selectCurrentUserRole);
   const navigation = useNavigation();
   const [isFollowing, setIsFollowing] = useState();
+  const [isFollowingPressLoading, setIsFollowingPressLoading] = useState(false);
   const [numFollowers, setNumFollowers] = useState();
-
-  console.log('MapUser', user._id);
 
   const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: 'events',
@@ -37,16 +36,20 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
     limit: 7,
   });
 
-  const onPressFollow = () => {
-    follow();
+  const onPressFollow = async () => {
     setIsFollowing(true);
     setNumFollowers(numFollowers + 1);
+    setIsFollowingPressLoading(true);
+    await follow();
+    setIsFollowingPressLoading(false);
   };
 
-  const onPressUnfollow = () => {
-      unFollow();
-      setIsFollowing(false);
-      setNumFollowers(numFollowers - 1);
+  const onPressUnfollow = async () => {
+    setIsFollowing(false);
+    setNumFollowers(numFollowers - 1);
+    setIsFollowingPressLoading(true);
+    await unFollow();
+    setIsFollowingPressLoading(false);
   };
 
   useEffect(() => {
@@ -128,9 +131,15 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
                   <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
                 ) : role === 'user' ? (
                   isFollowing ? (
-                    <Button secondary text="Following" containerStyle={{ width: SIZE * 13 }} onPress={onPressUnfollow} />
+                    <Button
+                      secondary
+                      text="Following"
+                      containerStyle={{ width: SIZE * 13 }}
+                      onPress={onPressUnfollow}
+                      disabled={isFollowingPressLoading}
+                    />
                   ) : (
-                    <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} />
+                    <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} disabled={isFollowingPressLoading} />
                   )
                 ) : (
                   <View style={{ width: SIZE * 13 }} />

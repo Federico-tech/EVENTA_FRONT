@@ -6,30 +6,34 @@ import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
-import { selectCurrentUser, selectCurrentUserRole } from '../store/user';
+import { selectCurrentUser } from '../store/user';
 import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { Row } from './Row';
 
 export const OrganiserInf = ({ organiser, isLoading }) => {
   const [isFollowing, setIsFollowing] = useState();
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
 
   const navigation = useNavigation();
   const user = useSelector(selectCurrentUser);
-  console.log('User', user);
 
   useEffect(() => {
     setIsFollowing(organiser.isFollowing);
   }, [organiser]);
 
-  const onPressFollow = () => {
-    follow();
+  const onPressFollow = async () => {
     setIsFollowing(true);
+    setIsFollowLoading(true);
+    await follow();
+    setIsFollowLoading(false);
   };
 
-  const onPressUnfollow = () => {
-    unFollow();
+  const onPressUnfollow = async () => {
     setIsFollowing(false);
+    setIsFollowLoading(true);
+    await unFollow();
+    setIsFollowLoading(false);
   };
 
   return (
@@ -48,9 +52,23 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
         </TouchableOpacity>
         {user.role === 'user' &&
           (isFollowing ? (
-            <Button secondary text="Following" onPress={onPressUnfollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
+            <Button
+              secondary
+              text="Following"
+              onPress={onPressUnfollow}
+              containerStyle={{ width: SIZE * 9.5 }}
+              loading={isLoading}
+              disabled={isFollowLoading}
+            />
           ) : (
-            <Button gradient text="Follow" onPress={onPressFollow} containerStyle={{ width: SIZE * 9.5 }} loading={isLoading} />
+            <Button
+              gradient
+              text="Follow"
+              onPress={onPressFollow}
+              containerStyle={{ width: SIZE * 9.5 }}
+              loading={isLoading}
+              disabled={isFollowLoading}
+            />
           ))}
       </View>
     </View>

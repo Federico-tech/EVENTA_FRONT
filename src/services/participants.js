@@ -3,22 +3,22 @@ import { store } from '../store';
 import { selectSelectedEventId } from '../store/event';
 import { selectCurrentUserId } from '../store/user';
 
-export const partecipate = () => {
+export const partecipate = async () => {
   const state = store.getState();
   const eventId = selectSelectedEventId(state);
   try {
-    const { data } = mainAxios.post(`events/${eventId}/participate`);
+    const { data } = await mainAxios.post(`events/${eventId}/participate`);
     console.log(data);
   } catch (e) {
     console.log({ errorPartecipate: e });
   }
 };
 
-export const unpartecipate = () => {
+export const unpartecipate = async () => {
   const state = store.getState();
   const eventId = selectSelectedEventId(state);
   try {
-    const { data } = mainAxios.delete(`events/${eventId}/unparticipate`);
+    const { data } = await mainAxios.delete(`events/${eventId}/unparticipate`);
     console.log(data);
   } catch (e) {
     console.log({ errorPartecipate: e });

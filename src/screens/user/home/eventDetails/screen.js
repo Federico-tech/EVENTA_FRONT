@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
@@ -25,7 +25,7 @@ import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
 export const EventDetails = ({ route }) => {
   const [participants, setParticipants] = useState();
-
+  const [isOnPressPartLoading, setIsOnPressPartLoading] = useState(false);
   const [numberPart, setNumberPart] = useState();
   const [isLoading, setIsLoading] = useState();
   const [isLoadingPart, setIsLoadingPart] = useState(false);
@@ -104,16 +104,20 @@ export const EventDetails = ({ route }) => {
     fetchData();
   }, [event.participants, numberPart, isParticipating]);
 
-  const onPressPartecipate = () => {
-    partecipate();
+  const onPressPartecipate = async () => {
     setNumberPart(event.participants);
     setIsParticipating(true);
+    setIsOnPressPartLoading(true);
+    await partecipate();
+    setIsOnPressPartLoading(false);
   };
 
-  const onPressUnpartecipate = () => {
-    unpartecipate();
+  const onPressUnpartecipate = async () => {
     setNumberPart(event.participants);
     setIsParticipating(false);
+    setIsOnPressPartLoading(true);
+    await unpartecipate();
+    setIsOnPressPartLoading(false);
   };
 
   const onPressNaviagtePosts = () => {
@@ -206,12 +210,26 @@ export const EventDetails = ({ route }) => {
         {role === 'user' &&
           (isParticipating ? (
             <>
-              <Button secondary containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressUnpartecipate} loading={isLoading} />
+              <Button
+                secondary
+                containerStyle={{ width: SIZE * 24 }}
+                text="Im going"
+                onPress={onPressUnpartecipate}
+                loading={isLoading}
+                disabled={isOnPressPartLoading}
+              />
               <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
             </>
           ) : (
             <>
-              <Button gradient containerStyle={{ width: SIZE * 24 }} text="Im going" onPress={onPressPartecipate} loading={isLoading} />
+              <Button
+                gradient
+                containerStyle={{ width: SIZE * 24 }}
+                text="Im going"
+                onPress={onPressPartecipate}
+                loading={isLoading}
+                disabled={isOnPressPartLoading}
+              />
               <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
             </>
           ))}

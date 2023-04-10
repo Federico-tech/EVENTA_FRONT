@@ -100,6 +100,7 @@ export const LoginScreen = () => {
               containerStyle={{ width: WIDTH_DEVICE * 0.9 }}
               loading={loading}
               disabled={!values.password || (!values.email && true)}
+              disabledStyle
             />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />

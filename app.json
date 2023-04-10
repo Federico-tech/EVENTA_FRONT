@@ -7,6 +7,9 @@
     "icon": "./assets/icon.png",
     "scheme": "com.eventa.eventaApp",
     "userInterfaceStyle": "automatic",
+    "notification": {
+      "icon":  "./src/assets/logos/BlueLogo.png"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

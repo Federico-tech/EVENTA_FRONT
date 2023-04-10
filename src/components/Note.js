@@ -44,20 +44,25 @@ export const Note = ({ data, deleteNote }) => {
 
   const [isFire, setIsFire] = useState(data.isFire);
   const [numFires, setNumFires] = useState(data.fires);
+  const [isFireLoading, setIsFireLoading] = useState(false);
 
   useEffect(() => {
     setIsFire(data.hasFired);
     setNumFires(data.fires);
   }, [data]);
 
-  const onPressFire = () => {
-    fire(data._id);
+  const onPressFire = async () => {
+    setIsFireLoading(true);
+    await fire(data._id);
+    setIsFireLoading(false);
     setIsFire(true);
     setNumFires(numFires + 1);
   };
 
-  const onPressUnfire = () => {
-    unfire(data._id);
+  const onPressUnfire = async () => {
+    setIsFireLoading(true);
+    await unfire(data._id);
+    setIsFireLoading(false);
     setIsFire(false);
     setNumFires(numFires - 1);
   };
@@ -81,7 +86,7 @@ export const Note = ({ data, deleteNote }) => {
             <View style={styles.note}>
               <Row row alignCenter spaceBetween>
                 <LoadingImage source={data?.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
-                <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire}>
+                <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire} disabled={isFireLoading}>
                   <Row row alignCenter>
                     <Text regularSm style={{ fontFamily: FONTS.medium }}>
                       {numFires}
