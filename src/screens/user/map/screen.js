@@ -1,7 +1,7 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -28,8 +28,10 @@ export const MapScreen = ({ route }) => {
   const user = useSelector(selectCurrentUser);
   const entity = filter === 'organisers' ? 'users' : 'events';
   const { data, getData, setData, refreshing } = useInfiniteScroll({
-    entity: 'events',
-  
+    entity,
+    filters: {
+      role: ROLES.ORGANISER,
+    },
   });
 
   useEffect(() => {

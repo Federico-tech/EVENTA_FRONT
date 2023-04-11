@@ -9,9 +9,7 @@ import { Provider } from 'react-redux';
 
 import i18n from './src/locales/i18n';
 import AppNavigator from './src/navigation/AppNavigator';
-import { userUpdate } from './src/services/users';
 import { store } from './src/store';
-import { registerForPushNotificationsAsync } from './src/utils/notifications';
 
 SplashScreen.preventAutoHideAsync();
 

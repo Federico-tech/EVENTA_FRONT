@@ -30,7 +30,6 @@ export const HomeScreen = () => {
   };
 
   return (
-  
     <Container>
       <HomeHeader />
       <FlatList

@@ -10,8 +10,8 @@ import { object, string } from 'yup';
 import { Button, Container, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser, userUpdate } from '../../../services/users';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 import { registerForPushNotificationsAsync } from '../../../utils/notifications';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -25,7 +25,7 @@ export const LoginScreen = () => {
         .then((res) => console.debug({ res }))
         .catch((error) => console.debug({ errorUpdateUser: error }));
     }
-  }
+  };
 
   const [error, setError] = useState();
 
@@ -68,7 +68,7 @@ export const LoginScreen = () => {
         console.log(data);
         await onPressLogin(data.email, data.password);
         await loginUser(data.email, data.password);
-        await registerPushNotifications()
+        await registerPushNotifications();
         setLoading(false);
       } catch (e) {
         setLoading(false);

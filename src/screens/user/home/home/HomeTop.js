@@ -44,7 +44,7 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
         </Row>
       </View>
       <HomeMap mapData={mapData} />
-      <Row alignCenter spaceBetween row style={{ marginBottom: SIZE}}>
+      <Row alignCenter spaceBetween row style={{ marginBottom: SIZE }}>
         <Text semiBoldSm>Moments</Text>
         {!refreshing && data.length !== 0 && (
           <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
@@ -57,7 +57,6 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
           </TouchableOpacity>
         )}
       </Row>
-
       <View style={styles.noteContainer}>
         <FlatList
           data={data}
@@ -69,6 +68,9 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
           showsHorizontalScrollIndicator={false}
           ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
         />
+        <Text semiBoldSm style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          Upcoming events near your
+        </Text>
       </View>
     </View>
   );
@@ -112,8 +114,8 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: -(WIDTH_DEVICE / 20),
     width: WIDTH_DEVICE,
-    height: SIZE * 14,
-    marginBottom: SIZE * 1.5,
+    height: SIZE * 16.5,
+    marginBottom: SIZE,
   },
   plusIcon: {
     position: 'absolute',

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 
 import { mainAxios } from '../core/axios';
