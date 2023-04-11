@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Container, SearchBar } from '../../../components/index';
 import { SearchTopNavigator } from '../../../navigation/TopTabNavigator';
 import { getEvents } from '../../../services/events';
-import { WIDTH_DEVICE } from '../../../utils/theme';
+import { SIZE, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const SearchScreen = () => {
   useEffect(() => {
@@ -13,7 +13,7 @@ export const SearchScreen = () => {
 
   return (
     <Container>
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+      <View style={{ marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE * 3 }}>
         <SearchBar />
       </View>
       <SearchTopNavigator style={styles.topBar} />

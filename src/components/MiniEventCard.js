@@ -49,7 +49,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
         </View>
         <Line lineStyle={{ backgroundColor: COLORS.lightGray }} />
         <View style={styles.event}>
-          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 7}/>
+          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 7} />
           <View style={styles.eventInformation}>
             <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT)}</Text>
             <Text style={styles.name}>{name}</Text>
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.md,
+    textTransform: 'uppercase',
   },
   address: {
     fontFamily: FONTS.regular,

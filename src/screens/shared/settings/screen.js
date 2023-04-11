@@ -52,9 +52,10 @@ export const SettingScreen = () => {
     getLanguage();
   }, []);
 
-  const onPressDelete = () => {
+  const onPressDeleteUser = () => {
     deleteMe();
     logout();
+    setDeleteModalVisible(false);
   };
 
   return (
@@ -116,7 +117,7 @@ export const SettingScreen = () => {
       />
       <AlertModal
         isVisible={isDeleteModalVisible}
-        onPressConfirm={onPressDelete}
+        onPressConfirm={onPressDeleteUser}
         title="Delete you Eventa account?"
         confirmText="Delete"
         descritpion="Are you sure you want to delete your account. This action is irreversible and you won't be able to recover it"

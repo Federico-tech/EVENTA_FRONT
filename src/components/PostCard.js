@@ -65,8 +65,8 @@ export const PostCard = ({ postData }) => {
   };
 
   const onPressUnlike = async () => {
-    setLikes(likes + 1);
-    setIsLiked(true);
+    setLikes(likes - 1);
+    setIsLiked(false);
     setIsLikePressLoading(true);
     await postUnlike(postData._id);
     setIsLikePressLoading(false);
@@ -102,6 +102,10 @@ export const PostCard = ({ postData }) => {
     deletePost(data._id);
     handleClosePress();
     setDeleteModalVisible(false);
+    showMessage({
+      message: 'Post deleted Succefully',
+      type: 'success',
+    });
   };
 
   return (
@@ -112,8 +116,11 @@ export const PostCard = ({ postData }) => {
             <TouchableOpacity onPress={onPressProfile}>
               <Row row alignCenter>
                 <LoadingImage source={postData.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
-                <Row>
-                  <Text style={{ marginLeft: SIZE, fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
+                <Row style={{ marginLeft: SIZE }}>
+                  <Text style={{ fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
+                  <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
+                    at {postData.event.name}
+                  </Text>
                 </Row>
               </Row>
             </TouchableOpacity>
@@ -124,15 +131,14 @@ export const PostCard = ({ postData }) => {
           <LoadingImage source={postData.postImage} style={styles.image} indicator event />
           <Row style={styles.rowBottom} spaceBetween row alignCenter>
             <Row justifyCenter>
-              <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
-                at {postData.event.name}
-              </Text>
               <Text regularXs style={{ marginTop: SIZE / 10, width: SIZE * 22 }}>
                 {postData.caption}
               </Text>
             </Row>
             <View style={styles.likeContainer}>
-              <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{likes}</Text>
+              <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
+                <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium, padding: SIZE / 4 }}>{likes}</Text>
+              </TouchableOpacity>
               {isLiked ? (
                 <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
                   <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
@@ -209,6 +215,7 @@ const styles = StyleSheet.create({
     padding: SIZE / 2,
     alignContent: 'center',
     alignItems: 'center',
+    marginVertical: SIZE / 2,
   },
   likeContainer: {
     alignItems: 'center',

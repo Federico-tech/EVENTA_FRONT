@@ -27,6 +27,8 @@ import { LikeScreen } from '../screens/user/home/like/screen';
 import { NotificationsScreen } from '../screens/user/home/notifications/screen';
 import { MapScreen } from '../screens/user/map/screen';
 import { CreatePostScreen } from '../screens/user/posts/createPost/screen';
+import { NoteFiresScreen } from '../screens/user/posts/noteFires/screen';
+import { PostLikesScreen } from '../screens/user/posts/postLikes/screen';
 import { PostsFeedScreen } from '../screens/user/posts/postsFeed/screen';
 import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen';
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
@@ -87,6 +89,8 @@ export const ROUTES = {
   CreatePostScreen: 'PreatePostScreen',
   PostsFeedScreen: 'PostsFeedScreen',
   ScannerScreen: 'ScannerScreen',
+  PostLikesScreen: 'PostLikesScreen',
+  NoteFiresScreen: 'NoteFiresScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -159,6 +163,8 @@ export const PostsNavigator = () => {
       <PostsStackNaviagtor.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
       <PostsStackNaviagtor.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <PostsStackNaviagtor.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
+      <PostsStackNaviagtor.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
+      <PostsStackNaviagtor.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
     </PostsStackNaviagtor.Navigator>
   );
 };
@@ -177,6 +183,7 @@ export const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
   );
 };

@@ -1,11 +1,13 @@
 import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
+import { ROUTES } from '../navigation/Navigation';
 import { fire, unfire } from '../services/notes';
 import { report } from '../services/reports';
 import { selectCurrentUserId } from '../store/user';
@@ -19,6 +21,7 @@ export const Note = ({ data, deleteNote }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
   const userId = useSelector(selectCurrentUserId);
+  const navigation = useNavigation();
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ['13%'];
@@ -52,19 +55,19 @@ export const Note = ({ data, deleteNote }) => {
   }, [data]);
 
   const onPressFire = async () => {
+    setIsFire(true);
+    setNumFires(numFires + 1);
     setIsFireLoading(true);
     await fire(data._id);
     setIsFireLoading(false);
-    setIsFire(true);
-    setNumFires(numFires + 1);
   };
 
   const onPressUnfire = async () => {
+    setIsFire(false);
+    setNumFires(numFires - 1);
     setIsFireLoading(true);
     await unfire(data._id);
     setIsFireLoading(false);
-    setIsFire(false);
-    setNumFires(numFires - 1);
   };
 
   const onPressReportNote = (data) => {
@@ -88,9 +91,11 @@ export const Note = ({ data, deleteNote }) => {
                 <LoadingImage source={data?.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
                 <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire} disabled={isFireLoading}>
                   <Row row alignCenter>
-                    <Text regularSm style={{ fontFamily: FONTS.medium }}>
-                      {numFires}
-                    </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate(ROUTES.NoteFiresScreen, { data })}>
+                      <Text regularSm style={{ fontFamily: FONTS.medium, padding: SIZE / 4 }}>
+                        {numFires}
+                      </Text>
+                    </TouchableOpacity>
                     <MaterialIcons name="local-fire-department" size={SIZE * 1.7} color={isFire ? 'darkorange' : 'black'} />
                   </Row>
                 </TouchableOpacity>

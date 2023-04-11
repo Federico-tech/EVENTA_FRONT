@@ -69,7 +69,7 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
           ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
         />
         <Text semiBoldSm style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          Upcoming events near your
+          Upcoming events near you
         </Text>
       </View>
     </View>

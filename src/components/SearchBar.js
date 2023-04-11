@@ -6,7 +6,7 @@ import { StyleSheet, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setSearchFilter } from '../store/filter';
-import { COLORS, SIZE, SIZES, TAB_BAR_HEIGHT, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 
 export const SearchBar = ({ style }) => {
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ export const SearchBar = ({ style }) => {
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#DEDEDE',
-    marginTop: TAB_BAR_HEIGHT + SIZE,
+    marginTop: SIZE,
     height: SIZE * 3,
     borderRadius: SIZES.xs,
     alignItems: 'center',
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginLeft: WIDTH_DEVICE / 50,
-    width: SIZE * 23
-
+    width: SIZE * 23,
   },
 });
