@@ -9,13 +9,23 @@ import { object, string } from 'yup';
 
 import { Button, Container, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
-import { loginUser } from '../../../services/users';
+import { loginUser, userUpdate } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
+import { registerForPushNotificationsAsync } from '../../../utils/notifications';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+
+  const registerPushNotifications = async () => {
+    const token = await registerForPushNotificationsAsync();
+    if (token) {
+      userUpdate({ expoPushToken: token })
+        .then((res) => console.debug({ res }))
+        .catch((error) => console.debug({ errorUpdateUser: error }));
+    }
+  }
 
   const [error, setError] = useState();
 
@@ -58,6 +68,7 @@ export const LoginScreen = () => {
         console.log(data);
         await onPressLogin(data.email, data.password);
         await loginUser(data.email, data.password);
+        await registerPushNotifications()
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -100,7 +111,7 @@ export const LoginScreen = () => {
               containerStyle={{ width: WIDTH_DEVICE * 0.9 }}
               loading={loading}
               disabled={!values.password || (!values.email && true)}
-              disabledStyle
+              disabledStyle={!values.password || (!values.email && true)}
             />
             <View style={styles.containerLine}>
               <Line lineStyle={{ flex: 1 }} />

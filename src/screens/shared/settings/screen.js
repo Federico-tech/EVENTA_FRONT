@@ -1,21 +1,40 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Switch } from 'react-native';
 
 import { Container, Header, TextButton, Text, Row, Line, AlertModal } from '../../../components';
+import { deleteMe } from '../../../services/users';
 import { logout } from '../../../utils/index';
 import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
-import { deleteMe } from '../../../services/users';
 
 export const SettingScreen = () => {
   const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [notificationEnabled, setNotificationEnabled] = useState(true);
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
 
   const [language, setLanguage] = useState(currentLanguage);
+
+  const handleNotificationToggle = () => {
+    setNotificationEnabled((previousState) => !previousState);
+  };
+
+  useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => {
+        return {
+          shouldShowNotification: notificationEnabled,
+          shouldShowAlert: notificationEnabled,
+          shouldSetBadge: notificationEnabled,
+          iosDisplayInForeground: notificationEnabled,
+        };
+      },
+    });
+  }, [notificationEnabled]);
 
   const switchlanguage = async (lng) => {
     setLanguage(lng);
@@ -34,9 +53,9 @@ export const SettingScreen = () => {
   }, []);
 
   const onPressDelete = () => {
-    deleteMe()
-    logout()
-  }
+    deleteMe();
+    logout();
+  };
 
   return (
     <Container>
@@ -47,7 +66,7 @@ export const SettingScreen = () => {
         </Text>
         <Row row alignCenter spaceBetween style={{ marginTop: SIZE }}>
           <Text medium>Allow notification</Text>
-          <Switch />
+          <Switch value={notificationEnabled} onValueChange={handleNotificationToggle} />
         </Row>
       </Row>
       <Line />

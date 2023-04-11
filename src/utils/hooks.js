@@ -9,7 +9,7 @@ export function useInfiniteScroll({
   data: initialData = [],
   entity,
   filters = {},
-  limit = 10,
+  limit,
   onUpdateData,
   debug = false,
   fetchOnCreate = true,

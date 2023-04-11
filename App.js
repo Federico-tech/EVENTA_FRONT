@@ -1,6 +1,7 @@
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
-import React, { useState, useRef, useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
@@ -12,30 +13,15 @@ import { userUpdate } from './src/services/users';
 import { store } from './src/store';
 import { registerForPushNotificationsAsync } from './src/utils/notifications';
 
+SplashScreen.preventAutoHideAsync();
+
 const App = () => {
-  const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    }),
-  });
-
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
-      if (token) {
-        setExpoPushToken(token);
-        userUpdate({ expoPushToken: token })
-          .then((res) => console.debug({ res }))
-          .catch((error) => console.debug({ errorUpdateUser: error }));
-      }
-    });
-
     notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
       setNotification(notification);
     });
@@ -59,11 +45,36 @@ const App = () => {
     InterSemiBold: require('./src/assets/fonts/Inter-SemiBold.ttf'),
   });
 
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   if (!loaded) return null;
   return (
     <I18nextProvider i18n={i18n}>
       <Provider store={store}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <AppNavigator />
           <FlashMessage position="top" />
         </View>

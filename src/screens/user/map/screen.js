@@ -28,10 +28,8 @@ export const MapScreen = ({ route }) => {
   const user = useSelector(selectCurrentUser);
   const entity = filter === 'organisers' ? 'users' : 'events';
   const { data, getData, setData, refreshing } = useInfiniteScroll({
-    entity,
-    filters: {
-      role: ROLES.ORGANISER,
-    },
+    entity: 'events',
+  
   });
 
   useEffect(() => {
