@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af6bafae-9664-456b-9c37-d5f6a14a73f7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/notification-icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/EventCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/EventCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/onboarding/login/screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/onboarding/login/screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/user/home/eventDetails/screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/user/home/eventDetails/screen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/user/home/home/screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/user/home/home/screen.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +47,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -57,6 +61,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -96,7 +101,8 @@
       <workItem from="1678616470437" duration="1880000" />
       <workItem from="1678885128276" duration="20000" />
       <workItem from="1680958808117" duration="297000" />
-      <workItem from="1680959156973" duration="5037000" />
+      <workItem from="1680959156973" duration="7532000" />
+      <workItem from="1681329508185" duration="3183000" />
     </task>
     <task id="LOCAL-00001" summary="chore(moment): remove">
       <created>1672734572442</created>
@@ -161,7 +167,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676243396899</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat(notifications): update user">
+      <created>1680967015628</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1680967015628</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,7 +224,8 @@
     <MESSAGE value="feat(address, image)" />
     <MESSAGE value="feat(pagination): improve" />
     <MESSAGE value="feat(infiniteScroll): improve" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(infiniteScroll): improve" />
+    <MESSAGE value="feat(notifications): update user" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(notifications): update user" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

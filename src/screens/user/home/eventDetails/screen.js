@@ -23,18 +23,39 @@ import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
+const EventDetailsParticipants = ({ numberOfParticipants }) => {
+  const event = useSelector(selectSelectedEvent);
+  const [loading, setLoading] = useState(false);
+  const [participants, setParticipants] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await getEventParticipants(event?._id, { limit: 3 });
+      setParticipants(res);
+    };
+    fetchData();
+  }, [numberOfParticipants]);
+
+  return (
+    <>
+      {loading ? (
+        <ActivityIndicator style={{ marginTop: SIZE }} />
+      ) : (
+        participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+      )}
+    </>
+  );
+};
+
 export const EventDetails = ({ route }) => {
+  const { onGoBack } = route?.params || {};
   const [participants, setParticipants] = useState();
   const [isOnPressPartLoading, setIsOnPressPartLoading] = useState(false);
-  const [numberPart, setNumberPart] = useState();
+  const [numberPart, setNumberPart] = useState(); //todo: RENAME numberOfParticipants
   const [isLoading, setIsLoading] = useState();
   const [isLoadingPart, setIsLoadingPart] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
   const eventId = useSelector(selectSelectedEventId);
@@ -43,16 +64,13 @@ export const EventDetails = ({ route }) => {
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
   const refOrganiser = useSelector(selectSelectedUser);
-
+  const bottomSheetModalRef = useRef(null);
   const [isParticipating, setIsParticipating] = useState();
-
+  //TODO: nomi parlanti? non si capisce cosa è defOrganizer
   const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
 
-  const bottomSheetModalRef = useRef(null);
-  const handlePresentModal = () => {
-    bottomSheetModalRef.current?.present();
-  };
-
+  const handlePresentModal = () => bottomSheetModalRef.current?.present();
+  const toggleModal = () => setModalVisible(!isModalVisible);
   const handleClosePress = () => bottomSheetModalRef.current.close();
 
   const renderBackdrop = useCallback(
@@ -103,6 +121,8 @@ export const EventDetails = ({ route }) => {
     fetchData();
   }, [event.participants, numberPart, isParticipating]);
 
+  console.debug({ participants });
+
   const onPressPartecipate = async () => {
     setNumberPart(event.participants);
     setIsParticipating(true);
@@ -123,6 +143,11 @@ export const EventDetails = ({ route }) => {
     navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event } });
   };
 
+  const onPressGoBack = () => {
+    navigation.goBack();
+    onGoBack?.(event);
+  };
+
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -131,7 +156,7 @@ export const EventDetails = ({ route }) => {
             <LoadingImage source={event.coverImage} viewStyle={styles.eventBlurImage} blurRadius={10} event width={SIZE * 30} />
           </View>
           <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
-          <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
+          <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
           <View style={{ paddingHorizontal: WIDTH_DEVICE / 20, zIndex: 1, backgroundColor: COLORS.white }}>
             <OrganiserInf organiser={defOrganiser} isLoading={isLoading} />
@@ -198,6 +223,8 @@ export const EventDetails = ({ route }) => {
               ) : (
                 participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
               )}
+              {/*TODO: like this */}
+              {/*<EventDetailsParticipants numberOfParticipants={numberPart} />*/}
             </Row>
             {participants?.length >= 3 && (
               <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />

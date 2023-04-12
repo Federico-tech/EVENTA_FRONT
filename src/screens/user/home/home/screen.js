@@ -10,10 +10,10 @@ import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
 
 export const HomeScreen = () => {
-  const ref = React.useRef(null);
+  const listRef = React.useRef(null);
   const homeRef = React.useRef(null);
 
-  useScrollToTop(ref);
+  useScrollToTop(listRef);
 
   useEffect(() => {
     updateUserCoordinates();
@@ -26,14 +26,14 @@ export const HomeScreen = () => {
   });
 
   const onRefresh = async () => {
-    await Promise.all([await getRefreshedData(), await homeRef?.current?.onRefresh()]);
+    await Promise.all([getRefreshedData(), homeRef?.current?.onRefresh()]).catch((e) => console.debug({ homeError: e }));
   };
 
   return (
     <Container>
       <HomeHeader />
       <FlatList
-        ref={ref}
+        ref={listRef}
         data={data}
         renderItem={({ item }) => <EventCard eventData={item} />}
         keyExtractor={(item) => item._id}

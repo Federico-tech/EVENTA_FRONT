@@ -1,10 +1,11 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
+import { mainAxios } from '../core/axios';
 import { ROUTES } from '../navigation/Navigation';
 import { like, unLike } from '../services/likes';
 import { setSelectedEvent } from '../store/event';
@@ -15,31 +16,59 @@ import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/them
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 
+export const useGetParticipants = (eventId) => {
+  const [data, setData] = useState([]);
+  const [totalData, setTotalData] = useState(0);
+
+  const fetchData = useCallback(() => {
+    const params = {
+      eventId,
+      limit: 3,
+    };
+    mainAxios
+      .get('participants', { params })
+      .then(({ data }) => {
+        setData(data?.data || []);
+        setTotalData(data?.totalData || 0);
+      })
+      .catch((e) => console.debug({ errorGetParticipants: e }));
+  }, [eventId]);
+
+  useEffect(fetchData, [fetchData]);
+
+  return {
+    data,
+    totalData,
+    fetchData,
+  };
+};
+
 export const EventCard = ({ eventData }) => {
+  // const [eventData, setEventData] = useState(initialEventData);
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
   const [isLikePressLoading, setIsLikePressLoading] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const handleOnPress = () => {
-    dispatch(setUserSelected(eventData.organiser));
-    dispatch(setSelectedEvent(eventData));
-    navigation.navigate('EventDetails', { eventData });
-  };
 
   const handleParticipantsPress = () => {
     dispatch(setSelectedEvent(eventData));
     navigation.navigate(ROUTES.ParticipantsScreen);
   };
 
-  const { data, getData, totalData } = useInfiniteScroll({
-    entity: `participants`,
-    filters: {
-      eventId: eventData._id,
-    },
-    limit: 3,
-  });
+  const { data, fetchData: getParticipants, totalData } = useGetParticipants(eventData._id);
+
+  const handleOnPress = () => {
+    dispatch(setUserSelected(eventData.organiser));
+    dispatch(setSelectedEvent(eventData));
+    navigation.navigate('EventDetails', {
+      eventData,
+      onGoBack: () => {
+        getParticipants();
+      },
+    });
+  };
 
   useEffect(() => {
     setLikes(eventData.likes);
