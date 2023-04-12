@@ -11,8 +11,8 @@
       "icon":  "./src/assets/logos/BlueLogo.png"
     },
     "splash": {
-      "image": "./src/assets/logos/BlueLogo@3x.png",
-      "resizeMode": "contain",
+      "image": "./src/assets/logos/SplashScreen.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {

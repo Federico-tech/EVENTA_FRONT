@@ -26,8 +26,6 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   const selectedUser = useSelector(selectSelectedUser);
   const followingParams = myProfile ? currentUser : selectedUser;
 
-  console.log('UserLoading', loading);
-
   const { data } = useInfiniteScroll({
     entity: 'events',
     filters: {
@@ -104,7 +102,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
           </TouchableOpacity>
           <TouchableOpacity onPress={onPressFollowing}>
             <Row alignCenter>
-              <Text semiBoldSm>{organiser ? data.length : user.followed}</Text>
+              <Text semiBoldSm>{user.role === 'organiser' ? user.events : user.followed}</Text>
               <Text color={COLORS.darkGray} regularXs>
                 {organiser || user.role === 'organiser' ? 'Events' : 'Following'}
               </Text>

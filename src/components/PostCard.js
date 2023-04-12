@@ -18,7 +18,7 @@ import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 
-export const PostCard = ({ postData }) => {
+export const PostCard = ({ postData, getData }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
   const [isLikePressLoading, setIsLikePressLoading] = useState(false);
@@ -76,7 +76,11 @@ export const PostCard = ({ postData }) => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     if (lastTap && now - lastTap < DOUBLE_PRESS_DELAY) {
-      isLiked ? onPressUnlike() : onPresslike();
+      if (isLiked) {
+        onPressUnlike();
+      } else {
+        onPresslike();
+      }
     } else {
       setLastTap(now);
     }
@@ -98,14 +102,15 @@ export const PostCard = ({ postData }) => {
     });
   };
 
-  const onPressDeletePost = (data) => {
-    deletePost(data._id);
+  const onPressDeletePost = async (data) => {
     handleClosePress();
     setDeleteModalVisible(false);
     showMessage({
       message: 'Post deleted Succefully',
       type: 'success',
     });
+    await deletePost(data._id);
+    await getData();
   };
 
   return (
@@ -119,7 +124,7 @@ export const PostCard = ({ postData }) => {
                 <Row style={{ marginLeft: SIZE }}>
                   <Text style={{ fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
                   <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
-                    at {postData.event.name}
+                    at {postData?.event?.name}
                   </Text>
                 </Row>
               </Row>

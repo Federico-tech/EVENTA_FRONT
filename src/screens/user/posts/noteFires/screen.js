@@ -1,27 +1,35 @@
 import _ from 'lodash';
-import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 import { Container, Header, ListEmptyComponent, SearchBar } from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
+import { selectSearchFilter } from '../../../../store/filter';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const NoteFiresScreen = ({ route }) => {
   const { data: note } = route.params;
+  const filter = useSelector(selectSearchFilter);
 
-  const { data, getMoreData, refreshing, getRefreshedData, loadMore } = useInfiniteScroll({
+  const { data, getMoreData, refreshing, getRefreshedData, loadMore, getData } = useInfiniteScroll({
     entity: `fires`,
     limit: 20,
     filters: {
       noteId: note._id,
+      search: filter,
     },
   });
 
+  useEffect(() => {
+    getData();
+  }, [filter]);
+
   return (
     <Container>
-      <Header title="Fires" back/>
+      <Header title="Fires" back />
       <FlatList
         data={data}
         renderItem={({ item }) => <UserRow data={item?.user} />}

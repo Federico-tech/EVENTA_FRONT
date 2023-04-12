@@ -52,8 +52,8 @@ export const SettingScreen = () => {
     getLanguage();
   }, []);
 
-  const onPressDeleteUser = () => {
-    deleteMe();
+  const onPressDeleteUser = async () => {
+    await deleteMe();
     logout();
     setDeleteModalVisible(false);
   };

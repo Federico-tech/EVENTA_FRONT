@@ -1,6 +1,6 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
@@ -33,7 +33,7 @@ export const EventCard = ({ eventData }) => {
     navigation.navigate(ROUTES.ParticipantsScreen);
   };
 
-  const { data, totalData } = useInfiniteScroll({
+  const { data, getData, totalData } = useInfiniteScroll({
     entity: `participants`,
     filters: {
       eventId: eventData._id,
@@ -98,7 +98,7 @@ export const EventCard = ({ eventData }) => {
               <Row row alignCenter>
                 <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && { marginLeft: 0 }]}>
                   {data?.slice(0, 3).map((data) => (
-                    <Image key={data?.user._id} source={{ uri: data?.user.profilePic }} style={styles.partImage} />
+                    <LoadingImage key={data?.user._id} source={data?.user.profilePic} imageStyle={styles.partImage} profile iconSIZE={SIZE * 1.3} />
                   ))}
                 </Row>
                 <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>

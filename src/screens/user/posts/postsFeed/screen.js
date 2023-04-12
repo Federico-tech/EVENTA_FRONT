@@ -18,8 +18,6 @@ export const PostsFeedScreen = ({ route }) => {
   const navigation = useNavigation();
   const { event } = route?.params || {};
 
-  console.log('route', route.params);
-
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
@@ -75,7 +73,7 @@ export const PostsFeedScreen = ({ route }) => {
       <FlatList
         ref={ref}
         data={data}
-        renderItem={({ item }) => <PostCard postData={item} />}
+        renderItem={({ item }) => <PostCard postData={item} getData={getData}/>}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}

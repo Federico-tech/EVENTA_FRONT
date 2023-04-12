@@ -16,10 +16,8 @@ export const SearchBar = ({ style }) => {
   useEffect(() => {
     _.debounce(() => {
       dispatch(setSearchFilter(searchData));
-    }, 500)();
+    }, 700)();
   }, [searchData]);
-
-  console.log('Seardch', searchData);
 
   return (
     <View style={[styles.wrapper, style]}>

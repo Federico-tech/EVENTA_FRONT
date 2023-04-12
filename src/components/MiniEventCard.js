@@ -40,9 +40,9 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
               <Text style={styles.textOrganiserName}>{organiser.username}</Text>
             </Row>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Row row alignCenter style={{}}>
-              <MaterialIcons name="person" size={SIZE * 2} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)}>
+            <Row row alignCenter>
+              <MaterialIcons name="person" size={SIZE * 2} />
               <Text style={styles.textPart}>{participants}</Text>
             </Row>
           </TouchableOpacity>

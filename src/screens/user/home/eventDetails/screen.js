@@ -44,7 +44,6 @@ export const EventDetails = ({ route }) => {
   const organiser = event.organiser;
   const refOrganiser = useSelector(selectSelectedUser);
 
-  console.log('part', isParticipating);
   const [isParticipating, setIsParticipating] = useState();
 
   const [defOrganiser, setDefOrganiser] = useState(refOrganiser);

@@ -16,7 +16,11 @@ export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
   const handleOnPress = () => {
     if (!data?.isDeleted) {
       dispatch(setUserSelected(data));
-      bottomSheet ? navigation.navigate(ROUTES.AccountUserScreen, { data }) : navigation.push(ROUTES.AccountUserScreen, { data });
+      if (bottomSheet) {
+        navigation.navigate(ROUTES.AccountUserScreen, { data });
+      } else {
+        navigation.push(ROUTES.AccountUserScreen, { data });
+      }
       closeSheet();
     }
   };
