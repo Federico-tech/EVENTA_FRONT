@@ -2,7 +2,7 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import { useIsFocused, useNavigation, useScrollToTop } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 
@@ -13,12 +13,13 @@ import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 import { Notes } from './Notes';
 
 export const PostsFeedScreen = ({ route }) => {
-  const [eventFilter, setEventFilter] = useState();
   const [entity, setEntity] = useState('posts/home');
   const navigation = useNavigation();
   const { event } = route?.params || {};
+  const [eventFilter, setEventFilter] = useState(event?.name);
 
   const ref = React.useRef(null);
+  const homePostRef = React.useRef(null)
   useScrollToTop(ref);
 
   const isFocused = useIsFocused();
@@ -33,18 +34,22 @@ export const PostsFeedScreen = ({ route }) => {
       setEventFilter(event?.name);
       setEntity(event ? `events/${event._id}/posts` : 'posts/home');
     }
-  }, [event]);
+  }, [isFocused]);
 
-  useEffect(() => {
+  useCallback(() => {
     if (entity) {
       getData();
     }
   }, [entity, eventFilter, isFocused]);
 
-  const deleteEventFilter = () => {
+  const deleteEventFilter = async () => {
     setEventFilter('');
+    await getData();
     setEntity('posts/home');
-    getData();
+  };
+
+  const onRefresh = async () => {
+    await Promise.all([getRefreshedData(), homePostRef?.current?.onRefresh()]).catch((e) => console.debug({ homeError: e }));
   };
 
   return (
@@ -63,7 +68,7 @@ export const PostsFeedScreen = ({ route }) => {
                 <Feather name="x" color={COLORS.white} size={SIZE * 1.2} onPress={deleteEventFilter} />
                 <Text color={COLORS.white} regularXs>
                   {' '}
-                  at {eventFilter.toUpperCase()}
+                  at {eventFilter?.toUpperCase()}
                 </Text>
               </>
             )}
@@ -77,9 +82,9 @@ export const PostsFeedScreen = ({ route }) => {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListHeaderComponent={<Notes />}
+        ListHeaderComponent={<Notes refNotes={homePostRef} />}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no new moments for you" />}
       />
     </Container>

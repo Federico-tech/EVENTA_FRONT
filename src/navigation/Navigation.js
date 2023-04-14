@@ -34,6 +34,7 @@ import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
+import { PostCommentScreen } from '../screens/user/posts/postComments/screen';
 import { SIZE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -91,6 +92,7 @@ export const ROUTES = {
   ScannerScreen: 'ScannerScreen',
   PostLikesScreen: 'PostLikesScreen',
   NoteFiresScreen: 'NoteFiresScreen',
+  PostCommentScreen: 'PostCommentScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -169,6 +171,7 @@ export const PostsNavigator = () => {
       <PostsStackNaviagtor.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
       <PostsStackNaviagtor.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <PostsStackNaviagtor.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
+      <PostsStackNaviagtor.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
     </PostsStackNaviagtor.Navigator>
   );
 };

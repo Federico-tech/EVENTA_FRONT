@@ -36,8 +36,8 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
         <View style={styles.top}>
           <TouchableOpacity onPress={handleProfilePress}>
             <Row row alignCenter>
-              <Image source={{ uri: organiser.profilePic }} style={styles.profilePic} />
-              <Text style={styles.textOrganiserName}>{organiser.username}</Text>
+              <Image source={{ uri: organiser?.profilePic }} style={styles.profilePic} />
+              <Text style={styles.textOrganiserName}>{organiser?.username}</Text>
             </Row>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)}>

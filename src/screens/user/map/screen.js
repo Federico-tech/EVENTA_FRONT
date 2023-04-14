@@ -18,10 +18,9 @@ import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
 
 export const MapScreen = ({ route }) => {
   const [snap, setSnap] = useState(false);
-  const [region, setRegion] = useState({});
-  // const { event } = route.params || {};
-  const [event, setEvent] = useState(route.params?.event || null);
+  const { event } = route.params || {};
   const isFocused = useIsFocused();
+  const [region, setRegion] = useState(undefined);
 
   const dispatch = useDispatch();
   const filter = useSelector(selectMapFilter);
@@ -53,7 +52,7 @@ export const MapScreen = ({ route }) => {
       });
       dispatch(setMapFilter('events'));
     }
-  }, [isFocused, event]);
+  }, [isFocused]);
 
   const bottomSheetModalRef = useRef(null);
   const eventSnapPoints = useMemo(() => ['60%', '95%'], []);

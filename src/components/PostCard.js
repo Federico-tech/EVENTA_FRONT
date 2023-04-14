@@ -12,6 +12,7 @@ import { postLike, postUnlike } from '../services/postLikes';
 import { deletePost } from '../services/posts';
 import { report } from '../services/reports';
 import { selectCurrentUserId, setUserSelected } from '../store/user';
+import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
@@ -35,6 +36,14 @@ export const PostCard = ({ postData, getData }) => {
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
   };
+
+  const { data } = useInfiniteScroll({
+    entity: `likes`,
+    limit: 1,
+    filters: {
+      objectId: postData._id,
+    },
+  });
 
   const handleClosePress = () => bottomSheetModalRef.current.close();
 
@@ -91,6 +100,10 @@ export const PostCard = ({ postData, getData }) => {
     navigation.navigate(ROUTES.AccountUserScreen);
   };
 
+  const onPressViewComments = () => {
+    navigation.navigate(ROUTES.PostCommentScreen)
+  }
+
   const onPressReportPost = (data) => {
     report(data);
     handleClosePress();
@@ -136,24 +149,38 @@ export const PostCard = ({ postData, getData }) => {
           <LoadingImage source={postData.postImage} style={styles.image} indicator event />
           <Row style={styles.rowBottom} spaceBetween row alignCenter>
             <Row justifyCenter>
-              <Text regularXs style={{ marginTop: SIZE / 10, width: SIZE * 22 }}>
+              <Row row alignCenter spaceBetween>
+                <View style={styles.likeContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
+                    {/* <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium, padding: SIZE / 4 }}>{likes}</Text> */}
+                  </TouchableOpacity>
+                  {isLiked ? (
+                    <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
+                      <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
+                      <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
+                    </TouchableOpacity>
+                  )}
+                  <AntDesign name="message1" size={SIZE * 1.7} style={styles.icon} />
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
+                  <Text regularXs style={{ fontSize: SIZES.xxs, marginLeft: SIZE }}>
+                    Liked by <Text style={{ fontFamily: FONTS.semiBold }}>{data[0]?.user?.username}</Text> and{' '}
+                    <Text style={{ fontFamily: FONTS.semiBold }}>others</Text>
+                  </Text>
+                </TouchableOpacity>
+              </Row>
+              <Text regularXs style={{ marginTop: SIZE / 4, width: SIZE * 19 }}>
                 {postData.caption}
               </Text>
-            </Row>
-            <View style={styles.likeContainer}>
-              <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
-                <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium, padding: SIZE / 4 }}>{likes}</Text>
+              <TouchableOpacity onPress={onPressViewComments}>
+                <Text regularXs color={COLORS.gray} style={{ marginTop: SIZE / 10 }}>
+                  View comments
+                </Text>
               </TouchableOpacity>
-              {isLiked ? (
-                <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
-                  <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
-                  <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
-                </TouchableOpacity>
-              )}
-            </View>
+            </Row>
           </Row>
         </Row>
       </View>
@@ -218,12 +245,13 @@ const styles = StyleSheet.create({
   },
   rowBottom: {
     padding: SIZE / 2,
-    alignContent: 'center',
     alignItems: 'center',
-    marginVertical: SIZE / 2,
   },
   likeContainer: {
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  icon: {
+    marginLeft: SIZE,
   },
 });

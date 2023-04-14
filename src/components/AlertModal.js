@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 import { Text } from './Text';
 import { TextButton } from './TextButton';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onPressConfirm, confirmText }) => {
   const onPress = () => {
@@ -22,9 +23,13 @@ export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onP
           {descritpion}
         </Text>
         <View style={styles.line} />
-        <TextButton text={confirmText} textStyle={styles.confirm} onPress={onPress} />
+        <TouchableOpacity onPress={onPress} style={{ paddingHorizontal: SIZE * 6, paddingVertical: SIZE}} >
+          <Text style={styles.confirm}>{confirmText}</Text>
+        </TouchableOpacity>
         <View style={styles.line} />
-        <TextButton text="Cancel" textStyle={styles.cancel} onPress={onBackdropPress} />
+        <TouchableOpacity onPress={onBackdropPress} style={{ paddingHorizontal: SIZE * 7, paddingVertical: SIZE}}>
+          <Text style={styles.cancel}>Cancel</Text>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
@@ -37,7 +42,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     borderRadius: SIZES.xxs,
-    padding: SIZE,
+    paddingHorizontal: SIZE,
+    paddingTop: SIZE,
     width: SIZE * 20,
   },
   titleStyle: {
@@ -55,8 +61,6 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: COLORS.backGray,
     width: SIZE * 20,
-    marginBottom: SIZE,
-    marginTop: SIZE,
   },
   confirm: {
     fontFamily: FONTS.semiBold,

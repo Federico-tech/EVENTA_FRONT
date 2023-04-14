@@ -3,11 +3,10 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import React, { useState, useImperativeHandle, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useImperativeHandle, useRef, useCallback, useEffect, forwardRef } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-import { ref } from 'yup';
 
 import { InputText, LoadingImage, Note, Row, Text, TextButton } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
@@ -16,10 +15,10 @@ import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const Notes = () => {
+export const Notes = forwardRef(({ ...props }, refNotes) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
   const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
   const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
@@ -63,20 +62,32 @@ export const Notes = () => {
     limit: 5,
   });
 
+  useImperativeHandle(
+    refNotes,
+    () => {
+      return {
+        onRefresh: () => {
+          getRefreshedData();
+        },
+      };
+    },
+    []
+  );
+
   const onPressCreateNote = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     await createNote({ content: note, userId });
     handleClosePress();
     await getUserNotes().then((result) => {
       console.log('result', result);
       setUserNotes(result.data);
     });
-    setIsLoading(false)
+    setIsLoading(false);
     setNote('');
   };
 
   const onPressDeleteNote = async (noteId) => {
-    setIsLoading(true)
+    setIsLoading(true);
     handleClosePress();
     await deleteNote(noteId);
     await getUserNotes().then((result) => {
@@ -84,7 +95,7 @@ export const Notes = () => {
       setUserNotes(result.data);
     });
     await getData();
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   return (
@@ -125,12 +136,12 @@ export const Notes = () => {
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
           <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>
-          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} loading={isLoading}/>
+          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} loading={isLoading} />
         </View>
       </BottomSheetModal>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   noteContainer: {

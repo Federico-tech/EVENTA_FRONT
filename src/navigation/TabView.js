@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { ListEmptyComponent, MiniEventCard, PostCard, ProfileInfo, Text } from '../components';
 import { AboutScreen } from '../screens/organiser/profile/about/profileAbout/screen';
-import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
+import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser, selectSelectedUserId } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 
@@ -82,6 +82,7 @@ export const OrganiserTopNavigator = ({ user, account }) => {
 export const UserTopNavigator = ({ user, account, isLoading }) => {
   const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
   const currentUserId = useSelector(selectCurrentUserId);
+  const currentUserRole = useSelector(selectCurrentUserRole)
   const updatedUser = useSelector(selectSelectedUser);
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore, getData } = useInfiniteScroll({
@@ -132,7 +133,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
           </Tabs.ScrollView>
-        ) : account && userId !== currentUserId ? (
+        ) : account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
           user.isFollowing ? (
             <Tabs.FlatList
               data={postData}
@@ -165,7 +166,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
         )}
       </Tabs.Tab>
       <Tabs.Tab name="Events">
-        {account && userId !== currentUserId ? (
+        {account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
           user.isFollowing ? (
             <Tabs.FlatList
               data={data}

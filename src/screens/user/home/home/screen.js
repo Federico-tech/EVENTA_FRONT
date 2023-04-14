@@ -42,7 +42,7 @@ export const HomeScreen = () => {
         ListHeaderComponent={<HomeTop ref={homeRef} mapData={data} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="No upcoming events" />}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
       />
     </Container>
   );
