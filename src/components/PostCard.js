@@ -101,8 +101,8 @@ export const PostCard = ({ postData, getData }) => {
   };
 
   const onPressViewComments = () => {
-    navigation.navigate(ROUTES.PostCommentScreen)
-  }
+    navigation.navigate(ROUTES.PostCommentScreen, { postId: postData._id });
+  };
 
   const onPressReportPost = (data) => {
     report(data);
@@ -147,40 +147,38 @@ export const PostCard = ({ postData, getData }) => {
             </TouchableOpacity>
           </Row>
           <LoadingImage source={postData.postImage} style={styles.image} indicator event />
-          <Row style={styles.rowBottom} spaceBetween row alignCenter>
+          <Row style={styles.rowBottom} row spaceBetween>
             <Row justifyCenter>
-              <Row row alignCenter spaceBetween>
-                <View style={styles.likeContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
-                    {/* <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium, padding: SIZE / 4 }}>{likes}</Text> */}
+              <Row row>
+                {postData.likes !== 0 && (
+                  <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
+                    <Text regularXs style={{ fontSize: SIZES.xxs }}>
+                      Liked by <Text style={{ fontFamily: FONTS.semiBold }}>{data[0]?.user?.username}</Text> and{' '}
+                      <Text style={{ fontFamily: FONTS.semiBold }}>others {likes}</Text>
+                    </Text>
                   </TouchableOpacity>
-                  {isLiked ? (
-                    <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
-                      <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
-                      <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
-                    </TouchableOpacity>
-                  )}
-                  <AntDesign name="message1" size={SIZE * 1.7} style={styles.icon} />
-                </View>
-                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
-                  <Text regularXs style={{ fontSize: SIZES.xxs, marginLeft: SIZE }}>
-                    Liked by <Text style={{ fontFamily: FONTS.semiBold }}>{data[0]?.user?.username}</Text> and{' '}
-                    <Text style={{ fontFamily: FONTS.semiBold }}>others</Text>
-                  </Text>
-                </TouchableOpacity>
+                )}
               </Row>
               <Text regularXs style={{ marginTop: SIZE / 4, width: SIZE * 19 }}>
                 {postData.caption}
               </Text>
               <TouchableOpacity onPress={onPressViewComments}>
                 <Text regularXs color={COLORS.gray} style={{ marginTop: SIZE / 10 }}>
-                  View comments
+                  View all {postData.comments} comments
                 </Text>
               </TouchableOpacity>
             </Row>
+            <View style={styles.likeContainer}>
+              {isLiked ? (
+                <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
+                  <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
+                  <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
+                </TouchableOpacity>
+              )}
+            </View>
           </Row>
         </Row>
       </View>
@@ -248,10 +246,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   likeContainer: {
-    alignItems: 'center',
     flexDirection: 'row',
-  },
-  icon: {
-    marginLeft: SIZE,
   },
 });

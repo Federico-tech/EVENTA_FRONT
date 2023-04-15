@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -13,7 +12,6 @@ import { LoadingImage } from './LoadingImage';
 
 export const HomeHeader = ({ data, organiser }) => {
   const userinfo = useSelector(selectCurrentUser);
-  const { t } = useTranslation();
   const navigation = useNavigation();
 
   return (
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
   federico: {
     color: 'white',
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.lg,
+    fontSize: SIZES.md,
   },
   imageView: {
     width: SIZE * 4,

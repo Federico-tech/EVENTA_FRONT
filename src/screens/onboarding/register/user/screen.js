@@ -7,14 +7,25 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { object, string } from 'yup';
 
 import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container, Row } from '../../../../components/index';
-import { organiserSignUp, loginUser } from '../../../../services/users';
+import { organiserSignUp, loginUser, userUpdate } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
+import { registerForPushNotificationsAsync } from '../../../../utils/notifications';
 
 export const UserSingUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const { t } = useTranslation();
+
+  const registerPushNotifications = async () => {
+    const token = await registerForPushNotificationsAsync();
+    console.log('Token', token)
+    if (token) {
+      userUpdate({ expoPushToken: token })
+        .then((res) => console.debug({ res }))
+        .catch((error) => console.debug({ errorUpdateUser: error }));
+    }
+  };
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
@@ -57,6 +68,7 @@ export const UserSingUpScreen = ({ navigation }) => {
         await validateForm(data);
         console.log(data);
         await organiserSignUp(data);
+        await registerPushNotifications();
         await loginUser(data.email, data.password);
         setLoading(false);
       } catch (e) {

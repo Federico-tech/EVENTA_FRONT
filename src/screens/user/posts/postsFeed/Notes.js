@@ -15,7 +15,7 @@ import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const Notes = forwardRef(({ ...props }, refNotes) => {
+export const Notes = forwardRef(({onRefresh,  ...props }, refNotes) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -54,13 +54,22 @@ export const Notes = forwardRef(({ ...props }, refNotes) => {
     });
   }, []);
 
+
+
   const { data, getMoreData, loadMore, getData, getRefreshedData } = useInfiniteScroll({
     entity: 'notes/followedNotes',
     filters: {
       'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
     },
     limit: 5,
+    debug: true,
   });
+
+  useEffect(() => {
+    if (onRefresh) {
+      getRefreshedData();
+    }
+  }, [onRefresh]);
 
   useImperativeHandle(
     refNotes,

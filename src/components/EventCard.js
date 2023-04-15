@@ -1,7 +1,7 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
@@ -11,7 +11,6 @@ import { like, unLike } from '../services/likes';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { EVENT_DATE_FORMATR_NOYEAR, formatDate } from '../utils/dates';
-import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
@@ -98,7 +97,7 @@ export const EventCard = ({ eventData }) => {
         <View style={{ marginHorizontal: SIZE * 2 }}>
           <View style={styles.descContainer}>
             <View style={styles.informationContainer}>
-              <LoadingImage source={eventData.organiser?.profilePic} profile width={SIZE * 4} />
+              <LoadingImage source={eventData.organiser?.profilePic} profile width={SIZE * 4} iconSIZE={SIZE * 2} />
               <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{eventData.name}</Text>
                 <View>

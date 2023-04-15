@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlatList, RefreshControl, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 

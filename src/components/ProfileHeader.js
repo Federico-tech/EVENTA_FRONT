@@ -4,16 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
+import { report } from '../services/reports';
 import { selectCurrentUserId, selectSelectedUserId } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { IconButton } from './Button';
 import { Row } from './Row';
-import { report } from '../services/reports';
-import { showMessage } from 'react-native-flash-message';
 
 export const ProfileHeader = ({ myProfile, user }) => {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
@@ -41,19 +41,19 @@ export const ProfileHeader = ({ myProfile, user }) => {
     []
   );
 
-  const dataReport = {type: 'user', userId: currentUserId, objectId: selectedUserId}
+  const dataReport = { type: 'user', userId: currentUserId, objectId: selectedUserId };
 
   const onPressReportUser = (data) => {
-    report(data)
-    handleClosePress()
-    setReportModalVisible(false)
+    report(data);
+    handleClosePress();
+    setReportModalVisible(false);
     showMessage({
       message: 'User reported Succefully',
       description: 'Thank you for reporting this user.',
       type: 'success',
     });
-  }
-  
+  };
+
   return (
     <View>
       <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>

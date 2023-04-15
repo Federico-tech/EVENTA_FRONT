@@ -19,7 +19,7 @@ export const PostsFeedScreen = ({ route }) => {
   const [eventFilter, setEventFilter] = useState(event?.name);
 
   const ref = React.useRef(null);
-  const homePostRef = React.useRef(null)
+  const homePostRef = React.useRef(null);
   useScrollToTop(ref);
 
   const isFocused = useIsFocused();
@@ -27,6 +27,7 @@ export const PostsFeedScreen = ({ route }) => {
   const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData } = useInfiniteScroll({
     entity,
     limit: 6,
+    debug: true,
   });
 
   useEffect(() => {
@@ -51,6 +52,12 @@ export const PostsFeedScreen = ({ route }) => {
   const onRefresh = async () => {
     await Promise.all([getRefreshedData(), homePostRef?.current?.onRefresh()]).catch((e) => console.debug({ homeError: e }));
   };
+
+  useEffect(() => {
+    if (homePostRef?.current) {
+      homePostRef.current.onRefresh();
+    }
+  }, [homePostRef]);
 
   return (
     <Container>
@@ -78,13 +85,13 @@ export const PostsFeedScreen = ({ route }) => {
       <FlatList
         ref={ref}
         data={data}
-        renderItem={({ item }) => <PostCard postData={item} getData={getData}/>}
+        renderItem={({ item }) => <PostCard postData={item} getData={getData} />}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListHeaderComponent={<Notes refNotes={homePostRef} />}
+        ListHeaderComponent={<Notes refNotes={homePostRef} onRefresh={refreshing} />}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no new moments for you" />}
       />
     </Container>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -6,21 +6,28 @@ import { Container, ProfileHeader } from '../../../../components';
 import { OrganiserTopNavigator } from '../../../../navigation/TabView';
 
 import { refreshSelectedUser } from '../../../../services/users';
-import { selectSelectedUser } from '../../../../store/user';
+import { selectSelectedUser, selectSelectedUserId } from '../../../../store/user';
 
 export const AccountOrganiserScreen = ({ route }) => {
   const user = useSelector(selectSelectedUser);
+  const [isLoading, setIsloading] = useState(false);
+  const id = useSelector(selectSelectedUserId);
 
   useEffect(() => {
-    refreshSelectedUser(user);
-  }, []);
+    const refresh = async () => {
+      setIsloading(true);
+      await refreshSelectedUser(user);
+      setIsloading(false);
+    };
+    refresh();
+  }, [id]);
 
   return (
     <Container>
       <View style={{ zIndex: 1 }}>
         <ProfileHeader user={user} />
       </View>
-      <OrganiserTopNavigator user={user} account />
+      <OrganiserTopNavigator user={user} account isLoading={isLoading} />
     </Container>
   );
 };

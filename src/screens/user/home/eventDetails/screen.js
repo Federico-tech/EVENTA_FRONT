@@ -6,6 +6,7 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
@@ -190,8 +191,7 @@ export const EventDetails = ({ route }) => {
                 </Text>
               </View>
               <TextButton text="view moments" onPress={onPressNaviagtePosts} />
-              <TouchableOpacity
-                onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event }})}>
+              <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })}>
                 <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
                   <MapView
                     style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}

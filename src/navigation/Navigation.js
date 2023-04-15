@@ -171,7 +171,6 @@ export const PostsNavigator = () => {
       <PostsStackNaviagtor.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
       <PostsStackNaviagtor.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <PostsStackNaviagtor.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
     </PostsStackNaviagtor.Navigator>
   );
 };
@@ -325,6 +324,7 @@ export const UserStack = () => {
       <UserStackNavigator.Screen name={ROUTES.UserBottomNavigator} component={UserBottomNavigator} />
       <UserStackNavigator.Group>
         <UserStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} />
+        <UserStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} />
       </UserStackNavigator.Group>
     </UserStackNavigator.Navigator>
   );

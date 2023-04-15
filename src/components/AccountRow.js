@@ -53,7 +53,7 @@ export const OrganiserRow = ({ data }) => {
     <TouchableOpacity onPress={handleOnPress}>
       <View style={styles.organiserWrapper}>
         <Row row alignCenter>
-          <LoadingImage source={profilePic} width={SIZE * 5} profile />
+          <LoadingImage source={profilePic} width={SIZE * 5} profile iconSIZE={SIZE * 2.5} />
           <Row style={{ paddingLeft: SIZE }}>
             <Text style={styles.organiserText}>{username}</Text>
             <View style={{ width: SIZE * 15 }}>

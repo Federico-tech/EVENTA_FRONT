@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { COLORS, HEIGHT_DEVICE } from '../utils/theme';
+import { COLORS } from '../utils/theme';
 
 export const Line = ({ lineStyle, shadow }) => {
   return (

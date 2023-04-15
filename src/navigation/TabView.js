@@ -21,7 +21,7 @@ const tabBar = (props) => (
   />
 );
 
-export const OrganiserTopNavigator = ({ user, account }) => {
+export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
   const organiserId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
@@ -32,18 +32,10 @@ export const OrganiserTopNavigator = ({ user, account }) => {
     },
   });
 
-  // const { data: postData, refreshing: refreshingPost, getRefreshedData: getRefreshedPostData, getMoreData: getMorePostData, loadMore: loadMorePost } = useInfiniteScroll({
-  //   entity: 'posts',
-  //   limit: 7,
-  //   filters: {
-  //     organiserId,
-  //   },
-  // });
-
-  const MyHeader = () => {
+  const MyHeader = ({ isLoading }) => {
     return (
       <View>
-        <ProfileInfo myProfile user={user} />
+        <ProfileInfo myProfile user={user} loading={isLoading} />
       </View>
     );
   };
@@ -51,10 +43,11 @@ export const OrganiserTopNavigator = ({ user, account }) => {
   const AccountHeader = () => {
     return (
       <View>
-        <ProfileInfo user={user} />
+        <ProfileInfo user={user} loading={isLoading} />
       </View>
     );
   };
+
 
   return (
     <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>

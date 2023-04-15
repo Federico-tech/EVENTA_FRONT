@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 
 import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 import { Text } from './Text';
-import { TextButton } from './TextButton';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onPressConfirm, confirmText }) => {
   const onPress = () => {
@@ -23,11 +22,11 @@ export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onP
           {descritpion}
         </Text>
         <View style={styles.line} />
-        <TouchableOpacity onPress={onPress} style={{ paddingHorizontal: SIZE * 6, paddingVertical: SIZE}} >
+        <TouchableOpacity onPress={onPress} style={{ paddingHorizontal: SIZE * 6, paddingVertical: SIZE }}>
           <Text style={styles.confirm}>{confirmText}</Text>
         </TouchableOpacity>
         <View style={styles.line} />
-        <TouchableOpacity onPress={onBackdropPress} style={{ paddingHorizontal: SIZE * 7, paddingVertical: SIZE}}>
+        <TouchableOpacity onPress={onBackdropPress} style={{ paddingHorizontal: SIZE * 7, paddingVertical: SIZE }}>
           <Text style={styles.cancel}>Cancel</Text>
         </TouchableOpacity>
       </View>
