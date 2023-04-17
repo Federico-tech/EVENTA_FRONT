@@ -17,7 +17,6 @@ import { COLORS, SIZE, SIZES } from '../../../../utils/theme';
 export const HomeMap = ({ mapData }) => {
   const user = useSelector(selectCurrentUser);
   const navigation = useNavigation();
-  console.log('MapData', mapData)
 
   const eventsByCoordinate = useMemo(() => {
     return Object.values(

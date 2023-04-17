@@ -19,7 +19,7 @@ export const PostsFeedScreen = ({ route }) => {
   const [eventFilter, setEventFilter] = useState(event?.name);
 
   const ref = React.useRef(null);
-  const homePostRef = React.useRef(null);
+  const notesRef = React.useRef(null);
   useScrollToTop(ref);
 
   const isFocused = useIsFocused();
@@ -29,6 +29,8 @@ export const PostsFeedScreen = ({ route }) => {
     limit: 6,
     debug: true,
   });
+
+  console.debug({ post: data });
 
   useEffect(() => {
     if (event) {
@@ -50,14 +52,8 @@ export const PostsFeedScreen = ({ route }) => {
   };
 
   const onRefresh = async () => {
-    await Promise.all([getRefreshedData(), homePostRef?.current?.onRefresh()]).catch((e) => console.debug({ homeError: e }));
+    await Promise.all([getRefreshedData(), notesRef?.current?.onRefresh()]).catch((e) => console.debug({ homeError: e }));
   };
-
-  useEffect(() => {
-    if (homePostRef?.current) {
-      homePostRef.current.onRefresh();
-    }
-  }, [homePostRef]);
 
   return (
     <Container>
@@ -91,7 +87,7 @@ export const PostsFeedScreen = ({ route }) => {
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListHeaderComponent={<Notes refNotes={homePostRef} onRefresh={refreshing} />}
+        ListHeaderComponent={<Notes ref={notesRef} />}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no new moments for you" />}
       />
     </Container>

@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +11,34 @@ import { object, string } from 'yup';
 import { Button, Container, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE, SHADOWS } from '../../../utils/theme';
+
+export const SocilaLoginButtons = () => {
+  return (
+    <View style={styles.containerAppleSocialLogin}>
+      <AppleAuthentication.AppleAuthenticationButton
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+        cornerRadius={SIZES.xxs}
+        style={styles.button}
+        onPress={async () => {
+          try {
+            const credential = await AppleAuthentication.signInAsync({
+              requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL],
+            });
+            // signed in
+          } catch (e) {
+            if (e.code === 'ERR_REQUEST_CANCELED') {
+              // handle that the user canceled the sign-in flow
+            } else {
+              // handle other errors
+            }
+          }
+        }}
+      />
+    </View>
+  );
+};
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -108,8 +136,7 @@ export const LoginScreen = () => {
               <Line lineStyle={{ flex: 1 }} />
             </View>
             <View style={styles.socialLoginContainer}>
-              <SocialLoginButton apple />
-              <SocialLoginButton google />
+              <SocilaLoginButtons />
             </View>
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
@@ -226,5 +253,14 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xs,
     position: 'absolute',
     marginTop: SIZE,
+  },
+  containerAppleSocialLogin: {
+    width: SIZE * 10,
+    height: SIZE * 5,
+  },
+  button: {
+    width: WIDTH_DEVICE / 2.3,
+    height: HEIGHT_DEVICE / 15,
+    ...SHADOWS.medium,
   },
 });

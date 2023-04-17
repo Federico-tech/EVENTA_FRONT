@@ -94,7 +94,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
 
   const onPressAddress = () => {
     navigation.navigate(ROUTES.AddressAutocompleteScreen, {
-      title: "Inserisci l'indirizzo dell'evento",
+      title: 'Inserisci il tuo indirizzo',
       backScreenName: ROUTES.OrganiserSignUpScreen,
     });
   };

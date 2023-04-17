@@ -1,6 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useState, useImperativeHandle, useRef, useCallback, useEffect, forwardRef } from 'react';
@@ -9,19 +8,15 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { InputText, LoadingImage, Note, Row, Text, TextButton } from '../../../../components';
-import { ROUTES } from '../../../../navigation/Navigation';
 import { createNote, deleteNote, getUserNotes } from '../../../../services/notes';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const Notes = forwardRef(({onRefresh,  ...props }, refNotes) => {
+export const Notes = forwardRef(({ ...props }, ref) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const navigation = useNavigation();
-  const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
-  const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
   const user = useSelector(selectCurrentUser);
   const userId = useSelector(selectCurrentUserId);
 
@@ -63,16 +58,10 @@ export const Notes = forwardRef(({onRefresh,  ...props }, refNotes) => {
     },
     limit: 5,
     debug: true,
-  });
-
-  useEffect(() => {
-    if (onRefresh) {
-      getRefreshedData();
-    }
-  }, [onRefresh]);
+  })
 
   useImperativeHandle(
-    refNotes,
+    ref,
     () => {
       return {
         onRefresh: () => {

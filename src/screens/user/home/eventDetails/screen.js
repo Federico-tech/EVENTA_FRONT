@@ -6,7 +6,6 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
@@ -24,19 +23,23 @@ import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
-const EventDetailsParticipants = ({ numberOfParticipants }) => {
+const EventDetailsParticipants = ({ isParticipating }) => {
   const event = useSelector(selectSelectedEvent);
   const [loading, setLoading] = useState(false);
   const [participants, setParticipants] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      await getRefreshedEvent(event);
       const res = await getEventParticipants(event?._id, { limit: 3 });
       setParticipants(res);
+      setLoading(false);
+      console.log('Part', res);
     };
     fetchData();
-  }, [numberOfParticipants]);
+  }, [isParticipating]);
 
   return (
     <>
@@ -45,17 +48,48 @@ const EventDetailsParticipants = ({ numberOfParticipants }) => {
       ) : (
         participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
       )}
+      {participants?.length >= 3 && (
+        <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+      )}
     </>
   );
 };
 
+const EventDetailsMap = ({ event, navigation }) => {
+
+  return (
+    <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })}>
+    <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
+      <MapView
+        style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={{
+          latitude: event.position.coordinates[1],
+          longitude: event.position.coordinates[0],
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
+        }}
+        pointerEvents="auto"
+        scrollEnabled={false}
+        customMapStyle={mapStyle}>
+        <Marker
+          coordinate={{
+            latitude: event.position.coordinates[1],
+            longitude: event.position.coordinates[0],
+          }}
+          pinColor="red"
+        />
+      </MapView>
+    </View>
+  </TouchableOpacity>
+  )
+}
+
 export const EventDetails = ({ route }) => {
   const { onGoBack } = route?.params || {};
-  const [participants, setParticipants] = useState();
-  const [isOnPressPartLoading, setIsOnPressPartLoading] = useState(false);
-  const [numberPart, setNumberPart] = useState(); //todo: RENAME numberOfParticipants
+  const [isOnPressParticipateLoading, setIsOnPressParticipateLoading] = useState(false);
+  const [numberOfParticipants, setNumberOfParticipants] = useState();
   const [isLoading, setIsLoading] = useState();
-  const [isLoadingPart, setIsLoadingPart] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   const event = useSelector(selectSelectedEvent);
@@ -64,11 +98,10 @@ export const EventDetails = ({ route }) => {
   const eventOrganiserId = event.organiserId;
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
-  const refOrganiser = useSelector(selectSelectedUser);
+  const refreshedOrganiser = useSelector(selectSelectedUser);
   const bottomSheetModalRef = useRef(null);
   const [isParticipating, setIsParticipating] = useState();
-  //TODO: nomi parlanti? non si capisce cosa è defOrganizer
-  const [defOrganiser, setDefOrganiser] = useState(refOrganiser);
+  const [definitiveOrganiser, setDefinitiveOrganiser] = useState(refreshedOrganiser);
 
   const handlePresentModal = () => bottomSheetModalRef.current?.present();
   const toggleModal = () => setModalVisible(!isModalVisible);
@@ -88,10 +121,10 @@ export const EventDetails = ({ route }) => {
   );
 
   useEffect(() => {
-    if (organiser._id === refOrganiser._id) {
-      setDefOrganiser(refOrganiser);
+    if (organiser._id === refreshedOrganiser._id) {
+      setDefinitiveOrganiser(refreshedOrganiser);
     }
-  }, [refOrganiser]);
+  }, [refreshedOrganiser]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,35 +142,20 @@ export const EventDetails = ({ route }) => {
     fetchData();
   }, [eventId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoadingPart(true);
-      await getRefreshedEvent(event);
-      await getEventParticipants(eventId, { limit: 3 }).then((result) => {
-        console.log('result', result);
-        setParticipants(result);
-      });
-      setIsLoadingPart(false);
-    };
-    fetchData();
-  }, [event.participants, numberPart, isParticipating]);
-
-  console.debug({ participants });
-
   const onPressPartecipate = async () => {
-    setNumberPart(event.participants);
+    setNumberOfParticipants(event.participants);
     setIsParticipating(true);
-    setIsOnPressPartLoading(true);
+    setIsOnPressParticipateLoading(true);
     await partecipate();
-    setIsOnPressPartLoading(false);
+    setIsOnPressParticipateLoading(false);
   };
 
   const onPressUnpartecipate = async () => {
-    setNumberPart(event.participants);
+    setNumberOfParticipants(event.participants);
     setIsParticipating(false);
-    setIsOnPressPartLoading(true);
+    setIsOnPressParticipateLoading(true);
     await unpartecipate();
-    setIsOnPressPartLoading(false);
+    setIsOnPressParticipateLoading(false);
   };
 
   const onPressNaviagtePosts = () => {
@@ -160,7 +178,7 @@ export const EventDetails = ({ route }) => {
           <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
           <View style={{ paddingHorizontal: WIDTH_DEVICE / 20, zIndex: 1, backgroundColor: COLORS.white }}>
-            <OrganiserInf organiser={defOrganiser} isLoading={isLoading} />
+            <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} />
             <View style={{ marginHorizontal: 0 }}>
               <Line lineStyle={{ marginBottom: 0 }} />
             </View>
@@ -191,44 +209,12 @@ export const EventDetails = ({ route }) => {
                 </Text>
               </View>
               <TextButton text="view moments" onPress={onPressNaviagtePosts} />
-              <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })}>
-                <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
-                  <MapView
-                    style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
-                    provider={PROVIDER_GOOGLE}
-                    initialRegion={{
-                      latitude: event.position.coordinates[1],
-                      longitude: event.position.coordinates[0],
-                      latitudeDelta: 0.2,
-                      longitudeDelta: 0.2,
-                    }}
-                    pointerEvents="auto"
-                    scrollEnabled={false}
-                    customMapStyle={mapStyle}>
-                    <Marker
-                      coordinate={{
-                        latitude: event.position.coordinates[1],
-                        longitude: event.position.coordinates[0],
-                      }}
-                      pinColor="red"
-                    />
-                  </MapView>
-                </View>
-              </TouchableOpacity>
+              <EventDetailsMap navigation={navigation} event={event}/>
               <Text style={styles.whoGoing}>Who's going?</Text>
             </View>
             <Row>
-              {isLoadingPart ? (
-                <ActivityIndicator style={{ marginTop: SIZE }} />
-              ) : (
-                participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
-              )}
-              {/*TODO: like this */}
-              {/*<EventDetailsParticipants numberOfParticipants={numberPart} />*/}
+              <EventDetailsParticipants numberOfParticipants={numberOfParticipants} isParticipating={isParticipating} />
             </Row>
-            {participants?.length >= 3 && (
-              <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
-            )}
           </View>
         </View>
       </ScrollView>
@@ -242,7 +228,7 @@ export const EventDetails = ({ route }) => {
                 text="Im going"
                 onPress={onPressUnpartecipate}
                 loading={isLoading}
-                disabled={isOnPressPartLoading}
+                disabled={isOnPressParticipateLoading}
               />
               <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
             </>
@@ -254,7 +240,7 @@ export const EventDetails = ({ route }) => {
                 text="Im going"
                 onPress={onPressPartecipate}
                 loading={isLoading}
-                disabled={isOnPressPartLoading}
+                disabled={isOnPressParticipateLoading}
               />
               <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
             </>

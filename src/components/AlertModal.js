@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     width: SIZE * 16,
     textAlign: 'center',
     marginTop: SIZE / 2,
+    marginBottom: SIZE,
   },
   line: {
     height: 1,

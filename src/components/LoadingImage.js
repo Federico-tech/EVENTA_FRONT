@@ -51,7 +51,13 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 100,
   },
-  loadingEventImage: {},
+  loadingEventImage: {
+    aspectRatio: 1,
+    borderRadius: SIZES.xxs,
+    backgroundColor: COLORS.backGray,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   loadingProfileImage: {
     aspectRatio: 1,
     borderRadius: 100,

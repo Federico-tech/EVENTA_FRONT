@@ -49,12 +49,12 @@ export const PostCommentScreen = ({ route }) => {
       style: { marginBottom: 0 },
     });
   };
-  const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData } = useInfiniteScroll({
+  const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData, setData } = useInfiniteScroll({
     entity: 'comments',
     filters: {
       postId,
     },
-    limit: 6,
+    limit: 15,
   });
 
   const onPressPostComment = async () => {
@@ -74,25 +74,26 @@ export const PostCommentScreen = ({ route }) => {
       <Header title="Comments" back />
       <FlatList
         data={data}
-        renderItem={({ item }) => <Comment commentData={item} />}
-        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <Comment commentData={item} getData={getData} />}
+        keyExtractor={(item) => item?._id}
         showsVerticalScrollIndicator={false}
+        style={{ marginBottom: SIZE * 8}}
         onScroll={handleScroll}
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no comments for this post" />}
       />
-      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <View style={{ height: SIZE * 8 }} ref={viewRef}>
-          <View style={{ backgroundColor: COLORS.backGray, height: 1 }} />
+      <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: COLORS.white }}>
+        <View style={{ height: SIZE * 8, backgroundColor: COLORS.backGray }} ref={viewRef}>
+          <View style={{ backgroundColor: COLORS.white, height: 1 }} />
           <View
             style={{ flexDirection: 'row', marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE, width: WIDTH_DEVICE * 0.9, alignItems: 'center' }}
             ref={textInputRef}>
             <LoadingImage profile source={currentUser.profilePic} width={SIZE * 3.5} iconSIZE={SIZE * 2.5} />
             <TextInput style={styles.input} onChangeText={handleInputChange} value={content} placeholder="Write you comment" />
-            <TouchableOpacity onPress={onPressPostComment} disabled={isCreatePostLoading || (!content && true)}>
-              <Text color={COLORS.primary} semiBoldSm style={isCreatePostLoading || (!content && { opacity: 0.5 })}>
+            <TouchableOpacity onPress={onPressPostComment} disabled={(isCreatePostLoading || !content) && true}>
+              <Text color={COLORS.primary} semiBoldSm style={(isCreatePostLoading || !content) && { opacity: 0.5 }}>
                 Post
               </Text>
             </TouchableOpacity>
