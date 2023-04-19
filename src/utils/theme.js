@@ -71,6 +71,17 @@ export const SHADOWS = {
 
     elevation: 14,
   },
+  top: {
+    shadowColor: COLORS.darkGray,
+    shadowOffset: {
+      width: 0,
+      height: -SIZE,
+    },
+    shadowOpacity: 8,
+    shadowRadius: 10,
+
+    elevation: 5,
+  },
 };
 
 export const TAB_BAR_STYLE = {

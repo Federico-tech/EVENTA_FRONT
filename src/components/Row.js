@@ -21,6 +21,10 @@ export const Row = ({
   row,
   column,
   touchableOpacity,
+  mb,
+  mt,
+  mr,
+  ml,
   ...rest
 }) => {
   const Component = onPress ? (touchableOpacity ? TouchableOpacity : Pressable) : View;
@@ -41,6 +45,10 @@ export const Row = ({
         spaceEvenly && { justifyContent: 'space-evenly' },
         { width },
         { flex },
+        { marginTop: mt },
+        { marginBottom: mb },
+        { marginLeft: ml},
+        { marginRight: mr },
         style,
       ]}
       collapsable={false}

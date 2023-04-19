@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
@@ -8,6 +8,7 @@ import { setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
+import { Text } from './Text';
 
 export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
   const { profilePic, username, name } = data;
@@ -62,6 +63,26 @@ export const OrganiserRow = ({ data }) => {
           </Row>
         </Row>
       </View>
+    </TouchableOpacity>
+  );
+};
+
+export const UserColumn = ({ data }) => {
+  const { profilePic, username } = data;
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const handleOnPress = () => {
+    dispatch(setUserSelected(data));
+    navigation.navigate(ROUTES.AccountUserScreen, { data });
+  };
+  return (
+    <TouchableOpacity onPress={handleOnPress}>
+      <Row alignCenter column mr={SIZE} mb={SIZE}>
+        <LoadingImage source={profilePic} width={SIZE * 5} profile iconSIZE={SIZE * 2.5} />
+        <Row width={SIZE * 6}>
+          <Text ff={FONTS.medium} fs={SIZES.xxs} mt={SIZE / 2} width={SIZE} numberOfLines={1} >{username}</Text>
+          </Row>
+        </Row>
     </TouchableOpacity>
   );
 };

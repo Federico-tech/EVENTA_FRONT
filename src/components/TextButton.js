@@ -30,7 +30,7 @@ export const ReadMoreButton = (props, textStyle) => {
   const shouldShowMoreLess = text.length > 50;
 
   if (!isExpanded && shouldShowMoreLess) {
-    text = `${text.substring(0, 20)}...`;
+    text = `${text.substring(0, 40)}...`;
   }
 
   return (

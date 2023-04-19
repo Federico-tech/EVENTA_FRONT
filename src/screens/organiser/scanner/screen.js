@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { useSelector } from 'react-redux';
 
-import { Container, Row } from '../../../components';
+import { Container, Header, Row } from '../../../components';
 import { createScan } from '../../../services/scans';
 import { selectSelectedEvent } from '../../../store/event';
 import { requestCodeScannerPermission } from '../../../utils/permissions';
@@ -31,8 +31,8 @@ export const ScannerScreen = () => {
         await createScan(discountData);
         setIsLoading(false);
         showMessage({
-          message: 'Event Created Succefully',
-          description: 'The event has been cerated succefully',
+          message: 'Event Scanned Succefully',
+          description: 'The event has been scanned succefully',
           type: 'success',
         });
       } else {
@@ -53,6 +53,7 @@ export const ScannerScreen = () => {
 
   return (
     <Container>
+      <Header title={'Scanner'} back/>
       <View style={styles.scannerContainer}>
         <View style={styles.scanner}>
           <BarCodeScanner onBarCodeScanned={hasScanned ? undefined : handleBarCodeScanned} style={styles.scanner} />
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     width: SIZE * 25,
     height: SIZE * 30,
     alignSelf: 'center',
-    marginTop: SIZE * 4,
+    marginTop: SIZE,
     borderRadius: SIZES.xxs,
   },
   scanButton: {
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 100,
     backgroundColor: COLORS.primary,
-    marginTop: SIZE * 6,
+    marginTop: SIZE * 2,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,

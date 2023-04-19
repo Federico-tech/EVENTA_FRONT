@@ -1,17 +1,19 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
-import { Button, Container, IconButton, Line, LoadingImage, OrganiserInf, ReadMoreButton, Row, TextButton } from '../../../../components';
-import { UserRow } from '../../../../components/AccountRow';
+import { Button, Container, IconButton, Line, LoadingImage, OrganiserInf, ReadMoreButton, Row, Text, TextButton } from '../../../../components';
+import { UserColumn, UserRow } from '../../../../components/AccountRow';
 import { DiscountModal } from '../../../../components/DiscountModal';
+import { MiniPostCard } from '../../../../components/MiniPostCard';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { getRefreshedEvent } from '../../../../services/events';
 import { getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
@@ -19,9 +21,11 @@ import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
 import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../../../../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
+import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
+import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE, SHADOWS } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
+import { BlurView } from 'expo-blur';
 
 const EventDetailsParticipants = ({ isParticipating }) => {
   const event = useSelector(selectSelectedEvent);
@@ -33,7 +37,7 @@ const EventDetailsParticipants = ({ isParticipating }) => {
     const fetchData = async () => {
       setLoading(true);
       await getRefreshedEvent(event);
-      const res = await getEventParticipants(event?._id, { limit: 3 });
+      const res = await getEventParticipants(event?._id, { limit: 7 });
       setParticipants(res);
       setLoading(false);
       console.log('Part', res);
@@ -44,9 +48,15 @@ const EventDetailsParticipants = ({ isParticipating }) => {
   return (
     <>
       {loading ? (
-        <ActivityIndicator style={{ marginTop: SIZE }} />
+        <View style={{ height: SIZE * 7, alignItems: 'center', justifyContent: 'center' }}>
+          <ActivityIndicator style={{ marginTop: SIZE / 2 }} />
+        </View>
       ) : (
-        participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
+          {participants?.slice(0, 3).map((participant) => (
+            <UserColumn key={participant.user._id} data={participant.user} />
+          ))}
+        </ScrollView>
       )}
       {participants?.length >= 3 && (
         <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
@@ -56,34 +66,33 @@ const EventDetailsParticipants = ({ isParticipating }) => {
 };
 
 const EventDetailsMap = ({ event, navigation }) => {
-
   return (
     <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })}>
-    <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
-      <MapView
-        style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: event.position.coordinates[1],
-          longitude: event.position.coordinates[0],
-          latitudeDelta: 0.2,
-          longitudeDelta: 0.2,
-        }}
-        pointerEvents="auto"
-        scrollEnabled={false}
-        customMapStyle={mapStyle}>
-        <Marker
-          coordinate={{
+      <View style={{ marginBottom: SIZE, marginTop: SIZE * 2, borderRadius: SIZES.xxs }}>
+        <MapView
+          style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
+          provider={PROVIDER_GOOGLE}
+          initialRegion={{
             latitude: event.position.coordinates[1],
             longitude: event.position.coordinates[0],
+            latitudeDelta: 0.2,
+            longitudeDelta: 0.2,
           }}
-          pinColor="red"
-        />
-      </MapView>
-    </View>
-  </TouchableOpacity>
-  )
-}
+          pointerEvents="auto"
+          scrollEnabled={false}
+          customMapStyle={mapStyle}>
+          <Marker
+            coordinate={{
+              latitude: event.position.coordinates[1],
+              longitude: event.position.coordinates[0],
+            }}
+            pinColor="red"
+          />
+        </MapView>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export const EventDetails = ({ route }) => {
   const { onGoBack } = route?.params || {};
@@ -106,6 +115,11 @@ export const EventDetails = ({ route }) => {
   const handlePresentModal = () => bottomSheetModalRef.current?.present();
   const toggleModal = () => setModalVisible(!isModalVisible);
   const handleClosePress = () => bottomSheetModalRef.current.close();
+
+  const { data } = useInfiniteScroll({
+    entity: 'posts/home',
+    limit: 6,
+  });
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -167,12 +181,23 @@ export const EventDetails = ({ route }) => {
     onGoBack?.(event);
   };
 
+  const onPressScan = () => {
+    navigation.navigate(ROUTES.ScannerScreen);
+  };
+
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: SIZE * 4 }}>
+        <View style={{ marginBottom: SIZE }}>
           <View style={styles.eventBlurImage}>
-            <LoadingImage source={event.coverImage} viewStyle={styles.eventBlurImage} blurRadius={10} event width={SIZE * 30} />
+            <LoadingImage
+              source={event.coverImage}
+              viewStyle={styles.eventBlurImage}
+              blurRadius={10}
+              event
+              width={SIZE * 30}
+              imageStyle={{ height: SIZE * 25, aspectRatio: 2 }}
+            />
           </View>
           <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
           <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
@@ -182,69 +207,118 @@ export const EventDetails = ({ route }) => {
             <View style={{ marginHorizontal: 0 }}>
               <Line lineStyle={{ marginBottom: 0 }} />
             </View>
-            <View>
-              <Row row alignCenter spaceBetween style={{ marginTop: SIZE }}>
-                <Text style={styles.eventTitle}>{event.name}</Text>
-                {eventOrganiserId === userId && (
-                  <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} onPress={() => navigation.navigate(ROUTES.ScannerScreen)} />
-                )}
-              </Row>
-              <ReadMoreButton text={event.description} style={styles.description} />
-              <View style={styles.date}>
-                <FontAwesome name="calendar-o" size={18} />
-                <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                  <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
-                  <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
-                </View>
-              </View>
-              <View style={styles.place}>
-                <Foundation name="marker" size={22} />
-                <Text style={styles.adressText}>{event?.address?.fullAddress}</Text>
-              </View>
-              <View style={styles.person}>
-                <Ionicons name="people-outline" size={24} />
-                <Text style={styles.peopleText}>
-                  {event.participants}
-                  <Text style={styles.description}> of your friends are going</Text>
-                </Text>
-              </View>
-              <TextButton text="view moments" onPress={onPressNaviagtePosts} />
-              <EventDetailsMap navigation={navigation} event={event}/>
-              <Text style={styles.whoGoing}>Who's going?</Text>
-            </View>
-            <Row>
-              <EventDetailsParticipants numberOfParticipants={numberOfParticipants} isParticipating={isParticipating} />
-            </Row>
           </View>
+          <Row style={{ marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE }}>
+            <Row alignCenter spaceBetween row>
+              <Text style={styles.eventTitle}>{event.name}</Text>
+              {eventOrganiserId === userId && <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} onPress={onPressScan} />}
+            </Row>
+
+            <Row mt={SIZE}>
+              <Row row alignCenter>
+                <Row alignCenter row ml={SIZE / 3.5} width={SIZE * 14}>
+                  <Foundation name="marker" size={SIZE * 1.7} />
+                  <Text fs={SIZES.xxs} ml={SIZE / 1.3}>
+                    {event?.address?.fullAddress}
+                  </Text>
+                </Row>
+                <Row alignCenter row ml={SIZE * 2}>
+                  <FontAwesome name="calendar-o" size={18} />
+                  <Text ml={SIZE} fs={SIZES.xxs}>
+                    {formatDate(event.date, EVENT_DATE_FORMAT)}
+                  </Text>
+                </Row>
+              </Row>
+              <Row mt={SIZE * 1.5} row>
+                <Row alignCenter row ml={SIZE / 4} width={SIZE * 12}>
+                  <AntDesign name="clockcircleo" size={18} />
+                  <Text ml={SIZE / 2} fs={SIZES.xxs}>
+                    {formatDate(event.date, TIME_FORMAT)}
+                  </Text>
+                </Row>
+                <Row alignCenter row ml={SIZE * 3.8} width={SIZE * 8}>
+                  <Ionicons name="people-outline" size={24} />
+                  <Text style={styles.peopleText}>
+                    {event.participants}
+                    <Text ml={SIZE / 2} fs={SIZES.xxs}>
+                      {' '}
+                      of your friends are going
+                    </Text>
+                  </Text>
+                </Row>
+              </Row>
+            </Row>
+            <Text ff={FONTS.semiBold} mt={SIZE * 1.5} fs={SIZES.sm}>
+              Event overview
+            </Text>
+            <ReadMoreButton text={event.description} style={styles.description} />
+            {data.length !== 0 && (
+              <>
+              <Row row alignCenter spaceBetween mb={SIZE} mt={SIZE * 2}>
+                <Text ff={FONTS.semiBold} fs={SIZES.sm} >
+                  Moments
+                </Text>
+                <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
+            <Row row alignCenter>
+              <TextButton
+                text="View all"
+                textStyle={{ width: SIZE * 4, fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }}
+              />
+            </Row>
+          </TouchableOpacity>
+                </Row>
+                <FlatList
+                  data={data}
+                  renderItem={({ item }) => <MiniPostCard postData={item} />}
+                  keyExtractor={(item) => item._id}
+                  horizontal
+                  showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}
+                  ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
+                />
+              </>
+            )}
+            <EventDetailsMap event={event} navigation={navigation} />
+          </Row>
         </View>
       </ScrollView>
-      <Row row alignCenter style={styles.partButton} spaceBetween>
-        {role === 'user' &&
-          (isParticipating ? (
-            <>
-              <Button
-                secondary
-                containerStyle={{ width: SIZE * 24 }}
-                text="Im going"
-                onPress={onPressUnpartecipate}
-                loading={isLoading}
-                disabled={isOnPressParticipateLoading}
-              />
-              <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
-            </>
-          ) : (
-            <>
-              <Button
-                gradient
-                containerStyle={{ width: SIZE * 24 }}
-                text="Im going"
-                onPress={onPressPartecipate}
-                loading={isLoading}
-                disabled={isOnPressParticipateLoading}
-              />
-              <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} onPress={toggleModal} />
-            </>
-          ))}
+      <View style={{ height: 0.5, backgroundColor: COLORS.lightGray }} />
+      <Row style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}>
+        <Row column spaceBetween mt={SIZE}>
+          <EventDetailsParticipants numberOfParticipants={numberOfParticipants} isParticipating={isParticipating} />
+          <Row row spaceBetween alignCenter mt={SIZE / 2} mb={SIZE}>
+            {role === 'user' &&
+              (isParticipating ? (
+                <>
+                  <Button
+                    secondary
+                    containerStyle={{ width: SIZE * 24 }}
+                    text="Unparticipate"
+                    onPress={onPressUnpartecipate}
+                    loading={isLoading}
+                    disabled={isOnPressParticipateLoading}
+                  />
+                  <Row ml={SIZE}>
+                    <TouchableOpacity onPress={toggleModal}>
+                      <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} />
+                    </TouchableOpacity>
+                  </Row>
+                </>
+              ) : (
+                <>
+                  <Button
+                    gradient
+                    containerStyle={{ width: SIZE * 24 }}
+                    text="Partecipa"
+                    onPress={onPressPartecipate}
+                    loading={isLoading}
+                    disabled={isOnPressParticipateLoading}
+                  />
+                  <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.gray} />
+                </>
+              ))}
+          </Row>
+        </Row>
       </Row>
       <BottomSheetModal
         enablePanDownToClose
@@ -268,7 +342,7 @@ const styles = StyleSheet.create({
     marginTop: SIZE * 3,
   },
   eventBlurImage: {
-    height: SIZE * 23,
+    height: SIZE * 24,
     width: WIDTH_DEVICE / 1,
     alignItems: 'center',
     zIndex: -1,
@@ -287,7 +361,7 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: FONTS.regular,
     fontSize: SIZES.xs,
-    marginTop: SIZE,
+    marginTop: SIZE / 2,
   },
   date: {
     flexDirection: 'row',
@@ -306,7 +380,7 @@ const styles = StyleSheet.create({
   },
   adressText: {
     marginLeft: SIZE,
-    fontFamily: 'InterMedium',
+    fontFamily: FONTS.regular,
     fontSize: SIZES.xs,
   },
   place: {
@@ -345,11 +419,11 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
   },
   partButton: {
-    width: WIDTH_DEVICE * 0.9,
-    marginHorizontal: WIDTH_DEVICE / 20,
-    marginBottom: SIZE,
+    height: SIZE * 5,
+    width: '100%',
     position: 'absolute',
     bottom: 0,
+    backfaceVisibility: 'red',
   },
   whoGoing: {
     marginTop: SIZE,
@@ -379,5 +453,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     marginTop: SIZE * 9,
     marginLeft: SIZE * 23.9,
+  },
+
+  horizontalScrollView: {
+    height: SIZE * 7,
+  },
+  lineShadow: {
+    height: 0.5,
+    backgroundColor: COLORS.lightGray,
   },
 });

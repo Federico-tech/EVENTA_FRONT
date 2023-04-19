@@ -14,6 +14,13 @@ export const Text = ({
   regularSm,
   numberOfLines,
   regularXs,
+  fs,
+  ff,
+  width,
+  mt,
+  mb,
+  mr,
+  ml,
   ...rest
 }) => {
   return (
@@ -29,6 +36,12 @@ export const Text = ({
         medium && styles.medium,
         regularSm && styles.regularSm,
         regularXs && styles.regularXs,
+        { fontFamily: ff },
+        { fontSize: fs },
+        { marginTop: mt },
+        { marginBottom: mb },
+        { marginLeft: ml },
+        { marginRight: mr },
         style,
       ]}
       {...rest}>
