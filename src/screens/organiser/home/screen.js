@@ -1,87 +1,105 @@
-import { useScrollToTop } from '@react-navigation/native';
-import _ from 'lodash';
-import { DateTime } from 'luxon';
-import React, { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import FlashMessage from 'react-native-flash-message';
-import { FlatList, RefreshControl } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import { Button, Container, HomeHeader, ListEmptyComponent, MiniEventCard, Text } from '../../../components';
-import { selectDateFilter, setDateFilter } from '../../../store/filter';
-import { selectCurrentUserId } from '../../../store/user';
-import { useInfiniteScroll } from '../../../utils/hooks';
-import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { Container, HomeHeader, MiniEventCard, Row, Text } from '../../../components';
+import { ROUTES } from '../../../navigation/Navigation';
+import { getPopularEvents } from '../../../services/events';
+import { getPopularPosts } from '../../../services/posts';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
-  const currentDate = DateTime.now().toISO();
-  const dispatch = useDispatch();
-  const filter = useSelector(selectDateFilter);
-  const dateParam = filter === 'past' ? 'date.$lte' : 'date.$gte';
-  const organiserId = useSelector(selectCurrentUserId);
+  const navigation = useNavigation();
+  const [popularEvents, setPopularEvents] = useState();
+  const [popularPosts, setPopularPosts] = useState();
+  const [isLoading, setIsLoading] = useState();
+
+  console.log(popularEvents);
+  console.log(popularPosts);
 
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
-  const filters = {
-    organiserId,
-    [dateParam]: currentDate,
-  };
-
-  const { data, getMoreData, refreshing, getRefreshedData, loadMore, setData, getData } = useInfiniteScroll({
-    entity: 'events',
-    filters,
-    limit: 10,
-  });
-
   useEffect(() => {
-    getData();
-  }, [filter]);
+    const fetchData = async () => {
+      setIsLoading(true);
+      const resEvents = await getPopularEvents();
+      setPopularEvents(resEvents);
+      const resPosts = await getPopularPosts();
+      setPopularPosts(resPosts);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
 
-  const updateFilters = (f) => {
-    setData([]);
-    dispatch(setDateFilter(f));
+  const onPressNavigatePopularEvents = () => {
+    navigation.navigate(ROUTES.PopularEventsScreen);
   };
 
   return (
     <Container>
       <HomeHeader organiser />
-      <FlatList
-        data={data}
-        ref={ref}
-        renderItem={({ item }) => <MiniEventCard data={item} />}
-        keyExtractor={(item) => item._id}
-        onEndReachedThreshold={0.1}
-        onEndReached={_.throttle(getMoreData, 400)}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-        ListEmptyComponent={!refreshing && <ListEmptyComponent text={filter === 'upcoming' ? 'There are no upcoming events' : 'There are no past events'} />}
-        ListHeaderComponent={
-          <View>
-            <Analytics />
-            <View style={{ marginHorizontal: WIDTH_DEVICE / 20, flexDirection: 'row' }}>
-              <Button
-                secondary
-                containerStyle={[filter === 'upcoming' && { backgroundColor: 'black', borderRadius: SIZES.xxs  }, { marginRight: SIZE, width: SIZE * 9 }]}
-                onPress={() => updateFilters('upcoming')}>
-                <Text medium color={filter === 'upcoming' ? COLORS.white : 'black'}>
-                  Upcoming
-                </Text>
-              </Button>
-              <Button
-                secondary
-                containerStyle={[filter === 'past' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 7 }]}
-                onPress={() => updateFilters('past')}>
-                <Text medium color={filter === 'past' ? COLORS.white : 'black'}>
-                  Past
-                </Text>
-              </Button>
-            </View>
-          </View>
-        }
-      />
-      <FlashMessage position="top" />
+      <ScrollView>
+        <Analytics />
+        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          <Text ff={FONTS.semiBold}>Most popular events</Text>
+          {isLoading ? (
+            <ActivityIndicator style={styles.activityIndicator} />
+          ) : (
+            <Row>
+              {popularEvents?.slice(0, 3).map((event) => (
+                <MiniEventCard key={event._id} data={event} />
+              ))}
+              {popularEvents && (
+                <>
+                  <TouchableOpacity onPress={onPressNavigatePopularEvents}>
+                    <Text style={styles.viewAll} mt={SIZE}>
+                      View all
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Row>
+          )}
+
+          {/* <Text ff={FONTS.semiBold}>Most popular Posts</Text>
+          {isLoading ? (
+            <ActivityIndicator style={styles.activityIndicator} />
+          ) : (
+            <Row>
+              <ScrollView horizontal style={{ marginTop: SIZE }}>
+              {popularPosts?.map((post) => (
+                <MiniPostCard key={post._id} postData={post} />
+              ))}
+              </ScrollView>
+              
+              {popularPosts && (
+                <>
+                  <TouchableOpacity>
+                    <Text style={styles.viewAll}>View all</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Row>
+          )} */}
+        </View>
+      </ScrollView>
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  viewAll: {
+    alignSelf: 'center',
+    color: COLORS.primary,
+    fontFamily: FONTS.semiBold,
+    fontSize: SIZES.sm,
+    marginTop: SIZE,
+  },
+  activityIndicator: {
+    marginTop: SIZE,
+    marginBottom: SIZE,
+  },
+});

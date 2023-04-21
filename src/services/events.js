@@ -106,3 +106,12 @@ export const deleteEvent = async (eventId) => {
     console.log({ errorDeletingEvents: e });
   }
 };
+
+export const getPopularEvents = async () => {
+  try {
+    const { data: popularEvents } = await mainAxios.get('events');
+    return popularEvents.data;
+  } catch (e) {
+    console.log({ errorGettingPopularEvents: e });
+  }
+};

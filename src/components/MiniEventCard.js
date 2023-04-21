@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
@@ -36,7 +36,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
         <View style={styles.top}>
           <TouchableOpacity onPress={handleProfilePress}>
             <Row row alignCenter>
-              <Image source={{ uri: organiser?.profilePic }} style={styles.profilePic} />
+              <LoadingImage source={organiser?.profilePic} style={styles.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 1.5} />
               <Text style={styles.textOrganiserName}>{organiser?.username}</Text>
             </Row>
           </TouchableOpacity>

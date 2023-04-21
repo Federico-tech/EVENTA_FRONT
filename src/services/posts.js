@@ -39,3 +39,12 @@ export const deletePost = async (postId) => {
     console.log({ errorDeletingPost: { e } });
   }
 };
+
+export const getPopularPosts = async () => {
+  try {
+    const { data: popularPosts } = await mainAxios.get('posts');
+    return popularPosts.data;
+  } catch (e) {
+    console.log({ errorGettingPopularPosts: e });
+  }
+};

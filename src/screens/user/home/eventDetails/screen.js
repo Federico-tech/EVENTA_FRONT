@@ -11,7 +11,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
 import { Button, Container, IconButton, Line, LoadingImage, OrganiserInf, ReadMoreButton, Row, Text, TextButton } from '../../../../components';
-import { UserColumn, UserRow } from '../../../../components/AccountRow';
+import { UserColumn } from '../../../../components/AccountRow';
 import { DiscountModal } from '../../../../components/DiscountModal';
 import { MiniPostCard } from '../../../../components/MiniPostCard';
 import { ROUTES } from '../../../../navigation/Navigation';
@@ -23,9 +23,8 @@ import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE, SHADOWS } from '../../../../utils/theme';
+import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
-import { BlurView } from 'expo-blur';
 
 const EventDetailsParticipants = ({ isParticipating }) => {
   const event = useSelector(selectSelectedEvent);
@@ -40,7 +39,6 @@ const EventDetailsParticipants = ({ isParticipating }) => {
       const res = await getEventParticipants(event?._id, { limit: 7 });
       setParticipants(res);
       setLoading(false);
-      console.log('Part', res);
     };
     fetchData();
   }, [isParticipating]);
@@ -172,10 +170,6 @@ export const EventDetails = ({ route }) => {
     setIsOnPressParticipateLoading(false);
   };
 
-  const onPressNaviagtePosts = () => {
-    navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event } });
-  };
-
   const onPressGoBack = () => {
     navigation.goBack();
     onGoBack?.(event);
@@ -254,18 +248,15 @@ export const EventDetails = ({ route }) => {
             <ReadMoreButton text={event.description} style={styles.description} />
             {data.length !== 0 && (
               <>
-              <Row row alignCenter spaceBetween mb={SIZE} mt={SIZE * 2}>
-                <Text ff={FONTS.semiBold} fs={SIZES.sm} >
-                  Moments
-                </Text>
-                <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
-            <Row row alignCenter>
-              <TextButton
-                text="View all"
-                textStyle={{ width: SIZE * 4, fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }}
-              />
-            </Row>
-          </TouchableOpacity>
+                <Row row alignCenter spaceBetween mb={SIZE} mt={SIZE * 2}>
+                  <Text ff={FONTS.semiBold} fs={SIZES.sm}>
+                    Moments
+                  </Text>
+                  <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
+                    <Row row alignCenter>
+                      <TextButton text="View all" textStyle={{ width: SIZE * 4, fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }} />
+                    </Row>
+                  </TouchableOpacity>
                 </Row>
                 <FlatList
                   data={data}

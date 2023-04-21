@@ -10,6 +10,7 @@ import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
 import { CreateEventScreen } from '../screens/organiser/events/create/screen';
 import { EditEventScreen } from '../screens/organiser/events/edit/screen';
+import { PopularEventsScreen } from '../screens/organiser/events/popular/screen';
 import { OrganiserHome } from '../screens/organiser/home/screen';
 import { AccountOrganiserScreen } from '../screens/organiser/profile/accountProfile/screen';
 import { EditOrganiserScreen } from '../screens/organiser/profile/editProfile/screen';
@@ -28,13 +29,13 @@ import { NotificationsScreen } from '../screens/user/home/notifications/screen';
 import { MapScreen } from '../screens/user/map/screen';
 import { CreatePostScreen } from '../screens/user/posts/createPost/screen';
 import { NoteFiresScreen } from '../screens/user/posts/noteFires/screen';
+import { PostCommentScreen } from '../screens/user/posts/postComments/screen';
 import { PostLikesScreen } from '../screens/user/posts/postLikes/screen';
 import { PostsFeedScreen } from '../screens/user/posts/postsFeed/screen';
 import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen';
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
-import { PostCommentScreen } from '../screens/user/posts/postComments/screen';
 import { SIZE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
@@ -93,6 +94,7 @@ export const ROUTES = {
   PostLikesScreen: 'PostLikesScreen',
   NoteFiresScreen: 'NoteFiresScreen',
   PostCommentScreen: 'PostCommentScreen',
+  PopularEventsScreen: 'PopularEventsScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -208,6 +210,7 @@ export const OrganiserHomeNavigator = () => {
       <OrganiserHomeStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.PopularEventsScreen} component={PopularEventsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen
         name={ROUTES.SearchOrganiserEventsScreen}
         component={SearchOrganiserEventsScreen}
