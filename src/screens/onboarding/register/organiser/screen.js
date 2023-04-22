@@ -99,9 +99,13 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
     });
   };
 
+  const onPressPrivacyPolicy = () => {
+    navigation.navigate(ROUTES.PrivacyPolicyScreen);
+  };
+
   return (
     <Container>
-      <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false}>
+      <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false} style={{ marginBottom: SIZE * 3}}>
         <View style={styles.container}>
           <View style={{ position: 'absolute', left: 0 }}>
             <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
@@ -123,7 +127,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
             <SocialLoginButton apple />
             <SocialLoginButton google />
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressPrivacyPolicy}>
             <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
           </TouchableOpacity>
         </View>

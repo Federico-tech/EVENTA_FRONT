@@ -179,6 +179,14 @@ export const EventDetails = ({ route }) => {
     navigation.navigate(ROUTES.ScannerScreen);
   };
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      // Call your function here
+      onGoBack?.(event);
+    });
+    return unsubscribe;
+  }, [navigation, onPressGoBack]);
+
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>

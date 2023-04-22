@@ -111,6 +111,10 @@ export const LoginScreen = () => {
     onChangeText,
   };
 
+  const onPressPrivacyPolicy = () => {
+    navigation.navigate(ROUTES.PrivacyPolicyScreen);
+  };
+
   return (
     <Container>
       <KeyboardAwareScrollView>
@@ -152,7 +156,7 @@ export const LoginScreen = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onPressPrivacyPolicy}>
               <Text style={styles.privacyText}>{t('privacy and terms')}</Text>
             </TouchableOpacity>
           </View>

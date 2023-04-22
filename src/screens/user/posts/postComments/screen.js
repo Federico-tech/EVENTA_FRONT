@@ -37,19 +37,18 @@ export const PostCommentScreen = ({ route }) => {
   }, []);
 
   const keyboardDidShow = (event) => {
-    const keyboardHeight = event.endCoordinates.height - SIZE * 2;
+    const keyboardHeight = event.endCoordinates.height;
 
     viewRef.current.setNativeProps({
       style: { marginBottom: keyboardHeight },
     });
   };
-
   const keyboardDidHide = () => {
     viewRef.current.setNativeProps({
       style: { marginBottom: 0 },
     });
   };
-  const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData, setData } = useInfiniteScroll({
+  const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData } = useInfiniteScroll({
     entity: 'comments',
     filters: {
       postId,
@@ -61,7 +60,7 @@ export const PostCommentScreen = ({ route }) => {
     setContent('');
     setIsCreatePostLoading(true);
     await createComment({ content, userId, postId });
-    await getData();
+    await getRefreshedData();
     setIsCreatePostLoading(false);
   };
 
@@ -77,7 +76,7 @@ export const PostCommentScreen = ({ route }) => {
         renderItem={({ item }) => <Comment commentData={item} getData={getData} />}
         keyExtractor={(item) => item?._id}
         showsVerticalScrollIndicator={false}
-        style={{ marginBottom: SIZE * 8}}
+        style={{ marginBottom: SIZE * 8 }}
         onScroll={handleScroll}
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}

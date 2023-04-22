@@ -1,11 +1,13 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Switch } from 'react-native';
 
 import { Container, Header, TextButton, Text, Row, Line, AlertModal } from '../../../components';
+import { ROUTES } from '../../../navigation/Navigation';
 import { deleteMe } from '../../../services/users';
 import { logout } from '../../../utils/index';
 import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
@@ -16,6 +18,7 @@ export const SettingScreen = () => {
   const [notificationEnabled, setNotificationEnabled] = useState(true);
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
+  const navigation = useNavigation();
 
   const [language, setLanguage] = useState(currentLanguage);
 
@@ -58,6 +61,10 @@ export const SettingScreen = () => {
     setDeleteModalVisible(false);
   };
 
+  const onPressPrivacyPolicy = () => {
+    navigation.navigate(ROUTES.PrivacyPolicyScreen);
+  };
+
   return (
     <Container>
       <Header title={t('settings')} back />
@@ -95,7 +102,7 @@ export const SettingScreen = () => {
         </Text>
         <Row row alignCenter style={{ marginTop: SIZE }}>
           <MaterialCommunityIcons name="lock-outline" size={SIZE * 2} style={{ marginRight: SIZE / 2 }} />
-          <TextButton text="Privacy & Terms" />
+          <TextButton text="Privacy & Terms" onPress={onPressPrivacyPolicy} />
         </Row>
         <Row row alignCenter style={{ marginTop: SIZE }}>
           <MaterialCommunityIcons name="information-outline" size={SIZE * 2} style={{ marginRight: SIZE / 2 }} />

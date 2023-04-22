@@ -30,18 +30,18 @@ export const Text = ({
       onTextLayout={onTextLayout}
       style={[
         { color },
-        bold && styles.bold,
-        semiBoldSm && styles.semiBoldSm,
-        semiBoldMd && styles.semiBoldMd,
-        medium && styles.medium,
-        regularSm && styles.regularSm,
-        regularXs && styles.regularXs,
         { fontFamily: ff },
         { fontSize: fs },
         { marginTop: mt },
         { marginBottom: mb },
         { marginLeft: ml },
         { marginRight: mr },
+        bold && styles.bold,
+        semiBoldSm && styles.semiBoldSm,
+        semiBoldMd && styles.semiBoldMd,
+        medium && styles.medium,
+        regularSm && styles.regularSm,
+        regularXs && styles.regularXs,
         style,
       ]}
       {...rest}>

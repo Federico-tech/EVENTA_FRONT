@@ -21,6 +21,7 @@ import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress
 import { FollowersScreen } from '../screens/shared/followers/screen';
 import { FollowingScreen } from '../screens/shared/following/screen';
 import { ParticipantsScreen } from '../screens/shared/participants/screen';
+import { PrivacyPolicyScreen } from '../screens/shared/privacyPolicy/screen';
 import { SettingScreen } from '../screens/shared/settings/screen';
 import { EventDetails } from '../screens/user/home/eventDetails/screen';
 import { HomeScreen } from '../screens/user/home/home/screen';
@@ -95,6 +96,7 @@ export const ROUTES = {
   NoteFiresScreen: 'NoteFiresScreen',
   PostCommentScreen: 'PostCommentScreen',
   PopularEventsScreen: 'PopularEventsScreen',
+  PrivacyPolicyScreen: 'PrivacyPolicyScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -192,6 +194,7 @@ export const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
   );
 };
@@ -297,6 +300,7 @@ export const AuthNavigator = () => {
       <AuthStackNavigator.Screen name={ROUTES.LoginScreen} component={LoginScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Screen name={ROUTES.UserSingUpScreen} component={UserSingUpScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Screen name={ROUTES.OrganiserSignUpScreen} component={OrganiserSignUpScreen} options={{ headerShown: false }} />
+      <AuthStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
       <AuthStackNavigator.Group screenOptions={{ presentation: 'modal' }}>
         <AuthStackNavigator.Screen name={ROUTES.AddressAutocompleteScreen} component={AddressAutocompleteScreen} options={{ headerShown: false }} />
       </AuthStackNavigator.Group>

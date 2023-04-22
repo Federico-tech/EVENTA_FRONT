@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
 import { RefreshControl } from 'react-native-gesture-handler';
@@ -48,7 +48,6 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
     );
   };
 
-
   return (
     <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
       <Tabs.Tab name="Events ">
@@ -75,7 +74,7 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
 export const UserTopNavigator = ({ user, account, isLoading }) => {
   const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
   const currentUserId = useSelector(selectCurrentUserId);
-  const currentUserRole = useSelector(selectCurrentUserRole)
+  const currentUserRole = useSelector(selectCurrentUserRole);
   const updatedUser = useSelector(selectSelectedUser);
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore, getData } = useInfiniteScroll({

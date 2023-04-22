@@ -25,11 +25,11 @@ export const Analytics = () => {
           <Row row alignCenter>
             <MaterialCommunityIcons name="post" color={COLORS.primary} size={SIZE * 1.6} />
             <Text ml={SIZE} ff={FONTS.semiBold}>
-              Posts
+              Events
             </Text>
           </Row>
           <Text fs={SIZE * 2.2} ff={FONTS.semiBold} mt={SIZE}>
-            576
+            45
           </Text>
         </Row>
       </Row>

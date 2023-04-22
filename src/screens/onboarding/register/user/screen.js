@@ -11,6 +11,7 @@ import { organiserSignUp, loginUser, userUpdate } from '../../../../services/use
 import { ROLES } from '../../../../utils/conts';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 import { registerForPushNotificationsAsync } from '../../../../utils/notifications';
+import { ROUTES } from '../../../../navigation/Navigation';
 
 export const UserSingUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -95,6 +96,10 @@ export const UserSingUpScreen = ({ navigation }) => {
     onChangeText,
   };
 
+  const onPressPrivacyPolicy = () => {
+    navigation.navigate(ROUTES.PrivacyPolicyScreen);
+  };
+
   return (
     <Container>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
@@ -120,7 +125,7 @@ export const UserSingUpScreen = ({ navigation }) => {
             <SocialLoginButton apple />
             <SocialLoginButton google />
           </View>
-          <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
+          <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} onPress={onPressPrivacyPolicy} />
         </View>
       </KeyboardAwareScrollView>
       {error === 409 && <FlashMessage position="top" />}

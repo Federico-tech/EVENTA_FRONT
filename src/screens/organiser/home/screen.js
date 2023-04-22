@@ -41,7 +41,7 @@ export const OrganiserHome = () => {
   return (
     <Container>
       <HomeHeader organiser />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Analytics />
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <Text ff={FONTS.semiBold}>Most popular events</Text>
@@ -63,27 +63,6 @@ export const OrganiserHome = () => {
               )}
             </Row>
           )}
-
-          {/* <Text ff={FONTS.semiBold}>Most popular Posts</Text>
-          {isLoading ? (
-            <ActivityIndicator style={styles.activityIndicator} />
-          ) : (
-            <Row>
-              <ScrollView horizontal style={{ marginTop: SIZE }}>
-              {popularPosts?.map((post) => (
-                <MiniPostCard key={post._id} postData={post} />
-              ))}
-              </ScrollView>
-              
-              {popularPosts && (
-                <>
-                  <TouchableOpacity>
-                    <Text style={styles.viewAll}>View all</Text>
-                  </TouchableOpacity>
-                </>
-              )}
-            </Row>
-          )} */}
         </View>
       </ScrollView>
     </Container>
