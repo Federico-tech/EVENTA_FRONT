@@ -13,6 +13,7 @@ import { refreshSelectedUser } from '../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../store/event';
 import { selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../utils/dates';
+import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { UserRow } from './AccountRow';
 import { Button } from './Button';
@@ -167,7 +168,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
           <View style={styles.person}>
             <Ionicons name="people-outline" size={24} />
             <Text style={styles.peopleText}>
-              {numberPart}
+              {formatShortNumber(numberPart)}
               <Text style={styles.description}> of your friends are going</Text>
             </Text>
           </View>

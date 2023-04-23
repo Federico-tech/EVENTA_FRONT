@@ -17,3 +17,32 @@ export const formatDate = (data, format) => {
   const formDate = dateTime.toFormat(format);
   return formDate;
 };
+
+export const setTimeElapsed = (dateString) => {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffTime = Math.abs(now - date);
+  const diffSeconds = Math.floor(diffTime / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  const diffWeeks = Math.floor(diffDays / 7);
+  const diffMonths = Math.floor(diffDays / 30);
+  const diffYears = Math.floor(diffDays / 365);
+
+  if (diffSeconds < 60) {
+    return `${diffSeconds}s`;
+  } else if (diffMinutes < 60) {
+    return `${diffMinutes}m`;
+  } else if (diffHours < 24) {
+    return `${diffHours}h`;
+  } else if (diffDays < 7) {
+    return `${diffDays}d`;
+  } else if (diffWeeks < 4) {
+    return `${diffWeeks}w`;
+  } else if (diffMonths < 12) {
+    return `${diffMonths}mh`;
+  } else {
+    return `${diffYears}year`;
+  }
+};

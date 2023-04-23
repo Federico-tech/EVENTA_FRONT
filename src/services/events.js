@@ -107,9 +107,11 @@ export const deleteEvent = async (eventId) => {
   }
 };
 
-export const getPopularEvents = async () => {
+export const getPopularEvents = async (organiserId, { queryParams = {} }) => {
   try {
-    const { data: popularEvents } = await mainAxios.get('events');
+    const params = { organiserId, ...queryParams };
+    console.log(params);
+    const { data: popularEvents } = await mainAxios.get('events/mostpopular', { params });
     return popularEvents.data;
   } catch (e) {
     console.log({ errorGettingPopularEvents: e });

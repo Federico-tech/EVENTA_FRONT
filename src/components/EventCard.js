@@ -11,6 +11,7 @@ import { like, unLike } from '../services/likes';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { EVENT_DATE_FORMATR_NOYEAR, formatDate } from '../utils/dates';
+import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
@@ -108,7 +109,7 @@ export const EventCard = ({ eventData }) => {
               </View>
             </View>
             <View style={styles.likeContainer}>
-              <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{likes}</Text>
+              <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{formatShortNumber(likes)}</Text>
               {isLiked ? (
                 <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
                   <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
@@ -130,7 +131,7 @@ export const EventCard = ({ eventData }) => {
                   ))}
                 </Row>
                 <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
-                  {totalData > 3 ? `+${totalData}` : totalData}{' '}
+                  {totalData > 3 ? `+${formatShortNumber(totalData)}` : totalData}{' '}
                 </Text>
                 <Text style={[styles.textAdress, { color: 'black' }]}>
                   {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}

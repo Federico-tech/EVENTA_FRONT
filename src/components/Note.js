@@ -11,6 +11,7 @@ import { ROUTES } from '../navigation/Navigation';
 import { fire, unfire } from '../services/notes';
 import { report } from '../services/reports';
 import { selectCurrentUserId } from '../store/user';
+import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
@@ -93,7 +94,7 @@ export const Note = ({ data, deleteNote }) => {
                   <Row row alignCenter>
                     <TouchableOpacity onPress={() => navigation.navigate(ROUTES.NoteFiresScreen, { data })}>
                       <Text regularSm style={{ fontFamily: FONTS.medium, padding: SIZE / 4 }}>
-                        {numFires}
+                        {formatShortNumber(numFires)}
                       </Text>
                     </TouchableOpacity>
                     <MaterialIcons name="local-fire-department" size={SIZE * 1.7} color={isFire ? 'darkorange' : 'black'} />

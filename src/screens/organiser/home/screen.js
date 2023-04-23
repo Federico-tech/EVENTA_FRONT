@@ -1,36 +1,39 @@
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 import { Container, HomeHeader, MiniEventCard, Row, Text } from '../../../components';
 import { ROUTES } from '../../../navigation/Navigation';
+import { getAnalytics } from '../../../services/analytics';
 import { getPopularEvents } from '../../../services/events';
-import { getPopularPosts } from '../../../services/posts';
+import { selectCurrentUserId } from '../../../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
 export const OrganiserHome = () => {
   const navigation = useNavigation();
   const [popularEvents, setPopularEvents] = useState();
-  const [popularPosts, setPopularPosts] = useState();
+  const [analytics, setAnalytics] = useState();
   const [isLoading, setIsLoading] = useState();
+  const organiserId = useSelector(selectCurrentUserId);
 
   console.log(popularEvents);
-  console.log(popularPosts);
 
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
+  const fetchData = async () => {
+    setIsLoading(true);
+    const resEvents = await getPopularEvents(organiserId, { queryParams: { limit: 2 } });
+    const analytics = await getAnalytics();
+    setAnalytics(analytics);
+    setPopularEvents(resEvents);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      const resEvents = await getPopularEvents();
-      setPopularEvents(resEvents);
-      const resPosts = await getPopularPosts();
-      setPopularPosts(resPosts);
-      setIsLoading(false);
-    };
     fetchData();
   }, []);
 
@@ -41,8 +44,11 @@ export const OrganiserHome = () => {
   return (
     <Container>
       <HomeHeader organiser />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Analytics />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: SIZE }}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchData} />}>
+        <Analytics analytics={analytics} />
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <Text ff={FONTS.semiBold}>Most popular events</Text>
           {isLoading ? (
@@ -50,7 +56,7 @@ export const OrganiserHome = () => {
           ) : (
             <Row>
               {popularEvents?.slice(0, 3).map((event) => (
-                <MiniEventCard key={event._id} data={event} />
+                <MiniEventCard key={event._id} data={event} scan />
               ))}
               {popularEvents && (
                 <>

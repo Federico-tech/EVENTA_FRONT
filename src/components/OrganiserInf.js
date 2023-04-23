@@ -10,6 +10,7 @@ import { selectCurrentUser } from '../store/user';
 import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { Row } from './Row';
+import { LoadingImage } from './LoadingImage';
 
 export const OrganiserInf = ({ organiser, isLoading }) => {
   const [isFollowing, setIsFollowing] = useState();
@@ -41,7 +42,7 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
       <View style={styles.informationContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(ROUTES.AccountOrganiserScreen)}>
           <Row row alignCenter>
-            <Image style={styles.image} source={{ uri: organiser?.profilePic }} resizeMode="contain" />
+            <LoadingImage source={organiser?.profilePic} profile width={SIZE * 4} iconSIZE={SIZE * 2}/>
             <View style={styles.textContainer}>
               <Text style={styles.textName}>{organiser?.name}</Text>
               <View style={{ width: SIZE * 13 }}>

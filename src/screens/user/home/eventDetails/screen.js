@@ -23,6 +23,7 @@ import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
+import { formatShortNumber } from '../../../../utils/numbers';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
@@ -36,7 +37,7 @@ const EventDetailsParticipants = ({ isParticipating }) => {
     const fetchData = async () => {
       setLoading(true);
       await getRefreshedEvent(event);
-      const res = await getEventParticipants(event?._id, { limit: 7 });
+      const res = await getEventParticipants(event?._id, { queryParams: { limit: 10 } });
       setParticipants(res);
       setLoading(false);
     };
@@ -50,14 +51,16 @@ const EventDetailsParticipants = ({ isParticipating }) => {
           <ActivityIndicator style={{ marginTop: SIZE / 2 }} />
         </View>
       ) : (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-          {participants?.slice(0, 3).map((participant) => (
-            <UserColumn key={participant.user._id} data={participant.user} />
-          ))}
-        </ScrollView>
-      )}
-      {participants?.length >= 3 && (
-        <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+        <Row row alignCenter>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
+            {participants?.slice(0, 3).map((participant) => (
+              <UserColumn key={participant.user._id} data={participant.user} />
+            ))}
+            {participants?.length >= 9 && (
+              <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+            )}
+          </ScrollView>
+        </Row>
       )}
     </>
   );
@@ -65,7 +68,7 @@ const EventDetailsParticipants = ({ isParticipating }) => {
 
 const EventDetailsMap = ({ event, navigation }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event } })}>
+    <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event, key: Math.random() * 100 } })}>
       <View style={{ marginBottom: SIZE, marginTop: SIZE * 2, borderRadius: SIZES.xxs }}>
         <MapView
           style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
@@ -127,6 +130,7 @@ export const EventDetails = ({ route }) => {
         animatedIndex={{
           value: 1,
         }}
+        onPress={handleClosePress}
       />
     ),
     []
@@ -181,11 +185,14 @@ export const EventDetails = ({ route }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
-      // Call your function here
       onGoBack?.(event);
     });
     return unsubscribe;
   }, [navigation, onPressGoBack]);
+
+  const onPressNaviagtePosts = () => {
+    navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event } });
+  };
 
   return (
     <Container>
@@ -241,7 +248,7 @@ export const EventDetails = ({ route }) => {
                 <Row alignCenter row ml={SIZE * 3.8} width={SIZE * 8}>
                   <Ionicons name="people-outline" size={24} />
                   <Text style={styles.peopleText}>
-                    {event.participants}
+                    {formatShortNumber(event.participants)}
                     <Text ml={SIZE / 2} fs={SIZES.xxs}>
                       {' '}
                       of your friends are going
@@ -260,7 +267,7 @@ export const EventDetails = ({ route }) => {
                   <Text ff={FONTS.semiBold} fs={SIZES.sm}>
                     Moments
                   </Text>
-                  <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.PostsNavigator)}>
+                  <TouchableOpacity onPress={onPressNaviagtePosts}>
                     <Row row alignCenter>
                       <TextButton text="View all" textStyle={{ width: SIZE * 4, fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }} />
                     </Row>
@@ -291,29 +298,31 @@ export const EventDetails = ({ route }) => {
                 <>
                   <Button
                     secondary
-                    containerStyle={{ width: SIZE * 24 }}
+                    containerStyle={event.discount !== 0 ? { width: SIZE * 24 } : { width: SIZE * 27 }}
                     text="Unparticipate"
                     onPress={onPressUnpartecipate}
                     loading={isLoading}
                     disabled={isOnPressParticipateLoading}
                   />
-                  <Row ml={SIZE}>
-                    <TouchableOpacity onPress={toggleModal}>
-                      <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} />
-                    </TouchableOpacity>
-                  </Row>
+                  {event.discount !== 0 && (
+                    <Row ml={SIZE}>
+                      <TouchableOpacity onPress={toggleModal}>
+                        <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} />
+                      </TouchableOpacity>
+                    </Row>
+                  )}
                 </>
               ) : (
                 <>
                   <Button
                     gradient
-                    containerStyle={{ width: SIZE * 24 }}
+                    containerStyle={event.discount !== 0 ? { width: SIZE * 24 } : { width: SIZE * 27 }}
                     text="Partecipa"
                     onPress={onPressPartecipate}
                     loading={isLoading}
                     disabled={isOnPressParticipateLoading}
                   />
-                  <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.gray} />
+                  {event.discount !== 0 && <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.gray} />}
                 </>
               ))}
           </Row>
@@ -432,9 +441,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SIZES.sm,
     fontFamily: FONTS.medium,
-    alignSelf: 'center',
-    marginTop: SIZE / 2,
-    marginBottom: SIZE / 2,
+    marginTop: SIZE * 2.5,
   },
   blur: {
     height: SIZE * 20,

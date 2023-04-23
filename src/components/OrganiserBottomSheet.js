@@ -11,6 +11,7 @@ import { checkFollowing, follow, unFollow } from '../services/follow';
 import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
+import { formatNumber } from '../utils/numbers';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../utils/theme';
 import { Button } from './Button';
 import { ListEmptyComponent } from './ListEmptyComponent';
@@ -113,7 +114,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
               <Row spaceBetween row style={styles.followerRow}>
                 <TouchableOpacity onPress={onPressFollowers}>
                   <Row alignCenter style={styles.boxFollower}>
-                    <Text semiBoldSm>{numFollowers || 0}</Text>
+                    <Text semiBoldSm>{numFollowers ? formatNumber(numFollowers) : 0}</Text>
                     <Text color={COLORS.darkGray} regularXs>
                       Followers
                     </Text>
@@ -121,7 +122,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onPressEvents}>
                   <Row alignCenter>
-                    <Text semiBoldSm>{data.length}</Text>
+                    <Text semiBoldSm>{formatNumber(data.length)}</Text>
                     <Text color={COLORS.darkGray} regularXs>
                       events
                     </Text>

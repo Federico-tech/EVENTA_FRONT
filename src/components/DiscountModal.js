@@ -27,10 +27,10 @@ export const DiscountModal = ({ isVisible, onBackdropPress, event }) => {
           is participating
         </Text>
         <Text color={COLORS.white} semiBoldMd style={{ marginTop: SIZE, fontSize: SIZES.xl }}>
-          20% Discount
+          {event.discount}% Discount
         </Text>
         <View style={{ marginTop: SIZE * 2 }}>
-          <SvgQRCode value={QRCodeValue} />
+          <SvgQRCode value={QRCodeValue} size={SIZE * 13} />
         </View>
       </View>
     </Modal>

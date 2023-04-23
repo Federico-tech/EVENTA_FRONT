@@ -1,5 +1,4 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -16,10 +15,10 @@ import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
 import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
 
-export const MapScreen = ({ route }) => {
+export const MapScreen = ({ navigation, route }) => {
   const [snap, setSnap] = useState(false);
-  const { event } = route.params || {};
-  const isFocused = useIsFocused();
+  const mapRef = useRef(null);
+  const { event, key } = route.params || {};
   const [region, setRegion] = useState(undefined);
 
   const dispatch = useDispatch();
@@ -43,16 +42,21 @@ export const MapScreen = ({ route }) => {
   };
 
   useEffect(() => {
+    console.debug({ key });
     if (event) {
-      setRegion({
+      console.debug('setRegion', event);
+      const region = {
         latitude: event?.position?.coordinates[1],
         longitude: event?.position?.coordinates[0],
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      });
+        latitudeDelta: 0.2,
+        longitudeDelta: 0.2,
+      };
+      setRegion(region);
+      mapRef.current.animateToRegion(region, 200);
+      console.log('Passa');
       dispatch(setMapFilter('events'));
     }
-  }, [isFocused]);
+  }, [event, key]);
 
   const bottomSheetModalRef = useRef(null);
   const eventSnapPoints = useMemo(() => ['60%', '95%'], []);
@@ -119,8 +123,6 @@ export const MapScreen = ({ route }) => {
     );
   }, [data, filter]);
 
-  console.debug({ eventsByCoordinate });
-
   return (
     <View style={{ flex: 1 }}>
       <MapView
@@ -137,6 +139,7 @@ export const MapScreen = ({ route }) => {
               }
         }
         showsUserLocation
+        ref={mapRef}
         showsMyLocationButton
         showsCompass
         region={region}

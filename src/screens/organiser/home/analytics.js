@@ -3,9 +3,11 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { Row, Text } from '../../../components';
+import { formatNumber } from '../../../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
-export const Analytics = () => {
+export const Analytics = ({ analytics }) => {
+  console.debug({ analytics });
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
       {/* <Text style={styles.title}>Lifetime Analytics</Text> */}
@@ -18,7 +20,7 @@ export const Analytics = () => {
             </Text>
           </Row>
           <Text fs={SIZE * 2.2} ff={FONTS.semiBold} mt={SIZE}>
-            1.863
+            {formatNumber(analytics?.number_likes)}
           </Text>
         </Row>
         <Row style={styles.wrapper}>
@@ -29,7 +31,7 @@ export const Analytics = () => {
             </Text>
           </Row>
           <Text fs={SIZE * 2.2} ff={FONTS.semiBold} mt={SIZE}>
-            45
+            {formatNumber(analytics?.number_events)}
           </Text>
         </Row>
       </Row>
@@ -42,7 +44,7 @@ export const Analytics = () => {
             </Text>
           </Row>
           <Text fs={SIZE * 2.2} ff={FONTS.semiBold} mt={SIZE}>
-            1.863
+            {formatNumber(analytics?.number_scans)}
           </Text>
         </Row>
         <Row style={styles.wrapper}>
@@ -53,7 +55,7 @@ export const Analytics = () => {
             </Text>
           </Row>
           <Text fs={SIZE * 2.2} ff={FONTS.semiBold} mt={SIZE}>
-            1.863
+            {formatNumber(analytics?.number_participants)}
           </Text>
         </Row>
       </Row>
@@ -65,7 +67,7 @@ export const Analytics = () => {
           <Ionicons name="people" color="orange" size={SIZE * 2} />
           <Row ml={SIZE}>
             <Text ff={FONTS.bold} fs={SIZES.md}>
-              165
+              {formatNumber(analytics?.average_participants)}
             </Text>
             <Text ff={FONTS.medium} fs={SIZES.xxs} color={COLORS.gray}>
               Participants per event
@@ -76,7 +78,7 @@ export const Analytics = () => {
           <MaterialCommunityIcons name="qrcode-scan" color="mediumseagreen" size={SIZE * 2} />
           <Row ml={SIZE}>
             <Text ff={FONTS.bold} fs={SIZES.md}>
-              456
+              {formatNumber(analytics?.average_scans)}
             </Text>
             <Text ff={FONTS.medium} fs={SIZES.xxs} color={COLORS.gray}>
               Scans per event
@@ -87,7 +89,7 @@ export const Analytics = () => {
           <AntDesign name="heart" color="red" size={SIZE * 2} />
           <Row ml={SIZE}>
             <Text ff={FONTS.bold} fs={SIZES.md}>
-              326
+              {formatNumber(analytics?.average_likes)}
             </Text>
             <Text ff={FONTS.medium} fs={SIZES.xxs} color={COLORS.gray}>
               Likes per event

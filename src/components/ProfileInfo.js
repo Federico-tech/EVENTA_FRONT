@@ -10,7 +10,7 @@ import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
 import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUser, selectSelectedUser } from '../store/user';
-import { useInfiniteScroll } from '../utils/hooks';
+import { formatNumber } from '../utils/numbers';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
@@ -25,15 +25,6 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   const currentUser = useSelector(selectCurrentUser);
   const selectedUser = useSelector(selectSelectedUser);
   const followingParams = myProfile ? currentUser : selectedUser;
-
-  const { data } = useInfiniteScroll({
-    entity: 'events',
-    filters: {
-      organiserId: user._id,
-    },
-  });
-
-  console.log('data', data);
 
   useEffect(() => {
     if (!_.isEqual(user, initialUser)) {
@@ -94,7 +85,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
         <Row spaceBetween row style={styles.followerRow}>
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>
             <Row alignCenter style={styles.boxFollower}>
-              <Text semiBoldSm>{user.followers || 0}</Text>
+              <Text semiBoldSm>{user.followers ? formatNumber(user.followers) : 0}</Text>
               <Text color={COLORS.darkGray} regularXs>
                 Followers
               </Text>
@@ -102,7 +93,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
           </TouchableOpacity>
           <TouchableOpacity onPress={onPressFollowing}>
             <Row alignCenter>
-              <Text semiBoldSm>{user.role === 'organiser' ? user.events : user.followed}</Text>
+              <Text semiBoldSm>{user.role === 'organiser' ? formatNumber(user.events) : formatNumber(user.followed)}</Text>
               <Text color={COLORS.darkGray} regularXs>
                 {organiser || user.role === 'organiser' ? 'Events' : 'Following'}
               </Text>

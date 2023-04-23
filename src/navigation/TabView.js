@@ -23,6 +23,7 @@ const tabBar = (props) => (
 
 export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
   const organiserId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
+  const myId = useSelector(selectCurrentUserId);
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: 'events',
@@ -53,7 +54,7 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
       <Tabs.Tab name="Events ">
         <Tabs.FlatList
           data={data}
-          renderItem={({ item }) => <MiniEventCard data={item} />}
+          renderItem={({ item }) => <MiniEventCard scan={myId === organiserId && true} data={item} />}
           keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
           onEndReached={_.throttle(getMoreData, 400)}

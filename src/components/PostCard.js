@@ -13,6 +13,7 @@ import { deletePost } from '../services/posts';
 import { report } from '../services/reports';
 import { selectCurrentUserId, setUserSelected } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
+import { formatNumber, formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
@@ -154,7 +155,7 @@ export const PostCard = ({ postData, getData }) => {
                   <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
                     <Text regularXs style={{ fontSize: SIZES.xxs }}>
                       Liked by <Text style={{ fontFamily: FONTS.semiBold }}>{data[0]?.user?.username}</Text> and{' '}
-                      <Text style={{ fontFamily: FONTS.semiBold }}>others {likes}</Text>
+                      <Text style={{ fontFamily: FONTS.semiBold }}>others {formatShortNumber(likes - 1)}</Text>
                     </Text>
                   </TouchableOpacity>
                 )}
@@ -164,7 +165,7 @@ export const PostCard = ({ postData, getData }) => {
               </Text>
               <TouchableOpacity onPress={onPressViewComments}>
                 <Text regularXs color={COLORS.gray} style={{ marginTop: SIZE / 10 }}>
-                  View all {postData.comments} comments
+                  View all {postData.comments <= 5 ? 'the' : formatNumber(postData.comments)} comments
                 </Text>
               </TouchableOpacity>
             </Row>

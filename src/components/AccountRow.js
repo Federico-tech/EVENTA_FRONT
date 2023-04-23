@@ -80,9 +80,11 @@ export const UserColumn = ({ data }) => {
       <Row alignCenter column mr={SIZE} mb={SIZE}>
         <LoadingImage source={profilePic} width={SIZE * 5} profile iconSIZE={SIZE * 2.5} />
         <Row width={SIZE * 6}>
-          <Text ff={FONTS.medium} fs={SIZES.xxs} mt={SIZE / 2} width={SIZE} numberOfLines={1} >{username}</Text>
-          </Row>
+          <Text ff={FONTS.medium} fs={SIZES.xxs} mt={SIZE / 2} width={SIZE} numberOfLines={1}>
+            {username}
+          </Text>
         </Row>
+      </Row>
     </TouchableOpacity>
   );
 };

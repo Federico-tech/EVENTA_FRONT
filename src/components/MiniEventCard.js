@@ -1,20 +1,22 @@
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { formatDate, EVENT_DATE_FORMAT } from '../utils/dates';
+import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
+import { Text } from './Text';
 
-export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
-  const { organiser, coverImage, date, name, participants } = data;
+export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) => {
+  const { organiser, coverImage, date, name, participants, scans } = data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const handlePress = () => {
@@ -40,12 +42,22 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress }) => {
               <Text style={styles.textOrganiserName}>{organiser?.username}</Text>
             </Row>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)}>
-            <Row row alignCenter>
-              <MaterialIcons name="person" size={SIZE * 2} />
-              <Text style={styles.textPart}>{participants}</Text>
-            </Row>
-          </TouchableOpacity>
+          <Row row alignCenter>
+            {scan && (
+              <Row row alignCenter>
+                <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 1.7} />
+                <Text style={styles.textPart} mr={SIZE} ml={SIZE / 2}>
+                  {formatShortNumber(scans)}
+                </Text>
+              </Row>
+            )}
+            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)}>
+              <Row row alignCenter>
+                <MaterialIcons name="person" size={SIZE * 2} />
+                <Text style={styles.textPart}>{formatShortNumber(participants)}</Text>
+              </Row>
+            </TouchableOpacity>
+          </Row>
         </View>
         <Line lineStyle={{ backgroundColor: COLORS.lightGray }} />
         <View style={styles.event}>
