@@ -18,7 +18,7 @@ export const LikeScreen = () => {
 
   return (
     <Container>
-      <Header title={t('likes')} />
+      <Header title={t('likes')} back />
       <FlatList
         data={data}
         renderItem={({ item }) => <MiniEventCard data={item} />}

@@ -40,13 +40,6 @@ const Notification = ({ notificationData }) => {
             </Text>
           </Row>
         </Row>
-        {notificationData.type === 'newEvent' && (
-          <>
-            <TouchableOpacity>
-              <Text>View Event</Text>
-            </TouchableOpacity>
-          </>
-        )}
       </Row>
     </View>
   );

@@ -5,15 +5,13 @@ import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 import { MiniPostCard } from '../../../../components/MiniPostCard';
-import { HomeMap, IconButton, Row, Text, TextButton } from '../../../../components/index';
+import { HomeMap, Row, Text, TextButton } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
   const navigation = useNavigation();
-  const onPressNotification = () => navigation.navigate(ROUTES.NotificationsScreen);
-  const onPressLikes = () => navigation.navigate(ROUTES.LikeScreen);
 
   const { data, getRefreshedData, refreshing } = useInfiniteScroll({
     entity: 'posts/home',
@@ -35,13 +33,7 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
       <View style={styles.container}>
-        <Row>
-          <Text semiBoldMd>Find the right event!</Text>
-        </Row>
-        <Row row>
-          <IconButton name="ios-notifications-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressNotification} />
-          <IconButton name="heart-outline" iconStyle={styles.icon} size={SIZE * 2} onPress={onPressLikes} />
-        </Row>
+        <Row />
       </View>
       <HomeMap mapData={mapData} />
       <Row alignCenter spaceBetween row style={{ marginBottom: SIZE }}>
@@ -78,7 +70,6 @@ export const HomeTop = forwardRef(({ mapData, ...props }, ref) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: HEIGHT_DEVICE / 70,
     flexDirection: 'row',
     alignItems: 'center',
     alignContent: 'center',

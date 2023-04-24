@@ -9,8 +9,6 @@ import { LoadingImage } from '../../../../components/LoadingImage';
 import { Row } from '../../../../components/Row';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { selectCurrentUser } from '../../../../store/user';
-import { ROLES } from '../../../../utils/conts';
-import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, SIZE, SIZES } from '../../../../utils/theme';
 
@@ -51,7 +49,7 @@ export const HomeMap = ({ mapData }) => {
   console.debug({ eventsByCoordinate });
 
   return (
-    <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
+    <View style={{ marginBottom: SIZE, borderRadius: SIZES.xxs }}>
       <MapView
         style={{ height: SIZE * 17.5, zIndex: 1, borderRadius: SIZES.xxs }}
         provider={PROVIDER_GOOGLE}
@@ -73,7 +71,7 @@ export const HomeMap = ({ mapData }) => {
             }}>
             <View style={{ alignItems: 'center', height: SIZE * 6 }}>
               <View style={styles.marker}>
-                <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5}/>
+                <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5} />
               </View>
             </View>
           </Marker>

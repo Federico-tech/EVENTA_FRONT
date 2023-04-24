@@ -2,7 +2,7 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
 import { mainAxios } from '../core/axios';
@@ -92,7 +92,7 @@ export const EventCard = ({ eventData }) => {
   };
 
   return (
-    <TouchableOpacity onPress={handleOnPress}>
+    <TouchableWithoutFeedback onPress={handleOnPress}>
       <View style={styles.cardContainer}>
         <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator event width="100%" />
         <View style={{ marginHorizontal: SIZE * 2 }}>
@@ -147,7 +147,7 @@ export const EventCard = ({ eventData }) => {
           </Row>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 

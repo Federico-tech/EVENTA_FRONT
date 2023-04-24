@@ -3,8 +3,11 @@ import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 
 import { Container, EventCard, HomeHeader, HomeTop, ListEmptyComponent } from '../../../../components/index';
+import { checkReadNotifications } from '../../../../services/notifications';
+import { setUnreadNotifications } from '../../../../store/notification';
 import { updateUserCoordinates } from '../../../../utils';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
@@ -12,6 +15,7 @@ import { SIZE } from '../../../../utils/theme';
 export const HomeScreen = () => {
   const listRef = React.useRef(null);
   const homeRef = React.useRef(null);
+  const dispatch = useDispatch();
 
   useScrollToTop(listRef);
 
@@ -24,6 +28,15 @@ export const HomeScreen = () => {
     debug: true,
     limit: 6,
   });
+
+  useEffect(() => {
+    const fetchNotification = async () => {
+      const unreadNotifications = await checkReadNotifications();
+      console.log('unread', unreadNotifications);
+      dispatch(setUnreadNotifications(unreadNotifications.totalData));
+    };
+    fetchNotification();
+  }, [refreshing]);
 
   const onRefresh = async () => {
     await Promise.all([getRefreshedData(), homeRef?.current?.onRefresh()]).catch((e) => console.debug({ homeError: e }));

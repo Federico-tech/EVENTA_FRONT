@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 
 import event from './event';
 import filters from './filter';
+import notification from './notification';
 import user from './user';
 
 // REDUCERS
@@ -14,6 +15,7 @@ const reducers = combineReducers({
   user,
   event,
   filters,
+  notification,
 });
 
 const persistConfig = {
