@@ -61,7 +61,7 @@ export const Analytics = ({ analytics }) => {
       </Row>
       <Row style={[styles.wrapper, { width: '100%', aspectRatio: 1.8, padding: SIZE }]}>
         <Text ff={FONTS.semiBold} fs={SIZES.md}>
-          Avarages
+          Averages
         </Text>
         <Row row alignCenter mt={SIZE}>
           <Ionicons name="people" color="orange" size={SIZE * 2} />

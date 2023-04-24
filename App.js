@@ -43,6 +43,15 @@ const App = () => {
     InterSemiBold: require('./src/assets/fonts/Inter-SemiBold.ttf'),
   });
 
+  // const [loaded] = useFonts({
+  //   InterBold: require('./src/assets/fonts/OpenSans-Bold.ttf'),
+  //   InterExtraBold: require('./src/assets/fonts/OpenSans-ExtraBold.ttf'),
+  //   InterLight: require('./src/assets/fonts/OpenSans-Light.ttf'),
+  //   InterMedium: require('./src/assets/fonts/OpenSans-Medium.ttf'),
+  //   InterRegular: require('./src/assets/fonts/OpenSans-Regular.ttf'),
+  //   InterSemiBold: require('./src/assets/fonts/Inter-SemiBold.ttf'),
+  // });
+
   useEffect(() => {
     async function prepare() {
       try {

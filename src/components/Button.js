@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   textPrimary: {
     color: 'white',
-    fontFamily: FONTS.extraBold,
+    fontFamily: FONTS.bold,
     fontSize: SIZES.lg,
   },
   textSecondary: {

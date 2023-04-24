@@ -3,15 +3,16 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { object, string } from 'yup';
 
-import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container, Row } from '../../../../components/index';
+import { Button, InputText, TextButton, Container, Row } from '../../../../components/index';
+import { ROUTES } from '../../../../navigation/Navigation';
 import { organiserSignUp, loginUser, userUpdate } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
-import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 import { registerForPushNotificationsAsync } from '../../../../utils/notifications';
-import { ROUTES } from '../../../../navigation/Navigation';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
 
 export const UserSingUpScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ export const UserSingUpScreen = ({ navigation }) => {
 
   const registerPushNotifications = async () => {
     const token = await registerForPushNotificationsAsync();
-    console.log('Token', token)
+    console.log('Token', token);
     if (token) {
       userUpdate({ expoPushToken: token })
         .then((res) => console.debug({ res }))
@@ -100,31 +101,34 @@ export const UserSingUpScreen = ({ navigation }) => {
     navigation.navigate(ROUTES.PrivacyPolicyScreen);
   };
 
+  const onPressGoBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <Container>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <Row>
-            <View style={{ position: 'absolute', left: 0 }}>
-              <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
-            </View>
-            <Text style={styles.title}>{t('create your account')}</Text>
+            <Text style={styles.title}>{t('Create Account')}</Text>
           </Row>
           <InputText formik={formik} label={t('name')} formikName="name" maxLength={25} />
           <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} noAutoCorrect />
           <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
           <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
           <Text style={styles.passwordReq}>{t('password requirements')}</Text>
-          <Button loading={loading} primary containerStyle={{ width: WIDTH_DEVICE * 0.9 }} text={t('register')} onPress={handleSubmit} />
+          <Button loading={loading} primary containerStyle={{ width: WIDTH_DEVICE * 0.9 }} text="Sign Up" onPress={handleSubmit} />
           <View style={styles.containerLine}>
-            <Line lineStyle={{ flex: 1 }} />
-            <Text style={styles.orLoginUsing}>{t('or register using')}</Text>
-            <Line lineStyle={{ flex: 1 }} />
+            <Row style={styles.line} />
+            <Text style={styles.orLoginUsing}>or</Text>
+            <Row style={styles.line} />
           </View>
-          <View style={styles.socialLoginContainer}>
-            <SocialLoginButton apple />
-            <SocialLoginButton google />
-          </View>
+          <Row row style={{ alignSelf: 'center', marginTop: SIZE * 1.5, marginBottom: HEIGHT_DEVICE / 80 }}>
+            <Text style={styles.registerText}>Already have an account?</Text>
+            <TouchableOpacity onPress={onPressGoBack}>
+              <Text style={styles.registerButtonText}> Log in</Text>
+            </TouchableOpacity>
+          </Row>
           <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} onPress={onPressPrivacyPolicy} />
         </View>
       </KeyboardAwareScrollView>
@@ -136,20 +140,20 @@ export const UserSingUpScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE * 3,
+    marginTop: SIZE * 5,
   },
   title: {
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.xl,
+    fontSize: SIZES.lg,
     alignSelf: 'center',
     marginTop: SIZE / 2,
     marginBottom: SIZE,
   },
 
   passwordReq: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: FONTS.medium,
     fontSize: SIZES.xs,
-    color: COLORS.darkGray,
+    color: COLORS.gray,
     marginTop: SIZE,
   },
 
@@ -182,9 +186,18 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SIZES.sm,
     textAlign: 'center',
-    marginTop: HEIGHT_DEVICE / 12,
   },
   arrowIcon: {
     marginTop: SIZE / 2,
+  },
+  registerButtonText: {
+    fontFamily: 'InterMedium',
+    fontSize: SIZES.xs,
+    color: COLORS.primary,
+  },
+  line: {
+    backgroundColor: COLORS.lightGray,
+    height: 0.5,
+    flex: 1,
   },
 });

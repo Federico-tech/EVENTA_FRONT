@@ -8,7 +8,7 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { object, string } from 'yup';
 
-import { Button, Container, InputText, Line, SocialLoginButton, TextButton } from '../../../components/index';
+import { Button, Container, InputText, Row, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE, SHADOWS } from '../../../utils/theme';
@@ -121,13 +121,13 @@ export const LoginScreen = () => {
         <Container>
           <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
           <View style={styles.container}>
-            <Text style={styles.textLogin}>{t('login to your account')}</Text>
+            <Text style={styles.textLogin} />
             <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
             <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
-            <TextButton text={t('forgot password')} textStyle={styles.forgotPassword} />
+            <TextButton text="Forgot password?" textStyle={styles.forgotPassword} />
             <Button
               primary
-              text={t('login')}
+              text="Login"
               onPress={handleSubmit}
               containerStyle={{ width: WIDTH_DEVICE * 0.9 }}
               loading={loading}
@@ -135,13 +135,11 @@ export const LoginScreen = () => {
               disabledStyle={!values.password || (!values.email && true)}
             />
             <View style={styles.containerLine}>
-              <Line lineStyle={{ flex: 1 }} />
-              <Text style={styles.orLoginUsing}>{t('or login using')}</Text>
-              <Line lineStyle={{ flex: 1 }} />
+              <Row style={styles.line} />
+              <Text style={styles.orLoginUsing}>or</Text>
+              <Row style={styles.line} />
             </View>
-            <View style={styles.socialLoginContainer}>
-              <SocilaLoginButtons />
-            </View>
+            <View style={styles.socialLoginContainer} />
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
                 <Text style={styles.registerText}>{t(`you don't have an account`)}</Text>
@@ -171,11 +169,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     marginHorizontal: WIDTH_DEVICE / 20,
+    marginTop: SIZE * 2,
   },
 
   logo: {
     alignSelf: 'center',
-    marginTop: SIZE * 4,
+    marginTop: SIZE * 9,
   },
 
   textLogin: {
@@ -209,13 +208,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: HEIGHT_DEVICE / 40,
+    marginTop: SIZE * 1.5,
   },
 
   socialLoginContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: HEIGHT_DEVICE / 40,
   },
 
   appleLogo: {
@@ -224,7 +222,7 @@ const styles = StyleSheet.create({
   },
 
   registerContainer: {
-    marginTop: HEIGHT_DEVICE / 40,
+    marginTop: SIZE * 1.5,
   },
 
   registerTextContainer: {
@@ -266,5 +264,10 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE / 2.3,
     height: HEIGHT_DEVICE / 15,
     ...SHADOWS.medium,
+  },
+  line: {
+    backgroundColor: COLORS.lightGray,
+    height: 0.5,
+    flex: 1,
   },
 });

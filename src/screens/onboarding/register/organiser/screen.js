@@ -6,7 +6,7 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { object, string } from 'yup';
 
-import { Button, InputText, Line, TextButton, SocialLoginButton, IconButton, Container } from '../../../../components/index';
+import { Button, InputText, TextButton, Container, Row } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { loginUser, organiserSignUp } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
@@ -103,30 +103,33 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
     navigation.navigate(ROUTES.PrivacyPolicyScreen);
   };
 
+  const onPressGoBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <Container>
-      <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false} style={{ marginBottom: SIZE * 3}}>
+      <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false} style={{ marginBottom: SIZE * 3 }}>
         <View style={styles.container}>
-          <View style={{ position: 'absolute', left: 0 }}>
-            <IconButton name="chevron-back-outline" onPress={() => navigation.goBack()} iconStyle={styles.arrowIcon} size={SIZE * 2} />
-          </View>
-          <Text style={styles.title}>{t('become an organiser!')}</Text>
+          <Text style={styles.title}>Become an Organiser!</Text>
           <InputText formik={formik} label="Name" formikName="name" autoCapitalize="none" maxLength={25} />
           <InputText formik={formik} label="Username" formikName="username" autoCapitalize="none" maxLength={20} />
           <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
           <InputText formik={formik} label={t('address')} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
           <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
           <Text style={styles.passwordReq}>{t('password requirements')}</Text>
-          <Button loading={loading} primary text={t('register')} containerStyle={{ width: WIDTH_DEVICE * 0.9 }} onPress={handleSubmit} />
+          <Button loading={loading} primary text="Sign Up" containerStyle={{ width: WIDTH_DEVICE * 0.9 }} onPress={handleSubmit} />
           <View style={styles.containerLine}>
-            <Line lineStyle={{ flex: 1 }} />
-            <Text style={styles.orLoginUsing}>{t('or register using')}</Text>
-            <Line lineStyle={{ flex: 1 }} />
+            <Row style={styles.line} />
+            <Text style={styles.orLoginUsing}>or</Text>
+            <Row style={styles.line} />
           </View>
-          <View style={styles.socialLoginContainer}>
-            <SocialLoginButton apple />
-            <SocialLoginButton google />
-          </View>
+          <Row row style={{ alignSelf: 'center', marginTop: SIZE * 1.5, marginBottom: HEIGHT_DEVICE / 80 }}>
+            <Text style={styles.registerText}>Already have an account?</Text>
+            <TouchableOpacity onPress={onPressGoBack}>
+              <Text style={styles.registerButtonText}> Log in</Text>
+            </TouchableOpacity>
+          </Row>
           <TouchableOpacity onPress={onPressPrivacyPolicy}>
             <TextButton text={t('privacy and terms')} textStyle={styles.privacyText} />
           </TouchableOpacity>
@@ -140,20 +143,20 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE * 3,
+    marginTop: SIZE * 5,
   },
   title: {
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.xl,
+    fontSize: SIZES.lg,
     alignSelf: 'center',
     marginTop: SIZE / 2,
     marginBottom: SIZE,
   },
 
   passwordReq: {
-    fontFamily: FONTS.semiBold,
+    fontFamily: FONTS.medium,
     fontSize: SIZES.xs,
-    color: COLORS.darkGray,
+    color: COLORS.gray,
     marginTop: SIZE,
   },
   orLoginUsing: {
@@ -183,10 +186,19 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     fontSize: SIZES.sm,
     textAlign: 'center',
-    marginTop: HEIGHT_DEVICE / 12,
   },
   arrowIcon: {
     marginTop: SIZE / 2,
     position: 'absolute',
+  },
+  registerButtonText: {
+    fontFamily: 'InterMedium',
+    fontSize: SIZES.xs,
+    color: COLORS.primary,
+  },
+  line: {
+    backgroundColor: COLORS.lightGray,
+    height: 0.5,
+    flex: 1,
   },
 });
