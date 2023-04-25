@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Google from 'expo-auth-session/providers/google';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 
 import { GoogleLogo } from '../assets';
@@ -66,24 +67,44 @@ export const Button = ({
   );
 };
 
-export const SocialLoginButton = ({ google, apple, onPress }) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.socialLoginButtonContainer}>
-        {google && (
-          <>
-            <Image source={GoogleLogo} resizeMode="contain" style={styles.appleLogo} />
-            <Text style={styles.textSocialLogin}> Google </Text>
-          </>
-        )}
+export const SocialLoginButton = ({ google, apple }) => {
+  const android = '200952064298-15mkh2ccaqbh2eo1neuuval7hcb3t5r2.apps.googleusercontent.com';
+  const newId = '200952064298-ru40i6fs245s2dghc8cqjlmiihfmn5ce.apps.googleusercontent.com';
+  const iosId = '200952064298-63jj5io9ocr50nndpl1o96pmf53os1sv.apps.googleusercontent.com';
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: android,
+    iosClientId: iosId,
+    webClientId: android,
+    // expoClientId: '@riccardocarizzoni/EVENTA_FRONT_EXPO',
+    clientId: newId,
+    // redirectUri: 'https://auth.expo.io/@riccardocarizzoni/EVENTA_FRONT_EXPO',
+  });
 
-        {apple && (
-          <>
-            <Ionicons name="ios-logo-apple" size={SIZE * 2.5} />
-            <Text style={styles.textSocialLogin}> AppleID </Text>
-          </>
-        )}
-      </View>
+  useEffect(() => {
+    console.debug({ response });
+    if (response?.type === 'success') {
+      const token = response.authentication.accessToken;
+      console.debug({ token });
+      token && getUserInfo(token);
+    }
+  }, [response]);
+
+  const getUserInfo = async (token) => {
+    try {
+      const response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const user = await response.json();
+      console.debug({ userInfo: user });
+    } catch (error) {
+      // Add your own error handler here
+    }
+  };
+
+  return (
+    <TouchableOpacity onPress={() => promptAsync()}>
+      <Text>GOOGLE</Text>
     </TouchableOpacity>
   );
 };

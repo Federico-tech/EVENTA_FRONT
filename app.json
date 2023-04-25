@@ -8,7 +8,7 @@
     "scheme": "com.eventa.eventaApp",
     "userInterfaceStyle": "automatic",
     "notification": {
-      "icon":  "./src/assets/logos/BlueLogo.png"
+      "icon": "./src/assets/logos/BlueLogo.png"
     },
     "splash": {
       "image": "./src/assets/logos/SplashScreen.png",
@@ -43,7 +43,11 @@
     ],
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "65743897-1a43-4017-a86d-bca502098077"
+      }
     }
   }
 }
-

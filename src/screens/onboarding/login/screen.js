@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Google from 'expo-auth-session/providers/google';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,37 +8,10 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { object, string } from 'yup';
 
-import { Button, Container, InputText, Row, TextButton } from '../../../components/index';
+import { Button, Container, InputText, Row, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE, SHADOWS } from '../../../utils/theme';
-
-export const SocilaLoginButtons = () => {
-  return (
-    <View style={styles.containerAppleSocialLogin}>
-      <AppleAuthentication.AppleAuthenticationButton
-        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-        cornerRadius={SIZES.xxs}
-        style={styles.button}
-        onPress={async () => {
-          try {
-            const credential = await AppleAuthentication.signInAsync({
-              requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL],
-            });
-            // signed in
-          } catch (e) {
-            if (e.code === 'ERR_REQUEST_CANCELED') {
-              // handle that the user canceled the sign-in flow
-            } else {
-              // handle other errors
-            }
-          }
-        }}
-      />
-    </View>
-  );
-};
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -139,6 +112,7 @@ export const LoginScreen = () => {
               <Text style={styles.orLoginUsing}>or</Text>
               <Row style={styles.line} />
             </View>
+            <SocialLoginButton apple google />
             <View style={styles.socialLoginContainer} />
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
