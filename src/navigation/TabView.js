@@ -50,12 +50,13 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
   };
 
   return (
-    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
+    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar} >
       <Tabs.Tab name="Events ">
         <Tabs.FlatList
           data={data}
           renderItem={({ item }) => <MiniEventCard scan={myId === organiserId && true} data={item} />}
           keyExtractor={(item) => item._id}
+          style={{ marginTop: SIZE}}
           showsVerticalScrollIndicator={false}
           onEndReached={_.throttle(getMoreData, 400)}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
@@ -132,6 +133,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               data={postData}
               renderItem={({ item }) => <PostCard postData={item} />}
               keyExtractor={(item) => item._id}
+              style={{ marginTop: SIZE}}
               showsVerticalScrollIndicator={false}
               onEndReached={_.throttle(getMorePostData, 400)}
               refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
@@ -150,6 +152,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
             data={postData}
             renderItem={({ item }) => <PostCard postData={item} />}
             keyExtractor={(item) => item._id}
+            style={{ marginTop: SIZE}}
             showsVerticalScrollIndicator={false}
             onEndReached={_.throttle(getMorePostData, 400)}
             refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
@@ -166,6 +169,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               renderItem={({ item }) => <MiniEventCard data={item} />}
               keyExtractor={(item) => item._id}
               showsVerticalScrollIndicator={false}
+              style={{ marginTop: SIZE}}
               onEndReached={_.throttle(getMoreData, 400)}
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
               ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
@@ -184,6 +188,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
             renderItem={({ item }) => <MiniEventCard data={item} />}
             keyExtractor={(item) => item._id}
             showsVerticalScrollIndicator={false}
+            style={{ marginTop: SIZE}}
             onEndReached={_.throttle(getMoreData, 400)}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
             ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}

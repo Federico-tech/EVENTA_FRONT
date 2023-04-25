@@ -82,22 +82,31 @@ export const Note = ({ data, deleteNote }) => {
     });
   };
 
+  const onPressDeleteNote = () => {
+    deleteNote(data._id)
+    handleClosePress()
+    showMessage({
+      message: 'Note deleted Succefully',
+      type: 'success',
+    });
+  }
+
   return (
     <View>
-      <TouchableOpacity onPress={handlePresentModal}>
+      <TouchableOpacity onPress={handlePresentModal} disabled={isFireLoading}>
         <Row justifyCenter>
           <View>
             <View style={styles.note}>
               <Row row alignCenter spaceBetween>
                 <LoadingImage source={data?.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
-                <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire} disabled={isFireLoading}>
+                <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire} disabled={isFireLoading} >
                   <Row row alignCenter>
                     <TouchableOpacity onPress={() => navigation.navigate(ROUTES.NoteFiresScreen, { data })}>
                       <Text regularSm style={{ fontFamily: FONTS.medium, padding: SIZE / 4 }}>
                         {formatShortNumber(numFires)}
                       </Text>
                     </TouchableOpacity>
-                    <MaterialIcons name="local-fire-department" size={SIZE * 1.7} color={isFire ? 'darkorange' : 'black'} />
+                    <MaterialIcons name="local-fire-department" size={SIZE * 1.7} color={isFire ? 'darkorange' : 'black'} style={{ marginVertical: SIZE}}/>
                   </Row>
                 </TouchableOpacity>
               </Row>
@@ -138,7 +147,7 @@ export const Note = ({ data, deleteNote }) => {
         title="Delete this note?"
         descritpion="Are you sure you want to delete this note?"
         confirmText="Delete"
-        onPressConfirm={() => deleteNote(data._id)}
+        onPressConfirm={onPressDeleteNote}
       />
       <AlertModal
         isVisible={isReportModalVisible}
@@ -157,10 +166,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     width: SIZE * 10.5,
     aspectRatio: 1,
-    borderRadius: SIZES.xxs,
+    borderRadius: SIZES.sm,
     padding: SIZE / 1.5,
     marginHorizontal: SIZE / 6,
     marginRight: SIZE,
+    marginTop: SIZE,
     ...SHADOWS.medium,
   },
   noteImage: {

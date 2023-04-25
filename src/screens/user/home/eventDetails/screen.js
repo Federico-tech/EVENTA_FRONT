@@ -4,8 +4,9 @@ import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
@@ -47,7 +48,7 @@ const EventDetailsParticipants = ({ isParticipating }) => {
   return (
     <>
       {loading ? (
-        <View style={{ height: SIZE * 7, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ height: SIZE * 5, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator style={{ marginTop: SIZE / 2 }} />
         </View>
       ) : (
@@ -190,8 +191,8 @@ export const EventDetails = ({ route }) => {
     return unsubscribe;
   }, [navigation, onPressGoBack]);
 
-  const onPressNaviagtePosts = () => {
-    navigation.navigate(ROUTES.PostsNavigator, { screen: ROUTES.PostsFeedScreen, params: { event } });
+  const onPressNavigatePosts = () => {
+    navigation.navigate(ROUTES.PostsFeedScreen, { event });
   };
 
   return (
@@ -208,84 +209,81 @@ export const EventDetails = ({ route }) => {
               imageStyle={{ height: SIZE * 25, aspectRatio: 2 }}
             />
           </View>
-          <Image source={{ uri: event.coverImage }} style={styles.eventImage} resizeMode="contain" />
+          <View style={styles.eventImage}>
+            <View style={{ flex: 1}}>
+              <Image source={{ uri: event.coverImage }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+            </View>
+          </View>
+
           <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
-          <View style={{ paddingHorizontal: WIDTH_DEVICE / 20, zIndex: 1, backgroundColor: COLORS.white }}>
+          <View
+            style={{
+              paddingHorizontal: WIDTH_DEVICE / 20,
+              zIndex: 1,
+              backgroundColor: COLORS.white,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}>
             <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} />
+
             <View style={{ marginHorizontal: 0 }}>
               <Line lineStyle={{ marginBottom: 0 }} />
             </View>
           </View>
-          <Row style={{ marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE }}>
-            <Row alignCenter spaceBetween row>
+          <Row style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+            <Row row alignCenter spaceBetween style={{ marginTop: SIZE }}>
               <Text style={styles.eventTitle}>{event.name}</Text>
-              {eventOrganiserId === userId && <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} onPress={onPressScan} />}
+              {eventOrganiserId === userId && (
+                <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} onPress={() => navigation.navigate(ROUTES.ScannerScreen)} />
+              )}
             </Row>
-
-            <Row mt={SIZE}>
-              <Row row alignCenter>
-                <Row alignCenter row ml={SIZE / 3.5} width={SIZE * 14}>
-                  <Foundation name="marker" size={SIZE * 1.7} />
-                  <Text fs={SIZES.xxs} ml={SIZE / 1.3}>
-                    {event?.address?.fullAddress}
-                  </Text>
-                </Row>
-                <Row alignCenter row ml={SIZE * 2}>
-                  <FontAwesome name="calendar-o" size={18} />
-                  <Text ml={SIZE} fs={SIZES.xxs}>
-                    {formatDate(event.date, EVENT_DATE_FORMAT)}
-                  </Text>
-                </Row>
-              </Row>
-              <Row mt={SIZE * 1.5} row>
-                <Row alignCenter row ml={SIZE / 4} width={SIZE * 12}>
-                  <AntDesign name="clockcircleo" size={18} />
-                  <Text ml={SIZE / 2} fs={SIZES.xxs}>
-                    {formatDate(event.date, TIME_FORMAT)}
-                  </Text>
-                </Row>
-                <Row alignCenter row ml={SIZE * 3.8} width={SIZE * 8}>
-                  <Ionicons name="people-outline" size={24} />
-                  <Text style={styles.peopleText}>
-                    {formatShortNumber(event.participants)}
-                    <Text ml={SIZE / 2} fs={SIZES.xxs}>
-                      {' '}
-                      of your friends are going
-                    </Text>
-                  </Text>
-                </Row>
-              </Row>
-            </Row>
-            <Text ff={FONTS.semiBold} mt={SIZE * 1.5} fs={SIZES.sm}>
-              Event overview
-            </Text>
-            <ReadMoreButton text={event.description} style={styles.description} />
-            {data.length !== 0 && (
-              <>
-                <Row row alignCenter spaceBetween mb={SIZE} mt={SIZE * 2}>
-                  <Text ff={FONTS.semiBold} fs={SIZES.sm}>
-                    Moments
-                  </Text>
-                  <TouchableOpacity onPress={onPressNaviagtePosts}>
-                    <Row row alignCenter>
-                      <TextButton text="View all" textStyle={{ width: SIZE * 4, fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }} />
-                    </Row>
-                  </TouchableOpacity>
-                </Row>
-                <FlatList
-                  data={data}
-                  renderItem={({ item }) => <MiniPostCard postData={item} />}
-                  keyExtractor={(item) => item._id}
-                  horizontal
-                  showsVerticalScrollIndicator={false}
-                  showsHorizontalScrollIndicator={false}
-                  ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
-                />
-              </>
-            )}
-            <EventDetailsMap event={event} navigation={navigation} />
+            <ReadMoreButton subString={45} text={event.description} style={styles.description} />
+            <View style={styles.date}>
+              <FontAwesome name="calendar-o" size={18} />
+              <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
+                <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+                <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
+              </View>
+            </View>
+            <View style={styles.place}>
+              <Foundation name="marker" size={22} />
+              <Text style={styles.adressText}>{event?.address?.fullAddress}</Text>
+            </View>
+            <View style={styles.person}>
+              <Ionicons name="people-outline" size={24} />
+              <Text style={styles.peopleText}>
+                {event.participants}
+                <Text style={styles.description}> of your friends are going</Text>
+              </Text>
+            </View>
           </Row>
+        </View>
+        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          {data.length !== 0 && (
+            <>
+              <Row row alignCenter spaceBetween mb={SIZE}>
+                <Text ff={FONTS.semiBold} fs={SIZES.sm}>
+                  Moments
+                </Text>
+                <TouchableOpacity onPress={onPressNavigatePosts}>
+                  <Row row alignCenter>
+                    <TextButton text="View all" textStyle={{ width: SIZE * 4, fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }} />
+                  </Row>
+                </TouchableOpacity>
+              </Row>
+              <FlatList
+                data={data}
+                renderItem={({ item }) => <MiniPostCard postData={item} />}
+                keyExtractor={(item) => item._id}
+                horizontal
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
+              />
+            </>
+          )}
+          <EventDetailsMap event={event} navigation={navigation} />
         </View>
       </ScrollView>
       <View style={{ height: 0.5, backgroundColor: COLORS.lightGray }} />
@@ -354,11 +352,12 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE / 1,
     alignItems: 'center',
     zIndex: -1,
+    opacity: 0.95,
   },
   eventImage: {
-    height: SIZE * 20,
+    height: SIZE * 23,
+    width: WIDTH_DEVICE,
     position: 'absolute',
-    aspectRatio: 1,
     alignSelf: 'center',
     marginTop: SIZE * 3,
   },
@@ -462,7 +461,7 @@ const styles = StyleSheet.create({
   },
 
   horizontalScrollView: {
-    height: SIZE * 7,
+    height: SIZE * 6,
   },
   lineShadow: {
     height: 0.5,

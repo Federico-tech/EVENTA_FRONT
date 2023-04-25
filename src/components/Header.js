@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +11,7 @@ import { TextButton } from './TextButton';
 
 //onPress={() => navigation.goBack()
 
-export const Header = ({ title, onPress, loading, done, cancel, back }) => {
+export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPressPlus }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   return (
@@ -25,12 +26,16 @@ export const Header = ({ title, onPress, loading, done, cancel, back }) => {
         <View>
           <Text style={styles.title}>{title}</Text>
         </View>
-        {done ? (
+        {done && (
           <View style={{ width: SIZE * 4.5, alignItems: 'center' }}>
             <TextButton text={t('done')} onPress={onPress} textStyle={styles.fine} loading={loading} />
           </View>
-        ) : (
-          <View style={{ width: SIZE * 4.5, alignItems: 'center' }} />
+        )}
+        {!done && !plus && <View style={{ width: SIZE * 4.5, alignItems: 'center' }} />}
+        {plus && (
+          <View style={{ width: SIZE * 4.5, alignItems: 'center' }}>
+            <AntDesign name="plus" size={SIZE * 1.6} onPress={onPressPlus} />
+          </View>
         )}
       </Row>
     </View>
@@ -43,6 +48,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: COLORS.lightGray,
     paddingHorizontal: WIDTH_DEVICE / 40,
+    backgroundColor: COLORS.white,
   },
   title: {
     alignSelf: 'center',

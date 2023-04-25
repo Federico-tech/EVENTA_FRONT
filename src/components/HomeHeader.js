@@ -14,6 +14,7 @@ import { selectCurrentUser, selectCurrentUserId } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../utils/theme';
 import { IconButton } from './Button';
 import { InputText } from './InputText';
+import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
@@ -60,12 +61,8 @@ export const HomeHeader = ({ organiser, ...props }) => {
     navigation.jumpTo(organiser ? ROUTES.OrganiserProfileScreen : ROUTES.ProfileScreenNavigator);
   };
 
-  const onPressCreateNote = async () => {
-    setIsLoading(true);
-    await createNote({ content: note, userId: currentUserId });
-    handleClosePress();
-    setIsLoading(false);
-    setNote('');
+  const onPressCreatePost = async () => {
+    navigation.navigate(ROUTES.CreatePostScreen)
   };
 
   return (
@@ -74,7 +71,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
         <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
-              <TouchableOpacity onPress={handlePresentModal}>
+              <TouchableOpacity onPress={onPressCreatePost} disabled={userinfo.role === 'organiser' && true}>
                 <Row row>
                   <LoadingImage
                     source={userinfo.profilePic}
@@ -107,13 +104,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
           </View>
         </View>
       </View>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
-          <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>
-          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} loading={isLoading} />
-        </View>
-      </BottomSheetModal>
+      <View style={{ backgroundColor: COLORS.lightGray, height: 0.5 }} />
     </View>
   );
 };
@@ -122,6 +113,7 @@ const styles = StyleSheet.create({
   container: {
     height: SIZE * 7.5,
     marginBottom: SIZE / 2,
+    marginTop: SIZE / 6,
   },
   header: {
     flex: 1,

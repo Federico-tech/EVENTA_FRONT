@@ -1,7 +1,7 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
@@ -15,6 +15,7 @@ import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
+import { Text } from './Text';
 
 export const useGetParticipants = (eventId) => {
   const [data, setData] = useState([]);
@@ -98,12 +99,12 @@ export const EventCard = ({ eventData }) => {
         <View style={{ marginHorizontal: SIZE * 2 }}>
           <View style={styles.descContainer}>
             <View style={styles.informationContainer}>
-              <LoadingImage source={eventData.organiser?.profilePic} profile width={SIZE * 4} iconSIZE={SIZE * 2} />
+              <LoadingImage source={eventData.organiser?.profilePic} profile width={SIZE * 3.7} iconSIZE={SIZE * 2} />
               <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{eventData.name}</Text>
                 <View>
                   <Text style={styles.textAdress} numberOfLines={1} ellipsizeMode="tail">
-                    by @{eventData.organiser?.name}
+                    by @{eventData.organiser?.username}
                   </Text>
                 </View>
               </View>
@@ -131,7 +132,7 @@ export const EventCard = ({ eventData }) => {
                   ))}
                 </Row>
                 <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
-                  {totalData > 3 ? `+${formatShortNumber(totalData)}` : totalData}{' '}
+                  {totalData > 3 ? `+${formatShortNumber(totalData)}` : formatShortNumber(totalData)}{' '}
                 </Text>
                 <Text style={[styles.textAdress, { color: 'black' }]}>
                   {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
@@ -151,6 +152,59 @@ export const EventCard = ({ eventData }) => {
   );
 };
 
+export const MostPopularEventCard = ({ eventData }) => {
+  
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
+    const handleOnPress = () => {
+      dispatch(setUserSelected(eventData.organiser));
+      dispatch(setSelectedEvent(eventData));
+      navigation.navigate('EventDetails', {
+        eventData,
+      });
+    }
+
+  return (
+    <>
+      <TouchableWithoutFeedback onPress={handleOnPress}>
+        <Row style={{ height: SIZE * 17, width: WIDTH_DEVICE }}>
+          <LoadingImage
+            event
+            width={WIDTH_DEVICE}
+            imageStyle={{ aspectRatio: 1.6, borderRadius: 0 }}
+            source={eventData?.coverImage}
+            viewStyle={{ aspectRatio: 1.6 }}
+          />
+          <Row style={styles.info}>
+            <Row>
+              <Text color={COLORS.white} ff={FONTS.semiBold} fs={SIZES.sm}>
+                Most popular
+              </Text>
+            </Row>
+            {/* <Row row alignCenter width={WIDTH_DEVICE} spaceBetween>
+          <Row >
+            <Text color={COLORS.white} ff={FONTS.semiBold}>{eventData?.name}</Text>
+            <Text color={COLORS.white} ff={FONTS.regular} fs={SIZES.xs}>by @{eventData?.organiser.username}</Text>
+          </Row>
+          <Row row mr={SIZE * 2}>
+        {data?.slice(0, 3).map((data) => (
+          <LoadingImage
+            key={data?.user._id}
+            source={data?.user.profilePic}
+            imageStyle={[styles.partImage, { width: SIZE * 3.5, borderWidth: 1.5 }]}
+            profile
+            iconSIZE={SIZE * 1.3}
+          />
+        ))}
+      </Row>
+        </Row> */}
+          </Row>
+        </Row>
+      </TouchableWithoutFeedback>
+    </>
+  );
+};
+
 const styles = StyleSheet.create({
   cardContainer: {
     height: SIZE * 35.8,
@@ -158,7 +212,7 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,
     ...SHADOWS.medium,
-    marginBottom: SIZE * 1.5,
+    marginBottom: SIZE,
     alignSelf: 'center',
     borderRadius: SIZES.xxs,
     borderWidth: 0,
@@ -211,7 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGray,
   },
   line: {
-    height: 0.8,
+    height: 0.5,
     width: SIZE * 25,
     backgroundColor: COLORS.lightGray,
     alignSelf: 'center',
@@ -231,5 +285,17 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     marginHorizontal: SIZE / 3,
     borderRadius: 100,
+  },
+  mostPopularEventParticipants: {
+    alignItems: 'center',
+    flexDirection: 'row-reverse',
+  },
+  info: {
+    flex: 1,
+    height: '100%',
+    position: 'absolute',
+    margin: SIZE,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
 });

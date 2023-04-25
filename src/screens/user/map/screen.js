@@ -44,12 +44,11 @@ export const MapScreen = ({ navigation, route }) => {
   useEffect(() => {
     console.debug({ key });
     if (event) {
-      console.debug('setRegion', event);
       const region = {
         latitude: event?.position?.coordinates[1],
         longitude: event?.position?.coordinates[0],
-        latitudeDelta: 0.2,
-        longitudeDelta: 0.2,
+        latitudeDelta: 0.3,
+        longitudeDelta: 0.3,
       };
       setRegion(region);
       mapRef.current.animateToRegion(region, 200);
@@ -59,7 +58,7 @@ export const MapScreen = ({ navigation, route }) => {
   }, [event, key]);
 
   const bottomSheetModalRef = useRef(null);
-  const eventSnapPoints = useMemo(() => ['60%', '95%'], []);
+  const eventSnapPoints = useMemo(() => ['35%'], []);
   const organiserSnapPoints = useMemo(() => ['50%', '95%'], []);
 
   const handlePresentModalOrganiser = ({ user }) => {
@@ -128,6 +127,7 @@ export const MapScreen = ({ navigation, route }) => {
       <MapView
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}
+        rotateEnabled={false}
         initialRegion={
           event
             ? region
@@ -141,8 +141,6 @@ export const MapScreen = ({ navigation, route }) => {
         showsUserLocation
         ref={mapRef}
         showsMyLocationButton
-        showsCompass
-        region={region}
         customMapStyle={mapStyle}>
         {filter === 'organisers'
           ? data.map((user) => (
@@ -153,11 +151,14 @@ export const MapScreen = ({ navigation, route }) => {
                   longitude: user.position.coordinates[0],
                 }}
                 onPress={() => handlePresentModalOrganiser({ user })}>
-                <View style={{ alignItems: 'center', height: SIZE * 7 }}>
+                <View style={{ alignItems: 'center', height: SIZE * 9 }}>
                   <View style={styles.marker}>
-                    <LoadingImage source={user.profilePic} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5} />
+                    <LoadingImage source={user.profilePic} imageStyle={styles.profileImage} profile width={SIZE * 5} iconSIZE={SIZE * 2} />
                   </View>
-                  <Text style={styles.markerText}>{user.username}</Text>
+                  {/* <View style={{ backgroundColor: COLORS.white, borderRadius: 100, marginTop: SIZE * 1.5, borderColor: COLORS.primary, borderWidth: 1.5}}>
+                    <Text style={styles.markerText}>{user.username}</Text>
+                  </View>
+                  */}
                 </View>
               </Marker>
             ))
@@ -170,9 +171,9 @@ export const MapScreen = ({ navigation, route }) => {
                 }}
                 tracksViewChanges
                 onPress={() => handlePresentModalEvents({ event })}>
-                <View style={{ alignItems: 'center', height: SIZE * 6 }}>
+                <View style={{ alignItems: 'center', height: SIZE * 8 }}>
                   <View style={styles.marker}>
-                    <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile width={SIZE * 4.5} />
+                    <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} width={SIZE * 5} iconSIZE={0} />
                   </View>
                 </View>
               </Marker>
@@ -182,7 +183,7 @@ export const MapScreen = ({ navigation, route }) => {
         <Button
           secondary
           loading={refreshing && filter === 'events'}
-          containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 9 }]}
+          containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 13 }]}
           onPress={() => updateFilters('events')}>
           <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
             Events
@@ -191,7 +192,7 @@ export const MapScreen = ({ navigation, route }) => {
         <Button
           secondary
           loading={refreshing && filter === 'organisers'}
-          containerStyle={[filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 9 }]}
+          containerStyle={[filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 13 }]}
           onPress={() => updateFilters('organisers')}>
           <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>
             Organisers
@@ -219,7 +220,6 @@ export const MapScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   profileImage: {
-    width: SIZE * 4.5,
     aspectRatio: 1,
     borderRadius: 100,
     borderWidth: SIZE / 5,
@@ -229,11 +229,11 @@ const styles = StyleSheet.create({
   marker: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: SIZE * 4.5,
-    height: SIZE * 4.5,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    borderBottomLeftRadius: 30,
+    width: SIZE * 5,
+    height: SIZE * 5,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    borderBottomLeftRadius: 50,
     backgroundColor: COLORS.white,
     transform: [{ rotateZ: '45deg' }],
   },
@@ -251,14 +251,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   markerText: {
-    marginTop: SIZE,
     fontFamily: FONTS.medium,
     fontSize: SIZES.xxs,
-    textShadowColor: 'red',
-    textShadowOffset: {
-      width: 20,
-      height: 20,
-    },
-    textShadowRadius: 21,
+    padding: SIZE / 2,
+    paddingVertical: SIZE / 2.5,
   },
 });

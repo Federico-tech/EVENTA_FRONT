@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
@@ -9,8 +9,8 @@ import { follow, unFollow } from '../services/follow';
 import { selectCurrentUser } from '../store/user';
 import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
-import { Row } from './Row';
 import { LoadingImage } from './LoadingImage';
+import { Row } from './Row';
 
 export const OrganiserInf = ({ organiser, isLoading }) => {
   const [isFollowing, setIsFollowing] = useState();
@@ -42,11 +42,11 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
       <View style={styles.informationContainer}>
         <TouchableOpacity onPress={() => navigation.navigate(ROUTES.AccountOrganiserScreen)}>
           <Row row alignCenter>
-            <LoadingImage source={organiser?.profilePic} profile width={SIZE * 4} iconSIZE={SIZE * 2}/>
+            <LoadingImage source={organiser?.profilePic} profile width={SIZE * 4} iconSIZE={SIZE * 2} />
             <View style={styles.textContainer}>
-              <Text style={styles.textName}>{organiser?.name}</Text>
+              <Text style={styles.textName}>{organiser?.username}</Text>
               <View style={{ width: SIZE * 13 }}>
-                <Text style={styles.textAdress}>@{organiser?.username}</Text>
+                <Text style={styles.textAdress}>{organiser?.name}</Text>
               </View>
             </View>
           </Row>
@@ -57,7 +57,7 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
               secondary
               text="Following"
               onPress={onPressUnfollow}
-              containerStyle={{ width: SIZE * 9.5 }}
+              containerStyle={{ width: SIZE * 9 }}
               loading={isLoading}
               disabled={isFollowLoading}
             />
@@ -66,7 +66,7 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
               gradient
               text="Follow"
               onPress={onPressFollow}
-              containerStyle={{ width: SIZE * 9.5 }}
+              containerStyle={{ width: SIZE * 9 }}
               loading={isLoading}
               disabled={isFollowLoading}
             />
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flexDirection: 'column',
-    marginLeft: SIZE / 2,
+    marginLeft: SIZE,
   },
   informationContainer: {
     flexDirection: 'row',
@@ -99,11 +99,10 @@ const styles = StyleSheet.create({
   },
   textName: {
     fontFamily: FONTS.medium,
-    fontSize: SIZES.lg,
+    fontSize: SIZES.md,
   },
   textAdress: {
-    fontFamily: FONTS.medium,
-    fontSize: SIZES.xs,
     color: COLORS.gray,
+    fontSize: SIZES.xxs,
   },
 });

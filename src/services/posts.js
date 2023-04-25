@@ -40,9 +40,13 @@ export const deletePost = async (postId) => {
   }
 };
 
-export const getPopularPosts = async () => {
+export const getPosts = async () => {
   try {
-    const { data: popularPosts } = await mainAxios.get('posts');
+    const params = {
+      limit: 1,
+    };
+    const { data: popularPosts } = await mainAxios.get('posts/home', { params });
+    console.debug({ popularPosts });
     return popularPosts.data;
   } catch (e) {
     console.log({ errorGettingPopularPosts: e });

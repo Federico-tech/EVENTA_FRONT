@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "version": ">= 3.10.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "lentini.federico@icloud.com",
+        "ascAppId": "6448395210",
+        "appleTeamId": "882NF42YTX"
+      }
+    }
+  }
+}

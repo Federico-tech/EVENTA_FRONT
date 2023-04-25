@@ -12,8 +12,9 @@ import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../store/user';
 import { useInfiniteScroll } from '../utils/hooks';
 import { formatNumber } from '../utils/numbers';
-import { COLORS, SIZE, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, SIZE, WIDTH_DEVICE, SIZES } from '../utils/theme';
 import { Button } from './Button';
+import { Line } from './Line';
 import { ListEmptyComponent } from './ListEmptyComponent';
 import { LoadingImage } from './LoadingImage';
 import { MiniEventCard } from './MiniEventCard';
@@ -94,23 +95,21 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
         scrollEnabled={scroll}
         ListEmptyComponent={<ListEmptyComponent text={`This organizer hasn't created any events yet`} />}
         ListHeaderComponent={
-          <View>
+          <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
             <TouchableOpacity onPress={onPressNavigateProfile}>
               <Row row alignCenter>
-                <LoadingImage source={user.profilePic} viewStyle={styles.profileImage} profile width={SIZE * 6.5} iconSIZE={SIZE * 4} />
+                <LoadingImage source={user.profilePic} profile width={SIZE * 5} iconSIZE={SIZE * 2.5} />
                 <Row style={styles.name}>
-                  <Text semiBoldMd>{user.name}</Text>
-                  <Text medium color={COLORS.darkGray}>
-                    @{user.username}
+                  <Text medium fs={SIZES.sm}>
+                    {user.username}
                   </Text>
+                  <View style={{ width: SIZE * 15 }}>
+                    <Text style={styles.addressText}>{user.address}</Text>
+                  </View>
                 </Row>
               </Row>
             </TouchableOpacity>
             <Row style={styles.bio}>
-              <Row row>
-                <Ionicons name="pin" size={SIZE * 1.5} />
-                <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
-              </Row>
               <Row spaceBetween row style={styles.followerRow}>
                 <TouchableOpacity onPress={onPressFollowers}>
                   <Row alignCenter style={styles.boxFollower}>
@@ -147,6 +146,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
                 )}
               </Row>
             </Row>
+            <Line lineStyle={{ marginTop: SIZE, marginBottom: SIZE / 2 }} />
           </View>
         }
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
@@ -167,32 +167,34 @@ const styles = StyleSheet.create({
     borderColor: COLORS.white,
   },
   container: {
-    marginHorizontal: WIDTH_DEVICE / 20,
     marginTop: SIZE * 4,
     alignItem: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignContent: 'center',
   },
-
+  name: {
+    marginLeft: SIZE,
+  },
   profileImage: {
     width: SIZE * 6.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
-    marginLeft: WIDTH_DEVICE / 20,
-  },
-  name: {
-    marginLeft: SIZE,
   },
   bio: {
     marginTop: SIZE / 2,
-    marginHorizontal: WIDTH_DEVICE / 20,
+    marginBottom: SIZE / 2,
   },
   boxFollower: {
     width: SIZE * 5,
   },
   followerRow: {
     marginTop: SIZE,
+  },
+  addressText: {
+    color: COLORS.gray,
+    fontSize: SIZES.xxs,
+    marginTop: SIZE / 5,
   },
 });

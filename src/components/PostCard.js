@@ -12,15 +12,15 @@ import { postLike, postUnlike } from '../services/postLikes';
 import { deletePost } from '../services/posts';
 import { report } from '../services/reports';
 import { selectCurrentUserId, setUserSelected } from '../store/user';
+import { setTimeElapsed } from '../utils/dates';
 import { useInfiniteScroll } from '../utils/hooks';
-import { formatNumber, formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 
-export const PostCard = ({ postData, getData }) => {
+export const PostCard = ({ postData, getData, touchable }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
   const [isLikePressLoading, setIsLikePressLoading] = useState(false);
@@ -101,16 +101,12 @@ export const PostCard = ({ postData, getData }) => {
     navigation.navigate(ROUTES.AccountUserScreen);
   };
 
-  const onPressViewComments = () => {
-    navigation.navigate(ROUTES.PostCommentScreen, { postId: postData._id });
-  };
-
   const onPressReportPost = (data) => {
     report(data);
     handleClosePress();
     setReportModalVisible(false);
     showMessage({
-      message: 'Post reported Succefully',
+      message: 'Post reported succefully',
       description: 'Thank you for reporting this post.',
       type: 'success',
     });
@@ -120,66 +116,92 @@ export const PostCard = ({ postData, getData }) => {
     handleClosePress();
     setDeleteModalVisible(false);
     showMessage({
-      message: 'Post deleted Succefully',
+      message: 'Post deleted succefully',
       type: 'success',
     });
     await deletePost(data._id);
     await getData();
   };
 
+  const onPressNavigatePosts = () => {
+    navigation.navigate(ROUTES.PostsFeedScreen);
+  };
+
+  const onPressLikeNumber = () => {
+    navigation.navigate(ROUTES.PostLikesScreen, { postData })
+  }
+
+  const onPressComments = () => {
+    navigation.navigate(ROUTES.PostCommentScreen, { postId: postData._id });
+  }
+
   return (
-    <TouchableWithoutFeedback onPress={handleDoubleTap} disabled={isLikePressLoading}>
+    <TouchableWithoutFeedback onPress={touchable ? onPressNavigatePosts : handleDoubleTap} disabled={isLikePressLoading}>
       <View style={styles.wrapper}>
         <Row style={styles.topRow}>
-          <Row style={{ padding: SIZE / 2 }} row alignCenter spaceBetween>
+          <Row style={{ padding: SIZE / 1.5, paddingVertical: SIZE / 1.5 }} row alignCenter spaceBetween>
             <TouchableOpacity onPress={onPressProfile}>
               <Row row alignCenter>
                 <LoadingImage source={postData.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
                 <Row style={{ marginLeft: SIZE }}>
-                  <Text style={{ fontSize: SIZES.xs, fontFamily: FONTS.semiBold }}>{postData.user.username}</Text>
-                  <Text color={COLORS.gray} medium style={{ fontSize: SIZES.sm }}>
+                  <Text style={{ fontSize: SIZES.sm, fontFamily: FONTS.medium }}>{postData.user.username}</Text>
+                  <Text color={COLORS.gray} style={{ fontSize: SIZES.xs, fontFamily: FONTS.regular }}>
                     at {postData?.event?.name}
                   </Text>
                 </Row>
               </Row>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handlePresentModal}>
-              <Entypo name="dots-three-horizontal" size={SIZE * 1.4} onPress={handlePresentModal} />
+            <TouchableOpacity onPress={handlePresentModal} style={{ paddingVertical: SIZE }}>
+              <Entypo name="dots-three-horizontal" size={SIZE * 1.3} onPress={handlePresentModal} />
             </TouchableOpacity>
           </Row>
-          <LoadingImage source={postData.postImage} style={styles.image} indicator event />
-          <Row style={styles.rowBottom} row spaceBetween>
-            <Row justifyCenter>
+          <LoadingImage
+            source={postData.postImage}
+            style={styles.image}
+            indicator
+            event
+            imageStyle={{ aspectRatio: 0.9 }}
+            viewStyle={{ aspectRatio: 0.9 }}
+          />
+          <Row style={styles.rowBottom}>
+            <Row row spaceBetween alignCenter width="100%">
               <Row row>
-                {postData.likes !== 0 && (
-                  <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostLikesScreen, { postData })}>
-                    <Text regularXs style={{ fontSize: SIZES.xxs }}>
-                      Liked by <Text style={{ fontFamily: FONTS.semiBold }}>{data[0]?.user?.username}</Text> and{' '}
-                      <Text style={{ fontFamily: FONTS.semiBold }}>others {formatShortNumber(likes - 1)}</Text>
-                    </Text>
+                {isLiked ? (
+                  <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
+                    <Row row alignCenter >
+                      <AntDesign name="heart"  size={SIZE * 1.7} color="red" />
+                      <Text style={{ marginHorizontal: SIZE / 1.5}}>{likes}</Text>
+                    </Row>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
+                    <Row row alignCenter >
+                      <AntDesign name="hearto"  size={SIZE * 1.7} />
+                      <TouchableOpacity onPress={onPressLikeNumber}>
+                       <Text style={{ marginHorizontal: SIZE / 1.5}}>{likes}</Text>
+                      </TouchableOpacity>
+                    </Row>
                   </TouchableOpacity>
                 )}
+
+                <TouchableOpacity onPress={onPressComments}>
+                  <Row row alignCenter>
+                    <AntDesign name="message1" size={SIZE * 1.7} style={{ marginRight: SIZE / 1.5, marginLeft: SIZE / 1.8 }} />
+                    <Text>{postData.comments}</Text>
+                  </Row>
+                </TouchableOpacity>
               </Row>
-              <Text regularXs style={{ marginTop: SIZE / 4, width: SIZE * 19 }}>
+              <Text ff={FONTS.regular} color={COLORS.gray} fs={SIZES.xs}>
+                {setTimeElapsed(postData.createdAt)} ago
+              </Text>
+            </Row>
+
+            <Row>
+              <Text regularXs style={{ marginTop: SIZE / 1.5, width: SIZE * 19, marginBottom: SIZE / 2 }}>
+                <Text ff={FONTS.semiBold}>{postData.user.username} </Text>
                 {postData.caption}
               </Text>
-              <TouchableOpacity onPress={onPressViewComments}>
-                <Text regularXs color={COLORS.gray} style={{ marginTop: SIZE / 10 }}>
-                  View all {postData.comments <= 5 ? 'the' : formatNumber(postData.comments)} comments
-                </Text>
-              </TouchableOpacity>
             </Row>
-            <View style={styles.likeContainer}>
-              {isLiked ? (
-                <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
-                  <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
-                  <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
-                </TouchableOpacity>
-              )}
-            </View>
           </Row>
         </Row>
       </View>
@@ -243,8 +265,9 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
   },
   rowBottom: {
-    padding: SIZE / 2,
-    alignItems: 'center',
+    padding: SIZE,
+    paddingVertical: SIZE / 1.2,
+    flexDirection: 'column',
   },
   likeContainer: {
     flexDirection: 'row',

@@ -1,22 +1,18 @@
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { ROUTES } from '../navigation/Navigation';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { formatDate, EVENT_DATE_FORMAT } from '../utils/dates';
-import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
-import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 
 export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) => {
-  const { organiser, coverImage, date, name, participants, scans } = data;
+  const { organiser, coverImage, date, name } = data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const handlePress = () => {
@@ -26,16 +22,10 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
     closeSheet();
   };
 
-  const handleProfilePress = () => {
-    navigation.navigate(ROUTES.AccountOrganiserScreen);
-    dispatch(setUserSelected(data.organiser));
-    closeSheet();
-  };
-
   return (
     <TouchableOpacity onPress={onPress ? onPress : handlePress}>
       <View style={styles.wrapper}>
-        <View style={styles.top}>
+        {/* <View style={styles.top}>
           <TouchableOpacity onPress={handleProfilePress}>
             <Row row alignCenter>
               <LoadingImage source={organiser?.profilePic} style={styles.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 1.5} />
@@ -59,17 +49,20 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
             </TouchableOpacity>
           </Row>
         </View>
-        <Line lineStyle={{ backgroundColor: COLORS.lightGray }} />
-        <View style={styles.event}>
-          <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 7} />
-          <View style={styles.eventInformation}>
-            <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT)}</Text>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.address} numberOfLines={1} ellipsizeMode="tail">
-              {data?.address?.city}
-            </Text>
+        <Line lineStyle={{ backgroundColor: COLORS.lightGray }} /> */}
+        <Row row alignCenter spaceBetween>
+          <View style={styles.event}>
+            <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 8} />
+            <View style={styles.eventInformation}>
+              <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT)}</Text>
+              <Text style={styles.name}>{name}</Text>
+              <Text style={styles.address}>by @{organiser.username}</Text>
+            </View>
           </View>
-        </View>
+          {/* <Row>
+         <AntDesign name="heart" style={{ marginRight: SIZE / 2}} size={SIZE * 1.7} color="red" />
+        </Row> */}
+        </Row>
       </View>
     </TouchableOpacity>
   );
@@ -77,13 +70,13 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: SIZE * 12.5,
     backgroundColor: COLORS.white,
     paddingHorizontal: SIZE,
     marginTop: SIZE,
     borderRadius: SIZES.md,
     borderColor: COLORS.lightGray,
     borderWidth: 0,
+    padding: SIZE / 1.5,
     width: WIDTH_DEVICE * 0.9,
     alignSelf: 'center',
     ...SHADOWS.medium,
@@ -91,8 +84,6 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: SIZE / 2,
-    marginBottom: SIZE / 2,
     justifyContent: 'space-between',
   },
   profilePic: {
@@ -106,7 +97,6 @@ const styles = StyleSheet.create({
     marginLeft: SIZE / 2,
   },
   event: {
-    marginTop: SIZE / 2,
     flexDirection: 'row',
     alignItems: 'center',
   },

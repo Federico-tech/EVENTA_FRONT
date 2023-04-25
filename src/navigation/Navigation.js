@@ -138,6 +138,9 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.SearchOrganiserEventsScreen} component={SearchOrganiserEventsScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.PostLikesScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );
 };
@@ -160,22 +163,6 @@ export const SearchNavigator = () => {
         options={{ headerShown: false }}
       />
     </SearchStackNavigator.Navigator>
-  );
-};
-
-const PostsStackNaviagtor = createStackNavigator();
-
-export const PostsNavigator = () => {
-  return (
-    <PostsStackNaviagtor.Navigator>
-      <PostsStackNaviagtor.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
-      <PostsStackNaviagtor.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
-    </PostsStackNaviagtor.Navigator>
   );
 };
 
@@ -271,7 +258,6 @@ export const UserBottomNavigator = () => {
     <UserBottomTabNavigator.Navigator screenOptions={BottomBarIcons}>
       <UserBottomTabNavigator.Screen name={ROUTES.HomeNavigator} component={HomeNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.SearchNavigator} component={SearchNavigator} options={{ headerShown: false }} />
-      <UserBottomTabNavigator.Screen name={ROUTES.PostsNavigator} component={PostsNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.MapNavigator} component={MapNavigator} options={{ headerShown: false }} />
       <UserBottomTabNavigator.Screen name={ROUTES.ProfileScreenNavigator} component={ProfileNavigator} options={{ headerShown: false }} />
     </UserBottomTabNavigator.Navigator>

@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 import { mainAxios } from '../core/axios';
 import { store } from '../store';
 import { selectSelectedEventId, setEvents, setSelectedEvent } from '../store/event';
@@ -109,9 +111,25 @@ export const deleteEvent = async (eventId) => {
 
 export const getPopularEvents = async (organiserId, { queryParams = {} }) => {
   try {
-    const params = { organiserId, ...queryParams };
+    const params = { organiserId, ...queryParams, popular: true };
     console.log(params);
-    const { data: popularEvents } = await mainAxios.get('events/mostpopular', { params });
+    const { data: popularEvents } = await mainAxios.get('events', { params });
+    return popularEvents.data;
+  } catch (e) {
+    console.log({ errorGettingPopularEvents: e });
+  }
+};
+
+export const getMostPopularEvent = async () => {
+  const today = DateTime.now();
+  try {
+    const params = {
+      popular: true,
+      limit: 1,
+      'date.$gte': today,
+    };
+    console.log(params);
+    const { data: popularEvents } = await mainAxios.get('events/home', { params });
     return popularEvents.data;
   } catch (e) {
     console.log({ errorGettingPopularEvents: e });

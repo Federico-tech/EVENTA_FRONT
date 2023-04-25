@@ -20,7 +20,6 @@ export const SearchEventScreen = () => {
     },
   });
 
-
   useEffect(() => {
     getRefreshedData();
   }, [name]);

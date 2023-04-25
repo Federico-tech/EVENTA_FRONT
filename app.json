@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "EVENTA_FRONT_EXPO",
-    "slug": "EVENTA_FRONT_EXPO",
+    "name": "eventa App",
+    "slug": "eventaApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/logos/GradientBlueLogo.png",
     "scheme": "com.eventa.eventaApp",
     "userInterfaceStyle": "automatic",
     "notification": {
-      "icon":  "./src/assets/logos/BlueLogo.png"
+      "icon": "./src/assets/logos/BlueLogo.png"
     },
     "splash": {
       "image": "./src/assets/logos/SplashScreen.png",
@@ -22,7 +22,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.eventa.eventaApp"
     },
     "android": {
       "package": "com.eventa.eventaApp",
@@ -43,7 +44,11 @@
     ],
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ba8f7f27-ed95-4a91-aefb-4e543806b029"
+      }
     }
   }
 }
-
