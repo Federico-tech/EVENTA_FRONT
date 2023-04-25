@@ -1,9 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Google from 'expo-auth-session/providers/google';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 
 import { GoogleLogo } from '../assets';
+import { noAuthAxios } from '../core/axios';
+import { store } from '../store';
+import { setUserInfo } from '../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS, SIZE } from '../utils/theme';
 
 export const Button = ({
@@ -66,25 +71,83 @@ export const Button = ({
   );
 };
 
-export const SocialLoginButton = ({ google, apple, onPress }) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.socialLoginButtonContainer}>
-        {google && (
-          <>
-            <Image source={GoogleLogo} resizeMode="contain" style={styles.appleLogo} />
-            <Text style={styles.textSocialLogin}> Google </Text>
-          </>
-        )}
+export const SocialLoginButton = ({ google, apple }) => {
+  const [loading, setLoading] = useState('');
+  const android = '200952064298-15mkh2ccaqbh2eo1neuuval7hcb3t5r2.apps.googleusercontent.com';
+  const newId = '200952064298-ru40i6fs245s2dghc8cqjlmiihfmn5ce.apps.googleusercontent.com';
+  const iosId = '200952064298-63jj5io9ocr50nndpl1o96pmf53os1sv.apps.googleusercontent.com';
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: android,
+    iosClientId: iosId,
+    webClientId: android,
+    // expoClientId: '@riccardocarizzoni/EVENTA_FRONT_EXPO',
+    clientId: newId,
+    // redirectUri: 'https://auth.expo.io/@riccardocarizzoni/EVENTA_FRONT_EXPO',
+  });
 
-        {apple && (
-          <>
-            <Ionicons name="ios-logo-apple" size={SIZE * 2.5} />
-            <Text style={styles.textSocialLogin}> AppleID </Text>
-          </>
-        )}
-      </View>
-    </TouchableOpacity>
+  const loginWithGoogleToken = async (token) => {
+    try {
+      const { data } = await noAuthAxios.post('auth/google', { token });
+      setLoading('');
+      store.dispatch(setUserInfo(data));
+    } catch (e) {
+      console.error({ loginWithGoogleTokenError: e });
+      setLoading('');
+    }
+  };
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const token = response.authentication.accessToken;
+      loginWithGoogleToken(token);
+    }
+  }, [response]);
+
+  const onPressApple = async () => {
+    try {
+      setLoading('apple');
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL],
+      });
+      console.debug({ credential });
+      const { data } = await noAuthAxios.post('auth/apple', { ...credential });
+      console.debug({ data });
+      store.dispatch(setUserInfo(data));
+      setLoading('');
+    } catch (e) {
+      setLoading('');
+      if (e.code === 'ERR_REQUEST_CANCELED') {
+        // handle that the user canceled the sign-in flow
+      } else {
+        // handle other errors
+      }
+    }
+  };
+
+  const onPressGoogle = async () => {
+    try {
+      setLoading('google');
+      await promptAsync();
+    } catch (e) {
+      console.error({ loginGoogleError: e });
+      setLoading('');
+    }
+  };
+
+  return (
+    <View>
+      <TouchableOpacity onPress={onPressGoogle}>
+        <Text>GOOGLE</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+        cornerRadius={SIZES.xxs}
+        style={styles.button}
+        onPress={onPressApple}>
+        <Text>APPLE</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 

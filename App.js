@@ -1,6 +1,7 @@
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
+import * as WebBrowser from 'expo-web-browser';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { View } from 'react-native';
@@ -12,6 +13,7 @@ import AppNavigator from './src/navigation/AppNavigator';
 import { store } from './src/store';
 
 SplashScreen.preventAutoHideAsync();
+WebBrowser.maybeCompleteAuthSession();
 
 const App = () => {
   const [notification, setNotification] = useState(false);
