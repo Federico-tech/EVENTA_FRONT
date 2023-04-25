@@ -1,10 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 
 import { GoogleLogo } from '../assets';
+import { noAuthAxios } from '../core/axios';
+import { store } from '../store';
+import { setUserInfo } from '../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS, SIZE } from '../utils/theme';
 
 export const Button = ({
@@ -68,6 +72,7 @@ export const Button = ({
 };
 
 export const SocialLoginButton = ({ google, apple }) => {
+  const [loading, setLoading] = useState('');
   const android = '200952064298-15mkh2ccaqbh2eo1neuuval7hcb3t5r2.apps.googleusercontent.com';
   const newId = '200952064298-ru40i6fs245s2dghc8cqjlmiihfmn5ce.apps.googleusercontent.com';
   const iosId = '200952064298-63jj5io9ocr50nndpl1o96pmf53os1sv.apps.googleusercontent.com';
@@ -80,32 +85,69 @@ export const SocialLoginButton = ({ google, apple }) => {
     // redirectUri: 'https://auth.expo.io/@riccardocarizzoni/EVENTA_FRONT_EXPO',
   });
 
+  const loginWithGoogleToken = async (token) => {
+    try {
+      const { data } = await noAuthAxios.post('auth/google', { token });
+      setLoading('');
+      store.dispatch(setUserInfo(data));
+    } catch (e) {
+      console.error({ loginWithGoogleTokenError: e });
+      setLoading('');
+    }
+  };
+
   useEffect(() => {
-    console.debug({ response });
     if (response?.type === 'success') {
       const token = response.authentication.accessToken;
-      console.debug({ token });
-      token && getUserInfo(token);
+      loginWithGoogleToken(token);
     }
   }, [response]);
 
-  const getUserInfo = async (token) => {
+  const onPressApple = async () => {
     try {
-      const response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-        headers: { Authorization: `Bearer ${token}` },
+      setLoading('apple');
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL],
       });
+      console.debug({ credential });
+      const { data } = await noAuthAxios.post('auth/apple', { ...credential });
+      console.debug({ data });
+      store.dispatch(setUserInfo(data));
+      setLoading('');
+    } catch (e) {
+      setLoading('');
+      if (e.code === 'ERR_REQUEST_CANCELED') {
+        // handle that the user canceled the sign-in flow
+      } else {
+        // handle other errors
+      }
+    }
+  };
 
-      const user = await response.json();
-      console.debug({ userInfo: user });
-    } catch (error) {
-      // Add your own error handler here
+  const onPressGoogle = async () => {
+    try {
+      setLoading('google');
+      await promptAsync();
+    } catch (e) {
+      console.error({ loginGoogleError: e });
+      setLoading('');
     }
   };
 
   return (
-    <TouchableOpacity onPress={() => promptAsync()}>
-      <Text>GOOGLE</Text>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity onPress={onPressGoogle}>
+        <Text>GOOGLE</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+        cornerRadius={SIZES.xxs}
+        style={styles.button}
+        onPress={onPressApple}>
+        <Text>APPLE</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
