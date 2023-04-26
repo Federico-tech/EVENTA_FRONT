@@ -22,6 +22,10 @@ const tabBar = (props) => (
 );
 
 export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
+  const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
+  const currentUserId = useSelector(selectCurrentUserId);
+  const currentUserRole = useSelector(selectCurrentUserRole);
+  
   const organiserId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
   const myId = useSelector(selectCurrentUserId);
 
@@ -31,6 +35,17 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
     filters: {
       organiserId,
     },
+  });
+
+  const {
+    data: postData,
+    refreshing: postRefreshing,
+    getRefreshedData: getRefreshedPostData,
+    getMoreData: getMorePostData,
+    loadMorePosts,
+  } = useInfiniteScroll({
+    entity: `users/${myId}/posts`,
+    limit: 6,
   });
 
   const MyHeader = ({ isLoading }) => {
@@ -64,10 +79,44 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
           ListEmptyComponent={!refreshing && <ListEmptyComponent text={`The organizer hasn't created any events yet`} />}
         />
       </Tabs.Tab>
-      <Tabs.Tab name="About">
-        <Tabs.ScrollView showsVerticalScrollIndicator={false}>
-          <AboutScreen account={account} />
-        </Tabs.ScrollView>
+      <Tabs.Tab name="Posts">
+        {isLoading ? (
+          <Tabs.ScrollView>
+            <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
+          </Tabs.ScrollView>
+        ) : account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
+          user.isFollowing ? (
+            <Tabs.FlatList
+              data={postData}
+              renderItem={({ item }) => <PostCard postData={item} />}
+              keyExtractor={(item) => item._id}
+              style={{ marginTop: SIZE}}
+              showsVerticalScrollIndicator={false}
+              onEndReached={_.throttle(getMorePostData, 400)}
+              refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
+              ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
+              ListEmptyComponent={!refreshing && <ListEmptyComponent text="There is no post yet" />}
+            />
+          ) : (
+            <Tabs.ScrollView>
+              <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+                Follow this profile to see its content
+              </Text>
+            </Tabs.ScrollView>
+          )
+        ) : (
+          <Tabs.FlatList
+            data={postData}
+            renderItem={({ item }) => <PostCard postData={item} />}
+            keyExtractor={(item) => item._id}
+            style={{ marginTop: SIZE}}
+            showsVerticalScrollIndicator={false}
+            onEndReached={_.throttle(getMorePostData, 400)}
+            refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
+            ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
+            ListEmptyComponent={!refreshing && <ListEmptyComponent text="There is no post yet" />}
+          />
+        )}
       </Tabs.Tab>
     </Tabs.Container>
   );

@@ -56,14 +56,14 @@ export const ProfileHeader = ({ myProfile, user }) => {
 
   return (
     <View>
-      <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['#32DAE4', '#00A1FF']} style={styles.wrapper}>
+      <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['white', 'white']} style={styles.wrapper}>
         <View style={styles.container}>
-          {!myProfile && <IconButton name="chevron-back" color="white" size={SIZE * 2} onPress={() => navigation.goBack()} />}
+          {!myProfile && <IconButton name="chevron-back" color="black" size={SIZE * 2} onPress={() => navigation.goBack()} />}
           <Text style={styles.usernameText}>{user.username}</Text>
           {myProfile ? (
-            <IconButton name="settings-sharp" color="white" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
+            <IconButton name="settings-sharp" color="black" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
           ) : currentUserId !== selectedUserId ? (
-            <IconButton name="ios-ellipsis-vertical" color="white" size={18} onPress={handlePresentModal} />
+            <IconButton name="ios-ellipsis-vertical" color="black" size={18} onPress={handlePresentModal} />
           ) : (
             <View style={{ width: SIZE * 1.5 }} />
           )}
@@ -93,7 +93,7 @@ export const ProfileHeader = ({ myProfile, user }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: SIZE * 7,
+    height: SIZE * 6,
     zIndex: -1,
   },
   container: {
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   usernameText: {
-    color: COLORS.white,
+    color: COLORS.black,
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.lg,
   },

@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -65,23 +65,32 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   return (
     <View>
       <Row row>
-        <LoadingImage source={user.profilePic} width={SIZE * 7} viewStyle={styles.profileImage} profile iconSIZE={SIZE * 4} />
+        <View style={styles.TextContainer}>
+          <TouchableOpacity disabled={user.role === 'organiser' && true}>
+            <Row row>
+              <LoadingImage
+                source={user.profilePic}
+                width={SIZE * 6}
+                profile
+                iconSIZE={SIZE * 2.5}
+                imageStyle={styles.imageProfile}
+                viewStyle={styles.createNoteImage}
+              />
+                <View style={styles.plusIcon}>
+                  <AntDesign name="pluscircle" size={SIZE * 1.5} color={COLORS.primary} />
+                </View>
+            </Row>
+          </TouchableOpacity>
+        </View>
         <Row style={styles.name}>
-          <Text semiBoldMd>{user.name}</Text>
+          <Text semiBoldMd>{user.username}</Text>
           <Text regularSm color={COLORS.darkGray}>
-            @{user.username}
+            {user.name}
           </Text>
         </Row>
       </Row>
       <Row style={styles.bio}>
-        {organiser || user.role === 'organiser' ? (
-          <Row row>
-            <Ionicons name="pin" size={SIZE * 1.5} />
-            <Text style={{ alignSelf: 'flex-end', marginTop: SIZE / 2 }}>{user.address}</Text>
-          </Row>
-        ) : (
           <ReadMoreButton text={user.bio ? user.bio : 'Description'} style={styles.description} />
-        )}
         <Row spaceBetween row style={styles.followerRow}>
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>
             <Row alignCenter style={styles.boxFollower}>
@@ -134,6 +143,11 @@ const styles = StyleSheet.create({
   wrapper: {
     height: SIZE * 8.5,
   },
+  TextContainer: {
+    marginHorizontal: WIDTH_DEVICE / 20,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
   image: {
     borderRadius: 100,
     width: SIZE * 7.5,
@@ -149,32 +163,53 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
   },
+  plusIcon: {
+    position: 'absolute',
+    marginTop: SIZE * 5.5,
+    marginLeft: SIZE * 4,
+    backgroundColor: COLORS.white,
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: COLORS.white,
+  },
+  createNoteImage: {
+    marginBottom: SIZE,
+    marginTop: SIZE,
+  },
+  description: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.xs,
+  },
   usernameText: {
     color: COLORS.white,
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.lg,
+  },
+  imageProfile: {
+    borderColor: COLORS.primary,
+    borderWidth: 1.5,
   },
   profileImage: {
     width: SIZE * 7,
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: WIDTH_DEVICE / 20,
+    marginLeft: WIDTH_DEVICE /30,
     marginTop: SIZE / 2,
   },
   name: {
-    paddingLeft: SIZE * 2,
+    paddingLeft: SIZE / 4,
     paddingTop: SIZE * 3,
   },
   bio: {
-    marginTop: SIZE,
+    marginTop: SIZE / 4,
     marginHorizontal: WIDTH_DEVICE / 20,
   },
   boxFollower: {
     width: SIZE * 5,
   },
   followerRow: {
-    marginTop: SIZE,
+    marginTop: SIZE * 1.5,
   },
   recent: {
     fontFamily: FONTS.semiBold,

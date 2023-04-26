@@ -254,7 +254,7 @@ export const EventDetails = ({ route }) => {
               <Ionicons name="people-outline" size={24} />
               <Text style={styles.peopleText}>
                 {event.participants}
-                <Text style={styles.description}> of your friends are going</Text>
+                <Text style={styles.description}> people are participating</Text>
               </Text>
             </View>
           </Row>
