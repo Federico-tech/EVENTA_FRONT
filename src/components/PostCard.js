@@ -128,12 +128,12 @@ export const PostCard = ({ postData, getData, touchable }) => {
   };
 
   const onPressLikeNumber = () => {
-    navigation.navigate(ROUTES.PostLikesScreen, { postData })
-  }
+    navigation.navigate(ROUTES.PostLikesScreen, { postData });
+  };
 
   const onPressComments = () => {
     navigation.navigate(ROUTES.PostCommentScreen, { postId: postData._id });
-  }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={touchable ? onPressNavigatePosts : handleDoubleTap} disabled={isLikePressLoading}>
@@ -168,17 +168,17 @@ export const PostCard = ({ postData, getData, touchable }) => {
               <Row row>
                 {isLiked ? (
                   <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
-                    <Row row alignCenter >
-                      <AntDesign name="heart"  size={SIZE * 1.7} color="red" />
-                      <Text style={{ marginHorizontal: SIZE / 1.5}}>{likes}</Text>
+                    <Row row alignCenter>
+                      <AntDesign name="heart" size={SIZE * 1.7} color="red" />
+                      <Text style={{ marginHorizontal: SIZE / 1.5 }}>{likes}</Text>
                     </Row>
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
-                    <Row row alignCenter >
-                      <AntDesign name="hearto"  size={SIZE * 1.7} />
+                    <Row row alignCenter>
+                      <AntDesign name="hearto" size={SIZE * 1.7} />
                       <TouchableOpacity onPress={onPressLikeNumber}>
-                       <Text style={{ marginHorizontal: SIZE / 1.5}}>{likes}</Text>
+                        <Text style={{ marginHorizontal: SIZE / 1.5 }}>{likes}</Text>
                       </TouchableOpacity>
                     </Row>
                   </TouchableOpacity>

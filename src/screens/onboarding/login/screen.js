@@ -90,11 +90,10 @@ export const LoginScreen = () => {
 
   return (
     <Container>
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <Container>
           <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
           <View style={styles.container}>
-            <Text style={styles.textLogin} />
             <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
             <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
             <TextButton text="Forgot password?" textStyle={styles.forgotPassword} />
@@ -143,19 +142,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE * 2,
+    marginTop: SIZE,
   },
 
   logo: {
     alignSelf: 'center',
-    marginTop: SIZE * 9,
-  },
-
-  textLogin: {
-    alignSelf: 'center',
-    marginTop: SIZE / 2,
-    fontFamily: FONTS.medium,
-    fontSize: SIZES.md,
+    marginTop: SIZE * 5,
   },
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,

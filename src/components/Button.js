@@ -10,6 +10,7 @@ import { noAuthAxios } from '../core/axios';
 import { store } from '../store';
 import { setUserInfo } from '../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS, SIZE } from '../utils/theme';
+import { Row } from './Row';
 
 export const Button = ({
   text,
@@ -135,9 +136,12 @@ export const SocialLoginButton = ({ google, apple }) => {
   };
 
   return (
-    <View>
+    <Row row alignCenter spaceBetween mt={SIZE}>
       <TouchableOpacity onPress={onPressGoogle}>
-        <Text>GOOGLE</Text>
+        <View style={styles.socialLoginButtonContainer}>
+          <Image source={GoogleLogo} resizeMode="contain" style={styles.appleLogo} />
+          <Text style={styles.textSocialLogin}> Google </Text>
+        </View>
       </TouchableOpacity>
       <TouchableOpacity
         buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
@@ -145,9 +149,12 @@ export const SocialLoginButton = ({ google, apple }) => {
         cornerRadius={SIZES.xxs}
         style={styles.button}
         onPress={onPressApple}>
-        <Text>APPLE</Text>
+        <View style={styles.socialLoginButtonContainer}>
+          <Ionicons name="ios-logo-apple" size={SIZE * 2.5} />
+          <Text style={styles.textSocialLogin}> AppleID </Text>
+        </View>
       </TouchableOpacity>
-    </View>
+    </Row>
   );
 };
 

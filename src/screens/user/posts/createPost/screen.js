@@ -127,7 +127,7 @@ export const CreatePostScreen = () => {
 
   return (
     <Container>
-      <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel getData />
+      <Header title="Create your moment" create onPress={handleSubmit} loading={loading} cancel getData />
       <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <TouchableOpacity onPress={pickImage}>

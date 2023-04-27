@@ -27,10 +27,10 @@ export const ReadMoreButton = (props, textStyle) => {
   };
 
   let text = (props.text || props.children).trim();
-  const shouldShowMoreLess = text.length > props.subString;
+  const shouldShowMoreLess = text?.length > props?.subString;
 
   if (!isExpanded && shouldShowMoreLess) {
-    text = `${text.substring(0, props.subString)}...`;
+    text = `${text?.substring(0, props?.subString)}...`;
   }
 
   return (

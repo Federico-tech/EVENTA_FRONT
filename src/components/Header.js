@@ -10,7 +10,7 @@ import { IconButton } from './Button';
 import { Row } from './Row';
 import { TextButton } from './TextButton';
 
-export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPressPlus }) => {
+export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPressPlus, create }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   return (
@@ -30,7 +30,12 @@ export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPr
             <TextButton text={t('done')} onPress={onPress} textStyle={styles.fine} loading={loading} />
           </View>
         )}
-        {!done && !plus && <View style={{ width: SIZE * 4.5, alignItems: 'center' }} />}
+        {create && (
+          <View style={{width: SIZE * 4.5, alignItems: 'center' }}>
+            <TextButton text={'Create'} onPress={onPress} textStyle={styles.fine} loading={loading} />
+          </View>
+        )}
+        {!done && !plus && !create && <View style={{ width: SIZE * 4.5, alignItems: 'center' }} />}
         {plus && (
           <View style={{ width: SIZE * 4.5, alignItems: 'center' }}>
             <TouchableOpacity onPress={onPressPlus}>

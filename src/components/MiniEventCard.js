@@ -15,11 +15,11 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
   const { organiser, coverImage, date, name } = data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  
   const handlePress = () => {
     dispatch(setUserSelected(data.organiser));
     dispatch(setSelectedEvent(data));
     navigation.navigate('EventDetails', { data });
-    closeSheet();
   };
 
   return (
