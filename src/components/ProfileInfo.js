@@ -62,11 +62,15 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
     navigation.push(user.role === 'organiser' ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { followingParams });
   };
 
+  const onPressCreatePost = () => {
+    navigation.navigate(ROUTES.CreatePostScreen)
+  }
+
   return (
     <View>
       <Row row>
         <View style={styles.TextContainer}>
-          <TouchableOpacity disabled={user.role === 'organiser' && true}>
+          <TouchableOpacity onPress={onPressCreatePost}>
             <Row row>
               <LoadingImage
                 source={user.profilePic}

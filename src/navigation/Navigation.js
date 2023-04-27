@@ -102,7 +102,7 @@ export const ROUTES = {
 const BottomBarIcons = ({ route }) => ({
   tabBarLabel: '',
   tabBarHideOnKeyboard: true,
-  tabBarIcon: ({ focused, colour }) => {
+  tabBarIcon: ({ focused, colour, onPress }) => {
     let iconName;
     if (route.name === ROUTES.HomeNavigator || route.name === ROUTES.OrganiserHomeNavigator) {
       iconName = focused ? 'home' : 'home-outline';
@@ -117,7 +117,7 @@ const BottomBarIcons = ({ route }) => ({
     } else if (route.name === ROUTES.PostsNavigator) {
       return <Image source={BlueLogo} style={{ width: SIZE * 2.2, height: SIZE * 2.2, marginTop: SIZE / 2 }} />;
     }
-    return <Ionicons name={iconName} size={SIZE * 2} colour={colour} style={{ marginTop: SIZE / 2 }} />;
+    return <Ionicons name={iconName} size={SIZE * 2} colour={colour} style={{ marginTop: SIZE / 2 }} onPress={onPress} />;
   },
 });
 
@@ -141,6 +141,7 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.PostLikesScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );
 };
@@ -182,6 +183,7 @@ export const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
     </ProfileStackNavigator.Navigator>
   );
 };
@@ -201,6 +203,7 @@ export const OrganiserHomeNavigator = () => {
       <OrganiserHomeStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.PopularEventsScreen} component={PopularEventsScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={PopularEventsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen
         name={ROUTES.SearchOrganiserEventsScreen}
         component={SearchOrganiserEventsScreen}
@@ -226,6 +229,7 @@ export const OrganiserProfileNavigator = () => {
       <OrganiserProfileStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen
         name={ROUTES.SearchOrganiserEventsScreen}
         component={SearchOrganiserEventsScreen}

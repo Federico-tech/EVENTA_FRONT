@@ -4,6 +4,7 @@ const initialState = {
   searchFilter: undefined,
   dateFilter: undefined,
   mapFilter: undefined,
+  notificationFilter: undefined,
 };
 
 export const filterSlice = createSlice({
@@ -18,7 +19,7 @@ export const filterSlice = createSlice({
     },
     setMapFilter: (state, action) => {
       state.mapFilter = action.payload;
-    }
+    },
   },
 });
 
@@ -27,5 +28,6 @@ export const { setSearchFilter, setDateFilter, setMapFilter } = filterSlice.acti
 export const selectSearchFilter = (state) => state.filters?.searchFilter || undefined;
 export const selectDateFilter = (state) => state.filters?.dateFilter || undefined || 'upcoming';
 export const selectMapFilter = (state) => state.filters?.mapFilter || undefined || 'events';
+export const selectNotificationFilter = (state) => state.filters?.notificationFilter || undefined || 'events';
 
 export default filterSlice.reducer;

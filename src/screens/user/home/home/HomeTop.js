@@ -16,6 +16,7 @@ import { getPosts } from '../../../../services/posts';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { HomeCarousel } from '../../../../components/HomeCarousel';
 
 export const HomeTop = forwardRef(({ eventData, ...props }, ref) => {
   const [note, setNote] = useState();
@@ -113,6 +114,7 @@ export const HomeTop = forwardRef(({ eventData, ...props }, ref) => {
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
       <View style={{ alignItems: 'center' }}>
         <MostPopularEventCard eventData={eventData} />
+        <HomeCarousel />
         <View style={styles.noteContainer}>
           <FlatList
             data={[...(userNotes || []), ...(data || [])]}

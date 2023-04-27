@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
-import React from 'react';
-import { ActivityIndicator, View, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
@@ -10,7 +10,8 @@ import { ROUTES } from '../../../../navigation/Navigation';
 import { setUserSelected } from '../../../../store/user';
 import { setTimeElapsed } from '../../../../utils/dates';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-import { COLORS, FONTS, SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { DateTime } from 'luxon';
 
 const Notification = ({ notificationData }) => {
   const navigation = useNavigation();
@@ -45,9 +46,17 @@ const Notification = ({ notificationData }) => {
   );
 };
 
+
 export const NotificationsScreen = () => {
+  const [ dataFilter, setDataFilter] = useState()
+
+  const dateFilter = DateTime.now().minus({ month: 1}).toISODate();
+
   const { data, getMoreData, getRefreshedData, refreshing, loadMore } = useInfiniteScroll({
     entity: 'notifications/me',
+    filters: {
+      'date.$gte': dateFilter
+    }
   });
 
   return (

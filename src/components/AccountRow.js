@@ -79,7 +79,7 @@ export const UserColumn = ({ data }) => {
     <TouchableOpacity onPress={handleOnPress}>
       <Row alignCenter column mr={SIZE}>
         <LoadingImage source={profilePic} width={SIZE * 4} profile iconSIZE={SIZE * 2.5} />
-        <Row width={SIZE * 6}>
+        <Row width={SIZE * 5}>
           <Text ff={FONTS.medium} fs={SIZE / 1.2} mt={SIZE / 2} width={SIZE} numberOfLines={1}>
             {username}
           </Text>

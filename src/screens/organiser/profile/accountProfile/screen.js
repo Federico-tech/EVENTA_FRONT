@@ -7,11 +7,14 @@ import { OrganiserTopNavigator } from '../../../../navigation/TabView';
 
 import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedUser, selectSelectedUserId } from '../../../../store/user';
+import { useIsFocused } from '@react-navigation/native';
 
 export const AccountOrganiserScreen = ({ route }) => {
   const user = useSelector(selectSelectedUser);
   const [isLoading, setIsloading] = useState(false);
   const id = useSelector(selectSelectedUserId);
+
+  const isFoucused = useIsFocused()
 
   useEffect(() => {
     const refresh = async () => {
@@ -20,7 +23,7 @@ export const AccountOrganiserScreen = ({ route }) => {
       setIsloading(false);
     };
     refresh();
-  }, [id]);
+  }, [id, isFoucused]);
 
   return (
     <Container>

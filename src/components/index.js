@@ -23,3 +23,4 @@ export * from './PostCard';
 export * from './ListEmptyComponent';
 export * from './AlertModal';
 export * from './Comment';
+export * from './HomeCarousel';

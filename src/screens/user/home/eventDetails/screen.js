@@ -24,7 +24,6 @@ import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
-import { formatShortNumber } from '../../../../utils/numbers';
 import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
@@ -48,7 +47,7 @@ const EventDetailsParticipants = ({ isParticipating }) => {
   return (
     <>
       {loading ? (
-        <View style={{ height: SIZE * 5, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ height: SIZE * 6, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator style={{ marginTop: SIZE / 2 }} />
         </View>
       ) : (
@@ -119,7 +118,7 @@ export const EventDetails = ({ route }) => {
   const handleClosePress = () => bottomSheetModalRef.current.close();
 
   const { data } = useInfiniteScroll({
-    entity: 'posts/home',
+    entity: `events/${eventId}/posts`,
     limit: 6,
   });
 
@@ -180,10 +179,6 @@ export const EventDetails = ({ route }) => {
     onGoBack?.(event);
   };
 
-  const onPressScan = () => {
-    navigation.navigate(ROUTES.ScannerScreen);
-  };
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
       onGoBack?.(event);
@@ -199,29 +194,18 @@ export const EventDetails = ({ route }) => {
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: SIZE }}>
-          <View style={styles.eventBlurImage}>
-            <LoadingImage
-              source={event.coverImage}
-              viewStyle={styles.eventBlurImage}
-              blurRadius={10}
-              event
-              width={SIZE * 30}
-              imageStyle={{ height: SIZE * 25, aspectRatio: 2 }}
-            />
+          <View>
+              <LoadingImage source={ event.coverImage } width={'100%'} event/>
+              <LinearGradient style={styles.imageGradient}  colors={['rgba(0, 0, 0, 0.5)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.5)']}/>
           </View>
-          <View style={styles.eventImage}>
-            <View style={{ flex: 1}}>
-              <Image source={{ uri: event.coverImage }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-            </View>
-          </View>
-
           <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
           <View
             style={{
               paddingHorizontal: WIDTH_DEVICE / 20,
-              zIndex: 1,
+              zIndex: 2,
               backgroundColor: COLORS.white,
+              marginTop: -SIZE * 1.5,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
             }}>
@@ -235,7 +219,9 @@ export const EventDetails = ({ route }) => {
             <Row row alignCenter spaceBetween style={{ marginTop: SIZE }}>
               <Text style={styles.eventTitle}>{event.name}</Text>
               {eventOrganiserId === userId && (
-                <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} onPress={() => navigation.navigate(ROUTES.ScannerScreen)} />
+                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ScannerScreen)}>
+                  <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} />
+                </TouchableOpacity>
               )}
             </Row>
             <ReadMoreButton subString={45} text={event.description} style={styles.description} />
@@ -348,11 +334,10 @@ const styles = StyleSheet.create({
     marginTop: SIZE * 3,
   },
   eventBlurImage: {
-    height: SIZE * 24,
+    height: SIZE * 22,
     width: WIDTH_DEVICE / 1,
     alignItems: 'center',
     zIndex: -1,
-    opacity: 0.95,
   },
   eventImage: {
     height: SIZE * 23,
@@ -408,13 +393,13 @@ const styles = StyleSheet.create({
   },
   arrowStyle: {
     marginLeft: WIDTH_DEVICE / 40,
-    marginBottom: SIZE * 18,
+    marginBottom: SIZE * 24,
     bottom: 0,
     position: 'absolute',
   },
   dots: {
     marginHorizontal: WIDTH_DEVICE / 40,
-    marginBottom: SIZE * 18,
+    marginBottom: SIZE * 24,
     alignSelf: 'flex-end',
     bottom: 0,
     position: 'absolute',
@@ -463,8 +448,10 @@ const styles = StyleSheet.create({
   horizontalScrollView: {
     height: SIZE * 6,
   },
-  lineShadow: {
-    height: 0.5,
-    backgroundColor: COLORS.lightGray,
-  },
+  imageGradient: {
+    width: '100%', 
+    height: '100%' , 
+    zIndex: 3,
+     position: 'absolute'
+  }
 });

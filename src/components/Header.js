@@ -8,6 +8,7 @@ import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { IconButton } from './Button';
 import { Row } from './Row';
 import { TextButton } from './TextButton';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 //onPress={() => navigation.goBack()
 
@@ -34,7 +35,9 @@ export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPr
         {!done && !plus && <View style={{ width: SIZE * 4.5, alignItems: 'center' }} />}
         {plus && (
           <View style={{ width: SIZE * 4.5, alignItems: 'center' }}>
-            <AntDesign name="plus" size={SIZE * 1.6} onPress={onPressPlus} />
+            <TouchableOpacity onPress={onPressPlus}>
+              <AntDesign name="plus" size={SIZE * 1.6}  />
+            </TouchableOpacity>
           </View>
         )}
       </Row>

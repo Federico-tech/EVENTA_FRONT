@@ -71,7 +71,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
         <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
-              <TouchableOpacity onPress={onPressCreatePost} disabled={userinfo.role === 'organiser' && true}>
+              <TouchableOpacity onPress={onPressCreatePost}>
                 <Row row>
                   <LoadingImage
                     source={userinfo.profilePic}

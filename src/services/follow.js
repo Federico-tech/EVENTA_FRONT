@@ -1,7 +1,7 @@
 import { mainAxios } from '../core/axios';
 import { store } from '../store';
 import { selectSelectedUser } from '../store/user';
-import { getMe } from './users';
+import { getMe, getUserById } from './users';
 
 export const followUser = async (userId) => {
   try {
