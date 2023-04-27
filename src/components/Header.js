@@ -3,14 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { IconButton } from './Button';
 import { Row } from './Row';
 import { TextButton } from './TextButton';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-//onPress={() => navigation.goBack()
 
 export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPressPlus }) => {
   const navigation = useNavigation();
@@ -36,7 +34,7 @@ export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPr
         {plus && (
           <View style={{ width: SIZE * 4.5, alignItems: 'center' }}>
             <TouchableOpacity onPress={onPressPlus}>
-              <AntDesign name="plus" size={SIZE * 1.6}  />
+              <AntDesign name="plus" size={SIZE * 1.6} />
             </TouchableOpacity>
           </View>
         )}

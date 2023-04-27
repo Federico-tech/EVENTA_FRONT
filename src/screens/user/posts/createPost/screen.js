@@ -19,6 +19,7 @@ import { selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { showMessage } from 'react-native-flash-message';
 
 export const CreatePostScreen = () => {
   useEffect(requestCameraPermission, []);
@@ -84,6 +85,10 @@ export const CreatePostScreen = () => {
         await validateForm(data);
         await createPost({ ...data, userId });
         navigation.goBack({ myParam: 'getData' });
+        showMessage({
+          type: 'success',
+          message: 'Post created succefully'
+        })
         resetForm();
         setLoading(false);
       } catch (e) {
@@ -122,7 +127,7 @@ export const CreatePostScreen = () => {
 
   return (
     <Container>
-      <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel />
+      <Header title="Create your moment" done onPress={handleSubmit} loading={loading} cancel getData />
       <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <TouchableOpacity onPress={pickImage}>

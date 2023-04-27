@@ -195,8 +195,8 @@ export const EventDetails = ({ route }) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: SIZE }}>
           <View>
-              <LoadingImage source={ event.coverImage } width={'100%'} event/>
-              <LinearGradient style={styles.imageGradient}  colors={['rgba(0, 0, 0, 0.5)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.5)']}/>
+            <LoadingImage source={event.coverImage} width="100%" event />
+            <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.5)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.5)']} />
           </View>
           <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
           <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
@@ -449,9 +449,9 @@ const styles = StyleSheet.create({
     height: SIZE * 6,
   },
   imageGradient: {
-    width: '100%', 
-    height: '100%' , 
+    width: '100%',
+    height: '100%',
     zIndex: 3,
-     position: 'absolute'
-  }
+    position: 'absolute',
+  },
 });

@@ -20,9 +20,9 @@ export const checkReadNotifications = async () => {
 
 export const setReadNotifications = async () => {
   try {
-    const { data } = await mainAxios.get('notifications/setRead');
+    const { data } = await mainAxios.put('notifications/setRead');
     console.log(data);
   } catch (e) {
-    console.log({ errorCheckingReadNotifications: e });
+    console.log({ errorSettingReadNotifications: e });
   }
 };

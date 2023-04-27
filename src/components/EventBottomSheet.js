@@ -2,14 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { getRefreshedEvent } from '../services/events';
 import { follow, unFollow } from '../services/follow';
 import { refreshSelectedUser } from '../services/users';
-import { selectSelectedEvent, selectSelectedEventId } from '../store/event';
-import { selectCurrentUserRole, selectSelectedUser } from '../store/user';
+import { selectSelectedEvent, selectSelectedEventId, setSelectedEvent } from '../store/event';
+import { selectCurrentUserRole, selectSelectedUser, setUserSelected } from '../store/user';
 import { EVENT_DATE_FORMAT, formatDate } from '../utils/dates';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Button } from './Button';
@@ -28,6 +28,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   const organiser = useSelector(selectSelectedUser);
   const role = useSelector(selectCurrentUserRole);
   const navigation = useNavigation();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +62,14 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
     navigation.navigate(ROUTES.AccountOrganiserScreen);
     closeSheet();
   };
+
+
+  const onPressEvent = () => {
+    navigation.navigate(ROUTES.EventDetails)
+    dispatch(setUserSelected(event.organiser));
+    dispatch(setSelectedEvent(event));
+    closeSheet()
+  }
 
   return (
     <ScrollView scrollEnabled={scroll}>
@@ -103,14 +112,16 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
           </View>
         </Row>
         <Line />
-        <View style={styles.event}>
-          <LoadingImage source={event.coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 8} />
-          <View style={styles.eventInformation}>
-            <Text style={styles.date}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
-            <Text style={styles.name}>{event.name}</Text>
-            <Text style={styles.address}>by @{organiser.username}</Text>
+        <TouchableOpacity onPress={onPressEvent}>
+          <View style={styles.event}>
+            <LoadingImage source={event.coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 8} />
+            <View style={styles.eventInformation}>
+              <Text style={styles.date}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+              <Text style={styles.name}>{event.name}</Text>
+              <Text style={styles.address}>by @{organiser.username}</Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

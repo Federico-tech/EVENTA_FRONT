@@ -67,8 +67,11 @@ export const MapScreen = ({ navigation, route }) => {
     dispatch(setUserSelected(user));
   };
 
+
+
   const handlePresentModalEvents = ({ event }) => {
     bottomSheetModalRef.current?.present();
+    console.log('sheet',event)
     getRefreshedEvent(event);
     dispatch(setSelectedEvent(event));
     dispatch(setUserSelected(event.organiser));
@@ -151,7 +154,7 @@ export const MapScreen = ({ navigation, route }) => {
                   longitude: user.position.coordinates[0],
                 }}
                 onPress={() => handlePresentModalOrganiser({ user })}>
-                <View style={{ alignItems: 'center', height: SIZE * 9 }}>
+                <View style={{ alignItems: 'center', height: SIZE * 6 }}>
                   <View style={styles.marker}>
                     <LoadingImage source={user.profilePic} imageStyle={styles.profileImage} profile width={SIZE * 5} iconSIZE={SIZE * 2} />
                   </View>
@@ -171,7 +174,7 @@ export const MapScreen = ({ navigation, route }) => {
                 }}
                 tracksViewChanges
                 onPress={() => handlePresentModalEvents({ event })}>
-                <View style={{ alignItems: 'center', height: SIZE * 8 }}>
+                <View style={{ alignItems: 'center', height: SIZE * 6 }}>
                   <View style={styles.marker}>
                     <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} width={SIZE * 5} iconSIZE={0} />
                   </View>
