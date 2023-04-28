@@ -19,10 +19,12 @@ import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
+import { getUserField } from '../services/users';
 
 export const PostCard = ({ postData, getData, touchable }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
+  const [ commentUserUsername, setCommentUserUsername ] = useState()
   const [isLikePressLoading, setIsLikePressLoading] = useState(false);
   const [lastTap, setLastTap] = useState(null);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
@@ -64,7 +66,12 @@ export const PostCard = ({ postData, getData, touchable }) => {
   useEffect(() => {
     setLikes(postData.likes);
     setIsLiked(postData.hasLiked);
-  }, [postData]);
+    if(postData.comments !== 0){
+      getUserField({userId: postData?.comment?.userId, field: 'username'}).then((result) => {
+        setCommentUserUsername(result.user.username)
+      })
+    }
+  }, []);
 
   const onPresslike = async () => {
     setLikes(likes + 1);
@@ -135,6 +142,8 @@ export const PostCard = ({ postData, getData, touchable }) => {
     navigation.navigate(ROUTES.PostCommentScreen, { postId: postData._id });
   };
 
+  console.log({ postData })
+
   return (
     <TouchableWithoutFeedback onPress={touchable ? onPressNavigatePosts : handleDoubleTap} disabled={isLikePressLoading}>
       <View style={styles.wrapper}>
@@ -197,11 +206,20 @@ export const PostCard = ({ postData, getData, touchable }) => {
             </Row>
 
             <Row>
-              <Text regularXs style={{ marginTop: SIZE / 1.5, width: SIZE * 19, marginBottom: SIZE / 2 }}>
+              <Text regularXs style={{ marginTop: SIZE / 1.5, width: SIZE * 25, marginBottom: SIZE / 2 }}>
                 <Text ff={FONTS.semiBold}>{postData.user.username} </Text>
                 {postData.caption}
               </Text>
             </Row>
+            {postData.comments !== 0 && (
+                <Row>
+                <Text regularXs style={{ marginTop: SIZE / 1.5, width: SIZE * 24, marginBottom: SIZE / 2 }} numberOfLines={2}>
+                  <Text ff={FONTS.semiBold} >{commentUserUsername} </Text>
+                  {postData?.comment?.content}
+                </Text>
+              </Row>
+            )}
+        
           </Row>
         </Row>
       </View>
@@ -218,7 +236,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
             <TouchableOpacity onPress={() => setReportModalVisible(true)}>
               <Row row alignCenter style={{ marginTop: SIZE }}>
                 <Octicons name="report" size={SIZE * 1.8} color="red" />
-                <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
+                <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }} >Report</Text>
               </Row>
             </TouchableOpacity>
           )}

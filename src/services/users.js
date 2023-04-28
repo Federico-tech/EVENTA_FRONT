@@ -120,3 +120,15 @@ export const deleteMe = async () => {
     console.log({ errorDeletingMe: e });
   }
 };
+
+export const getUserField = async ({userId, field}) => {
+  console.log('UserId', userId)
+  console.log('query', field)
+  try {
+    const params = {field}
+    const { data: userFields } = await mainAxios.get(`users/${userId}/getField`, { params })
+    return userFields
+  } catch (e) {
+    console.log({ errorGettingUserField: e})
+  }
+}

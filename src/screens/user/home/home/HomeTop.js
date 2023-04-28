@@ -85,7 +85,7 @@ export const HomeTop = forwardRef(({ eventData, ...props }, ref) => {
   const { data, getMoreData, getData, getRefreshedData, loadMore } = useInfiniteScroll({
     entity: 'notes/followedNotes',
     filters: {
-      'date.$gte': DateTime.now().minus({ days: 1 }).toISO(),
+      'date.$gte': DateTime.now().minus({ days: 2 }).toISO(),
     },
     limit: 5,
   });
