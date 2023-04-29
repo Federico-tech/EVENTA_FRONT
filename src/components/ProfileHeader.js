@@ -63,7 +63,7 @@ export const ProfileHeader = ({ myProfile, user }) => {
           {myProfile ? (
             <IconButton name="settings-sharp" color="black" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
           ) : currentUserId !== selectedUserId ? (
-            <IconButton name="ios-ellipsis-vertical" color="black" size={18} onPress={handlePresentModal} />
+            <IconButton name="ios-ellipsis-horizontal" color="black" size={SIZE * 1.75} onPress={handlePresentModal} />
           ) : (
             <View style={{ width: SIZE * 1.5 }} />
           )}
@@ -95,22 +95,26 @@ const styles = StyleSheet.create({
   wrapper: {
     height: SIZE * 6,
     zIndex: -1,
+    justifyContent: 'center'
   },
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
     marginTop: SIZE * 4,
-    alignItem: 'center',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignContent: 'center',
+    flex: 1,
   },
   usernameText: {
     color: COLORS.black,
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.lg,
+    fontSize: SIZES.md,
   },
   name: {
     paddingLeft: SIZE * 10,
     paddingTop: SIZE,
   },
 });
+
+

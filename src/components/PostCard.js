@@ -19,6 +19,7 @@ import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
+import { formatNumber } from '../utils/numbers';
 
 export const PostCard = ({ postData, getData, touchable }) => {
   const [isLiked, setIsLiked] = useState();
@@ -202,7 +203,12 @@ export const PostCard = ({ postData, getData, touchable }) => {
             </Row>
             {postData.comments !== 0 && (
               <Row>
-                <Text regularXs style={{ marginTop: SIZE / 1.5, width: SIZE * 24, marginBottom: SIZE / 2 }} numberOfLines={2}>
+                <TouchableOpacity onPress={onPressComments}>
+                  <Text regularXs color={COLORS.gray} style={{ marginTop: SIZE / 20 }}>
+                    View {postData.comments <= 1 ? postData.comments + ' comment' : 'all ' + formatNumber(postData.comments) + ' comments'}
+                  </Text>
+              </TouchableOpacity>
+                <Text regularXs style={{ marginTop: SIZE / 2, width: SIZE * 24, marginBottom: SIZE / 2 }} numberOfLines={2}>
                   <Text ff={FONTS.semiBold}>{commentUserUsername} </Text>
                   {postData?.comment?.content}
                 </Text>
