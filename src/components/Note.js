@@ -5,12 +5,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { fire, unfire } from '../services/notes';
 import { report } from '../services/reports';
-import { selectCurrentUserId } from '../store/user';
+import { selectCurrentUserId, setUserSelected } from '../store/user';
 import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
@@ -23,6 +23,7 @@ export const Note = ({ data, deleteNote }) => {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
   const userId = useSelector(selectCurrentUserId);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ['13%'];
@@ -83,13 +84,18 @@ export const Note = ({ data, deleteNote }) => {
   };
 
   const onPressDeleteNote = () => {
-    deleteNote(data._id)
-    handleClosePress()
+    deleteNote(data._id);
+    handleClosePress();
     showMessage({
       message: 'Note deleted Succefully',
       type: 'success',
     });
-  }
+  };
+
+  const onPressNavigateProfile = () => {
+    dispatch(setUserSelected(data.user));
+    navigation.navigate(ROUTES.AccountUserScreen);
+  };
 
   return (
     <View>
@@ -98,21 +104,30 @@ export const Note = ({ data, deleteNote }) => {
           <View>
             <View style={styles.note}>
               <Row row alignCenter spaceBetween>
-                <LoadingImage source={data?.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
-                <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire} disabled={isFireLoading} >
+                <TouchableOpacity onPress={onPressNavigateProfile} disabled={data.user._id === userId}>
+                  <LoadingImage source={data?.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire} disabled={isFireLoading}>
                   <Row row alignCenter>
                     <TouchableOpacity onPress={() => navigation.navigate(ROUTES.NoteFiresScreen, { data })}>
                       <Text regularSm style={{ fontFamily: FONTS.medium, padding: SIZE / 4 }}>
                         {formatShortNumber(numFires)}
                       </Text>
                     </TouchableOpacity>
-                    <MaterialIcons name="local-fire-department" size={SIZE * 1.7} color={isFire ? 'darkorange' : 'black'} style={{ marginVertical: SIZE}}/>
+                    <MaterialIcons
+                      name="local-fire-department"
+                      size={SIZE * 1.7}
+                      color={isFire ? 'darkorange' : 'black'}
+                      style={{ marginVertical: SIZE }}
+                    />
                   </Row>
                 </TouchableOpacity>
               </Row>
-              <Text semiBoldSm numberOfLines={1} ellipsizeMode="tail" style={{ marginTop: SIZE / 2 }}>
-                {data.user.username}
-              </Text>
+              <TouchableOpacity onPress={onPressNavigateProfile} disabled={data.user._id === userId}>
+                <Text semiBoldSm numberOfLines={1} ellipsizeMode="tail" style={{ marginTop: SIZE / 2 }}>
+                  {data.user.username}
+                </Text>
+              </TouchableOpacity>
               <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: SIZES.xs, marginTop: SIZE / 3, marginRight: SIZE }}>
                 {data.content}
               </Text>

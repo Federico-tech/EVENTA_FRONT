@@ -8,6 +8,7 @@ import _ from 'lodash';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { FlatList, RefreshControl, TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
@@ -19,7 +20,6 @@ import { selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
-import { showMessage } from 'react-native-flash-message';
 
 export const CreatePostScreen = () => {
   useEffect(requestCameraPermission, []);
@@ -85,11 +85,11 @@ export const CreatePostScreen = () => {
         await validateForm(data);
         await createPost({ ...data, userId });
         navigation.goBack({ myParam: 'getData' });
+        resetForm();
         showMessage({
           type: 'success',
-          message: 'Post created succefully'
-        })
-        resetForm();
+          message: 'Post created succefully',
+        });
         setLoading(false);
       } catch (e) {
         setLoading(false);

@@ -153,16 +153,15 @@ export const EventCard = ({ eventData }) => {
 };
 
 export const MostPopularEventCard = ({ eventData }) => {
-  
-  const navigation = useNavigation()
-  const dispatch = useDispatch()
-    const handleOnPress = () => {
-      dispatch(setUserSelected(eventData.organiser));
-      dispatch(setSelectedEvent(eventData));
-      navigation.navigate('EventDetails', {
-        eventData,
-      });
-    }
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const handleOnPress = () => {
+    dispatch(setUserSelected(eventData.organiser));
+    dispatch(setSelectedEvent(eventData));
+    navigation.navigate('EventDetails', {
+      eventData,
+    });
+  };
 
   return (
     <>

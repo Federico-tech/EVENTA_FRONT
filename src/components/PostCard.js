@@ -11,20 +11,19 @@ import { ROUTES } from '../navigation/Navigation';
 import { postLike, postUnlike } from '../services/postLikes';
 import { deletePost } from '../services/posts';
 import { report } from '../services/reports';
+import { getUserField } from '../services/users';
 import { selectCurrentUserId, setUserSelected } from '../store/user';
 import { setTimeElapsed } from '../utils/dates';
-import { useInfiniteScroll } from '../utils/hooks';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
-import { getUserField } from '../services/users';
 
 export const PostCard = ({ postData, getData, touchable }) => {
   const [isLiked, setIsLiked] = useState();
   const [likes, setLikes] = useState();
-  const [ commentUserUsername, setCommentUserUsername ] = useState()
+  const [commentUserUsername, setCommentUserUsername] = useState();
   const [isLikePressLoading, setIsLikePressLoading] = useState(false);
   const [lastTap, setLastTap] = useState(null);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
@@ -39,14 +38,6 @@ export const PostCard = ({ postData, getData, touchable }) => {
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
   };
-
-  const { data } = useInfiniteScroll({
-    entity: `likes`,
-    limit: 1,
-    filters: {
-      objectId: postData._id,
-    },
-  });
 
   const handleClosePress = () => bottomSheetModalRef.current.close();
 
@@ -66,12 +57,12 @@ export const PostCard = ({ postData, getData, touchable }) => {
   useEffect(() => {
     setLikes(postData.likes);
     setIsLiked(postData.hasLiked);
-    if(postData.comments !== 0){
-      getUserField({userId: postData?.comment?.userId, field: 'username'}).then((result) => {
-        setCommentUserUsername(result.user.username)
-      })
+    if (postData.comments !== 0) {
+      getUserField({ userId: postData?.comment?.userId, field: 'username' }).then((result) => {
+        setCommentUserUsername(result.user.username);
+      });
     }
-  }, []);
+  }, [postData]);
 
   const onPresslike = async () => {
     setLikes(likes + 1);
@@ -142,8 +133,6 @@ export const PostCard = ({ postData, getData, touchable }) => {
     navigation.navigate(ROUTES.PostCommentScreen, { postId: postData._id });
   };
 
-  console.log({ postData })
-
   return (
     <TouchableWithoutFeedback onPress={touchable ? onPressNavigatePosts : handleDoubleTap} disabled={isLikePressLoading}>
       <View style={styles.wrapper}>
@@ -212,14 +201,13 @@ export const PostCard = ({ postData, getData, touchable }) => {
               </Text>
             </Row>
             {postData.comments !== 0 && (
-                <Row>
+              <Row>
                 <Text regularXs style={{ marginTop: SIZE / 1.5, width: SIZE * 24, marginBottom: SIZE / 2 }} numberOfLines={2}>
-                  <Text ff={FONTS.semiBold} >{commentUserUsername} </Text>
+                  <Text ff={FONTS.semiBold}>{commentUserUsername} </Text>
                   {postData?.comment?.content}
                 </Text>
               </Row>
             )}
-        
           </Row>
         </Row>
       </View>
@@ -236,7 +224,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
             <TouchableOpacity onPress={() => setReportModalVisible(true)}>
               <Row row alignCenter style={{ marginTop: SIZE }}>
                 <Octicons name="report" size={SIZE * 1.8} color="red" />
-                <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }} >Report</Text>
+                <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
               </Row>
             </TouchableOpacity>
           )}

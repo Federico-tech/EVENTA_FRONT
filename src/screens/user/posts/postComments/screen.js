@@ -90,7 +90,7 @@ export const PostCommentScreen = ({ route }) => {
             style={{ flexDirection: 'row', marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE, width: WIDTH_DEVICE * 0.9, alignItems: 'center' }}
             ref={textInputRef}>
             <LoadingImage profile source={currentUser.profilePic} width={SIZE * 3.5} iconSIZE={SIZE * 2.5} />
-            <TextInput style={styles.input} onChangeText={handleInputChange} value={content} placeholder="Write you comment" maxLength={150}/>
+            <TextInput style={styles.input} onChangeText={handleInputChange} value={content} placeholder="Write you comment" maxLength={150} />
             <TouchableOpacity onPress={onPressPostComment} disabled={(isCreatePostLoading || !content) && true}>
               <Text color={COLORS.primary} semiBoldSm style={(isCreatePostLoading || !content) && { opacity: 0.5 }}>
                 Post

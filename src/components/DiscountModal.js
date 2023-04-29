@@ -16,7 +16,7 @@ export const DiscountModal = ({ isVisible, onBackdropPress, event }) => {
   return (
     <Modal isVisible={isVisible} onBackdropPress={onBackdropPress}>
       <View style={styles.container}>
-        <Image source={require('../assets/logos/WhiteLogo.png')} style={styles.logo} />
+        {/* <Image source={require('../assets/logos/WhiteLogo.png')} style={styles.logo} /> */}
         <Text color={COLORS.white} semiBoldMd>
           {event.name.toUpperCase()}
         </Text>

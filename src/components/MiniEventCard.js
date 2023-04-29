@@ -1,55 +1,57 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import { like, unLike } from '../services/likes';
 import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { formatDate, EVENT_DATE_FORMAT } from '../utils/dates';
+import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 
 export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) => {
+  const [likes, setLikes] = useState();
+  const [isLiked, setIsLiked] = useState();
+  const [isLikePressLoading, setIsLikePressLoading] = useState(false);
   const { organiser, coverImage, date, name } = data;
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  
+
   const handlePress = () => {
     dispatch(setUserSelected(data.organiser));
     dispatch(setSelectedEvent(data));
     navigation.navigate('EventDetails', { data });
   };
 
+  useEffect(() => {
+    setLikes(data.likes);
+    setIsLiked(data.hasLiked);
+  }, [data]);
+
+  const onPresslike = async () => {
+    setLikes(likes + 1);
+    setIsLiked(true);
+    setIsLikePressLoading(true);
+    await like(data._id);
+    setIsLikePressLoading(false);
+  };
+
+  const onPressUnlike = async () => {
+    setLikes(likes - 1);
+    setIsLiked(false);
+    setIsLikePressLoading(true);
+    await unLike(data._id);
+    setIsLikePressLoading(false);
+  };
+
   return (
     <TouchableOpacity onPress={onPress ? onPress : handlePress}>
       <View style={styles.wrapper}>
-        {/* <View style={styles.top}>
-          <TouchableOpacity onPress={handleProfilePress}>
-            <Row row alignCenter>
-              <LoadingImage source={organiser?.profilePic} style={styles.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 1.5} />
-              <Text style={styles.textOrganiserName}>{organiser?.username}</Text>
-            </Row>
-          </TouchableOpacity>
-          <Row row alignCenter>
-            {scan && (
-              <Row row alignCenter>
-                <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 1.7} />
-                <Text style={styles.textPart} mr={SIZE} ml={SIZE / 2}>
-                  {formatShortNumber(scans)}
-                </Text>
-              </Row>
-            )}
-            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)}>
-              <Row row alignCenter>
-                <MaterialIcons name="person" size={SIZE * 2} />
-                <Text style={styles.textPart}>{formatShortNumber(participants)}</Text>
-              </Row>
-            </TouchableOpacity>
-          </Row>
-        </View>
-        <Line lineStyle={{ backgroundColor: COLORS.lightGray }} /> */}
         <Row row alignCenter spaceBetween>
           <View style={styles.event}>
             <LoadingImage source={coverImage} style={styles.coverImage} resizeMode="cover" indicator event width={SIZE * 8} />
@@ -59,9 +61,18 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
               <Text style={styles.address}>by @{organiser.username}</Text>
             </View>
           </View>
-          {/* <Row>
-         <AntDesign name="heart" style={{ marginRight: SIZE / 2}} size={SIZE * 1.7} color="red" />
-        </Row> */}
+          <View style={styles.likeContainer}>
+            <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{formatShortNumber(likes)}</Text>
+            {isLiked ? (
+              <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
+                <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
+                <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
+              </TouchableOpacity>
+            )}
+          </View>
         </Row>
       </View>
     </TouchableOpacity>
@@ -125,5 +136,9 @@ const styles = StyleSheet.create({
   textPart: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.sm,
+  },
+  likeContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });

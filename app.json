@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "eventa App",
-    "slug": "eventaApp",
-    "version": "1.0.0",
+    "name": "Eventa",
+    "slug": "EVENTA_FRONT_EXPO",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./src/assets/logos/GradientBlueLogo.png",
+    "icon": "./src/assets/logos/GradientBlueIcon.png",
     "scheme": "com.eventa.eventaApp",
     "userInterfaceStyle": "automatic",
     "notification": {
-      "icon": "./src/assets/logos/BlueLogo.png"
+      "icon": "./src/assets/logos/GradientBlueIcon.png"
     },
     "splash": {
       "image": "./src/assets/logos/SplashScreen.png",
@@ -23,7 +23,10 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.eventa.eventaApp"
+      "bundleIdentifier": "com.eventa.eventaApp",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBASt5-mU0BdP4yNKq38DQkt4lzSYlIQE4"
+      }
     },
     "android": {
       "package": "com.eventa.eventaApp",
@@ -37,7 +40,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./src/assets/logos/BlueLogo.png",
+          "icon": "./src/assets/logos/GradientBlueIcon.png",
           "color": "#ffffff"
         }
       ]

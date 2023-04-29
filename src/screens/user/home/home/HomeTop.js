@@ -5,20 +5,19 @@ import _ from 'lodash';
 import { DateTime } from 'luxon';
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { InputText, LoadingImage, MostPopularEventCard, Note, PostCard, Row, Text, TextButton } from '../../../../components/index';
+import { HomeCarousel } from '../../../../components/HomeCarousel';
+import { InputText, LoadingImage, Note, PostCard, Row, Text, TextButton } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { createNote, deleteNote, getUserNotes } from '../../../../services/notes';
 import { getPosts } from '../../../../services/posts';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
-import { HomeCarousel } from '../../../../components/HomeCarousel';
 
-export const HomeTop = forwardRef(({ eventData, ...props }, ref) => {
+export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
   const [post, setPost] = useState();
@@ -59,8 +58,8 @@ export const HomeTop = forwardRef(({ eventData, ...props }, ref) => {
             setUserNotes(result.data);
           });
           getPosts().then((result) => {
-            setPost(result[0])
-          })
+            setPost(result[0]);
+          });
         },
       };
     },
@@ -101,7 +100,7 @@ export const HomeTop = forwardRef(({ eventData, ...props }, ref) => {
   };
 
   const onPressCreateNote = async () => {
-    createNote({ content: note, userId });
+    await createNote({ content: note, userId });
     handleClosePress();
     getUserNotes().then((result) => {
       console.log('result', result);
@@ -113,8 +112,7 @@ export const HomeTop = forwardRef(({ eventData, ...props }, ref) => {
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
       <View style={{ alignItems: 'center' }}>
-        <MostPopularEventCard eventData={eventData} />
-        <HomeCarousel />
+        <HomeCarousel eventData={eventData} mapData={mapData}/>
         <View style={styles.noteContainer}>
           <FlatList
             data={[...(userNotes || []), ...(data || [])]}
@@ -228,7 +226,7 @@ const styles = StyleSheet.create({
     marginLeft: -(WIDTH_DEVICE / 40),
     width: WIDTH_DEVICE,
     height: SIZE * 13,
-    marginTop: SIZE * 2.5,
+    marginTop: SIZE,
   },
   plusIcon: {
     position: 'absolute',

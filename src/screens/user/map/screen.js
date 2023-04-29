@@ -67,11 +67,8 @@ export const MapScreen = ({ navigation, route }) => {
     dispatch(setUserSelected(user));
   };
 
-
-
   const handlePresentModalEvents = ({ event }) => {
     bottomSheetModalRef.current?.present();
-    console.log('sheet',event)
     getRefreshedEvent(event);
     dispatch(setSelectedEvent(event));
     dispatch(setUserSelected(event.organiser));

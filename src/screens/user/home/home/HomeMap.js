@@ -6,11 +6,10 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
 import { LoadingImage } from '../../../../components/LoadingImage';
-import { Row } from '../../../../components/Row';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { selectCurrentUser } from '../../../../store/user';
 import mapStyle from '../../../../utils/mapStyle.json';
-import { COLORS, SIZE, SIZES } from '../../../../utils/theme';
+import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeMap = ({ mapData }) => {
   const user = useSelector(selectCurrentUser);
@@ -49,35 +48,38 @@ export const HomeMap = ({ mapData }) => {
   console.debug({ eventsByCoordinate });
 
   return (
-    <View style={{ marginBottom: SIZE, borderRadius: SIZES.xxs }}>
-      <MapView
-        style={{ height: SIZE * 17.5, zIndex: 1, borderRadius: SIZES.xxs }}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: user.position.coordinates[1],
-          longitude: user.position.coordinates[0],
-          latitudeDelta: 0.2,
-          longitudeDelta: 0.2,
-        }}
-        ref={mapRef}
-        customMapStyle={mapStyle}
-        showsUserLocation>
-        {eventsByCoordinate.map((event) => (
-          <Marker
-            key={event._id}
-            coordinate={{
-              latitude: event.position.coordinates[1],
-              longitude: event.position.coordinates[0],
-            }}>
-            <View style={{ alignItems: 'center', height: SIZE * 6 }}>
-              <View style={styles.marker}>
-                <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5} />
+    <View>
+      <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapNavigator)}>
+        <MapView
+          style={{height: SIZE * 19, width: WIDTH_DEVICE }}
+          provider={PROVIDER_GOOGLE}
+          initialRegion={{
+            latitude: user.position.coordinates[1],
+            longitude: user.position.coordinates[0],
+            latitudeDelta: 0.5,
+            longitudeDelta: 0.5,
+          }}
+          ref={mapRef}
+          customMapStyle={mapStyle}
+          pointerEvents="auto"
+          scrollEnabled={false}
+          showsUserLocation>
+          {eventsByCoordinate.map((event) => (
+            <Marker
+              key={event._id}
+              coordinate={{
+                latitude: event.position.coordinates[1],
+                longitude: event.position.coordinates[0],
+              }}>
+              <View style={{ alignItems: 'center', height: SIZE * 6 }}>
+                <View style={styles.marker}>
+                  <LoadingImage source={event.coverImage} imageStyle={styles.profileImage} profile width={SIZE * 4.5} iconSIZE={SIZE * 2.5} />
+                </View>
               </View>
-            </View>
-          </Marker>
-        ))}
-      </MapView>
-      <View style={styles.mapButton}>
+            </Marker>
+          ))}
+        </MapView>
+        {/* <View style={styles.mapButton}>
         <TouchableOpacity onPress={toMyPosition}>
           <Row>
             <FontAwesome5 name="location-arrow" size={SIZE * 1.2} />
@@ -89,7 +91,8 @@ export const HomeMap = ({ mapData }) => {
             <MaterialIcons name="zoom-out-map" size={SIZE * 1.4} />
           </Row>
         </TouchableOpacity>
-      </View>
+      </View> */}
+      </TouchableOpacity>
     </View>
   );
 };

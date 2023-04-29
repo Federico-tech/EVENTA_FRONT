@@ -5,7 +5,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { GradientBlueLogo } from '../assets';
+import { BlueGradientLogo } from '../assets';
 import { ROUTES } from '../navigation/Navigation';
 import { createNote } from '../services/notes';
 import { setReadNotifications } from '../services/notifications';
@@ -99,7 +99,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
                 {notificationsRead !== 0 && <View style={styles.notificationDot} />}
               </View>
 
-              <Image resizeMode="contain" style={styles.logo} source={GradientBlueLogo} />
+              <Image resizeMode="contain" style={styles.logo} source={BlueGradientLogo} />
             </Row>
           </View>
         </View>
@@ -123,8 +123,9 @@ const styles = StyleSheet.create({
     marginHorizontal: WIDTH_DEVICE / 20,
   },
   logo: {
-    width: SIZE * 2.7,
+    width: SIZE * 3.5,
     aspectRatio: 1,
+    margin: -SIZE / 2
   },
   imageProfile: {
     borderColor: COLORS.primary,

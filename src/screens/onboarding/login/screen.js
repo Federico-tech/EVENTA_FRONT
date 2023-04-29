@@ -12,6 +12,7 @@ import { Button, Container, InputText, Row, SocialLoginButton, TextButton } from
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE, SHADOWS } from '../../../utils/theme';
+import { BlueGradientLogo } from '../../../assets';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -92,7 +93,7 @@ export const LoginScreen = () => {
     <Container>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <Container>
-          <Image source={require('../../../assets/logos/BlueLogo.png')} style={styles.logo} />
+          <Image source={BlueGradientLogo} style={styles.logo} />
           <View style={styles.container}>
             <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
             <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
@@ -142,12 +143,14 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE,
+    marginTop: -SIZE,
   },
 
   logo: {
     alignSelf: 'center',
     marginTop: SIZE * 5,
+    width: SIZE * 20,
+    height: SIZE * 20,
   },
   emailText: {
     marginTop: HEIGHT_DEVICE / 100,

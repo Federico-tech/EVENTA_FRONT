@@ -1,8 +1,8 @@
 import { Entypo } from '@expo/vector-icons';
-import { useIsFocused, useNavigation, useScrollToTop } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, View, TouchableOpacity } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 
 import { Container, Header, ListEmptyComponent, PostCard, Row, Text } from '../../../../components';
@@ -15,10 +15,8 @@ export const PostsFeedScreen = ({ route }) => {
   const { event } = route?.params || {};
   const [entity, setEntity] = useState(event ? `events/${event._id}/posts` : 'posts/home');
   const [eventFilter, setEventFilter] = useState(event?.name);
-  const [isLoading, setIsLoading] = useState(false)
 
   const ref = React.useRef(null);
-  const notesRef = React.useRef(null);
   useScrollToTop(ref);
 
   const { data, getMoreData, getRefreshedData, loadMore, refreshing, getData, setData } = useInfiniteScroll({
@@ -49,7 +47,7 @@ export const PostsFeedScreen = ({ route }) => {
         data={data}
         renderItem={({ item }) => <PostCard postData={item} getData={getData} />}
         keyExtractor={(item) => item._id}
-        style={{ paddingTop: SIZE}}
+        style={{ paddingTop: SIZE }}
         showsVerticalScrollIndicator={false}
         onEndReached={_.throttle(getMoreData, 400)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
@@ -71,11 +69,3 @@ export const PostsFeedScreen = ({ route }) => {
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE * 4,
-    marginBottom: SIZE,
-  },
-});
