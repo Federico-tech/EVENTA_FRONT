@@ -16,6 +16,7 @@ import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/them
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const useGetParticipants = (eventId) => {
   const [data, setData] = useState([]);
@@ -163,40 +164,44 @@ export const MostPopularEventCard = ({ eventData }) => {
     });
   };
 
+  const { data, fetchData: getParticipants, totalData } = useGetParticipants(eventData?._id);
+
+  console.log('data', data)
+
   return (
     <>
       <TouchableWithoutFeedback onPress={handleOnPress}>
         <Row style={{ height: SIZE * 17, width: WIDTH_DEVICE }}>
-          <LoadingImage
-            event
-            width={WIDTH_DEVICE}
-            imageStyle={{ aspectRatio: 1.6, borderRadius: 0 }}
-            source={eventData?.coverImage}
-            viewStyle={{ aspectRatio: 1.6 }}
-          />
+          <View >
+            <LoadingImage
+              event
+              width={WIDTH_DEVICE}
+              imageStyle={{ aspectRatio: 1.6, borderRadius: 0 }}
+              source={eventData?.coverImage}
+              viewStyle={{ aspectRatio: 1.6 }}
+            />
+             <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']} />
+          </View>
           <Row style={styles.info}>
             <Row>
               <Text color={COLORS.white} ff={FONTS.semiBold} fs={SIZES.sm}>
                 Most popular
               </Text>
             </Row>
-            {/* <Row row alignCenter width={WIDTH_DEVICE} spaceBetween>
-          <Row >
-            <Text color={COLORS.white} ff={FONTS.semiBold}>{eventData?.name}</Text>
-            <Text color={COLORS.white} ff={FONTS.regular} fs={SIZES.xs}>by @{eventData?.organiser.username}</Text>
-          </Row>
-          <Row row mr={SIZE * 2}>
-        {data?.slice(0, 3).map((data) => (
-          <LoadingImage
-            key={data?.user._id}
-            source={data?.user.profilePic}
-            imageStyle={[styles.partImage, { width: SIZE * 3.5, borderWidth: 1.5 }]}
-            profile
-            iconSIZE={SIZE * 1.3}
-          />
-        ))}
-      </Row>
-        </Row> */}
+            <Row row alignCenter width={WIDTH_DEVICE} ml={ SIZE} style={{ justifyContent: 'flex-end', marginRight: SIZE}}>
+              <Row row mr={SIZE * 2} >
+                {data?.map((data) => (
+                  <LoadingImage
+                    key={data?.user._id}
+                    source={data?.user.profilePic}
+                    imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5 }]}
+                    profile
+                    iconSIZE={SIZE * 1.3}
+                  />
+                ))}
+                <Row width={SIZE} />
+              </Row>
+            </Row>
           </Row>
         </Row>
       </TouchableWithoutFeedback>
@@ -292,9 +297,16 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     height: '100%',
+    width: '100%',
     position: 'absolute',
     margin: SIZE,
     flexDirection: 'column',
     justifyContent: 'space-between',
+  },
+  imageGradient: {
+    width: '100%',
+    height: '100%',
+    zIndex: 3,
+    position: 'absolute',
   },
 });

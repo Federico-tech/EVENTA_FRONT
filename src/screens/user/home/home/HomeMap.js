@@ -1,4 +1,4 @@
-import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, Feather, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
@@ -10,6 +10,7 @@ import { ROUTES } from '../../../../navigation/Navigation';
 import { selectCurrentUser } from '../../../../store/user';
 import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { Row } from '../../../../components';
 
 export const HomeMap = ({ mapData }) => {
   const user = useSelector(selectCurrentUser);
@@ -45,6 +46,33 @@ export const HomeMap = ({ mapData }) => {
     });
   };
 
+
+  const handleZoomIn = () => {
+    mapRef.current.getCamera().then(camera => {
+      const { center, pitch, heading } = camera;
+      const newCamera = {
+        center,
+        pitch,
+        heading,
+        zoom: camera.zoom + 1,
+      };
+      mapRef.current.setCamera(newCamera, { duration: 5000 });
+    });
+  };
+
+  const handleZoomOut = () => {
+    mapRef.current.getCamera().then(camera => {
+      const { center, pitch, heading } = camera;
+      const newCamera = {
+        center,
+        pitch,
+        heading,
+        zoom: camera.zoom - 1,
+      };
+      mapRef.current.setCamera(newCamera, { duration: 5000 });
+    });
+  };
+
   console.debug({ eventsByCoordinate });
 
   return (
@@ -61,7 +89,7 @@ export const HomeMap = ({ mapData }) => {
           }}
           ref={mapRef}
           customMapStyle={mapStyle}
-          pointerEvents="auto"
+            pointerEvents='none'
           scrollEnabled={false}
           showsUserLocation>
           {eventsByCoordinate.map((event) => (
@@ -79,19 +107,19 @@ export const HomeMap = ({ mapData }) => {
             </Marker>
           ))}
         </MapView>
-        {/* <View style={styles.mapButton}>
-        <TouchableOpacity onPress={toMyPosition}>
-          <Row>
-            <FontAwesome5 name="location-arrow" size={SIZE * 1.2} />
+        <View style={styles.mapButton}>
+        <TouchableOpacity onPress={handleZoomIn}>
+          <Row style={{ flex: 1}} alignCenter justifyCenter>
+            <Entypo name="plus" size={SIZE * 1.5} />
           </Row>
-        </TouchableOpacity>
+        </TouchableOpacity >
         <View style={{ height: 1, width: SIZE * 2.5, backgroundColor: 'black' }} />
-        <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapNavigator)}>
-          <Row>
-            <MaterialIcons name="zoom-out-map" size={SIZE * 1.4} />
+        <TouchableOpacity onPress={handleZoomOut}>
+          <Row style={{ flex: 1}} alignCenter justifyCenter>
+            <Entypo name="minus" size={SIZE * 1.5} />
           </Row>
         </TouchableOpacity>
-      </View> */}
+      </View>
       </TouchableOpacity>
     </View>
   );
@@ -145,7 +173,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    marginTop: SIZE * 12,
-    marginLeft: SIZE * 23.9,
+    marginTop: SIZE * 13,
+    marginLeft: SIZE * 26,
   },
 });

@@ -38,7 +38,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
   const items = [
     {
       title: 'Event Card 1',
-      component: <MostPopularEventCard eventData={eventData} />,
+      component: eventData?._id ? <MostPopularEventCard eventData={eventData} /> : null,
     },
     {
       title: 'Map',
@@ -73,7 +73,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
       </ScrollView>
       <View style={styles.dotContainer}>
         {items.map((_, index) => (
-          <View style={[styles.dot, { backgroundColor: index === activeIndex ? COLORS.primary : COLORS.gray }]} />
+          <View style={[styles.dot, { backgroundColor: index === activeIndex ? COLORS.primary : COLORS.lightGray }]} />
         ))}
       </View>
     </View>
