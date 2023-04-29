@@ -1,6 +1,5 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { HomeMap, MostPopularEventCard, Row, Text } from '.';
@@ -22,7 +21,7 @@ const RecommendedUsers = () => {
 
   return (
     <View style={styles.recommendedUserContainer}>
-      <Text semiBoldSm>Find new friends!</Text>
+      <Text semiBoldSm>Find new Friends!</Text>
       <Row row spaceBetween width="100%" mt={SIZE}>
         {recommendedUsers?.map((recommendedUser) => (
           <RecommendedUserColumn key={recommendedUser._id} data={recommendedUser} />

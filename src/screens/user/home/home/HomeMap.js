@@ -1,16 +1,16 @@
-import { Entypo, Feather, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
+import { Row } from '../../../../components';
 import { LoadingImage } from '../../../../components/LoadingImage';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { selectCurrentUser } from '../../../../store/user';
 import mapStyle from '../../../../utils/mapStyle.json';
 import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
-import { Row } from '../../../../components';
 
 export const HomeMap = ({ mapData }) => {
   const user = useSelector(selectCurrentUser);
@@ -37,18 +37,8 @@ export const HomeMap = ({ mapData }) => {
 
   const mapRef = React.createRef();
 
-  const toMyPosition = () => {
-    mapRef.current.animateToRegion({
-      latitude: user.position.coordinates[1],
-      longitude: user.position.coordinates[0],
-      latitudeDelta: 0.2,
-      longitudeDelta: 0.2,
-    });
-  };
-
-
   const handleZoomIn = () => {
-    mapRef.current.getCamera().then(camera => {
+    mapRef.current.getCamera().then((camera) => {
       const { center, pitch, heading } = camera;
       const newCamera = {
         center,
@@ -61,7 +51,7 @@ export const HomeMap = ({ mapData }) => {
   };
 
   const handleZoomOut = () => {
-    mapRef.current.getCamera().then(camera => {
+    mapRef.current.getCamera().then((camera) => {
       const { center, pitch, heading } = camera;
       const newCamera = {
         center,
@@ -79,7 +69,7 @@ export const HomeMap = ({ mapData }) => {
     <View>
       <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapNavigator)}>
         <MapView
-          style={{height: SIZE * 19, width: WIDTH_DEVICE }}
+          style={{ height: SIZE * 19, width: WIDTH_DEVICE }}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
             latitude: user.position.coordinates[1],
@@ -89,7 +79,7 @@ export const HomeMap = ({ mapData }) => {
           }}
           ref={mapRef}
           customMapStyle={mapStyle}
-            pointerEvents='none'
+          pointerEvents="none"
           scrollEnabled={false}
           showsUserLocation>
           {eventsByCoordinate.map((event) => (
@@ -108,18 +98,18 @@ export const HomeMap = ({ mapData }) => {
           ))}
         </MapView>
         <View style={styles.mapButton}>
-        <TouchableOpacity onPress={handleZoomIn}>
-          <Row style={{ flex: 1}} alignCenter justifyCenter>
-            <Entypo name="plus" size={SIZE * 1.5} />
-          </Row>
-        </TouchableOpacity >
-        <View style={{ height: 1, width: SIZE * 2.5, backgroundColor: 'black' }} />
-        <TouchableOpacity onPress={handleZoomOut}>
-          <Row style={{ flex: 1}} alignCenter justifyCenter>
-            <Entypo name="minus" size={SIZE * 1.5} />
-          </Row>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={handleZoomIn}>
+            <Row style={{ flex: 1 }} alignCenter justifyCenter>
+              <Entypo name="plus" size={SIZE * 1.5} />
+            </Row>
+          </TouchableOpacity>
+          <View style={{ height: 1, width: SIZE * 2.5, backgroundColor: 'black' }} />
+          <TouchableOpacity onPress={handleZoomOut}>
+            <Row style={{ flex: 1 }} alignCenter justifyCenter>
+              <Entypo name="minus" size={SIZE * 1.5} />
+            </Row>
+          </TouchableOpacity>
+        </View>
       </TouchableOpacity>
     </View>
   );

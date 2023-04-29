@@ -1,5 +1,6 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -16,7 +17,6 @@ import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/them
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export const useGetParticipants = (eventId) => {
   const [data, setData] = useState([]);
@@ -164,15 +164,15 @@ export const MostPopularEventCard = ({ eventData }) => {
     });
   };
 
-  const { data, fetchData: getParticipants, totalData } = useGetParticipants(eventData?._id);
+  const { data } = useGetParticipants(eventData?._id);
 
-  console.log('data', data)
+  console.log('data', data);
 
   return (
     <>
       <TouchableWithoutFeedback onPress={handleOnPress}>
         <Row style={{ height: SIZE * 17, width: WIDTH_DEVICE }}>
-          <View >
+          <View>
             <LoadingImage
               event
               width={WIDTH_DEVICE}
@@ -180,7 +180,7 @@ export const MostPopularEventCard = ({ eventData }) => {
               source={eventData?.coverImage}
               viewStyle={{ aspectRatio: 1.6 }}
             />
-             <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']} />
+            <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']} />
           </View>
           <Row style={styles.info}>
             <Row>
@@ -188,8 +188,8 @@ export const MostPopularEventCard = ({ eventData }) => {
                 Most popular
               </Text>
             </Row>
-            <Row row alignCenter width={WIDTH_DEVICE} ml={ SIZE} style={{ justifyContent: 'flex-end', marginRight: SIZE}}>
-              <Row row mr={SIZE * 2} >
+            <Row row alignCenter width={WIDTH_DEVICE} ml={SIZE} style={{ justifyContent: 'flex-end', marginRight: SIZE }}>
+              <Row row mr={SIZE * 2}>
                 {data?.map((data) => (
                   <LoadingImage
                     key={data?.user._id}

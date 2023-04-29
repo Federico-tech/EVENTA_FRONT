@@ -4,7 +4,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
-import { follow, followWithId, unFollow, unFollowWithId } from '../services/follow';
+import { followWithId, unFollowWithId } from '../services/follow';
 import { setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { Button } from './Button';
