@@ -1,11 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
+import { follow, followWithId, unFollow, unFollowWithId } from '../services/follow';
 import { setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
@@ -89,6 +91,59 @@ export const UserColumn = ({ data }) => {
   );
 };
 
+export const RecommendedUserColumn = ({ data }) => {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
+  console.log(data);
+
+  const onPressFollow = async () => {
+    setIsFollowing(true);
+    setIsFollowLoading(true);
+    await followWithId(data._id);
+    setIsFollowLoading(false);
+  };
+
+  const onPressUnfollow = async () => {
+    setIsFollowing(false);
+    setIsFollowLoading(true);
+    await unFollowWithId(data._id);
+    setIsFollowLoading(false);
+  };
+
+  return (
+    <View style={styles.postedRecommendedUserContainer}>
+      <LoadingImage source={data.profilePic} profile width={SIZE * 5} iconSIZE={SIZE * 2} />
+      <Row width={SIZE * 6} alignCenter mt={SIZE}>
+        <Text fs={SIZES.xxs} ff={FONTS.semiBold} width numberOfLines={1}>
+          {data.username}
+        </Text>
+        <Text color={COLORS.gray} fs={SIZES.xxs} ff={FONTS.regular} numberOfLines={1} mb={SIZE}>
+          {data.name}
+        </Text>
+        {isFollowing ? (
+          <Button
+            secondary
+            text="Following"
+            onPress={onPressUnfollow}
+            containerStyle={{ width: SIZE * 7, height: SIZE * 2, borderRadius: 10 }}
+            disabled={isFollowLoading}
+            textStyle={{ fontFamily: FONTS.medium, fontSize: SIZES.xs }}
+          />
+        ) : (
+          <Button
+            gradient
+            text="Follow"
+            onPress={onPressFollow}
+            containerStyle={{ width: SIZE * 7, height: SIZE * 2, borderRadius: 10 }}
+            disabled={isFollowLoading}
+            textStyle={{ fontFamily: FONTS.medium, fontSize: SIZES.xs }}
+          />
+        )}
+      </Row>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   userWrapper: {
     marginTop: SIZE,
@@ -140,6 +195,16 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: COLORS.gray,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  postedRecommendedUserContainer: {
+    backgroundColor: COLORS.white,
+    height: SIZE * 13.5,
+    width: SIZE * 8.5,
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingVertical: SIZE,
+    borderRadius: SIZES.xxs,
     justifyContent: 'center',
   },
 });

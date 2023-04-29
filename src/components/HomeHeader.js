@@ -62,7 +62,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
   };
 
   const onPressCreatePost = async () => {
-    navigation.navigate(ROUTES.CreatePostScreen)
+    navigation.navigate(ROUTES.CreatePostScreen);
   };
 
   return (
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   logo: {
     width: SIZE * 3.5,
     aspectRatio: 1,
-    margin: -SIZE / 2
+    margin: -SIZE / 2,
   },
   imageProfile: {
     borderColor: COLORS.primary,

@@ -121,14 +121,25 @@ export const deleteMe = async () => {
   }
 };
 
-export const getUserField = async ({userId, field}) => {
-  console.log('UserId', userId)
-  console.log('query', field)
+export const getUserField = async ({ userId, field }) => {
+  console.log('UserId', userId);
+  console.log('query', field);
   try {
-    const params = {field}
-    const { data: userFields } = await mainAxios.get(`users/${userId}/getField`, { params })
-    return userFields
+    const params = { field };
+    const { data: userFields } = await mainAxios.get(`users/${userId}/getField`, { params });
+    return userFields;
   } catch (e) {
-    console.log({ errorGettingUserField: e})
+    console.log({ errorGettingUserField: e });
   }
-}
+};
+
+export const getRecommendedUsers = async () => {
+  try {
+    const params = { limit: 3, role: 'user' };
+    const { data: recommendedUsers } = await mainAxios.get(`users/recommended`, { params });
+    console.log({ recommendedUsers });
+    return recommendedUsers.data;
+  } catch (e) {
+    console.log({ getRecommmendedUsersError: e });
+  }
+};

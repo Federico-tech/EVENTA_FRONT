@@ -29,12 +29,12 @@ export const Button = ({
   black,
   indicatorColor,
 }) => {
-  const Component = !loading && gradient ? LinearGradient : View;
+  const Component = !loading && gradient ? View : View;
   return (
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
       <View style={[gradient && loading && styles.secondary, containerStyle]}>
         <Component
-          colors={[COLORS.gradient1, COLORS.gradient2]}
+          // colors={[COLORS.gradient1, COLORS.gradient2]}
           // start={{ x: 0, y: 1 }}
           // end={{ x: 0, y: 0 }}
           style={[
@@ -54,11 +54,11 @@ export const Button = ({
               {!!text && (
                 <Text
                   style={[
-                    textStyle,
                     primary && styles.textPrimary,
                     gradient && styles.textGradient,
                     secondary && styles.textSecondary,
                     pressed && styles.textPressed,
+                    textStyle,
                   ]}>
                   {text}
                 </Text>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     marginTop: HEIGHT_DEVICE / 50,
   },
   containerGradient: {
-    backgroundColor: undefined,
+    backgroundColor: '#00B2FF',
     height: SIZE * 2.5,
     width: SIZE * 13,
     borderRadius: SIZES.xxs,

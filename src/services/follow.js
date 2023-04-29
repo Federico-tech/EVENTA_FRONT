@@ -30,7 +30,7 @@ export const follow = async () => {
   console.log(userSelected);
   try {
     const { data: follow } = await mainAxios.post(`users/${userSelected?._id}/follow`);
-    await getMe()
+    await getMe();
     console.log(follow);
   } catch (e) {
     console.log({ ErrorFollow: e });
@@ -42,9 +42,30 @@ export const unFollow = async () => {
   const userSelected = selectSelectedUser(state);
   try {
     const { data: unfollow } = await mainAxios.delete(`users/${userSelected?._id}/unfollow`);
-    await getMe()
+    await getMe();
     console.log(unfollow);
   } catch (e) {
     console.log({ errorUnfollow: e });
+  }
+};
+
+export const followWithId = async (userId) => {
+  console.log('userID', userId);
+  try {
+    const { data: follow } = await mainAxios.post(`users/${userId}/follow`);
+    await getMe();
+    console.log(follow);
+  } catch (e) {
+    console.log({ ErrorFollow: e });
+  }
+};
+
+export const unFollowWithId = async (userId) => {
+  try {
+    const { data: follow } = await mainAxios.delete(`users/${userId}/follow`);
+    await getMe();
+    console.log(follow);
+  } catch (e) {
+    console.log({ ErrorFollow: e });
   }
 };

@@ -1,14 +1,40 @@
-import React, { useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { HomeMap, MostPopularEventCard } from '.';
+import { HomeMap, MostPopularEventCard, Row, Text } from '.';
+import { getRecommendedUsers } from '../services/users';
 import { COLORS, SIZE, WIDTH_DEVICE } from '../utils/theme';
+import { RecommendedUserColumn } from './AccountRow';
+
+const RecommendedUsers = () => {
+  const [recommendedUsers, setRecommendedUsers] = useState();
+
+  useEffect(() => {
+    getRecommendedUsers().then((result) => {
+      console.log(result);
+      setRecommendedUsers(result);
+    });
+  }, []);
+
+  console.log('RecommendedUsers', recommendedUsers);
+
+  return (
+    <View style={styles.recommendedUserContainer}>
+      <Text semiBoldSm>Find new friends!</Text>
+      <Row row spaceBetween width="100%" mt={SIZE}>
+        {recommendedUsers?.map((recommendedUser) => (
+          <RecommendedUserColumn key={recommendedUser._id} data={recommendedUser} />
+        ))}
+      </Row>
+    </View>
+  );
+};
 
 export const HomeCarousel = ({ eventData, mapData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  
   const items = [
     {
       title: 'Event Card 1',
@@ -20,7 +46,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
     },
     {
       title: 'Event Card 2',
-      component: <MostPopularEventCard eventData={eventData} />,
+      component: <RecommendedUsers />,
     },
   ];
 
@@ -39,7 +65,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
         }}
         scrollEventThrottle={16}
         contentContainerStyle={{ height: SIZE * 17 }}>
-         {items.map((item, index) => (
+        {items.map((item, index) => (
           <View key={index} style={{ width: WIDTH_DEVICE }}>
             {item.component}
           </View>
@@ -94,10 +120,19 @@ const styles = StyleSheet.create({
     bottom: 10,
   },
   dot: {
-    width: SIZE / 1.7,
+    width: SIZE / 2,
     aspectRatio: 1,
     borderRadius: 10,
     margin: SIZE / 2,
     marginBottom: -SIZE,
+  },
+  recommendedUserContainer: {
+    backgroundColor: COLORS.backGray,
+    height: SIZE * 19,
+    marginBottom: -SIZE,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    paddingHorizontal: WIDTH_DEVICE / 20,
   },
 });
