@@ -99,14 +99,14 @@ export const HomeMap = ({ mapData }) => {
         </MapView>
         <View style={styles.mapButton}>
           <TouchableOpacity onPress={handleZoomIn}>
-            <Row style={{ flex: 1 }} alignCenter justifyCenter>
-              <Entypo name="plus" size={SIZE * 1.5} />
+            <Row style={{ width: SIZE * 2.5, height: SIZE * 1.8 }} alignCenter justifyCenter>
+              <Entypo name="plus" size={SIZE * 1.6} />
             </Row>
           </TouchableOpacity>
           <View style={{ height: 1, width: SIZE * 2.5, backgroundColor: 'black' }} />
           <TouchableOpacity onPress={handleZoomOut}>
-            <Row style={{ flex: 1 }} alignCenter justifyCenter>
-              <Entypo name="minus" size={SIZE * 1.5} />
+            <Row style={{ width: SIZE * 2.5, height: SIZE * 1.8 }} alignCenter justifyCenter>
+              <Entypo name="minus" size={SIZE * 1.6} />
             </Row>
           </TouchableOpacity>
         </View>

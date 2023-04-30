@@ -156,7 +156,7 @@ export const EditOrganiserScreen = ({ route }) => {
             <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
           </Row>
           <InputText label="Name" formik={formik} formikName="name" maxLength={25} />
-          <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" maxLength={20} />
+          {/* <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" maxLength={20} /> */}
           <InputText label="Address" formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
           <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
         </View>

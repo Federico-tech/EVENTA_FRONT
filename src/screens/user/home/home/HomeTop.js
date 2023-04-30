@@ -112,7 +112,7 @@ export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
   return (
     <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
       <View style={{ alignItems: 'center' }}>
-        <HomeCarousel eventData={eventData} mapData={mapData}/>
+        <HomeCarousel eventData={eventData} mapData={mapData} />
         <View style={styles.noteContainer}>
           <FlatList
             data={[...(userNotes || []), ...(data || [])]}
@@ -148,31 +148,35 @@ export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
             }
           />
         </View>
-        <Row row alignEnd style={{ width: '100%', marginBottom: SIZE / 2 }} spaceBetween>
-          <Row row alignCenter>
-            <Text ff={FONTS.medium} fs={SIZES.sm}>
-              Moments
-            </Text>
-          </Row>
+        {post && (
+          <>
+            <Row row alignEnd style={{ width: '100%', marginBottom: SIZE / 2 }} spaceBetween>
+              <Row row alignCenter>
+                <Text ff={FONTS.medium} fs={SIZES.sm}>
+                  Moments
+                </Text>
+              </Row>
 
-          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostsFeedScreen)}>
-            <Row row alignCenter>
-              <AntDesign name="caretright" size={SIZE / 1.1} />
-              <TextButton
-                text="View all"
-                textStyle={{
-                  width: SIZE * 4,
-                  fontSize: SIZES.xs,
-                  color: 'black',
-                  fontFamily: FONTS.medium,
-                  alignSelf: 'flex-end',
-                  marginLeft: SIZE / 4,
-                }}
-              />
+              <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostsFeedScreen)}>
+                <Row row alignCenter>
+                  <AntDesign name="caretright" size={SIZE / 1.1} />
+                  <TextButton
+                    text="View all"
+                    textStyle={{
+                      width: SIZE * 4,
+                      fontSize: SIZES.xs,
+                      color: 'black',
+                      fontFamily: FONTS.medium,
+                      alignSelf: 'flex-end',
+                      marginLeft: SIZE / 4,
+                    }}
+                  />
+                </Row>
+              </TouchableOpacity>
             </Row>
-          </TouchableOpacity>
-        </Row>
-        {post && <PostCard postData={post} touchable />}
+            {post && <PostCard postData={post} touchable />}
+          </>
+        )}
         <Text ff={FONTS.medium} fs={SIZES.sm} style={{ width: '100%', marginBottom: SIZE, marginTop: SIZE / 2 }}>
           Events near you
         </Text>

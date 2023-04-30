@@ -133,7 +133,7 @@ export const EditUserScreen = () => {
                 <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
               </Row>
               <InputText label="Name" formik={formik} formikName="name" maxLength={25} />
-              <InputText label="Username" formik={formik} formikName="username" maxLength={20} />
+              {/* <InputText label="Username" formik={formik} formikName="username" maxLength={20} /> */}
               <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={150} numberOfLines={5} />
             </View>
           </Container>

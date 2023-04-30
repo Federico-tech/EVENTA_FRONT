@@ -12,7 +12,6 @@ export const AccountUserScreen = ({ route }) => {
   const [isLoading, setIsloading] = useState(false);
   const user = useSelector(selectSelectedUser);
   const id = useSelector(selectSelectedUserId);
-  const isFocused = useIsFocused();
 
   useEffect(() => {
     const refresh = async () => {
@@ -21,7 +20,7 @@ export const AccountUserScreen = ({ route }) => {
       setIsloading(false);
     };
     refresh();
-  }, [id, isFocused]);
+  }, [id]);
 
   return (
     <Container>

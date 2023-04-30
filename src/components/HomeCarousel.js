@@ -44,7 +44,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
       component: <HomeMap mapData={mapData} />,
     },
     {
-      title: 'Event Card 2',
+      title: 'Find new friends',
       component: <RecommendedUsers />,
     },
   ];

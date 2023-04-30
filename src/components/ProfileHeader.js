@@ -1,7 +1,6 @@
 import { Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
@@ -55,20 +54,24 @@ export const ProfileHeader = ({ myProfile, user }) => {
   };
 
   return (
-    <View>
-      <LinearGradient start={{ x: 1.2, y: 0 }} end={{ x: 0, y: 0 }} colors={['white', 'white']} style={styles.wrapper}>
-        <View style={styles.container}>
-          {!myProfile && <IconButton name="chevron-back" color="black" size={SIZE * 2} onPress={() => navigation.goBack()} />}
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
+        <View style={[{ width: '100%', position: 'absolute', alignItems: 'center'}, myProfile && { alignItems: 'flex-start' }]}>
           <Text style={styles.usernameText}>{user.username}</Text>
-          {myProfile ? (
-            <IconButton name="settings-sharp" color="black" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
-          ) : currentUserId !== selectedUserId ? (
-            <IconButton name="ios-ellipsis-horizontal" color="black" size={SIZE * 1.75} onPress={handlePresentModal} />
-          ) : (
-            <View style={{ width: SIZE * 1.5 }} />
-          )}
         </View>
-      </LinearGradient>
+        {!myProfile ? (
+          <IconButton name="chevron-back" color="black" size={SIZE * 2} onPress={() => navigation.goBack()} iconStyle={{ marginLeft: -SIZE / 2 }} />
+        ) : (
+          <View style={{ width: SIZE }} />
+        )}
+        {myProfile ? (
+          <IconButton name="settings-sharp" color="black" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
+        ) : currentUserId !== selectedUserId ? (
+          <IconButton name="ios-ellipsis-horizontal" color="black" size={SIZE * 1.75} onPress={handlePresentModal} />
+        ) : (
+          <View style={{ width: SIZE * 1.5 }} />
+        )}
+      </View>
       <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['13%']} backdropComponent={renderBackdrop}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <TouchableOpacity onPress={() => setReportModalVisible(true)}>
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
   wrapper: {
     height: SIZE * 6,
     zIndex: -1,
-    justifyContent: 'center'
+    backgroundColor: COLORS.white
   },
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
@@ -116,5 +119,3 @@ const styles = StyleSheet.create({
     paddingTop: SIZE,
   },
 });
-
-

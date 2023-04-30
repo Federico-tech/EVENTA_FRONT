@@ -13,6 +13,7 @@ import { Row } from './Row';
 import { Text } from './Text';
 
 export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
+  console.log('Usedara', data)
   const { profilePic, username, name } = data;
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -111,7 +112,7 @@ export const RecommendedUserColumn = ({ data }) => {
   };
 
   return (
-    <View style={styles.postedRecommendedUserContainer}>
+    <View style={[styles.postedRecommendedUserContainer, { borderWidth: 1, borderColor: COLORS.backGray }]}>
       <LoadingImage source={data.profilePic} profile width={SIZE * 5} iconSIZE={SIZE * 2} />
       <Row width={SIZE * 6} alignCenter mt={SIZE}>
         <Text fs={SIZES.xxs} ff={FONTS.semiBold} width numberOfLines={1}>

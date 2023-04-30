@@ -33,18 +33,18 @@ export const Button = ({
   return (
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
       <View style={[gradient && loading && styles.secondary, containerStyle]}>
-        <Component
+        <View
           // colors={[COLORS.gradient1, COLORS.gradient2]}
           // start={{ x: 0, y: 1 }}
           // end={{ x: 0, y: 0 }}
           style={[
-            loading && styles.secondary,
             primary && styles.container,
             secondary && styles.secondary,
             disabledStyle && styles.disabled,
             gradient && styles.containerGradient,
             pressed && styles.pressed,
             black && styles.black,
+            loading && styles.secondary,
             containerStyle,
           ]}>
           {loading ? (
@@ -66,7 +66,7 @@ export const Button = ({
               {children}
             </>
           )}
-        </Component>
+        </View>
       </View>
     </TouchableOpacity>
   );

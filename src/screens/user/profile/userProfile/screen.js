@@ -6,6 +6,7 @@ import { Container, ProfileHeader } from '../../../../components';
 import { UserTopNavigator } from '../../../../navigation/TabView';
 import { refreschCurrentUser } from '../../../../services/users';
 import { selectCurrentUser } from '../../../../store/user';
+import { useIsFocused } from '@react-navigation/native';
 
 export const ProfileScreen = () => {
   const user = useSelector(selectCurrentUser);

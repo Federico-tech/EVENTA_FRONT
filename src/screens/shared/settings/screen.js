@@ -10,7 +10,7 @@ import { Container, Header, TextButton, Text, Row, Line, AlertModal } from '../.
 import { ROUTES } from '../../../navigation/Navigation';
 import { deleteMe } from '../../../services/users';
 import { logout } from '../../../utils/index';
-import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const SettingScreen = () => {
   const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
@@ -68,7 +68,7 @@ export const SettingScreen = () => {
   return (
     <Container>
       <Header title={t('settings')} back />
-      <Row style={{ margin: SIZE }}>
+      <Row style={{ marginVertical: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
         <Text semiBoldMd style={styles.notification}>
           Notifications
         </Text>
@@ -78,7 +78,7 @@ export const SettingScreen = () => {
         </Row>
       </Row>
       <Line />
-      <Row style={{ margin: SIZE }}>
+      <Row style={{ marginVertical: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
         <Text semiBoldMd style={styles.notification}>
           Language
         </Text>
@@ -96,7 +96,7 @@ export const SettingScreen = () => {
         </Row>
       </Row>
       <Line />
-      <Row style={{ margin: SIZE }}>
+      <Row style={{ marginVertical: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
         <Text semiBoldMd style={styles.notification}>
           Your data
         </Text>

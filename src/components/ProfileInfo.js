@@ -1,30 +1,68 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
 import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUser, selectSelectedUser } from '../store/user';
+import { ROLES } from '../utils/conts';
+import { useInfiniteScroll } from '../utils/hooks';
 import { formatNumber } from '../utils/numbers';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
+import { RecommendedUserColumn } from './AccountRow';
 import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
 import { ReadMoreButton } from './TextButton';
 
+const RecommendedUsers = () => {
+  const { data, getMoreData, loadMore } = useInfiniteScroll({
+    entity: 'users/recommended',
+    filters: {
+      role: ROLES.USER,
+    },
+    limit: 5,
+  });
+
+  return (
+    <View style={{ marginTop: SIZE * 2 }}>
+      <Text ff={FONTS.semiBold}>Find New Friends</Text>
+      <View style={styles.recommendedUsersContainer}>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <RecommendedUserColumn data={item} />}
+          keyExtractor={(item) => item._id}
+          style={{ paddingHorizontal: SIZE / 2 }}
+          onEndReachedThreshold={0.1}
+          onEndReached={_.throttle(getMoreData, 400)}
+          ListFooterComponent={
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator />}</View>
+          }
+          horizontal
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+    </View>
+  );
+};
+
 export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }) => {
   const [user, setUser] = useState({ ...initialUser });
   const [isFollowLoading, setIsFollowLoading] = useState(false);
+  const [showRecommendedUsers, setShowRecommendedUsers] = useState(false);
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
   const selectedUser = useSelector(selectSelectedUser);
   const followingParams = myProfile ? currentUser : selectedUser;
+
+  console.log('Loading', loading);
 
   useEffect(() => {
     if (!_.isEqual(user, initialUser)) {
@@ -63,8 +101,12 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   };
 
   const onPressCreatePost = () => {
-    navigation.navigate(ROUTES.CreatePostScreen)
-  }
+    navigation.navigate(ROUTES.CreatePostScreen);
+  };
+
+  const toggleShowRecommended = () => {
+    setShowRecommendedUsers(!showRecommendedUsers);
+  };
 
   return (
     <View>
@@ -80,9 +122,9 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
                 imageStyle={styles.imageProfile}
                 viewStyle={styles.createNoteImage}
               />
-                <View style={styles.plusIcon}>
-                  <AntDesign name="pluscircle" size={SIZE * 1.5} color={COLORS.primary} />
-                </View>
+              <View style={styles.plusIcon}>
+                <AntDesign name="pluscircle" size={SIZE * 1.5} color={COLORS.primary} />
+              </View>
             </Row>
           </TouchableOpacity>
         </View>
@@ -94,7 +136,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
         </Row>
       </Row>
       <Row style={styles.bio}>
-          <ReadMoreButton text={user.bio ? user.bio : 'Description'} style={styles.description} />
+        <ReadMoreButton text={user.bio ? user.bio : 'Description'} style={styles.description} />
         <Row spaceBetween row style={styles.followerRow}>
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>
             <Row alignCenter style={styles.boxFollower}>
@@ -106,14 +148,23 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
           </TouchableOpacity>
           <TouchableOpacity onPress={onPressFollowing}>
             <Row alignCenter>
-              <Text semiBoldSm>{user.role === 'organiser' ? formatNumber(user.events) : formatNumber(user.followed)}</Text>
+              <Text semiBoldSm>
+                {user.role === 'organiser' ? (!user.events ? 0 : formatNumber(user.events)) : !user.followed ? 0 : formatNumber(user.followed)}
+              </Text>
               <Text color={COLORS.darkGray} regularXs>
                 {organiser || user.role === 'organiser' ? 'Events' : 'Following'}
               </Text>
             </Row>
           </TouchableOpacity>
           {myProfile || currentUser._id === selectedUser._id ? (
-            <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 13 }} onPress={handleEditProfile} />
+            <Row row>
+              <Button secondary text="Edit profile" containerStyle={{ width: SIZE * 11 }} onPress={handleEditProfile} />
+              <TouchableOpacity onPress={toggleShowRecommended}>
+                <View style={styles.buttonShowFirends}>
+                  <Feather name={showRecommendedUsers ? 'chevron-up' : 'chevron-down'} size={SIZE * 1.4} />
+                </View>
+              </TouchableOpacity>
+            </Row>
           ) : currentUser.role === 'user' ? (
             user.isFollowing ? (
               <Button
@@ -138,6 +189,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
             <View style={{ width: SIZE * 13 }} />
           )}
         </Row>
+        {showRecommendedUsers && <RecommendedUsers />}
       </Row>
     </View>
   );
@@ -198,7 +250,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: WIDTH_DEVICE /30,
+    marginLeft: WIDTH_DEVICE / 30,
     marginTop: SIZE / 2,
   },
   name: {
@@ -207,7 +259,7 @@ const styles = StyleSheet.create({
   },
   bio: {
     marginTop: SIZE / 4,
-    marginHorizontal: WIDTH_DEVICE / 20,
+    paddingHorizontal: WIDTH_DEVICE / 20,
   },
   boxFollower: {
     width: SIZE * 5,
@@ -221,5 +273,23 @@ const styles = StyleSheet.create({
     marginTop: SIZE,
     marginLeft: WIDTH_DEVICE / 20,
     marginBottom: SIZE / 2,
+  },
+  recommendedUsersContainer: {
+    width: '100%',
+    height: SIZE * 16,
+    justifyContent: 'center',
+    paddingVertical: SIZE,
+    marginLeft: -SIZE / 2,
+    marginBottom: -SIZE,
+  },
+  buttonShowFirends: {
+    height: SIZE * 2.5,
+    aspectRatio: 1,
+    backgroundColor: COLORS.backGray,
+    borderRadius: 8,
+    marginLeft: SIZE / 2,
+    paddingTop: SIZE / 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

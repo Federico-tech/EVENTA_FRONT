@@ -15,6 +15,5 @@ const styles = StyleSheet.create({
   line: {
     height: 0.5,
     backgroundColor: COLORS.lightGray,
-    flex: 1,
   },
 });

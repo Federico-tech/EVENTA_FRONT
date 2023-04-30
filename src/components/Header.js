@@ -18,7 +18,7 @@ export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPr
       <Text style={styles.title}>{title}</Text>
       <Row alignCenter row spaceBetween style={{ marginTop: SIZE * 4 }}>
         {cancel && <TextButton text={t('Cancel')} onPress={() => navigation.goBack()} textStyle={styles.cancel} />}
-        {back && <IconButton name="chevron-back" size={SIZE * 2} onPress={() => navigation.goBack()} />}
+        {back && <IconButton name="chevron-back" size={SIZE * 2} onPress={() => navigation.goBack()} iconStyle={{ marginLeft: -SIZE / 2 }} />}
         <View />
         {done && <TextButton text={t('done')} onPress={onPress} textStyle={styles.fine} loading={loading} />}
         {create && <TextButton text="Create" onPress={onPress} textStyle={styles.fine} loading={loading} />}

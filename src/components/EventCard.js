@@ -179,6 +179,7 @@ export const MostPopularEventCard = ({ eventData }) => {
               imageStyle={{ aspectRatio: 1.6, borderRadius: 0 }}
               source={eventData?.coverImage}
               viewStyle={{ aspectRatio: 1.6 }}
+              indicator
             />
             <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']} />
           </View>
@@ -192,7 +193,7 @@ export const MostPopularEventCard = ({ eventData }) => {
               <Row row mr={SIZE * 2}>
                 {data?.map((data) => (
                   <LoadingImage
-                    key={data?.user._id}
+                    key={data.user._id}
                     source={data?.user.profilePic}
                     imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5 }]}
                     profile
