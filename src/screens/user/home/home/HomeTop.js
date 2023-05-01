@@ -128,7 +128,7 @@ export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             ListHeaderComponent={
-              <TouchableOpacity onPress={handlePresentModal}>
+              <TouchableOpacity onPress={handlePresentModal} activeOpacity={0.7}>
                 <Row justifyCenter mt={SIZE}>
                   <View>
                     <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>

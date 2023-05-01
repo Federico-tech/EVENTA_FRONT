@@ -37,7 +37,7 @@ const RecommendedUsers = () => {
       <View style={styles.recommendedUsersContainer}>
         <FlatList
           data={data}
-          renderItem={({ item }) => <RecommendedUserColumn data={item} />}
+          renderItem={({ item }) => <RecommendedUserColumn data={item} containerStyle={{ marginRight: SIZE}}/>}
           keyExtractor={(item) => item._id}
           style={{ paddingHorizontal: SIZE / 2 }}
           onEndReachedThreshold={0.1}

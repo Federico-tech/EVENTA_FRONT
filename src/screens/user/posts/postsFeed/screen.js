@@ -53,7 +53,7 @@ export const PostsFeedScreen = ({ route }) => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
         ListHeaderComponent={
           eventFilter && (
-            <Row row alignEnd spaceBetween mt={SIZE} mb={SIZE / 2} style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+            <Row row alignEnd spaceBetween mt={SIZE / 2} mb={SIZE / 2} style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
               <Text ff={FONTS.semiBold} fs={SIZES.sm}>
                 at {eventFilter}
               </Text>
@@ -63,7 +63,7 @@ export const PostsFeedScreen = ({ route }) => {
             </Row>
           )
         }
-        ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+        ListFooterComponent={<View style={{ marginTop: SIZE  / 4}}>{loadMore && <ActivityIndicator />}</View>}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no new moments for you" />}
       />
     </Container>

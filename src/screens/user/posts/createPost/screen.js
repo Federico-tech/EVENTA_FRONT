@@ -118,7 +118,7 @@ export const CreatePostScreen = () => {
       quality: 1,
     });
     if (!image.canceled) {
-      const manipulatedImage = await ImageManipulator.manipulateAsync(image.assets[0].uri, [{ resize: { width: 500, height: 500 } }], {
+      const manipulatedImage = await ImageManipulator.manipulateAsync(image.assets[0].uri, [{ resize: { width: 600, height: 600 } }], {
         format: ImageManipulator.SaveFormat.PNG,
       });
       await setFieldValue('file', manipulatedImage.uri);

@@ -123,10 +123,8 @@ export const deleteMe = async () => {
 
 export const getUserField = async ({ userId, field }) => {
   console.log('UserId', userId);
-  console.log('query', field);
   try {
-    const params = { field };
-    const { data: userFields } = await mainAxios.get(`users/${userId}/getField`, { params });
+    const { data: userFields } = await mainAxios.get(`users/${userId}/getField`);
     return userFields;
   } catch (e) {
     console.log({ errorGettingUserField: e });
@@ -146,11 +144,12 @@ export const getRecommendedUsers = async () => {
 
 export const checkUsername = async (username) => {
   try {
-    const params = { value: username }
+    const params = { value: username };
+    console.log('params', params);
     const { data: check } = await mainAxios.get(`users/checkField`, { params });
     console.log({ check });
-    return check.success;
+    return check.isFree;
   } catch (e) {
     console.log({ checkingFieldError: e });
   }
-}
+};

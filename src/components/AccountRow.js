@@ -13,7 +13,7 @@ import { Row } from './Row';
 import { Text } from './Text';
 
 export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
-  console.log('Usedara', data)
+  console.log('Usedara', data);
   const { profilePic, username, name } = data;
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -29,7 +29,7 @@ export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
     }
   };
   return (
-    <TouchableOpacity onPress={handleOnPress} disabled={data?.isDeleted}>
+    <TouchableOpacity onPress={handleOnPress} disabled={data?.isDeleted} activeOpacity={0.8}>
       <View style={styles.userWrapper}>
         <Row row alignCenter>
           <View style={styles.profileImage}>
@@ -37,7 +37,9 @@ export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
           </View>
           <Row style={{ paddingLeft: SIZE }}>
             <Text style={styles.usernameText}>{username}</Text>
-            <Text style={styles.nameText}>{name}</Text>
+            <Text style={styles.nameText} fs={SIZES.sm}>
+              {name}
+            </Text>
           </Row>
         </Row>
       </View>
@@ -54,7 +56,7 @@ export const OrganiserRow = ({ data }) => {
     navigation.push(ROUTES.AccountOrganiserScreen, { data });
   };
   return (
-    <TouchableOpacity onPress={handleOnPress}>
+    <TouchableOpacity onPress={handleOnPress} activeOpacity={0.8}>
       <View style={styles.organiserWrapper}>
         <Row row alignCenter>
           <LoadingImage source={profilePic} width={SIZE * 5} profile iconSIZE={SIZE * 2.5} />
@@ -92,10 +94,17 @@ export const UserColumn = ({ data }) => {
   );
 };
 
-export const RecommendedUserColumn = ({ data }) => {
+export const RecommendedUserColumn = ({ data, containerStyle }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowLoading, setIsFollowLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   console.log(data);
+
+  const handleOnPress = () => {
+    dispatch(setUserSelected(data));
+    navigation.navigate(ROUTES.AccountUserScreen, { data });
+  };
 
   const onPressFollow = async () => {
     setIsFollowing(true);
@@ -112,15 +121,19 @@ export const RecommendedUserColumn = ({ data }) => {
   };
 
   return (
-    <View style={[styles.postedRecommendedUserContainer, { borderWidth: 1, borderColor: COLORS.backGray }]}>
-      <LoadingImage source={data.profilePic} profile width={SIZE * 5} iconSIZE={SIZE * 2} />
+    <View style={[styles.postedRecommendedUserContainer, { borderWidth: 1, borderColor: COLORS.backGray }, containerStyle]}>
+      <TouchableOpacity onPress={handleOnPress}>
+        <LoadingImage source={data.profilePic} profile width={SIZE * 5} iconSIZE={SIZE * 2} />
+      </TouchableOpacity>
       <Row width={SIZE * 6} alignCenter mt={SIZE}>
-        <Text fs={SIZES.xxs} ff={FONTS.semiBold} width numberOfLines={1}>
-          {data.username}
-        </Text>
-        <Text color={COLORS.gray} fs={SIZES.xxs} ff={FONTS.regular} numberOfLines={1} mb={SIZE}>
-          {data.name}
-        </Text>
+        <TouchableOpacity onPress={handleOnPress} style={{ alignItems: 'center' }}>
+          <Text fs={SIZES.xxs} ff={FONTS.medium} width numberOfLines={1}>
+            {data.username}
+          </Text>
+          <Text color={COLORS.gray} fs={SIZES.xxs} ff={FONTS.regular} numberOfLines={1} mb={SIZE}>
+            {data.name}
+          </Text>
+        </TouchableOpacity>
         {isFollowing ? (
           <Button
             secondary

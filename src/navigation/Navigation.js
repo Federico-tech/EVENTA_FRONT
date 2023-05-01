@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { BlueLogo } from '../assets';
 import { LoginScreen } from '../screens/onboarding/login/screen';
@@ -38,7 +38,7 @@ import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
-import { SIZE } from '../utils/theme';
+import { SIZE, WIDTH_DEVICE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
 const OrganiserBottomTabNavigator = createBottomTabNavigator();
@@ -103,6 +103,7 @@ export const ROUTES = {
 
 const BottomBarIcons = ({ route }) => ({
   tabBarLabel: '',
+  tabBarStyle: { height: SIZE * 6, width: WIDTH_DEVICE, paddingTop: SIZE / 2 },
   tabBarHideOnKeyboard: true,
   tabBarIcon: ({ focused, colour, onPress }) => {
     let iconName;
@@ -116,10 +117,12 @@ const BottomBarIcons = ({ route }) => ({
       iconName = focused ? 'person' : 'person-outline';
     } else if (route.name === ROUTES.CreateEventScreen) {
       iconName = focused ? 'add-circle' : 'add-circle-outline';
-    } else if (route.name === ROUTES.PostsNavigator) {
-      return <Image source={BlueLogo} style={{ width: SIZE * 2.2, height: SIZE * 2.2, marginTop: SIZE / 2 }} />;
     }
-    return <Ionicons name={iconName} size={SIZE * 2} colour={colour} style={{ marginTop: SIZE / 2 }} onPress={onPress} />;
+    return (
+      <View style={{ width: SIZE * 4, aspectRatio: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Ionicons name={iconName} size={SIZE * 2} style={{ marginTop: SIZE / 2 }} onPress={onPress} />
+      </View>
+    );
   },
 });
 
@@ -248,7 +251,6 @@ export const MapNavigator = () => {
       <MapStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
-      <MapStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
     </MapStackNavigator.Navigator>
   );

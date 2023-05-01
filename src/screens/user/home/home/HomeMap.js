@@ -67,7 +67,7 @@ export const HomeMap = ({ mapData }) => {
 
   return (
     <View>
-      <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapNavigator)}>
+      <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapNavigator)} activeOpacity={0.7}>
         <MapView
           style={{ height: SIZE * 19, width: WIDTH_DEVICE }}
           provider={PROVIDER_GOOGLE}
@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: SIZE * 4.5,
     height: SIZE * 4.5,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    borderBottomLeftRadius: 30,
+    borderTopLeftRadius: SIZE * 15,
+    borderTopRightRadius: SIZE * 15,
+    borderBottomLeftRadius: SIZE * 15,
     backgroundColor: COLORS.white,
     transform: [{ rotateZ: '45deg' }],
   },

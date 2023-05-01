@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { HomeMap, MostPopularEventCard, Row, Text } from '.';
 import { getRecommendedUsers } from '../services/users';
-import { COLORS, SIZE, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, FONTS, SIZE, WIDTH_DEVICE } from '../utils/theme';
 import { RecommendedUserColumn } from './AccountRow';
 
 const RecommendedUsers = () => {
@@ -21,7 +21,7 @@ const RecommendedUsers = () => {
 
   return (
     <View style={styles.recommendedUserContainer}>
-      <Text semiBoldSm>Find new Friends!</Text>
+      <Text ff={FONTS.medium}>Find new Friends!</Text>
       <Row row spaceBetween width="100%" mt={SIZE}>
         {recommendedUsers?.map((recommendedUser) => (
           <RecommendedUserColumn key={recommendedUser._id} data={recommendedUser} />

@@ -58,8 +58,8 @@ export const MapScreen = ({ navigation, route }) => {
   }, [event, key]);
 
   const bottomSheetModalRef = useRef(null);
-  const eventSnapPoints = useMemo(() => ['35%'], []);
-  const organiserSnapPoints = useMemo(() => ['50%', '95%'], []);
+  const eventSnapPoints = useMemo(() => ['35%', '92%'], []);
+  const organiserSnapPoints = useMemo(() => ['50%', '92%'], []);
 
   const handlePresentModalOrganiser = ({ user }) => {
     bottomSheetModalRef.current?.present();
@@ -240,9 +240,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: SIZE * 5,
     height: SIZE * 5,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    borderBottomLeftRadius: 50,
+    borderTopLeftRadius: SIZE * 15,
+    borderTopRightRadius: SIZE * 15,
+    borderBottomLeftRadius: SIZE * 15,
     backgroundColor: COLORS.white,
     transform: [{ rotateZ: '45deg' }],
   },

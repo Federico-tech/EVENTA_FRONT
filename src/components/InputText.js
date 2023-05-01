@@ -30,6 +30,7 @@ export const InputText = ({
   touchableOpacity,
   value: inputValue,
   error: inputError,
+  usernameError,
   keyboardType: inputKeyboardType = undefined,
   pointerEvents: inputPointerEvents = undefined,
   onChangeText: inputOnChangeText,
@@ -51,6 +52,8 @@ export const InputText = ({
     error = formik?.errors[formikName] || '';
     onChangeText = (newValue) => formik.onChangeText(formikName, newValue);
   }
+
+  console.log('error', error);
 
   if (email) {
     keyboardType = 'email-address';
@@ -102,7 +105,9 @@ export const InputText = ({
             )}
           </View>
         </View>
-        <View style={[styles.textUnder]}>{!!error && <Text style={[styles.errorStyle]}>{error}</Text>}</View>
+        <View style={[styles.textUnder]}>
+          {!!error || (usernameError && <Text style={[styles.errorStyle]}>{usernameError ? usernameError : error}</Text>)}
+        </View>
       </View>
     </Component>
   );
@@ -169,6 +174,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZE,
     flexDirection: 'row',
     alignItems: 'center',
+    fontSize: SIZES.xxs,
   },
   textUnder: {
     minHeight: Normalize(5),

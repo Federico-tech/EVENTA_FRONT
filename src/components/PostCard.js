@@ -60,8 +60,8 @@ export const PostCard = ({ postData, getData, touchable }) => {
     setLikes(postData.likes);
     setIsLiked(postData.hasLiked);
     if (postData.comments !== 0) {
-      getUserField({ userId: postData?.comment?.userId, field: 'username' }).then((result) => {
-        setCommentUserUsername(result.user.username);
+      getUserField({ userId: postData?.comment?.userId }).then((result) => {
+        setCommentUserUsername(result.user);
       });
     }
   }, [postData]);
@@ -136,8 +136,15 @@ export const PostCard = ({ postData, getData, touchable }) => {
     navigation.navigate(ROUTES.PostCommentScreen, { postId: postData._id });
   };
 
+  const onPressCommentUsername = () => {
+    dispatch(setUserSelected(commentUserUsername));
+    navigation.navigate(ROUTES.AccountUserScreen);
+  };
+
+  console.log('Comment', commentUserUsername);
+
   return (
-    <TouchableWithoutFeedback onPress={touchable ? onPressNavigatePosts : handleDoubleTap} disabled={isLikePressLoading}>
+    <TouchableOpacity onPress={touchable ? onPressNavigatePosts : handleDoubleTap} disabled={isLikePressLoading} activeOpacity={0.8}>
       <View style={styles.wrapper}>
         <Row style={styles.topRow}>
           <Row style={{ padding: SIZE / 1.5, paddingVertical: SIZE / 1.5 }} row alignCenter spaceBetween>
@@ -171,7 +178,9 @@ export const PostCard = ({ postData, getData, touchable }) => {
                   <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
                     <Row row alignCenter>
                       <AntDesign name="heart" size={SIZE * 1.7} color="red" />
-                      <Text style={{ marginHorizontal: SIZE / 1.5 }}>{likes}</Text>
+                      <Text style={{ marginHorizontal: SIZE / 1.5 }} fs={SIZES.sm}>
+                        {likes}
+                      </Text>
                     </Row>
                   </TouchableOpacity>
                 ) : (
@@ -179,7 +188,9 @@ export const PostCard = ({ postData, getData, touchable }) => {
                     <Row row alignCenter>
                       <AntDesign name="hearto" size={SIZE * 1.7} />
                       <TouchableOpacity onPress={onPressLikeNumber}>
-                        <Text style={{ marginHorizontal: SIZE / 1.5 }}>{likes}</Text>
+                        <Text style={{ marginHorizontal: SIZE / 1.5 }} fs={SIZES.sm}>
+                          {likes}
+                        </Text>
                       </TouchableOpacity>
                     </Row>
                   </TouchableOpacity>
@@ -188,7 +199,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
                 <TouchableOpacity onPress={onPressComments}>
                   <Row row alignCenter>
                     <AntDesign name="message1" size={SIZE * 1.7} style={{ marginRight: SIZE / 1.5, marginLeft: SIZE / 1.8 }} />
-                    <Text>{postData.comments}</Text>
+                    <Text fs={SIZES.sm}>{postData.comments}</Text>
                   </Row>
                 </TouchableOpacity>
               </Row>
@@ -210,10 +221,12 @@ export const PostCard = ({ postData, getData, touchable }) => {
                     View {postData.comments <= 1 ? postData.comments + ' comment' : 'all ' + formatNumber(postData.comments) + ' comments'}
                   </Text>
                 </TouchableOpacity>
-                <Text regularXs style={{ marginTop: SIZE / 2, width: SIZE * 24, marginBottom: SIZE / 2 }} numberOfLines={2}>
-                  <Text ff={FONTS.semiBold}>{commentUserUsername} </Text>
-                  {postData?.comment?.content}
-                </Text>
+                <TouchableOpacity onPress={onPressCommentUsername}>
+                  <Text regularXs style={{ marginTop: SIZE / 2, width: SIZE * 24, marginBottom: SIZE / 2 }} numberOfLines={2}>
+                    <Text ff={FONTS.semiBold}>{commentUserUsername?.username} </Text>
+                    {postData?.comment?.content}
+                  </Text>
+                </TouchableOpacity>
               </Row>
             )}
           </Row>
@@ -254,7 +267,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
         confirmText="Delete"
         onPressConfirm={() => onPressDeletePost(postData)}
       />
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 

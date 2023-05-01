@@ -1,12 +1,12 @@
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { object, string } from 'yup';
 
-import { Button, InputText, TextButton, Container, Row } from '../../../../components/index';
+import { Button, InputText, TextButton, Container, Row, Text } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { loginUser, organiserSignUp } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
@@ -131,7 +131,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
             <Row style={styles.line} />
           </View>
           <Row row style={{ alignSelf: 'center', marginTop: SIZE * 1.5, marginBottom: HEIGHT_DEVICE / 80 }}>
-            <Text style={styles.registerText}>Already have an account?</Text>
+            <Text style={styles.registerText} fs={SIZES.sm}>Already have an account?</Text>
             <TouchableOpacity onPress={onPressGoBack}>
               <Text style={styles.registerButtonText}> Log in</Text>
             </TouchableOpacity>

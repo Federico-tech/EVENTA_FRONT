@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
+import { DateTime } from 'luxon';
 import React, { useState } from 'react';
 import { ActivityIndicator, View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
@@ -11,7 +12,6 @@ import { setUserSelected } from '../../../../store/user';
 import { setTimeElapsed } from '../../../../utils/dates';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
-import { DateTime } from 'luxon';
 
 const Notification = ({ notificationData }) => {
   const navigation = useNavigation();
@@ -29,12 +29,12 @@ const Notification = ({ notificationData }) => {
             <LoadingImage source={notificationData?.senderUser?.profilePic} profile width={SIZE * 3.5} iconSIZE={SIZE * 2} />
           </TouchableOpacity>
           <Row width={SIZE * 20} ml={SIZE}>
-            <Text>
-              <Text ff={FONTS.semiBold} fo>
+            <Text fs={SIZES.sm}>
+              <Text ff={FONTS.semiBold} fs={SIZES.sm}>
                 {notificationData?.senderUser?.username}{' '}
               </Text>
               {notificationData?.message}.
-              <Text color={COLORS.gray} ff={FONTS.medium}>
+              <Text color={COLORS.gray} ff={FONTS.medium} fs={SIZES.sm}>
                 {' '}
                 {setTimeElapsed(notificationData.createdAt)}
               </Text>
@@ -46,17 +46,16 @@ const Notification = ({ notificationData }) => {
   );
 };
 
-
 export const NotificationsScreen = () => {
-  const [ dataFilter, setDataFilter] = useState()
+  const [dataFilter, setDataFilter] = useState();
 
-  const dateFilter = DateTime.now().minus({ month: 1}).toISODate();
+  const dateFilter = DateTime.now().minus({ month: 1 }).toISODate();
 
   const { data, getMoreData, getRefreshedData, refreshing, loadMore } = useInfiniteScroll({
     entity: 'notifications/me',
     filters: {
-      'date.$gte': dateFilter
-    }
+      'date.$gte': dateFilter,
+    },
   });
 
   return (

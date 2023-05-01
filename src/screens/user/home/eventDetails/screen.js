@@ -11,7 +11,19 @@ import { FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
-import { Button, Container, IconButton, Line, LoadingImage, OrganiserInf, ReadMoreButton, Row, Text, TextButton } from '../../../../components';
+import {
+  Button,
+  Container,
+  IconButton,
+  Line,
+  ListEmptyComponent,
+  LoadingImage,
+  OrganiserInf,
+  ReadMoreButton,
+  Row,
+  Text,
+  TextButton,
+} from '../../../../components';
 import { UserRow } from '../../../../components/AccountRow';
 import { DiscountModal } from '../../../../components/DiscountModal';
 import { MiniPostCard } from '../../../../components/MiniPostCard';
@@ -51,7 +63,7 @@ const EventDetailsParticipants = ({ isParticipating }) => {
       {loading ? (
         <ActivityIndicator style={{ marginTop: SIZE }} />
       ) : (
-        participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+        participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} bottomSheet />)
       )}
       {participants?.length >= 3 && (
         <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
@@ -62,7 +74,9 @@ const EventDetailsParticipants = ({ isParticipating }) => {
 
 const EventDetailsMap = ({ event, navigation }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event, key: Math.random() * 100 } })}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event, key: Math.random() * 100 } })}
+      activeOpacity={0.7}>
       <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
         <MapView
           style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
@@ -101,8 +115,10 @@ const EventInformations = ({ event }) => {
           <AntDesign name="clockcircleo" size={SIZE * 2} />
         </View>
         <Row column>
-          <Text>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
-          <Text color={COLORS.gray}>{formatDate(event.date, TIME_FORMAT)}</Text>
+          <Text fs={SIZES.sm}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+          <Text color={COLORS.gray} fs={SIZES.sm}>
+            {formatDate(event.date, TIME_FORMAT)}
+          </Text>
         </Row>
       </Row>
       <Row row alignCenter mt={SIZE} mb={SIZE}>
@@ -110,7 +126,7 @@ const EventInformations = ({ event }) => {
           <Foundation name="marker" size={SIZE * 2} />
         </View>
         <Row width={SIZE * 18}>
-          <Text>{event?.address?.fullAddress}</Text>
+          <Text fs={SIZES.sm}>{event?.address?.fullAddress}</Text>
         </Row>
       </Row>
     </Row>
@@ -126,8 +142,10 @@ const EventSocialInformations = ({ event, posts, participants }) => {
           <AntDesign name="heart" color="red" size={SIZE * 1.5} />
         </Row>
         <Row width={SIZE * 5}>
-          <Text>Likes</Text>
-          <Text color={COLORS.gray}>{formatShortNumber(event.likes)}</Text>
+          <Text fs={SIZES.sm}>Likes</Text>
+          <Text color={COLORS.gray} fs={SIZES.sm}>
+            {formatShortNumber(event.likes)}
+          </Text>
         </Row>
       </Row>
       <Row row alignCenter>
@@ -135,8 +153,10 @@ const EventSocialInformations = ({ event, posts, participants }) => {
           <MaterialCommunityIcons name="post" color={COLORS.primary} size={SIZE * 1.6} />
         </Row>
         <Row width={SIZE * 5}>
-          <Text>Posts</Text>
-          <Text color={COLORS.gray}>{formatShortNumber(posts)}</Text>
+          <Text fs={SIZES.sm}>Posts</Text>
+          <Text color={COLORS.gray} fs={SIZES.sm}>
+            {formatShortNumber(posts)}
+          </Text>
         </Row>
       </Row>
       <Row row alignCenter>
@@ -144,8 +164,10 @@ const EventSocialInformations = ({ event, posts, participants }) => {
           <Ionicons name="people" color="orange" size={SIZE * 1.7} />
         </Row>
         <Row width={SIZE * 5}>
-          <Text>Part</Text>
-          <Text color={COLORS.gray}>{formatShortNumber(participants)}</Text>
+          <Text fs={SIZES.sm}>People</Text>
+          <Text color={COLORS.gray} fs={SIZES.sm}>
+            {!participants ? 0 : formatShortNumber(participants)}
+          </Text>
         </Row>
       </Row>
     </Row>
@@ -248,6 +270,10 @@ export const EventDetails = ({ route }) => {
     navigation.navigate(ROUTES.PostsFeedScreen, { event });
   };
 
+  const onPressNavigateParticipants = () => {
+    navigation.navigate(ROUTES.ParticipantsScreen);
+  };
+
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -313,6 +339,7 @@ export const EventDetails = ({ route }) => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
+                    ListEmptyComponent={<ListEmptyComponent text="There are no moments for this event" />}
                   />
                 </>
               )}
@@ -332,6 +359,7 @@ export const EventDetails = ({ route }) => {
                       alignSelf: 'flex-end',
                       marginLeft: SIZE / 4,
                     }}
+                    onPress={onPressNavigateParticipants}
                   />
                 </Row>
               </Row>
@@ -485,6 +513,7 @@ const styles = StyleSheet.create({
   },
   description: {
     color: COLORS.darkGray,
+    fontSize: SIZES.sm,
   },
   discountContainer: {
     width: SIZE * 3,

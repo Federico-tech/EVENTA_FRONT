@@ -50,7 +50,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
   };
 
   return (
-    <TouchableOpacity onPress={onPress ? onPress : handlePress}>
+    <TouchableOpacity onPress={onPress ? onPress : handlePress} activeOpacity={0.8}>
       <View style={styles.wrapper}>
         <Row row alignCenter spaceBetween>
           <View style={styles.event}>
@@ -62,7 +62,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
             </View>
           </View>
           <View style={styles.likeContainer}>
-            <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{formatShortNumber(likes)}</Text>
+            <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }} fs={SIZES.sm}>{formatShortNumber(likes)}</Text>
             {isLiked ? (
               <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
                 <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />

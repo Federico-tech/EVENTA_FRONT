@@ -3,8 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { color } from 'react-native-reanimated';
 import { useDispatch } from 'react-redux';
 
 import { mainAxios } from '../core/axios';
@@ -94,63 +95,73 @@ export const EventCard = ({ eventData }) => {
     setIsLikePressLoading(false);
   };
 
+  const onPressOrganiser = () => {
+    dispatch(setUserSelected(eventData.organiser));
+    navigation.navigate(ROUTES.AccountUserScreen);
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={handleOnPress}>
-      <View style={styles.cardContainer}>
+    <View style={styles.cardContainer}>
+      <TouchableOpacity onPress={handleOnPress} activeOpacity={0.8}>
         <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator event width="100%" />
-        <View style={{ marginHorizontal: SIZE * 2 }}>
-          <View style={styles.descContainer}>
-            <View style={styles.informationContainer}>
+      </TouchableOpacity>
+      <View style={{ marginHorizontal: SIZE * 2 }}>
+        <View style={styles.descContainer}>
+          <View style={styles.informationContainer}>
+            <TouchableOpacity onPress={onPressOrganiser}>
               <LoadingImage source={eventData.organiser?.profilePic} profile width={SIZE * 3.7} iconSIZE={SIZE * 2} />
-              <View style={styles.textContainer}>
+            </TouchableOpacity>
+
+            <View style={styles.textContainer}>
+              <TouchableOpacity onPress={handleOnPress}>
                 <Text style={styles.textTitle}>{eventData.name}</Text>
                 <View>
                   <Text style={styles.textAdress} numberOfLines={1} ellipsizeMode="tail">
                     by @{eventData.organiser?.username}
                   </Text>
                 </View>
-              </View>
-            </View>
-            <View style={styles.likeContainer}>
-              <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium, fontSize: SIZES.sm }}>{formatShortNumber(likes)}</Text>
-              {isLiked ? (
-                <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
-                  <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
-                  <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
-                </TouchableOpacity>
-              )}
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.line} />
-          <Row row alignCenter spaceBetween style={{ height: SIZE * 2 }}>
-            <TouchableOpacity onPress={handleParticipantsPress}>
-              <Row row alignCenter>
-                <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && { marginLeft: 0 }]}>
-                  {data?.slice(0, 3).map((data) => (
-                    <LoadingImage key={data?.user._id} source={data?.user.profilePic} imageStyle={styles.partImage} profile iconSIZE={SIZE * 1.3} />
-                  ))}
-                </Row>
-                <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
-                  {totalData > 3 ? `+${formatShortNumber(totalData)}` : formatShortNumber(totalData)}{' '}
-                </Text>
-                <Text style={[styles.textAdress, { color: 'black' }]}>
-                  {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
-                </Text>
-              </Row>
-            </TouchableOpacity>
-            <Row row alignCenter>
-              <Feather name="calendar" size={18} color={COLORS.gray} />
-              <Text style={styles.textAdress}> {formatDate(eventData.date, EVENT_DATE_FORMATR_NOYEAR)}</Text>
-              <View style={styles.dot} />
-              <Text style={styles.textAdress}>{eventData?.address?.city}</Text>
-            </Row>
-          </Row>
+          <View style={styles.likeContainer}>
+            <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium, fontSize: SIZES.sm }}>{formatShortNumber(likes)}</Text>
+            {isLiked ? (
+              <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
+                <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
+                <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
+        <View style={styles.line} />
+        <Row row alignCenter spaceBetween style={{ height: SIZE * 2 }}>
+          <TouchableOpacity onPress={handleParticipantsPress}>
+            <Row row alignCenter>
+              <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && { marginLeft: 0 }]}>
+                {data?.slice(0, 3).map((data) => (
+                  <LoadingImage key={data?.user._id} source={data?.user.profilePic} imageStyle={styles.partImage} profile iconSIZE={SIZE * 1.3} />
+                ))}
+              </Row>
+              <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
+                {totalData > 3 ? `+${formatShortNumber(totalData)}` : formatShortNumber(totalData)}{' '}
+              </Text>
+              <Text style={[styles.textAdress, { color: 'black' }]}>
+                {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
+              </Text>
+            </Row>
+          </TouchableOpacity>
+          <Row row alignCenter>
+            <Feather name="calendar" size={18} color={COLORS.gray} />
+            <Text style={styles.textAdress}> {formatDate(eventData.date, EVENT_DATE_FORMATR_NOYEAR)}</Text>
+            <View style={styles.dot} />
+            <Text style={styles.textAdress}>{eventData?.address?.city}</Text>
+          </Row>
+        </Row>
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 };
 
@@ -171,7 +182,7 @@ export const MostPopularEventCard = ({ eventData }) => {
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={handleOnPress}>
+      <TouchableOpacity onPress={handleOnPress} activeOpacity={0.7}>
         <Row style={{ height: SIZE * 17, width: WIDTH_DEVICE }}>
           <View>
             <LoadingImage
@@ -206,7 +217,7 @@ export const MostPopularEventCard = ({ eventData }) => {
             </Row>
           </Row>
         </Row>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     </>
   );
 };

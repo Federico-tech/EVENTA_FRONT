@@ -11,12 +11,13 @@ import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row, Text, LoadingImage } from '../../../../components';
-import { updateUserImage, userUpdate } from '../../../../services/users';
+import { checkUsername, updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditUserScreen = () => {
+  const [isUsernameFree, setIsUsernameFree] = useState(true);
   useEffect(requestCameraPermission, []);
   const navigation = useNavigation();
 
@@ -72,17 +73,19 @@ export const EditUserScreen = () => {
     validateOnMount: false,
     enableReinitialize: true,
     onSubmit: async (data) => {
-      try {
-        setLoading(true);
-        await validateForm(data);
-        data.file !== user.profilePic && !!data?.file && (await updateUserImage(data.file));
-        !data?.file && (await userUpdate({ profilePic: null }, userId));
-        await userUpdate(data, userId);
-        navigation.goBack();
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-        console.log({ e });
+      if (isUsernameFree) {
+        try {
+          setLoading(true);
+          await validateForm(data);
+          data.file !== user.profilePic && !!data?.file && (await updateUserImage(data.file));
+          !data?.file && (await userUpdate({ profilePic: null }, userId));
+          await userUpdate(data, userId);
+          navigation.goBack();
+          setLoading(false);
+        } catch (e) {
+          setLoading(false);
+          console.log({ e });
+        }
       }
     },
   });
@@ -121,6 +124,13 @@ export const EditUserScreen = () => {
     handleClosePress();
   };
 
+  useEffect(() => {
+    checkUsername(values.username).then((result) => {
+      console.log('username', result);
+      setIsUsernameFree(result);
+    });
+  }, [values.username]);
+
   return (
     <BottomSheetModalProvider>
       <Container>
@@ -133,7 +143,13 @@ export const EditUserScreen = () => {
                 <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
               </Row>
               <InputText label="Name" formik={formik} formikName="name" maxLength={25} />
-              {/* <InputText label="Username" formik={formik} formikName="username" maxLength={20} /> */}
+              <InputText
+                label="Username"
+                formik={formik}
+                formikName="username"
+                maxLength={20}
+                usernameError={!isUsernameFree && 'This username is already been taken'}
+              />
               <InputText label="Bio" formik={formik} formikName="bio" multiline maxLength={150} numberOfLines={5} />
             </View>
           </Container>

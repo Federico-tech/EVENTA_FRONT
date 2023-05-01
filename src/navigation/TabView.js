@@ -42,9 +42,10 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
     refreshing: postRefreshing,
     getRefreshedData: getRefreshedPostData,
     getMoreData: getMorePostData,
+    totalData: postTotalData,
     loadMorePosts,
   } = useInfiniteScroll({
-    entity: `users/${myId}/posts`,
+    entity: `users/${organiserId}/posts`,
     limit: 6,
   });
 
@@ -66,7 +67,7 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
 
   return (
     <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
-      <Tabs.Tab name="Events ">
+      <Tabs.Tab name="Events">
         <Tabs.FlatList
           data={data}
           renderItem={({ item }) => <MiniEventCard scan={myId === organiserId && true} data={item} />}
@@ -79,7 +80,7 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
           ListEmptyComponent={!refreshing && <ListEmptyComponent text={`The organizer hasn't created any events yet`} />}
         />
       </Tabs.Tab>
-      <Tabs.Tab name="Posts">
+      <Tabs.Tab name={`Moments (${formatNumber(postTotalData)})`}>
         {isLoading ? (
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
@@ -176,7 +177,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
       renderHeader={userId !== currentUserId ? () => <AccountHeader isLoading={isLoading} /> : MyHeader}
       tabStyle={styles.tab}
       renderTabBar={tabBar}>
-      <Tabs.Tab name={`Post (${formatNumber(postTotalData)})`}>
+      <Tabs.Tab name={`Moments (${formatNumber(postTotalData)})`}>
         {isLoading ? (
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
