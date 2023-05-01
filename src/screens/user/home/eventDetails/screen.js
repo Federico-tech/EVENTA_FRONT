@@ -296,7 +296,7 @@ export const EventDetails = ({ route }) => {
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
               }}>
-              <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} />
+              <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} scans={event.scans}/>
 
               <View style={{ marginHorizontal: 0 }}>
                 <Line lineStyle={{ marginBottom: 0 }} />

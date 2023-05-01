@@ -58,9 +58,8 @@ export const OrganiserHome = () => {
             <ActivityIndicator style={styles.activityIndicator} />
           ) : (
             <Row>
-              {popularEvents?.slice(0, 3).map((event) => (
-                <MiniEventCard key={event._id} data={event} scan />
-              ))}
+              {popularEvents && popularEvents?.slice(0, 3).map((event) => <MiniEventCard key={event._id} data={event} scan />)}
+
               {popularEvents && (
                 <>
                   <TouchableOpacity onPress={onPressNavigatePopularEvents}>

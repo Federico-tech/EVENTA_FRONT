@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
   textInput: {
     marginLeft: WIDTH_DEVICE / 50,
     width: SIZE * 23,
-    fontSize: SIZES.xxs,
+    fontSize: SIZES.sm,
   },
 });

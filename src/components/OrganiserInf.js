@@ -1,7 +1,8 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
@@ -12,8 +13,9 @@ import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
+import { Text } from './Text';
 
-export const OrganiserInf = ({ organiser, isLoading }) => {
+export const OrganiserInf = ({ organiser, isLoading, scans }) => {
   const [isFollowing, setIsFollowing] = useState();
   const [isFollowLoading, setIsFollowLoading] = useState(false);
 
@@ -53,8 +55,8 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
             </View>
           </Row>
         </TouchableOpacity>
-        {user.role === 'user' &&
-          (isFollowing ? (
+        {user.role === 'user' ? (
+          isFollowing ? (
             <Button
               secondary
               text="Following"
@@ -72,7 +74,15 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
               loading={isLoading}
               disabled={isFollowLoading}
             />
-          ))}
+          )
+        ) : (
+          <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ScannerScreen)}>
+            <Row row alignCenter ml={SIZE * 5.5}>
+              <Text mr={SIZE} fs={SIZES.sm} color={COLORS.gray} >{scans}</Text>
+              <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} />
+            </Row>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

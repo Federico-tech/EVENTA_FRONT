@@ -180,13 +180,13 @@ export const MapScreen = ({ navigation, route }) => {
             ))}
       </MapView>
 
-      <View style={{ position: 'absolute', zIndex: 2, flexDirection: 'row', alignSelf: 'center' }}>
+      <View style={{position: 'absolute', zIndex: 2, flexDirection: 'row', alignSelf: 'center'}}>
         <SafeAreaView>
-          <Row row spaceBetween mt={SIZE}>
+          <Row row spaceEvenly mt={SIZE} width={'100%'} style={{ alignSelf: 'center'}}>
             <Button
               secondary
               loading={refreshing && filter === 'events'}
-              containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 13 }]}
+              containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { width: SIZE * 13 }]}
               onPress={() => updateFilters('events')}>
               <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
                 Events
@@ -197,7 +197,7 @@ export const MapScreen = ({ navigation, route }) => {
               loading={refreshing && filter === 'organisers'}
               containerStyle={[
                 filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs },
-                { marginRight: SIZE, width: SIZE * 13 },
+                { width: SIZE * 13},
               ]}
               onPress={() => updateFilters('organisers')}>
               <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>

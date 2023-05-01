@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZE,
     flexDirection: 'row',
     alignItems: 'center',
-    fontSize: SIZES.xxs,
+    fontSize: SIZES.sm,
   },
   textUnder: {
     minHeight: Normalize(5),

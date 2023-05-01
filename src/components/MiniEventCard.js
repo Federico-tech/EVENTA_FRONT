@@ -58,7 +58,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
             <View style={styles.eventInformation}>
               <Text style={styles.date}>{formatDate(date, EVENT_DATE_FORMAT)}</Text>
               <Text style={styles.name}>{name}</Text>
-              <Text style={styles.address}>by @{organiser.username}</Text>
+              <Text style={styles.address}>by @{organiser?.username}</Text>
             </View>
           </View>
           <View style={styles.likeContainer}>

@@ -310,6 +310,7 @@ export const OrganiserStack = () => {
       </OrganiserStackNavigator.Group>
       <OrganiserStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} />
       <OrganiserStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} />
+      <UserStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} />
     </OrganiserStackNavigator.Navigator>
   );
 };

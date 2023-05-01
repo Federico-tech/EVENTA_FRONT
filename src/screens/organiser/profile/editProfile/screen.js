@@ -12,12 +12,13 @@ import { object, string } from 'yup';
 
 import { Container, InputText, TextButton, Header, Row, Text, LoadingImage } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
-import { updateUserImage, userUpdate } from '../../../../services/users';
+import { checkUsername, updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditOrganiserScreen = ({ route }) => {
+  const [isUsernameFree, setIsUsernameFree] = useState(true);
   useEffect(requestCameraPermission, []);
   const navigation = useNavigation();
 
@@ -78,17 +79,19 @@ export const EditOrganiserScreen = ({ route }) => {
     validateOnMount: false,
     enableReinitialize: true,
     onSubmit: async (data) => {
-      try {
-        setLoading(true);
-        await validateForm(data);
-        data.file !== user.profilePic && !!data?.file && (await updateUserImage(data.file));
-        !data?.file && (await userUpdate({ profilePic: null }, userId));
-        await userUpdate(data, userId);
-        navigation.goBack();
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-        console.log({ e });
+      if (isUsernameFree) {
+        try {
+          setLoading(true);
+          await validateForm(data);
+          data.file !== user.profilePic && !!data?.file && (await updateUserImage(data.file));
+          !data?.file && (await userUpdate({ profilePic: null }, userId));
+          await userUpdate(data, userId);
+          navigation.goBack();
+          setLoading(false);
+        } catch (e) {
+          setLoading(false);
+          console.log({ e });
+        }
       }
     },
   });
@@ -146,6 +149,13 @@ export const EditOrganiserScreen = ({ route }) => {
     handleClosePress();
   };
 
+  useEffect(() => {
+    checkUsername(values.username).then((result) => {
+      console.log('username', result);
+      setIsUsernameFree(result);
+    });
+  }, [values.username]);
+
   return (
     <Container>
       <Header title="Edit Profile" onPress={handleSubmit} loading={loading} done cancel />
@@ -156,7 +166,14 @@ export const EditOrganiserScreen = ({ route }) => {
             <TextButton text="Edit picture" textStyle={styles.upload} onPress={handlePresentModal} />
           </Row>
           <InputText label="Name" formik={formik} formikName="name" maxLength={25} />
-          {/* <InputText label="Username" formik={formik} formikName="username" autoCapitalize="none" maxLength={20} /> */}
+          <InputText
+            label="Username"
+            formik={formik}
+            formikName="username"
+            autoCapitalized="none"
+            maxLength={20}
+            usernameError={!isUsernameFree && 'This username is already been taken'}
+          />
           <InputText label="Address" formik={formik} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
           <InputText label="Description" formik={formik} formikName="bio" multiline maxLength={500} />
         </View>

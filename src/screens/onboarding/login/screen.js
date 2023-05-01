@@ -38,8 +38,8 @@ export const LoginScreen = () => {
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
-      email: 'riccardo@gmail.com',
-      password: 'Dezzolo10',
+      email: '',
+      password: '',
       // email: 'cococlub@gmail.com',
       // password: 'cococlub10',
     },
@@ -97,7 +97,7 @@ export const LoginScreen = () => {
           <View style={styles.container}>
             <InputText label="Email" formik={formik} formikName="email" autoCapitalize="none" />
             <InputText label="Password" formik={formik} formikName="password" autoCapitalize="none" secureTextEntry />
-            <TextButton text="Forgot password?" textStyle={styles.forgotPassword} />
+            {/* <TextButton text="Forgot password?" textStyle={styles.forgotPassword} /> */}
             <Button
               primary
               text="Login"
@@ -112,8 +112,8 @@ export const LoginScreen = () => {
               <Text style={styles.orLoginUsing}>or</Text>
               <Row style={styles.line} />
             </View>
-            <SocialLoginButton apple google />
-            <View style={styles.socialLoginContainer} />
+            {/* <SocialLoginButton apple google /> */}
+            
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
                 <Text style={styles.registerText}>{t(`you don't have an account`)}</Text>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: SIZE * 1.5,
+    marginTop: SIZE * 3,
   },
 
   socialLoginContainer: {
