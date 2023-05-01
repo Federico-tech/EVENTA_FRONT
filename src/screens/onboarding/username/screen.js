@@ -1,16 +1,20 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { object, string } from 'yup';
 
 import { Container, InputText, Text, TextButton } from '../../../components';
-import { userUpdate } from '../../../services/users';
+import { checkUsername, userUpdate } from '../../../services/users';
 import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '../../../navigation/Navigation';
 
 export const UsernameScreen = () => {
   const [loading, setLoading] = useState(false);
+  const [isUsernameFree, setIsUsernameFree] = useState(true);
   const [error, setError] = useState();
+  const navigation = useNavigation()
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
@@ -39,19 +43,22 @@ export const UsernameScreen = () => {
     validateOnMount: false,
     enableReinitialize: true,
     onSubmit: async (data) => {
-      try {
-        setLoading(true);
-        console.log(data);
-        await validateForm(data);
-        await userUpdate({ username: data.username });
-        setLoading(false);
-      } catch (e) {
-        showMessage({
-          message: 'SignUp Failed',
-          description: 'This username has already been used',
-          type: 'danger',
-        });
-        setError(e.response.request.status);
+      if (isUsernameFree) {
+        try {
+          setLoading(true);
+          console.log(data);
+          await validateForm(data);
+          await userUpdate({ username: data.username });
+          navigation.navigate(ROUTES.HomeScreen)
+          setLoading(false);
+        } catch (e) {
+          showMessage({
+            message: 'SignUp Failed',
+            description: 'This username has already been used',
+            type: 'danger',
+          });
+          setError(e.response.request.status);
+        }
       }
     },
   });
@@ -67,13 +74,20 @@ export const UsernameScreen = () => {
     onChangeText,
   };
 
+  useEffect(() => {
+    checkUsername(values.username).then((result) => {
+      console.log('username', result);
+      setIsUsernameFree(result);
+    });
+  }, [values.username]);
+
   return (
     <Container>
       <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
         <Text mt={SIZE * 3} fs={SIZES.md} ff={FONTS.semiBold}>
           Choose your username
         </Text>
-        <InputText formik={formik} formikName="Username" noAutoCorrect />
+        <InputText formik={formik} formikName="Username" noAutoCorrect usernameError={!isUsernameFree && 'This username is already been taken'} />
         <TextButton text="Next" onPress={handleSubmit} textStyle={{ alignSelf: 'center', marginTop: SIZE }} loading={loading} />
       </View>
     </Container>
