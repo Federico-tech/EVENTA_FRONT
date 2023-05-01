@@ -2,7 +2,7 @@ import { Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
@@ -54,60 +54,63 @@ export const ProfileHeader = ({ myProfile, user }) => {
   };
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.container}>
-        <View style={[{ width: '100%', position: 'absolute', alignItems: 'center'}, myProfile && { alignItems: 'flex-start' }]}>
-          <Text style={styles.usernameText}>{user.username}</Text>
+    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+      <View style={styles.wrapper}>
+        <View style={styles.container}>
+          <View style={[{ width: '100%', position: 'absolute', alignItems: 'center' }, myProfile && { alignItems: 'flex-start' }]}>
+            <Text style={styles.usernameText}>{user.username}</Text>
+          </View>
+          {!myProfile ? (
+            <IconButton name="chevron-back" color="black" size={SIZE * 2} onPress={() => navigation.goBack()} iconStyle={{ marginLeft: -SIZE / 2 }} />
+          ) : (
+            <View style={{ width: SIZE }} />
+          )}
+          {myProfile ? (
+            <IconButton name="settings-sharp" color="black" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
+          ) : currentUserId !== selectedUserId ? (
+            <IconButton name="ios-ellipsis-horizontal" color="black" size={SIZE * 1.75} onPress={handlePresentModal} />
+          ) : (
+            <View style={{ width: SIZE * 1.5 }} />
+          )}
         </View>
-        {!myProfile ? (
-          <IconButton name="chevron-back" color="black" size={SIZE * 2} onPress={() => navigation.goBack()} iconStyle={{ marginLeft: -SIZE / 2 }} />
-        ) : (
-          <View style={{ width: SIZE }} />
-        )}
-        {myProfile ? (
-          <IconButton name="settings-sharp" color="black" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
-        ) : currentUserId !== selectedUserId ? (
-          <IconButton name="ios-ellipsis-horizontal" color="black" size={SIZE * 1.75} onPress={handlePresentModal} />
-        ) : (
-          <View style={{ width: SIZE * 1.5 }} />
-        )}
+        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['13%']} backdropComponent={renderBackdrop}>
+          <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+            <TouchableOpacity onPress={() => setReportModalVisible(true)}>
+              <Row row alignCenter style={{ marginTop: SIZE }}>
+                <Octicons name="report" size={SIZE * 1.8} color="red" />
+                <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
+              </Row>
+            </TouchableOpacity>
+          </View>
+        </BottomSheetModal>
+        <AlertModal
+          isVisible={isReportModalVisible}
+          onBackdropPress={() => setReportModalVisible(false)}
+          title="Report this event?"
+          descritpion="Thank you for reporting this event. Our team will review the event and take appropriate action as necessary."
+          confirmText="Report"
+          onPressConfirm={() => onPressReportUser(dataReport)}
+        />
       </View>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['13%']} backdropComponent={renderBackdrop}>
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <TouchableOpacity onPress={() => setReportModalVisible(true)}>
-            <Row row alignCenter style={{ marginTop: SIZE }}>
-              <Octicons name="report" size={SIZE * 1.8} color="red" />
-              <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
-            </Row>
-          </TouchableOpacity>
-        </View>
-      </BottomSheetModal>
-      <AlertModal
-        isVisible={isReportModalVisible}
-        onBackdropPress={() => setReportModalVisible(false)}
-        title="Report this event?"
-        descritpion="Thank you for reporting this event. Our team will review the event and take appropriate action as necessary."
-        confirmText="Report"
-        onPressConfirm={() => onPressReportUser(dataReport)}
-      />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: SIZE * 6,
+    height: SIZE * 2.5,
+    backgroundColor: COLORS.white,
     zIndex: -1,
-    backgroundColor: COLORS.white
   },
   container: {
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: SIZE * 4,
+    marginTop: SIZE / 8,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignContent: 'center',
     flex: 1,
+    height: SIZE * 3.4,
   },
   usernameText: {
     color: COLORS.black,

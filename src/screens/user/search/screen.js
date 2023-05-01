@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 
 import { Container, SearchBar } from '../../../components/index';
 import { SearchTopNavigator } from '../../../navigation/TopTabNavigator';
@@ -13,9 +13,11 @@ export const SearchScreen = () => {
 
   return (
     <Container>
-      <View style={{ marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE * 3 }}>
-        <SearchBar />
-      </View>
+      <SafeAreaView>
+        <View style={{ marginHorizontal: WIDTH_DEVICE / 20, marginTop: -SIZE / 2 }}>
+          <SearchBar />
+        </View>
+      </SafeAreaView>
       <SearchTopNavigator style={styles.topBar} />
     </Container>
   );

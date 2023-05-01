@@ -42,7 +42,8 @@ export const UsernameScreen = () => {
       try {
         setLoading(true);
         console.log(data);
-        userUpdate({ username: data.username });
+        await validateForm(data);
+        await userUpdate({ username: data.username });
         setLoading(false);
       } catch (e) {
         showMessage({
@@ -50,7 +51,7 @@ export const UsernameScreen = () => {
           description: 'This username has already been used',
           type: 'danger',
         });
-        console.log({ error: e})
+        setError(e.response.request.status);
       }
     },
   });

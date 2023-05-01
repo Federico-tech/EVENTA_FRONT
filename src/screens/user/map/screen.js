@@ -1,10 +1,10 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet } from '../../../components';
+import { Button, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet, Row } from '../../../components';
 import { getRefreshedEvent } from '../../../services/events';
 import { refreshSelectedUser } from '../../../services/users';
 import { setSelectedEvent } from '../../../store/event';
@@ -179,26 +179,35 @@ export const MapScreen = ({ navigation, route }) => {
               </Marker>
             ))}
       </MapView>
-      <View style={{ position: 'absolute', marginTop: SIZE * 4, zIndex: 2, flexDirection: 'row', alignSelf: 'center' }}>
-        <Button
-          secondary
-          loading={refreshing && filter === 'events'}
-          containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 13 }]}
-          onPress={() => updateFilters('events')}>
-          <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
-            Events
-          </Text>
-        </Button>
-        <Button
-          secondary
-          loading={refreshing && filter === 'organisers'}
-          containerStyle={[filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 13 }]}
-          onPress={() => updateFilters('organisers')}>
-          <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>
-            Organisers
-          </Text>
-        </Button>
+
+      <View style={{ position: 'absolute', zIndex: 2, flexDirection: 'row', alignSelf: 'center' }}>
+        <SafeAreaView>
+          <Row row spaceBetween mt={SIZE}>
+            <Button
+              secondary
+              loading={refreshing && filter === 'events'}
+              containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { marginRight: SIZE, width: SIZE * 13 }]}
+              onPress={() => updateFilters('events')}>
+              <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
+                Events
+              </Text>
+            </Button>
+            <Button
+              secondary
+              loading={refreshing && filter === 'organisers'}
+              containerStyle={[
+                filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs },
+                { marginRight: SIZE, width: SIZE * 13 },
+              ]}
+              onPress={() => updateFilters('organisers')}>
+              <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>
+                Organisers
+              </Text>
+            </Button>
+          </Row>
+        </SafeAreaView>
       </View>
+
       <View>
         <BottomSheetModal
           enablePanDownToClose

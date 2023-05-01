@@ -143,3 +143,14 @@ export const getRecommendedUsers = async () => {
     console.log({ getRecommmendedUsersError: e });
   }
 };
+
+export const checkUsername = async (username) => {
+  try {
+    const params = { value: username }
+    const { data: check } = await mainAxios.get(`users/checkField`, { params });
+    console.log({ check });
+    return check.success;
+  } catch (e) {
+    console.log({ checkingFieldError: e });
+  }
+}

@@ -117,7 +117,13 @@ export const UserSingUpScreen = ({ navigation }) => {
           <InputText formik={formik} label="Email" formikName="email" autoCapitalize="none" />
           <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
           <Text style={styles.passwordReq}>{t('password requirements')}</Text>
-          <Button loading={loading} primary containerStyle={{ width: WIDTH_DEVICE * 0.9 }} text="Sign Up" onPress={handleSubmit} />
+          <Button
+            loading={loading}
+            primary
+            containerStyle={{ width: WIDTH_DEVICE * 0.9, height: HEIGHT_DEVICE / 15, marginBottom: SIZE / 1.5 }}
+            text="Sign Up"
+            onPress={handleSubmit}
+          />
           <View style={styles.containerLine}>
             <Row style={styles.line} />
             <Text style={styles.orLoginUsing}>or</Text>

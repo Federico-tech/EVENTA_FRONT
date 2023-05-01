@@ -118,7 +118,13 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
           <InputText formik={formik} label={t('address')} formikName="address" pointerEvents="none" onPress={onPressAddress} touchableOpacity />
           <InputText formik={formik} label="Password" formikName="password" hide autoCapitalize="none" secureTextEntry />
           <Text style={styles.passwordReq}>{t('password requirements')}</Text>
-          <Button loading={loading} primary text="Sign Up" containerStyle={{ width: WIDTH_DEVICE * 0.9 }} onPress={handleSubmit} />
+          <Button
+            loading={loading}
+            primary
+            text="Sign Up"
+            containerStyle={{ width: WIDTH_DEVICE * 0.9, height: HEIGHT_DEVICE / 15, marginBottom: SIZE / 1.5 }}
+            onPress={handleSubmit}
+          />
           <View style={styles.containerLine}>
             <Row style={styles.line} />
             <Text style={styles.orLoginUsing}>or</Text>

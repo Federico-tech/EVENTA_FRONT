@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator, TouchableOpacity, SafeAreaView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
@@ -251,90 +251,94 @@ export const EventDetails = ({ route }) => {
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: SIZE }}>
-          <View style={{ marginTop: -SIZE * 2 }}>
-            <LoadingImage source={event.coverImage} width="100%" event />
-            <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.5)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.5)']} />
-          </View>
-          <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
-          <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
-          <View
-            style={{
-              paddingHorizontal: WIDTH_DEVICE / 20,
-              zIndex: 2,
-              backgroundColor: COLORS.white,
-              marginTop: -SIZE * 3,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-            }}>
-            <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} />
+        <SafeAreaView>
+          <View style={{ marginBottom: SIZE }}>
+            <View style={{ marginTop: -SIZE * 6 }}>
+              <LoadingImage source={event.coverImage} width="100%" event />
+              <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.5)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.5)']} />
+            </View>
 
-            <View style={{ marginHorizontal: 0 }}>
-              <Line lineStyle={{ marginBottom: 0 }} />
+            <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
+            <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
+
+            <View
+              style={{
+                paddingHorizontal: WIDTH_DEVICE / 20,
+                zIndex: 2,
+                backgroundColor: COLORS.white,
+                marginTop: -SIZE * 3,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+              }}>
+              <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} />
+
+              <View style={{ marginHorizontal: 0 }}>
+                <Line lineStyle={{ marginBottom: 0 }} />
+              </View>
             </View>
-          </View>
-          <EventInformations event={event} />
-          <Row style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-            <View style={{ marginHorizontal: 0 }}>
-              <Line lineStyle={{ marginBottom: 0 }} />
-            </View>
-            <EventSocialInformations event={event} posts={totalData} participants={numberOfParticipants} />
-            {data.length !== 0 && (
-              <>
-                <Row row alignCenter spaceBetween mb={SIZE} mt={SIZE / 2}>
-                  <Text ff={FONTS.semiBold} fs={SIZES.sm}>
-                    Moments
-                  </Text>
-                  <TouchableOpacity onPress={onPressNavigatePosts}>
-                    <Row row alignCenter>
-                      <AntDesign name="caretright" size={SIZE / 1.1} />
-                      <TextButton
-                        text="View all"
-                        textStyle={{
-                          width: SIZE * 4,
-                          fontSize: SIZES.xs,
-                          color: 'black',
-                          fontFamily: FONTS.medium,
-                          alignSelf: 'flex-end',
-                          marginLeft: SIZE / 4,
-                        }}
-                      />
-                    </Row>
-                  </TouchableOpacity>
+            <EventInformations event={event} />
+            <Row style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+              <View style={{ marginHorizontal: 0 }}>
+                <Line lineStyle={{ marginBottom: 0 }} />
+              </View>
+              <EventSocialInformations event={event} posts={totalData} participants={numberOfParticipants} />
+              {data.length !== 0 && (
+                <>
+                  <Row row alignCenter spaceBetween mb={SIZE} mt={SIZE / 2}>
+                    <Text ff={FONTS.semiBold} fs={SIZES.sm}>
+                      Moments
+                    </Text>
+                    <TouchableOpacity onPress={onPressNavigatePosts}>
+                      <Row row alignCenter>
+                        <AntDesign name="caretright" size={SIZE / 1.1} />
+                        <TextButton
+                          text="View all"
+                          textStyle={{
+                            width: SIZE * 4,
+                            fontSize: SIZES.xs,
+                            color: 'black',
+                            fontFamily: FONTS.medium,
+                            alignSelf: 'flex-end',
+                            marginLeft: SIZE / 4,
+                          }}
+                        />
+                      </Row>
+                    </TouchableOpacity>
+                  </Row>
+                  <FlatList
+                    data={data}
+                    renderItem={({ item }) => <MiniPostCard postData={item} />}
+                    keyExtractor={(item) => item._id}
+                    horizontal
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
+                  />
+                </>
+              )}
+              <Row row alignCenter spaceBetween mt={SIZE * 1.5}>
+                <Text ff={FONTS.semiBold} fs={SIZES.sm}>
+                  Who's going
+                </Text>
+                <Row row alignCenter>
+                  <AntDesign name="caretright" size={SIZE / 1.1} />
+                  <TextButton
+                    text="View all"
+                    textStyle={{
+                      width: SIZE * 4,
+                      fontSize: SIZES.xs,
+                      color: 'black',
+                      fontFamily: FONTS.medium,
+                      alignSelf: 'flex-end',
+                      marginLeft: SIZE / 4,
+                    }}
+                  />
                 </Row>
-                <FlatList
-                  data={data}
-                  renderItem={({ item }) => <MiniPostCard postData={item} />}
-                  keyExtractor={(item) => item._id}
-                  horizontal
-                  showsVerticalScrollIndicator={false}
-                  showsHorizontalScrollIndicator={false}
-                  ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
-                />
-              </>
-            )}
-            <Row row alignCenter spaceBetween mt={SIZE * 1.5}>
-              <Text ff={FONTS.semiBold} fs={SIZES.sm}>
-                Who's going
-              </Text>
-              <Row row alignCenter>
-                <AntDesign name="caretright" size={SIZE / 1.1} />
-                <TextButton
-                  text="View all"
-                  textStyle={{
-                    width: SIZE * 4,
-                    fontSize: SIZES.xs,
-                    color: 'black',
-                    fontFamily: FONTS.medium,
-                    alignSelf: 'flex-end',
-                    marginLeft: SIZE / 4,
-                  }}
-                />
               </Row>
+              <EventDetailsParticipants isParticipating={isParticipating} />
             </Row>
-            <EventDetailsParticipants isParticipating={isParticipating} />
-          </Row>
-        </View>
+          </View>
+        </SafeAreaView>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <Text ff={FONTS.semiBold} fs={SIZES.sm} mt={SIZE / 2}>
             Location

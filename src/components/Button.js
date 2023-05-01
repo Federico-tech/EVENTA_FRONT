@@ -31,19 +31,16 @@ export const Button = ({
   const Component = !loading && gradient ? View : View;
   return (
     <TouchableOpacity onPress={onPress} style={[wrapperStyle]} disabled={!onPress || disabled}>
-      <View style={[gradient && loading && styles.secondary, containerStyle]}>
+      <View style={[containerStyle]}>
         <View
-          // colors={[COLORS.gradient1, COLORS.gradient2]}
-          // start={{ x: 0, y: 1 }}
-          // end={{ x: 0, y: 0 }}
           style={[
-            primary && styles.container,
             secondary && styles.secondary,
             disabledStyle && styles.disabled,
             gradient && styles.containerGradient,
             pressed && styles.pressed,
             black && styles.black,
             loading && styles.secondary,
+            primary && styles.container,
             containerStyle,
           ]}>
           {loading ? (

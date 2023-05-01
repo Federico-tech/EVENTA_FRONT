@@ -8,11 +8,11 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { object, string } from 'yup';
 
+import { BlueGradientLogo } from '../../../assets';
 import { Button, Container, InputText, Row, SocialLoginButton, TextButton } from '../../../components/index';
 import { ROUTES } from '../../../navigation/Navigation';
 import { loginUser } from '../../../services/users';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE, SHADOWS } from '../../../utils/theme';
-import { BlueGradientLogo } from '../../../assets';
 
 export const LoginScreen = () => {
   const navigation = useNavigation();
@@ -102,7 +102,7 @@ export const LoginScreen = () => {
               primary
               text="Login"
               onPress={handleSubmit}
-              containerStyle={{ width: WIDTH_DEVICE * 0.9 }}
+              containerStyle={{ width: WIDTH_DEVICE * 0.9, height: HEIGHT_DEVICE / 15, marginBottom: SIZE / 1.5 }}
               loading={loading}
               disabled={!values.password || (!values.email && true)}
               disabledStyle={!values.password || (!values.email && true)}
