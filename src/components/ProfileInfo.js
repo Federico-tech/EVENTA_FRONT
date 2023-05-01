@@ -1,5 +1,6 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
@@ -71,6 +72,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   }, [initialUser]);
 
   const onPressFollow = async () => {
+    Haptics.selectionAsync();
     setUser((prevUser) => ({
       ...prevUser,
       followers: prevUser.followers + 1,

@@ -1,6 +1,7 @@
 import { AntDesign, Entypo, Ionicons, Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
@@ -14,12 +15,12 @@ import { report } from '../services/reports';
 import { getUserField } from '../services/users';
 import { selectCurrentUserId, setUserSelected } from '../store/user';
 import { setTimeElapsed } from '../utils/dates';
+import { formatNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
-import { formatNumber } from '../utils/numbers';
 
 export const PostCard = ({ postData, getData, touchable }) => {
   const [isLiked, setIsLiked] = useState();
@@ -66,6 +67,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
   }, [postData]);
 
   const onPresslike = async () => {
+    Haptics.selectionAsync();
     setLikes(likes + 1);
     setIsLiked(true);
     setIsLikePressLoading(true);
@@ -207,7 +209,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
                   <Text regularXs color={COLORS.gray} style={{ marginTop: SIZE / 20 }}>
                     View {postData.comments <= 1 ? postData.comments + ' comment' : 'all ' + formatNumber(postData.comments) + ' comments'}
                   </Text>
-              </TouchableOpacity>
+                </TouchableOpacity>
                 <Text regularXs style={{ marginTop: SIZE / 2, width: SIZE * 24, marginBottom: SIZE / 2 }} numberOfLines={2}>
                   <Text ff={FONTS.semiBold}>{commentUserUsername} </Text>
                   {postData?.comment?.content}

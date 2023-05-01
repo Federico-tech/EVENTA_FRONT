@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -28,7 +29,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   const organiser = useSelector(selectSelectedUser);
   const role = useSelector(selectCurrentUserRole);
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +47,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   }, [event]);
 
   const onPressFollow = async () => {
+    Haptics.selectionAsync();
     setIsFollowing(true);
     setIsFollowingPressLoading(true);
     await follow();
@@ -63,13 +65,12 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
     closeSheet();
   };
 
-
   const onPressEvent = () => {
-    navigation.navigate(ROUTES.EventDetails)
+    navigation.navigate(ROUTES.EventDetails);
     dispatch(setUserSelected(event.organiser));
     dispatch(setSelectedEvent(event));
-    closeSheet()
-  }
+    closeSheet();
+  };
 
   return (
     <ScrollView scrollEnabled={scroll}>

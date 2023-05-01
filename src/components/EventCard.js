@@ -1,5 +1,6 @@
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -78,13 +79,13 @@ export const EventCard = ({ eventData }) => {
   }, [eventData]);
 
   const onPresslike = async () => {
+    Haptics.selectionAsync();
     setLikes(likes + 1);
     setIsLiked(true);
     setIsLikePressLoading(true);
     await like(eventData._id);
     setIsLikePressLoading(false);
   };
-
   const onPressUnlike = async () => {
     setLikes(likes - 1);
     setIsLiked(false);
@@ -111,7 +112,7 @@ export const EventCard = ({ eventData }) => {
               </View>
             </View>
             <View style={styles.likeContainer}>
-              <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium }}>{formatShortNumber(likes)}</Text>
+              <Text style={{ marginRight: SIZE / 3, fontFamily: FONTS.medium, fontSize: SIZES.sm }}>{formatShortNumber(likes)}</Text>
               {isLiked ? (
                 <TouchableOpacity onPress={onPressUnlike} disabled={isLikePressLoading}>
                   <AntDesign name="heart" iconStyle={styles.icon} size={SIZE * 1.7} color="red" />

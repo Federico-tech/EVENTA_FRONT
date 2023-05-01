@@ -1,5 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
@@ -39,6 +39,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   });
 
   const onPressFollow = async () => {
+    Haptics.selectionAsync();
     setIsFollowing(true);
     setNumFollowers(numFollowers + 1);
     setIsFollowingPressLoading(true);

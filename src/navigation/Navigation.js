@@ -8,6 +8,7 @@ import { BlueLogo } from '../assets';
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
+import { UsernameScreen } from '../screens/onboarding/username/screen';
 import { CreateEventScreen } from '../screens/organiser/events/create/screen';
 import { EditEventScreen } from '../screens/organiser/events/edit/screen';
 import { PopularEventsScreen } from '../screens/organiser/events/popular/screen';
@@ -97,6 +98,7 @@ export const ROUTES = {
   PostCommentScreen: 'PostCommentScreen',
   PopularEventsScreen: 'PopularEventsScreen',
   PrivacyPolicyScreen: 'PrivacyPolicyScreen',
+  UsernameScreen: 'UsernameScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -127,7 +129,6 @@ const HomeNavigator = () => {
   return (
     <HomeStackNavigator.Navigator initialRouteName={ROUTES.HomeScreen}>
       <HomeStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
-      <HomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.LikeScreen} component={LikeScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
@@ -154,7 +155,6 @@ export const SearchNavigator = () => {
       <SearchStackNavigator.Screen name={ROUTES.SearchScreen} component={SearchScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
-      <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
@@ -174,7 +174,6 @@ export const ProfileNavigator = () => {
     <ProfileStackNavigator.Navigator initialRouteName={ROUTES.ProfileScreen}>
       <ProfileStackNavigator.Screen name={ROUTES.ProfileScreen} component={ProfileScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
-      <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.HomeScreen} component={HomeScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
@@ -194,7 +193,6 @@ export const OrganiserHomeNavigator = () => {
   return (
     <OrganiserHomeStackNavigator.Navigator>
       <OrganiserHomeStackNavigator.Screen name={ROUTES.OrganiserHome} component={OrganiserHome} options={{ headerShown: false }} />
-      <OrganiserHomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.OrganiserProfileScreen} component={OrganiserProfileScreen} options={{ headerShown: false }} />
@@ -225,7 +223,6 @@ export const OrganiserProfileNavigator = () => {
         options={{ headerShown: false }}
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
-      <OrganiserProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
@@ -246,7 +243,6 @@ export const MapNavigator = () => {
   return (
     <MapStackNavigator.Navigator initialRouteName={ROUTES.MapScreen}>
       <MapStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
-      <MapStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.AccountOrganiserScreen} component={AccountOrganiserScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.SearchOrganiserEventsScreen} component={SearchOrganiserEventsScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
@@ -325,6 +321,10 @@ export const UserStack = () => {
       <UserStackNavigator.Group>
         <UserStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} />
         <UserStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} />
+        <UserStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} />
+      </UserStackNavigator.Group>
+      <UserStackNavigator.Group screenOptions={{ presentation: 'modal', gestureEnabled: 'false' }}>
+        <UserStackNavigator.Screen name={ROUTES.UsernameScreen} component={UsernameScreen} screenOptions={{ headerShown: false }} />
       </UserStackNavigator.Group>
     </UserStackNavigator.Navigator>
   );

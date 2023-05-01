@@ -1,9 +1,9 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { AntDesign, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
@@ -12,7 +12,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 
 import { Button, Container, IconButton, Line, LoadingImage, OrganiserInf, ReadMoreButton, Row, Text, TextButton } from '../../../../components';
-import { UserColumn } from '../../../../components/AccountRow';
+import { UserRow } from '../../../../components/AccountRow';
 import { DiscountModal } from '../../../../components/DiscountModal';
 import { MiniPostCard } from '../../../../components/MiniPostCard';
 import { ROUTES } from '../../../../navigation/Navigation';
@@ -24,7 +24,8 @@ import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
-import { COLORS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
+import { formatShortNumber } from '../../../../utils/numbers';
+import { COLORS, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
 const EventDetailsParticipants = ({ isParticipating }) => {
@@ -37,9 +38,10 @@ const EventDetailsParticipants = ({ isParticipating }) => {
     const fetchData = async () => {
       setLoading(true);
       await getRefreshedEvent(event);
-      const res = await getEventParticipants(event?._id, { queryParams: { limit: 10 } });
+      const res = await getEventParticipants(event?._id, { limit: 3 });
       setParticipants(res);
       setLoading(false);
+      console.log('Part', res);
     };
     fetchData();
   }, [isParticipating]);
@@ -47,20 +49,12 @@ const EventDetailsParticipants = ({ isParticipating }) => {
   return (
     <>
       {loading ? (
-        <View style={{ height: SIZE * 6, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator style={{ marginTop: SIZE / 2 }} />
-        </View>
+        <ActivityIndicator style={{ marginTop: SIZE }} />
       ) : (
-        <Row row alignCenter>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-            {participants?.slice(0, 3).map((participant) => (
-              <UserColumn key={participant.user._id} data={participant.user} />
-            ))}
-            {participants?.length >= 9 && (
-              <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
-            )}
-          </ScrollView>
-        </Row>
+        participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} />)
+      )}
+      {participants?.length >= 3 && (
+        <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
       )}
     </>
   );
@@ -69,7 +63,7 @@ const EventDetailsParticipants = ({ isParticipating }) => {
 const EventDetailsMap = ({ event, navigation }) => {
   return (
     <TouchableOpacity onPress={() => navigation.navigate('MapNavigator', { screen: ROUTES.MapScreen, params: { event, key: Math.random() * 100 } })}>
-      <View style={{ marginBottom: SIZE, marginTop: SIZE * 2, borderRadius: SIZES.xxs }}>
+      <View style={{ marginBottom: SIZE, marginTop: SIZE, borderRadius: SIZES.xxs }}>
         <MapView
           style={{ height: SIZE * 12, zIndex: 1, borderRadius: SIZES.xxs }}
           provider={PROVIDER_GOOGLE}
@@ -95,6 +89,69 @@ const EventDetailsMap = ({ event, navigation }) => {
   );
 };
 
+const EventInformations = ({ event }) => {
+  return (
+    <Row style={{ marginHorizontal: WIDTH_DEVICE / 20 }} column mb={SIZE / 2}>
+      <Text ff={FONTS.semiBold} fs={SIZES.lg} mt={SIZE} mb={SIZE}>
+        {event.name}
+      </Text>
+      <ReadMoreButton subString={80} text={event.description} style={styles.description} />
+      <Row row alignCenter mt={SIZE * 1.5}>
+        <View style={[styles.iconContainer]}>
+          <AntDesign name="clockcircleo" size={SIZE * 2} />
+        </View>
+        <Row column>
+          <Text>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
+          <Text color={COLORS.gray}>{formatDate(event.date, TIME_FORMAT)}</Text>
+        </Row>
+      </Row>
+      <Row row alignCenter mt={SIZE} mb={SIZE}>
+        <View style={styles.iconContainer}>
+          <Foundation name="marker" size={SIZE * 2} />
+        </View>
+        <Row width={SIZE * 18}>
+          <Text>{event?.address?.fullAddress}</Text>
+        </Row>
+      </Row>
+    </Row>
+  );
+};
+
+const EventSocialInformations = ({ event, posts, participants }) => {
+  console.log({ event });
+  return (
+    <Row row mt={SIZE * 1.5} mb={SIZE}>
+      <Row row alignCenter>
+        <Row style={styles.iconContainer}>
+          <AntDesign name="heart" color="red" size={SIZE * 1.5} />
+        </Row>
+        <Row width={SIZE * 5}>
+          <Text>Likes</Text>
+          <Text color={COLORS.gray}>{formatShortNumber(event.likes)}</Text>
+        </Row>
+      </Row>
+      <Row row alignCenter>
+        <Row style={styles.iconContainer}>
+          <MaterialCommunityIcons name="post" color={COLORS.primary} size={SIZE * 1.6} />
+        </Row>
+        <Row width={SIZE * 5}>
+          <Text>Posts</Text>
+          <Text color={COLORS.gray}>{formatShortNumber(posts)}</Text>
+        </Row>
+      </Row>
+      <Row row alignCenter>
+        <Row style={styles.iconContainer}>
+          <Ionicons name="people" color="orange" size={SIZE * 1.7} />
+        </Row>
+        <Row width={SIZE * 5}>
+          <Text>Part</Text>
+          <Text color={COLORS.gray}>{formatShortNumber(participants)}</Text>
+        </Row>
+      </Row>
+    </Row>
+  );
+};
+
 export const EventDetails = ({ route }) => {
   const { onGoBack } = route?.params || {};
   const [isOnPressParticipateLoading, setIsOnPressParticipateLoading] = useState(false);
@@ -105,7 +162,6 @@ export const EventDetails = ({ route }) => {
   const event = useSelector(selectSelectedEvent);
   const eventId = useSelector(selectSelectedEventId);
   const role = useSelector(selectCurrentUserRole);
-  const eventOrganiserId = event.organiserId;
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
   const refreshedOrganiser = useSelector(selectSelectedUser);
@@ -117,7 +173,7 @@ export const EventDetails = ({ route }) => {
   const toggleModal = () => setModalVisible(!isModalVisible);
   const handleClosePress = () => bottomSheetModalRef.current.close();
 
-  const { data } = useInfiniteScroll({
+  const { data, totalData } = useInfiniteScroll({
     entity: `events/${eventId}/posts`,
     limit: 6,
   });
@@ -148,6 +204,7 @@ export const EventDetails = ({ route }) => {
         setIsLoading(true);
         await getRefreshedEvent(event).then((result) => {
           setIsParticipating(result.data.event.isParticipating);
+          setNumberOfParticipants(result.data.event.participants);
         });
         await refreshSelectedUser(organiser);
         setIsLoading(false);
@@ -159,6 +216,7 @@ export const EventDetails = ({ route }) => {
   }, [eventId]);
 
   const onPressPartecipate = async () => {
+    Haptics.selectionAsync();
     setNumberOfParticipants(event.participants);
     setIsParticipating(true);
     setIsOnPressParticipateLoading(true);
@@ -194,7 +252,7 @@ export const EventDetails = ({ route }) => {
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginBottom: SIZE }}>
-          <View>
+          <View style={{ marginTop: -SIZE * 2 }}>
             <LoadingImage source={event.coverImage} width="100%" event />
             <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.5)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.5)']} />
           </View>
@@ -205,7 +263,7 @@ export const EventDetails = ({ route }) => {
               paddingHorizontal: WIDTH_DEVICE / 20,
               zIndex: 2,
               backgroundColor: COLORS.white,
-              marginTop: -SIZE * 1.5,
+              marginTop: -SIZE * 3,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
             }}>
@@ -215,74 +273,88 @@ export const EventDetails = ({ route }) => {
               <Line lineStyle={{ marginBottom: 0 }} />
             </View>
           </View>
+          <EventInformations event={event} />
           <Row style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-            <Row row alignCenter spaceBetween style={{ marginTop: SIZE }}>
-              <Text style={styles.eventTitle}>{event.name}</Text>
-              {eventOrganiserId === userId && (
-                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ScannerScreen)}>
-                  <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} />
-                </TouchableOpacity>
-              )}
-            </Row>
-            <ReadMoreButton subString={45} text={event.description} style={styles.description} />
-            <View style={styles.date}>
-              <FontAwesome name="calendar-o" size={18} />
-              <View style={{ marginHorizontal: WIDTH_DEVICE / 30 }}>
-                <Text style={styles.dateText}>{formatDate(event.date, EVENT_DATE_FORMAT)}</Text>
-                <Text style={styles.timeText}>{formatDate(event.date, TIME_FORMAT)}</Text>
-              </View>
+            <View style={{ marginHorizontal: 0 }}>
+              <Line lineStyle={{ marginBottom: 0 }} />
             </View>
-            <View style={styles.place}>
-              <Foundation name="marker" size={22} />
-              <Text style={styles.adressText}>{event?.address?.fullAddress}</Text>
-            </View>
-            <View style={styles.person}>
-              <Ionicons name="people-outline" size={24} />
-              <Text style={styles.peopleText}>
-                {event.participants}
-                <Text style={styles.description}> people are participating</Text>
+            <EventSocialInformations event={event} posts={totalData} participants={numberOfParticipants} />
+            {data.length !== 0 && (
+              <>
+                <Row row alignCenter spaceBetween mb={SIZE} mt={SIZE / 2}>
+                  <Text ff={FONTS.semiBold} fs={SIZES.sm}>
+                    Moments
+                  </Text>
+                  <TouchableOpacity onPress={onPressNavigatePosts}>
+                    <Row row alignCenter>
+                      <AntDesign name="caretright" size={SIZE / 1.1} />
+                      <TextButton
+                        text="View all"
+                        textStyle={{
+                          width: SIZE * 4,
+                          fontSize: SIZES.xs,
+                          color: 'black',
+                          fontFamily: FONTS.medium,
+                          alignSelf: 'flex-end',
+                          marginLeft: SIZE / 4,
+                        }}
+                      />
+                    </Row>
+                  </TouchableOpacity>
+                </Row>
+                <FlatList
+                  data={data}
+                  renderItem={({ item }) => <MiniPostCard postData={item} />}
+                  keyExtractor={(item) => item._id}
+                  horizontal
+                  showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}
+                  ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
+                />
+              </>
+            )}
+            <Row row alignCenter spaceBetween mt={SIZE * 1.5}>
+              <Text ff={FONTS.semiBold} fs={SIZES.sm}>
+                Who's going
               </Text>
-            </View>
+              <Row row alignCenter>
+                <AntDesign name="caretright" size={SIZE / 1.1} />
+                <TextButton
+                  text="View all"
+                  textStyle={{
+                    width: SIZE * 4,
+                    fontSize: SIZES.xs,
+                    color: 'black',
+                    fontFamily: FONTS.medium,
+                    alignSelf: 'flex-end',
+                    marginLeft: SIZE / 4,
+                  }}
+                />
+              </Row>
+            </Row>
+            <EventDetailsParticipants isParticipating={isParticipating} />
           </Row>
         </View>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          {data.length !== 0 && (
-            <>
-              <Row row alignCenter spaceBetween mb={SIZE}>
-                <Text ff={FONTS.semiBold} fs={SIZES.sm}>
-                  Moments
-                </Text>
-                <TouchableOpacity onPress={onPressNavigatePosts}>
-                  <Row row alignCenter>
-                    <TextButton text="View all" textStyle={{ width: SIZE * 4, fontSize: SIZES.xs, color: 'black', fontFamily: FONTS.medium }} />
-                  </Row>
-                </TouchableOpacity>
-              </Row>
-              <FlatList
-                data={data}
-                renderItem={({ item }) => <MiniPostCard postData={item} />}
-                keyExtractor={(item) => item._id}
-                horizontal
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                ListFooterComponent={<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }} />}
-              />
-            </>
-          )}
+          <Text ff={FONTS.semiBold} fs={SIZES.sm} mt={SIZE / 2}>
+            Location
+          </Text>
           <EventDetailsMap event={event} navigation={navigation} />
         </View>
       </ScrollView>
-      <View style={{ height: 0.5, backgroundColor: COLORS.lightGray }} />
       <Row style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}>
-        <Row column spaceBetween mt={SIZE}>
-          <EventDetailsParticipants numberOfParticipants={numberOfParticipants} isParticipating={isParticipating} />
-          <Row row spaceBetween alignCenter mt={SIZE / 2} mb={SIZE}>
+        <Row column spaceBetween>
+          <Row row spaceBetween alignCenter mt={SIZE} mb={SIZE * 2.7}>
             {role === 'user' &&
               (isParticipating ? (
                 <>
                   <Button
                     secondary
-                    containerStyle={event.discount !== 0 ? { width: SIZE * 24 } : { width: SIZE * 27 }}
+                    containerStyle={
+                      event.discount !== 0
+                        ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
+                        : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
+                    }
                     text="Unparticipate"
                     onPress={onPressUnpartecipate}
                     loading={isLoading}
@@ -291,7 +363,9 @@ export const EventDetails = ({ route }) => {
                   {event.discount !== 0 && (
                     <Row ml={SIZE}>
                       <TouchableOpacity onPress={toggleModal}>
-                        <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.primary} />
+                        <View style={styles.discountContainer}>
+                          <Entypo name="ticket" size={SIZE * 2} color={COLORS.primary} />
+                        </View>
                       </TouchableOpacity>
                     </Row>
                   )}
@@ -300,13 +374,21 @@ export const EventDetails = ({ route }) => {
                 <>
                   <Button
                     gradient
-                    containerStyle={event.discount !== 0 ? { width: SIZE * 24 } : { width: SIZE * 27 }}
+                    containerStyle={
+                      event.discount !== 0
+                        ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
+                        : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
+                    }
                     text="Partecipa"
                     onPress={onPressPartecipate}
                     loading={isLoading}
                     disabled={isOnPressParticipateLoading}
                   />
-                  {event.discount !== 0 && <MaterialCommunityIcons name="brightness-percent" size={SIZE * 2} color={COLORS.gray} />}
+                  {event.discount !== 0 && (
+                    <View style={styles.discountContainer}>
+                      <MaterialCommunityIcons name="ticket-percent" size={SIZE * 2} color={COLORS.gray} />
+                    </View>
+                  )}
                 </>
               ))}
           </Row>
@@ -340,70 +422,27 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   eventImage: {
-    height: SIZE * 23,
+    height: SIZE * 22,
     width: WIDTH_DEVICE,
     position: 'absolute',
     alignSelf: 'center',
     marginTop: SIZE * 3,
   },
-  eventTitle: {
-    fontFamily: 'InterSemiBold',
-    fontSize: SIZES.xl,
-  },
-  description: {
-    fontFamily: FONTS.regular,
-    fontSize: SIZES.xs,
-    marginTop: SIZE / 2,
-  },
-  date: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: SIZE,
-  },
-
-  dateText: {
-    fontFamily: 'InterMedium',
-    fontSize: SIZES.xs,
-  },
-  timeText: {
-    fontFamily: 'InterRegular',
-    fontSize: SIZES.xs,
-    color: COLORS.gray,
-  },
-  adressText: {
-    marginLeft: SIZE,
-    fontFamily: FONTS.regular,
-    fontSize: SIZES.xs,
-  },
-  place: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: SIZE,
-    marginLeft: SIZE / 6,
-  },
-  peopleText: {
-    marginLeft: WIDTH_DEVICE / 50,
-    fontFamily: 'InterMedium',
-    fontSize: SIZES.xs,
-  },
-  person: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: HEIGHT_DEVICE / 70,
-  },
   arrowStyle: {
     marginLeft: WIDTH_DEVICE / 40,
-    marginBottom: SIZE * 24,
+    marginBottom: SIZE * 21.5,
     bottom: 0,
     position: 'absolute',
+    padding: SIZE / 4,
   },
   dots: {
     marginHorizontal: WIDTH_DEVICE / 40,
-    marginBottom: SIZE * 24,
+    marginBottom: SIZE * 21.5,
     alignSelf: 'flex-end',
     bottom: 0,
     position: 'absolute',
     paddingRight: SIZE,
+    padding: SIZE / 4,
   },
   other: {
     fontFamily: 'InterRegular',
@@ -421,29 +460,6 @@ const styles = StyleSheet.create({
     marginTop: SIZE,
     fontFamily: FONTS.semiBold,
   },
-  viewMore: {
-    color: COLORS.primary,
-    fontSize: SIZES.sm,
-    fontFamily: FONTS.medium,
-    marginTop: SIZE * 2.5,
-  },
-  blur: {
-    height: SIZE * 20,
-    width: SIZE * 20,
-  },
-
-  mapButton: {
-    position: 'absolute',
-    width: SIZE * 2.5,
-    height: SIZE * 2.5,
-    backgroundColor: COLORS.white,
-    zIndex: 2,
-    borderRadius: SIZES.xxs,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    marginTop: SIZE * 9,
-    marginLeft: SIZE * 23.9,
-  },
 
   horizontalScrollView: {
     height: SIZE * 6,
@@ -453,5 +469,25 @@ const styles = StyleSheet.create({
     height: '100%',
     zIndex: 3,
     position: 'absolute',
+  },
+  iconContainer: {
+    borderRadius: SIZES.xxs,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: SIZE,
+    width: SIZE * 3.5,
+    aspectRatio: 1,
+    backgroundColor: COLORS.backGray,
+  },
+  description: {
+    color: COLORS.darkGray,
+  },
+  discountContainer: {
+    width: SIZE * 3,
+    aspectRatio: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    backgroundColor: COLORS.backGray,
   },
 });

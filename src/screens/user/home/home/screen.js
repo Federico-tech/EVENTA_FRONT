@@ -1,15 +1,17 @@
-import { useScrollToTop } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Container, EventCard, HomeHeader, HomeTop, ListEmptyComponent } from '../../../../components/index';
+import { ROUTES } from '../../../../navigation/Navigation';
 import { getMostPopularEvent } from '../../../../services/events';
 import { checkReadNotifications } from '../../../../services/notifications';
 import { setUnreadNotifications } from '../../../../store/notification';
+import { selectCurrentUser } from '../../../../store/user';
 import { updateUserCoordinates } from '../../../../utils';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE } from '../../../../utils/theme';
@@ -19,11 +21,16 @@ export const HomeScreen = () => {
   const homeRef = React.useRef(null);
   const [mostPopularEvent, setMostpopularEvent] = useState();
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
+  const navigation = useNavigation();
 
   useScrollToTop(listRef);
 
   useEffect(() => {
     updateUserCoordinates();
+    if (!currentUser.username) {
+      navigation.navigate(ROUTES.UsernameScreen);
+    }
   }, []);
 
   useEffect(() => {

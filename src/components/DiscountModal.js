@@ -4,8 +4,9 @@ import Modal from 'react-native-modal';
 import SvgQRCode from 'react-native-qrcode-svg';
 import { useSelector } from 'react-redux';
 
+import { BlueGradientLogo } from '../assets';
 import { selectCurrentUser } from '../store/user';
-import { COLORS, SIZE, SIZES } from '../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 import { Text } from './Text';
 
 export const DiscountModal = ({ isVisible, onBackdropPress, event }) => {
@@ -14,24 +15,21 @@ export const DiscountModal = ({ isVisible, onBackdropPress, event }) => {
   const QRCodeValue = JSON.stringify(qrObject);
 
   return (
-    <Modal isVisible={isVisible} onBackdropPress={onBackdropPress}>
+    <Modal isVisible={isVisible} onBackdropPress={onBackdropPress} style={{ borderRadius: 100 }}>
       <View style={styles.container}>
-        {/* <Image source={require('../assets/logos/WhiteLogo.png')} style={styles.logo} /> */}
-        <Text color={COLORS.white} semiBoldMd>
+        <Image source={BlueGradientLogo} style={styles.logo} />
+        <Text ff={FONTS.semiBold} fs={SIZES.xl}>
           {event.name.toUpperCase()}
         </Text>
-        <Text color={COLORS.white} medium style={{ marginTop: SIZE }}>
+        <Text ff={FONTS.regular} color={COLORS.gray}>
           {user.username}
-        </Text>
-        <Text color={COLORS.white} medium>
-          is participating
-        </Text>
-        <Text color={COLORS.white} semiBoldMd style={{ marginTop: SIZE, fontSize: SIZES.xl }}>
-          {event.discount}% Discount
         </Text>
         <View style={{ marginTop: SIZE * 2 }}>
           <SvgQRCode value={QRCodeValue} size={SIZE * 13} />
         </View>
+        <Text ff={FONTS.medium} fs={SIZES.lg} style={{ marginTop: SIZE * 3 }}>
+          {event.discount}% Discount
+        </Text>
       </View>
     </Modal>
   );
@@ -42,9 +40,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: SIZE * 25,
     height: SIZE * 50,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.white,
     flexDirection: 'column',
     alignItems: 'center',
-    paddingVertical: SIZE * 4,
+    borderRadius: SIZES.xxs,
+    borderColor: COLORS.primary,
+    borderWidth: 3,
+  },
+  logo: {
+    width: SIZE * 18,
+    height: SIZE * 18,
+    aspectRatio: 1,
+    marginTop: SIZE * 2,
   },
 });

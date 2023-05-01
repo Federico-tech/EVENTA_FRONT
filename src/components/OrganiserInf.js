@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -24,6 +25,7 @@ export const OrganiserInf = ({ organiser, isLoading }) => {
   }, [organiser]);
 
   const onPressFollow = async () => {
+    Haptics.selectionAsync();
     setIsFollowing(true);
     setIsFollowLoading(true);
     await follow();

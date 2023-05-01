@@ -1,6 +1,7 @@
 import { Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
@@ -57,6 +58,7 @@ export const Note = ({ data, deleteNote }) => {
   }, [data]);
 
   const onPressFire = async () => {
+    Haptics.selectionAsync();
     setIsFire(true);
     setNumFires(numFires + 1);
     setIsFireLoading(true);

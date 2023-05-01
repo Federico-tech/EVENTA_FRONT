@@ -8,7 +8,7 @@ import { Container, HomeHeader, MiniEventCard, Row, Text } from '../../../compon
 import { ROUTES } from '../../../navigation/Navigation';
 import { getAnalytics } from '../../../services/analytics';
 import { getPopularEvents } from '../../../services/events';
-import { selectCurrentUserId } from '../../../store/user';
+import { selectCurrentUser, selectCurrentUserId } from '../../../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 import { Analytics } from './analytics';
 
@@ -18,6 +18,7 @@ export const OrganiserHome = () => {
   const [analytics, setAnalytics] = useState();
   const [isLoading, setIsLoading] = useState();
   const organiserId = useSelector(selectCurrentUserId);
+  const user = useSelector(selectCurrentUser);
 
   console.log(popularEvents);
 
@@ -32,6 +33,8 @@ export const OrganiserHome = () => {
     setPopularEvents(resEvents);
     setIsLoading(false);
   };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     fetchData();
