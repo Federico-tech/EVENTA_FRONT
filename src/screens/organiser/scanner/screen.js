@@ -1,9 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { useSelector } from 'react-redux';
+import * as Linking from 'expo-linking';
 
 import { Container, Header, Row } from '../../../components';
 import { createScan } from '../../../services/scans';
@@ -12,7 +13,22 @@ import { requestCodeScannerPermission } from '../../../utils/permissions';
 import { COLORS, SHADOWS, SIZE, SIZES } from '../../../utils/theme';
 
 export const ScannerScreen = () => {
-  useEffect(requestCodeScannerPermission, []);
+  const [permissionResponse, requestPermission] = BarCodeScanner.usePermissions();
+  console.log({ permissionResponse })
+  useEffect(() => {
+    if (!permissionResponse) {
+      requestPermission();
+    } else if (permissionResponse?.status === 'denied') {
+      Alert.alert('Permission Required', 'Please allow access to your camera in your device settings to select scan the QR Code.', [
+        {
+          text: 'Go to Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ]);
+    }
+  }, [permissionResponse]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasScanned, setHasScanned] = useState(true);
   const [username, setUsername] = useState();

@@ -106,7 +106,7 @@ export const InputText = ({
           </View>
         </View>
         <View style={[styles.textUnder]}>
-          {!!error || (usernameError && <Text style={[styles.errorStyle]}>{usernameError ? usernameError : error}</Text>)}
+          {(!!error || usernameError) && <Text style={[styles.errorStyle]}>{usernameError ? usernameError : error}</Text>}
         </View>
       </View>
     </Component>

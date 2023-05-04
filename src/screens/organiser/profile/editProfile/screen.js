@@ -2,10 +2,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert, Linking } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
@@ -19,7 +19,23 @@ import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/them
 
 export const EditOrganiserScreen = ({ route }) => {
   const [isUsernameFree, setIsUsernameFree] = useState(true);
-  useEffect(requestCameraPermission, []);
+  const [status, requestPermission] = useMediaLibraryPermissions();
+  console.log({ status });
+  useEffect(() => {
+    if (!status) {
+      requestPermission();
+    } else if (status?.status === 'denied') {
+      Alert.alert('Permission Required', 'Please allow access to your photo library in your device settings to select an image.', [
+        {
+          text: 'Go to Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ]);
+    }
+  }, [status]);
+
   const navigation = useNavigation();
 
   const user = useSelector(selectCurrentUser);
@@ -181,7 +197,8 @@ export const EditOrganiserScreen = ({ route }) => {
       <View>
         <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
           <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-            <TouchableOpacity onPress={pickImage}>
+            <TouchableOpacity
+              onPress={status?.status !== 'granted' ? () => alert('Please allow access to your photo library in your device settings') : pickImage}>
               <Row row alignCenter style={{ marginTop: SIZE }}>
                 <Ionicons name="images-outline" size={SIZE * 2} />
                 <Text regularSm style={{ marginLeft: SIZE }}>

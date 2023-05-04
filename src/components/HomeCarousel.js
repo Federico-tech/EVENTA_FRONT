@@ -72,7 +72,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
       </ScrollView>
       <View style={styles.dotContainer}>
         {items.map((_, index) => (
-          <View style={[styles.dot, { backgroundColor: index === activeIndex ? COLORS.primary : COLORS.lightGray }]} />
+          <View key={index} style={[styles.dot, { backgroundColor: index === activeIndex ? COLORS.primary : COLORS.lightGray }]} />
         ))}
       </View>
     </View>

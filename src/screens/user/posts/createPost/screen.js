@@ -2,12 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Image, ActivityIndicator, Alert, Linking } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { FlatList, RefreshControl, TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -16,17 +16,33 @@ import { object, string } from 'yup';
 
 import { Container, Header, InputText, ListEmptyComponent, MiniEventCard, Row, Text, TextButton } from '../../../../components';
 import { createPost } from '../../../../services/posts';
-import { selectCurrentUserId } from '../../../../store/user';
+import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreatePostScreen = () => {
-  useEffect(requestCameraPermission, []);
+  const [status, requestPermission] = useMediaLibraryPermissions();
+  useEffect(() => {
+    if (!status) {
+      requestPermission();
+    } else if (status?.status === 'denied') {
+      Alert.alert('Permission Required', 'Please allow access to your photo library in your device settings to select an image.', [
+        {
+          text: 'Go to Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ]);
+    }
+  }, [status]);
 
+  const currentUser = useSelector(selectCurrentUser);
   const userId = useSelector(selectCurrentUserId);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [entity, setEntity] = useState(currentUser.role === 'organiser' ? 'events' : `users/${userId}/events`);
   const [event, setEvent] = useState();
   const { t } = useTranslation();
 
@@ -53,7 +69,7 @@ export const CreatePostScreen = () => {
   );
 
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
-    entity: `users/${userId}/events`,
+    entity: `entity`,
     limit: 6,
   });
 
@@ -130,7 +146,8 @@ export const CreatePostScreen = () => {
       <Header title="Create your moment" create onPress={handleSubmit} loading={loading} cancel getData />
       <KeyboardAwareScrollView behavior="height" showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <TouchableOpacity onPress={pickImage}>
+          <TouchableOpacity
+            onPress={status?.status !== 'granted' ? () => alert('Please allow access to your photo library in your device settings') : pickImage}>
             <View style={styles.uploadImage}>
               {!values.file ? (
                 <>

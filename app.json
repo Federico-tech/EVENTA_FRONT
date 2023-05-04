@@ -2,7 +2,7 @@
   "expo": {
     "name": "Eventa",
     "slug": "EVENTA_FRONT_EXPO",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./src/assets/logos/GradientBlueIcon.png",
     "scheme": "com.eventa.eventaApp",
@@ -26,10 +26,22 @@
       "bundleIdentifier": "com.eventa.eventaApp",
       "config": {
         "googleMapsApiKey": "AIzaSyBASt5-mU0BdP4yNKq38DQkt4lzSYlIQE4"
+      },
+      "infoPlist": {
+        "NSCameraUsageDescription":  "This app uses the camera to scan QR codes on event tickets.",
+        "NSLocationWhenInUseUsageDescription" : "Turning on location services allows us to show events in your area",
+        "NSPhotoLibraryAddUsageDescription" : "Allow access to upload photos from your library.",
+        "NSPhotoLibraryUsageDescription" : "Allow access to upload photos from your library."
       }
     },
     "android": {
       "package": "com.eventa.eventaApp",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ],
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -42,6 +54,18 @@
         {
           "icon": "./src/assets/logos/GradientBlueIcon.png",
           "color": "#ffffff"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "This app uses the camera to scan QR codes on event tickets."
         }
       ]
     ],

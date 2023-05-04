@@ -2,10 +2,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
+import * as Linking from 'expo-linking';
 import { useFormik } from 'formik';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
 import { object, string } from 'yup';
@@ -18,7 +19,21 @@ import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditUserScreen = () => {
   const [isUsernameFree, setIsUsernameFree] = useState(true);
-  useEffect(requestCameraPermission, []);
+  const [status, requestPermission] = useMediaLibraryPermissions();
+  useEffect(() => {
+    if (!status) {
+      requestPermission();
+    } else if (status?.status === 'denied') {
+      Alert.alert('Permission Required', 'Please allow access to your photo library in your device settings to select an image.', [
+        {
+          text: 'Go to Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ]);
+    }
+  }, [status]);
   const navigation = useNavigation();
 
   const user = useSelector(selectCurrentUser);
@@ -104,7 +119,7 @@ export const EditUserScreen = () => {
 
   const pickImage = async () => {
     const image = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.All,
+      mediaTypes: MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -146,6 +161,8 @@ export const EditUserScreen = () => {
               <InputText
                 label="Username"
                 formik={formik}
+                autoCapitalize="none"
+                noAutoCorrect
                 formikName="username"
                 maxLength={20}
                 usernameError={!isUsernameFree && 'This username is already been taken'}
@@ -157,7 +174,8 @@ export const EditUserScreen = () => {
         <View>
           <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-              <TouchableOpacity onPress={pickImage}>
+              <TouchableOpacity
+                onPress={status?.status !== 'granted' ? () => alert('Please allow access to your photo library in your device settings') : pickImage}>
                 <Row row alignCenter style={{ marginTop: SIZE }}>
                   <Ionicons name="images-outline" size={SIZE * 2} />
                   <Text regularSm style={{ marginLeft: SIZE }}>

@@ -180,9 +180,9 @@ export const MapScreen = ({ navigation, route }) => {
             ))}
       </MapView>
 
-      <View style={{position: 'absolute', zIndex: 2, flexDirection: 'row', alignSelf: 'center'}}>
+      <View style={{ position: 'absolute', zIndex: 2, flexDirection: 'row', alignSelf: 'center' }}>
         <SafeAreaView>
-          <Row row spaceEvenly mt={SIZE} width={'100%'} style={{ alignSelf: 'center'}}>
+          <Row row spaceEvenly mt={SIZE} width="100%" style={{ alignSelf: 'center' }}>
             <Button
               secondary
               loading={refreshing && filter === 'events'}
@@ -195,10 +195,7 @@ export const MapScreen = ({ navigation, route }) => {
             <Button
               secondary
               loading={refreshing && filter === 'organisers'}
-              containerStyle={[
-                filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs },
-                { width: SIZE * 13},
-              ]}
+              containerStyle={[filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { width: SIZE * 13 }]}
               onPress={() => updateFilters('organisers')}>
               <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>
                 Organisers

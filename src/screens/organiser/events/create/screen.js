@@ -1,13 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Linking, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
@@ -22,7 +22,21 @@ import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = ({ route }) => {
-  useEffect(requestCameraPermission, []);
+  const [status, requestPermission] = useMediaLibraryPermissions();
+  useEffect(() => {
+    if (!status) {
+      requestPermission();
+    } else if (status?.status === 'denied') {
+      Alert.alert('Permission Required', 'Please allow access to your photo library in your device settings to select an image.', [
+        {
+          text: 'Go to Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ]);
+    }
+  }, [status]);
   const [discountEnabled, setDiscountEnabled] = useState(false);
 
   const toggleDiscount = () => setDiscountEnabled(!discountEnabled);
@@ -67,7 +81,8 @@ export const CreateEventScreen = ({ route }) => {
         }),
       discount: string().test('is-valid-discount', 'Discount must be a number between 1 and 100', (value) => {
         if (value) {
-          return true; }
+          return true;
+        }
         const discountValue = parseFloat(value);
         return !isNaN(discountValue) && discountValue > 0 && discountValue < 100;
       }),
@@ -178,7 +193,8 @@ export const CreateEventScreen = ({ route }) => {
         <View style={styles.container}>
           <Text style={styles.title}>{t('create event')}</Text>
           <View>
-            <TouchableOpacity onPress={pickImage}>
+            <TouchableOpacity
+              onPress={status?.status !== 'granted' ? () => alert('Please allow access to your photo library in your device settings') : pickImage}>
               <View style={styles.uploadImage}>
                 {!values.file ? (
                   <>
