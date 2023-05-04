@@ -3,9 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 
-import { BlueLogo } from '../assets';
 import { LoginScreen } from '../screens/onboarding/login/screen';
 import { OrganiserSignUpScreen } from '../screens/onboarding/register/organiser/screen';
 import { UserSingUpScreen } from '../screens/onboarding/register/user/screen';
@@ -367,7 +366,12 @@ export const OrganiserBottomNavigator = () => {
       <OrganiserBottomTabNavigator.Screen
         name={ROUTES.OrganiserProfileScreen}
         component={OrganiserProfileNavigator}
-        options={{ headerShown: false }}
+        options={({ route }) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+          },
+          headerShown: false,
+        })}
       />
     </OrganiserBottomTabNavigator.Navigator>
   );

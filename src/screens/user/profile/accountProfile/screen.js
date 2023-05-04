@@ -24,7 +24,7 @@ export const AccountUserScreen = ({ route }) => {
   return (
     <Container>
       <View style={{ zIndex: 1 }}>
-        <ProfileHeader user={user} />
+        <ProfileHeader user={user} disableGoBack={isLoading}/>
       </View>
       <UserTopNavigator user={user} account isLoading={isLoading} />
     </Container>

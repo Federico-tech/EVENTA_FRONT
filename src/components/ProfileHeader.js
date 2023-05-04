@@ -14,7 +14,7 @@ import { AlertModal } from './AlertModal';
 import { IconButton } from './Button';
 import { Row } from './Row';
 
-export const ProfileHeader = ({ myProfile, user }) => {
+export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
   const currentUserId = useSelector(selectCurrentUserId);
   const selectedUserId = useSelector(selectSelectedUserId);
@@ -61,7 +61,10 @@ export const ProfileHeader = ({ myProfile, user }) => {
             <Text style={styles.usernameText}>{user.username}</Text>
           </View>
           {!myProfile ? (
-            <IconButton name="chevron-back" color="black" size={SIZE * 2} onPress={() => navigation.goBack()} iconStyle={{ marginLeft: -SIZE / 2 }} />
+            <TouchableOpacity onPress={() => navigation.goBack()} disabled={disableGoBack}>
+               <IconButton name="chevron-back" color="black" size={SIZE * 2}  iconStyle={{ marginLeft: -SIZE / 2 }} />
+            </TouchableOpacity>
+          
           ) : (
             <View style={{ width: SIZE }} />
           )}

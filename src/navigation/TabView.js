@@ -37,6 +37,8 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
     },
   });
 
+  console.log({ isLoading })
+
   const {
     data: postData,
     refreshing: postRefreshing,

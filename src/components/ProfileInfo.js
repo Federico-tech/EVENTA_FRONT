@@ -114,7 +114,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
     <View>
       <Row row>
         <View style={styles.TextContainer}>
-          <TouchableOpacity onPress={onPressCreatePost}>
+          <TouchableOpacity onPress={onPressCreatePost} disabled={user._id !== currentUser._id}>
             <Row row>
               <LoadingImage
                 source={user.profilePic}
@@ -124,9 +124,11 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
                 imageStyle={styles.imageProfile}
                 viewStyle={styles.createNoteImage}
               />
-              <View style={styles.plusIcon}>
-                <AntDesign name="pluscircle" size={SIZE * 1.5} color={COLORS.primary} />
-              </View>
+              {user._id === currentUser._id && (
+                <View style={styles.plusIcon}>
+                  <AntDesign name="pluscircle" size={SIZE * 1.5} color={COLORS.primary} />
+                </View>
+              )}
             </Row>
           </TouchableOpacity>
         </View>

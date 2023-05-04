@@ -18,7 +18,6 @@ import { Container, Header, InputText, ListEmptyComponent, MiniEventCard, Row, T
 import { createPost } from '../../../../services/posts';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
-import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreatePostScreen = () => {
@@ -42,7 +41,7 @@ export const CreatePostScreen = () => {
   const userId = useSelector(selectCurrentUserId);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  const [entity, setEntity] = useState(currentUser.role === 'organiser' ? 'events' : `users/${userId}/events`);
+  const [entity] = useState(currentUser.role === 'organiser' ? 'events' : `users/${userId}/events`);
   const [event, setEvent] = useState();
   const { t } = useTranslation();
 
@@ -68,9 +67,12 @@ export const CreatePostScreen = () => {
     []
   );
 
+  const filters = currentUser.role === 'organiser' && { organiserId: userId };
+
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
-    entity: `entity`,
+    entity,
     limit: 6,
+    filters,
   });
 
   const handleSelectEvent = (item) => {

@@ -42,20 +42,18 @@ export const MapScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    console.debug({ key });
-    if (event) {
+    if (event && mapRef.current) {
       const region = {
         latitude: event?.position?.coordinates[1],
         longitude: event?.position?.coordinates[0],
-        latitudeDelta: 0.3,
-        longitudeDelta: 0.3,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
       };
       setRegion(region);
-      mapRef.current.animateToRegion(region, 200);
-      console.log('Passa');
+      mapRef.current.animateToRegion(region, 500);
       dispatch(setMapFilter('events'));
     }
-  }, [event, key]);
+  }, [event, mapRef.current, key]);
 
   const bottomSheetModalRef = useRef(null);
   const eventSnapPoints = useMemo(() => ['35%', '92%'], []);
@@ -127,6 +125,20 @@ export const MapScreen = ({ navigation, route }) => {
       <MapView
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}
+       
+          onMapReady={() => {
+            if (event && mapRef.current) {
+              const region = {
+                latitude: event?.position?.coordinates[1],
+                longitude: event?.position?.coordinates[0],
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              };
+              setRegion(region);
+              mapRef.current.animateToRegion(region, 500);
+              dispatch(setMapFilter('events'));
+            }
+          }}
         rotateEnabled={false}
         initialRegion={
           event
@@ -140,6 +152,7 @@ export const MapScreen = ({ navigation, route }) => {
         }
         showsUserLocation
         ref={mapRef}
+        region={region}
         showsMyLocationButton
         customMapStyle={mapStyle}>
         {filter === 'organisers'

@@ -38,28 +38,34 @@ export const HomeMap = ({ mapData }) => {
   const mapRef = React.createRef();
 
   const handleZoomIn = () => {
-    mapRef.current.getCamera().then((camera) => {
-      const { center, pitch, heading } = camera;
-      const newCamera = {
-        center,
-        pitch,
-        heading,
-        zoom: camera.zoom + 1,
+    mapRef.current.getMapBoundaries().then((bounds) => {
+      const { northEast, southWest } = bounds;
+      console.log({ mapRef: mapRef.current.props.initialRegion });
+      const latitudeDelta = (northEast.latitude - southWest.latitude) / 1.5;
+      const longitudeDelta = (northEast.longitude - southWest.longitude) / 1.5;
+      const newRegion = {
+        latitude: mapRef.current.props.initialRegion.latitude,
+        longitude: mapRef.current.props.initialRegion.longitude,
+        latitudeDelta,
+        longitudeDelta,
       };
-      mapRef.current.setCamera(newCamera, { duration: 5000 });
+      mapRef.current.animateToRegion(newRegion, 300);
     });
   };
 
   const handleZoomOut = () => {
-    mapRef.current.getCamera().then((camera) => {
-      const { center, pitch, heading } = camera;
-      const newCamera = {
-        center,
-        pitch,
-        heading,
-        zoom: camera.zoom - 1,
+    mapRef.current.getMapBoundaries().then((bounds) => {
+      const { northEast, southWest } = bounds;
+      console.log({ mapRef: mapRef.current.props.initialRegion });
+      const latitudeDelta = (northEast.latitude - southWest.latitude) * 1.5;
+      const longitudeDelta = (northEast.longitude - southWest.longitude) * 1.5;
+      const newRegion = {
+        latitude: mapRef.current.props.initialRegion.latitude,
+        longitude: mapRef.current.props.initialRegion.longitude,
+        latitudeDelta,
+        longitudeDelta,
       };
-      mapRef.current.setCamera(newCamera, { duration: 5000 });
+      mapRef.current.animateToRegion(newRegion, 300);
     });
   };
 

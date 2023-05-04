@@ -28,7 +28,7 @@ export const AccountOrganiserScreen = ({ route }) => {
   return (
     <Container>
       <View style={{ zIndex: 1 }}>
-        <ProfileHeader user={user} />
+        <ProfileHeader user={user} disableGoBack={isLoading}/>
       </View>
       <OrganiserTopNavigator user={user} account isLoading={isLoading} />
     </Container>
