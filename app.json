@@ -2,7 +2,7 @@
   "expo": {
     "name": "Eventa",
     "slug": "EVENTA_FRONT_EXPO",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./src/assets/logos/GradientBlueIcon.png",
     "scheme": "com.eventa.eventaApp",
@@ -28,7 +28,7 @@
         "googleMapsApiKey": "AIzaSyBASt5-mU0BdP4yNKq38DQkt4lzSYlIQE4"
       },
       "infoPlist": {
-        "NSCameraUsageDescription":  "This app uses the camera to scan QR codes on event tickets.",
+        "NSCameraUsageDescription":  "This app uses the camera to scan QR Code on event tickets.",
         "NSLocationWhenInUseUsageDescription" : "Turning on location services allows us to show events in your area",
         "NSPhotoLibraryAddUsageDescription" : "Allow access to upload photos from your library.",
         "NSPhotoLibraryUsageDescription" : "Allow access to upload photos from your library."

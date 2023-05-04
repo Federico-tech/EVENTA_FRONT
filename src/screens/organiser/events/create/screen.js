@@ -18,7 +18,6 @@ import { ROUTES } from '../../../../navigation/Navigation';
 import { createEvent } from '../../../../services/events';
 import { selectCurrentUserId } from '../../../../store/user';
 import { fromDateAndTimeToISODate } from '../../../../utils/dates';
-import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const CreateEventScreen = ({ route }) => {

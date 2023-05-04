@@ -1,13 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 import { useFormik } from 'formik';
 import _, { size } from 'lodash';
 import { DateTime } from 'luxon';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View, Linking } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -20,11 +20,24 @@ import { updateEvent, updateEventImage } from '../../../../services/events';
 import { selectSelectedEvent } from '../../../../store/event';
 import { selectCurrentUser } from '../../../../store/user';
 import { fromDateAndTimeToISODate, formatDate, DATE_FORMAT, TIME_FORMAT } from '../../../../utils/dates';
-import { requestCameraPermission } from '../../../../utils/permissions';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditEventScreen = ({ route }) => {
-  useEffect(requestCameraPermission, []);
+  const [status, requestPermission] = useMediaLibraryPermissions();
+  useEffect(() => {
+    if (!status) {
+      requestPermission();
+    } else if (status?.status === 'denied') {
+      Alert.alert('Permission Required', 'Please allow access to your photo library in your device settings to select an image.', [
+        {
+          text: 'Go to Settings',
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ]);
+    }
+  }, [status]);
 
   const organiser = useSelector(selectCurrentUser);
   const navigation = useNavigation();

@@ -296,7 +296,7 @@ export const EventDetails = ({ route }) => {
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
               }}>
-              <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} scans={event.scans}/>
+              <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} scans={event.scans} />
 
               <View style={{ marginHorizontal: 0 }}>
                 <Line lineStyle={{ marginBottom: 0 }} />
@@ -374,11 +374,11 @@ export const EventDetails = ({ route }) => {
           <EventDetailsMap event={event} navigation={navigation} />
         </View>
       </ScrollView>
-      <Row style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}>
-        <Row column spaceBetween>
-          <Row row spaceBetween alignCenter mt={SIZE} mb={SIZE * 2.7}>
-            {role === 'user' &&
-              (isParticipating ? (
+      {role === 'user' && (
+        <Row style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}>
+          <Row column spaceBetween>
+            <Row row spaceBetween alignCenter mt={SIZE} mb={SIZE * 2.7}>
+              {isParticipating ? (
                 <>
                   <Button
                     secondary
@@ -422,10 +422,12 @@ export const EventDetails = ({ route }) => {
                     </View>
                   )}
                 </>
-              ))}
+              )}
+            </Row>
           </Row>
         </Row>
-      </Row>
+      )}
+
       <BottomSheetModal
         enablePanDownToClose
         ref={bottomSheetModalRef}

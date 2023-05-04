@@ -37,7 +37,7 @@ const RecommendedUsers = () => {
       <View style={styles.recommendedUsersContainer}>
         <FlatList
           data={data}
-          renderItem={({ item }) => <RecommendedUserColumn data={item} containerStyle={{ marginRight: SIZE}}/>}
+          renderItem={({ item }) => <RecommendedUserColumn data={item} containerStyle={{ marginRight: SIZE }} />}
           keyExtractor={(item) => item._id}
           style={{ paddingHorizontal: SIZE / 2 }}
           onEndReachedThreshold={0.1}
@@ -160,14 +160,19 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
           </TouchableOpacity>
           {myProfile || currentUser._id === selectedUser._id ? (
             <Row row>
-              <Button secondary text="Edit profile" containerStyle={currentUser.role === 'user' ? { width: SIZE * 11 } :{ width: SIZE * 13 } } onPress={handleEditProfile} />
-              {currentUser.role === 'user' && 
-                 <TouchableOpacity onPress={toggleShowRecommended}>
-                 <View style={styles.buttonShowFirends}>
-                   <Feather name={showRecommendedUsers ? 'chevron-up' : 'chevron-down'} size={SIZE * 1.4} />
-                 </View>
-               </TouchableOpacity>
-              }
+              <Button
+                secondary
+                text="Edit profile"
+                containerStyle={currentUser.role === 'user' ? { width: SIZE * 11 } : { width: SIZE * 13 }}
+                onPress={handleEditProfile}
+              />
+              {currentUser.role === 'user' && (
+                <TouchableOpacity onPress={toggleShowRecommended}>
+                  <View style={styles.buttonShowFirends}>
+                    <Feather name={showRecommendedUsers ? 'chevron-up' : 'chevron-down'} size={SIZE * 1.4} />
+                  </View>
+                </TouchableOpacity>
+              )}
             </Row>
           ) : currentUser.role === 'user' ? (
             user.isFollowing ? (

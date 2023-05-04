@@ -1,4 +1,3 @@
-import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
