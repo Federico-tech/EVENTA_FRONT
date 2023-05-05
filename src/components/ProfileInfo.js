@@ -8,6 +8,7 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
+import { Unblock } from '../services/block';
 import { follow, unFollow } from '../services/follow';
 import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUser, selectSelectedUser } from '../store/user';
@@ -16,6 +17,7 @@ import { useInfiniteScroll } from '../utils/hooks';
 import { formatNumber } from '../utils/numbers';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
 import { RecommendedUserColumn } from './AccountRow';
+import { AlertModal } from './AlertModal';
 import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
@@ -58,12 +60,11 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   const [user, setUser] = useState({ ...initialUser });
   const [isFollowLoading, setIsFollowLoading] = useState(false);
   const [showRecommendedUsers, setShowRecommendedUsers] = useState(false);
+  const [isUnblockModalVisible, setUnblockModalVisible] = useState(false);
   const navigation = useNavigation();
   const currentUser = useSelector(selectCurrentUser);
   const selectedUser = useSelector(selectSelectedUser);
   const followingParams = myProfile ? currentUser : selectedUser;
-
-  console.log('Loading', loading);
 
   useEffect(() => {
     if (!_.isEqual(user, initialUser)) {
@@ -93,6 +94,12 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
     setIsFollowLoading(true);
     await unFollow();
     setIsFollowLoading(false);
+    refreshSelectedUser(user);
+  };
+
+  const onPressUnblockUser = (userId) => {
+    Unblock(userId);
+    setUnblockModalVisible(false);
     refreshSelectedUser(user);
   };
 
@@ -177,7 +184,16 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
               )}
             </Row>
           ) : currentUser.role === 'user' ? (
-            user.isFollowing ? (
+            user?.isBlocked ? (
+              <Button
+                gradient
+                text="Unblock"
+                containerStyle={{ width: SIZE * 13 }}
+                onPress={() => setUnblockModalVisible(true)}
+                loading={loading}
+                disabled={isFollowLoading}
+              />
+            ) : user.isFollowing ? (
               <Button
                 secondary
                 text="Following"
@@ -202,6 +218,14 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
         </Row>
         {showRecommendedUsers && <RecommendedUsers />}
       </Row>
+      <AlertModal
+        isVisible={isUnblockModalVisible}
+        onBackdropPress={() => setUnblockModalVisible(false)}
+        title="Unblock this user?"
+        descritpion="Unblocking this user you'll be able to see its contents again"
+        confirmText="Unblock"
+        onPressConfirm={() => onPressUnblockUser(user._id)}
+      />
     </View>
   );
 };

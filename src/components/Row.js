@@ -47,7 +47,7 @@ export const Row = ({
         { flex },
         { marginTop: mt },
         { marginBottom: mb },
-        { marginLeft: ml},
+        { marginLeft: ml },
         { marginRight: mr },
         style,
       ]}

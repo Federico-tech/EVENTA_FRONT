@@ -131,7 +131,9 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
             <Row style={styles.line} />
           </View>
           <Row row style={{ alignSelf: 'center', marginTop: SIZE * 1.5, marginBottom: HEIGHT_DEVICE / 80 }}>
-            <Text style={styles.registerText} fs={SIZES.sm}>Already have an account?</Text>
+            <Text style={styles.registerText} fs={SIZES.sm}>
+              Already have an account?
+            </Text>
             <TouchableOpacity onPress={onPressGoBack}>
               <Text style={styles.registerButtonText}> Log in</Text>
             </TouchableOpacity>

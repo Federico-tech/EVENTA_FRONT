@@ -125,20 +125,19 @@ export const MapScreen = ({ navigation, route }) => {
       <MapView
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}
-       
-          onMapReady={() => {
-            if (event && mapRef.current) {
-              const region = {
-                latitude: event?.position?.coordinates[1],
-                longitude: event?.position?.coordinates[0],
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-              };
-              setRegion(region);
-              mapRef.current.animateToRegion(region, 500);
-              dispatch(setMapFilter('events'));
-            }
-          }}
+        onMapReady={() => {
+          if (event && mapRef.current) {
+            const region = {
+              latitude: event?.position?.coordinates[1],
+              longitude: event?.position?.coordinates[0],
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            };
+            setRegion(region);
+            mapRef.current.animateToRegion(region, 500);
+            dispatch(setMapFilter('events'));
+          }
+        }}
         rotateEnabled={false}
         initialRegion={
           event

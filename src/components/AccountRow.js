@@ -13,7 +13,6 @@ import { Row } from './Row';
 import { Text } from './Text';
 
 export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
-  console.log('Usedara', data);
   const { profilePic, username, name } = data;
   const dispatch = useDispatch();
   const navigation = useNavigation();

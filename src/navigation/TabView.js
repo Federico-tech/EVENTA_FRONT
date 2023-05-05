@@ -22,10 +22,6 @@ const tabBar = (props) => (
 );
 
 export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
-  const userId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
-  const currentUserId = useSelector(selectCurrentUserId);
-  const currentUserRole = useSelector(selectCurrentUserRole);
-
   const organiserId = useSelector(account ? selectSelectedUserId : selectCurrentUserId);
   const myId = useSelector(selectCurrentUserId);
 
@@ -37,7 +33,7 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
     },
   });
 
-  console.log({ isLoading })
+  console.log({ isLoading });
 
   const {
     data: postData,
@@ -70,43 +66,42 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
   return (
     <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
       <Tabs.Tab name="Events">
-        <Tabs.FlatList
-          data={data}
-          renderItem={({ item }) => <MiniEventCard scan={myId === organiserId && true} data={item} />}
-          keyExtractor={(item) => item._id}
-          style={{ marginTop: SIZE }}
-          showsVerticalScrollIndicator={false}
-          onEndReached={_.throttle(getMoreData, 400)}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
-          ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
-          ListEmptyComponent={!refreshing && <ListEmptyComponent text={`The organizer hasn't created any events yet`} />}
-        />
+        {isLoading ? (
+          <Tabs.ScrollView>
+            <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
+          </Tabs.ScrollView>
+        ) : user?.isBlocked ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              Unblock this profile to see its contents
+            </Text>
+          </Tabs.ScrollView>
+        ) : (
+          <Tabs.FlatList
+            data={data}
+            renderItem={({ item }) => <MiniEventCard scan={myId === organiserId && true} data={item} />}
+            keyExtractor={(item) => item._id}
+            style={{ marginTop: SIZE }}
+            showsVerticalScrollIndicator={false}
+            onEndReached={_.throttle(getMoreData, 400)}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getRefreshedData} />}
+            ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
+            ListEmptyComponent={!refreshing && <ListEmptyComponent text={`The organizer hasn't created any events yet`} />}
+          />
+        )}
       </Tabs.Tab>
+
       <Tabs.Tab name={`Moments (${formatNumber(postTotalData)})`}>
         {isLoading ? (
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
           </Tabs.ScrollView>
-        ) : account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
-          user.isFollowing ? (
-            <Tabs.FlatList
-              data={postData}
-              renderItem={({ item }) => <PostCard postData={item} />}
-              keyExtractor={(item) => item._id}
-              style={{ marginTop: SIZE }}
-              showsVerticalScrollIndicator={false}
-              onEndReached={_.throttle(getMorePostData, 400)}
-              refreshControl={<RefreshControl refreshing={postRefreshing} onRefresh={getRefreshedPostData} />}
-              ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMorePosts && <ActivityIndicator />}</View>}
-              ListEmptyComponent={!refreshing && <ListEmptyComponent text="There is no post yet" />}
-            />
-          ) : (
-            <Tabs.ScrollView>
-              <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
-                Follow this profile to see its content
-              </Text>
-            </Tabs.ScrollView>
-          )
+        ) : user?.isBlocked ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              Unblock this profile to see its contents
+            </Text>
+          </Tabs.ScrollView>
         ) : (
           <Tabs.FlatList
             data={postData}
@@ -184,6 +179,12 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
           <Tabs.ScrollView>
             <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
           </Tabs.ScrollView>
+        ) : account && userId !== currentUserId && user?.isBlocked ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              Unblock this profile to see its contents
+            </Text>
+          </Tabs.ScrollView>
         ) : account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
           user.isFollowing ? (
             <Tabs.FlatList
@@ -219,7 +220,17 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
         )}
       </Tabs.Tab>
       <Tabs.Tab name={`Events (${formatNumber(totalData)})`}>
-        {account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
+        {isLoading ? (
+          <Tabs.ScrollView>
+            <ActivityIndicator style={{ marginTop: SIZE * 5 }} />
+          </Tabs.ScrollView>
+        ) : account && userId !== currentUserId && user?.isBlocked ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              Unblock this profile to see its contents
+            </Text>
+          </Tabs.ScrollView>
+        ) : account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
           user.isFollowing ? (
             <Tabs.FlatList
               data={data}

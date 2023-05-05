@@ -1,4 +1,4 @@
-import { Octicons } from '@expo/vector-icons';
+import { Entypo, Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
@@ -7,8 +7,11 @@ import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
+import { Unblock, block } from '../services/block';
+import { unFollow } from '../services/follow';
 import { report } from '../services/reports';
-import { selectCurrentUserId, selectSelectedUserId } from '../store/user';
+import { refreshSelectedUser } from '../services/users';
+import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { IconButton } from './Button';
@@ -16,10 +19,13 @@ import { Row } from './Row';
 
 export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
+  const [isBlockModalVisible, setBlockModalVisible] = useState(false);
+  const [isUnblockModalVisible, setUnblockModalVisible] = useState(false);
   const currentUserId = useSelector(selectCurrentUserId);
   const selectedUserId = useSelector(selectSelectedUserId);
   const navigation = useNavigation();
   const bottomSheetModalRef = useRef(null);
+  const userSelected = useSelector(selectSelectedUser);
 
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
@@ -41,6 +47,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
   );
 
   const dataReport = { type: 'user', userId: currentUserId, objectId: selectedUserId };
+  const dataBlock = { blockerId: currentUserId, blockedId: selectedUserId };
 
   const onPressReportUser = (data) => {
     report(data);
@@ -53,6 +60,24 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
     });
   };
 
+  const onPressBlockUser = (data) => {
+    block(data);
+    handleClosePress();
+    setBlockModalVisible(false);
+    unFollow();
+    showMessage({
+      message: 'User blocked Succefully',
+      type: 'success',
+    });
+    refreshSelectedUser(user);
+  };
+
+  const onPressUnblockUser = (userId) => {
+    Unblock(userId);
+    setUnblockModalVisible(false);
+    refreshSelectedUser(user);
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       <View style={styles.wrapper}>
@@ -62,9 +87,8 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           </View>
           {!myProfile ? (
             <TouchableOpacity onPress={() => navigation.goBack()} disabled={disableGoBack}>
-               <IconButton name="chevron-back" color="black" size={SIZE * 2}  iconStyle={{ marginLeft: -SIZE / 2 }} />
+              <IconButton name="chevron-back" color="black" size={SIZE * 2} iconStyle={{ marginLeft: -SIZE / 2 }} />
             </TouchableOpacity>
-          
           ) : (
             <View style={{ width: SIZE }} />
           )}
@@ -76,7 +100,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
             <View style={{ width: SIZE * 1.5 }} />
           )}
         </View>
-        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['13%']} backdropComponent={renderBackdrop}>
+        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['17%']} backdropComponent={renderBackdrop}>
           <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
             <TouchableOpacity onPress={() => setReportModalVisible(true)}>
               <Row row alignCenter style={{ marginTop: SIZE }}>
@@ -84,15 +108,46 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
                 <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Report</Text>
               </Row>
             </TouchableOpacity>
+            {userSelected.isBlocked ? (
+              <TouchableOpacity onPress={() => setUnblockModalVisible(true)}>
+                <Row row alignCenter style={{ marginTop: SIZE }}>
+                  <Entypo name="block" size={SIZE * 1.8} color="red" />
+                  <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Unblock</Text>
+                </Row>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={() => setBlockModalVisible(true)}>
+                <Row row alignCenter style={{ marginTop: SIZE }}>
+                  <Entypo name="block" size={SIZE * 1.8} color="red" />
+                  <Text style={{ marginLeft: SIZE, fontFamily: FONTS.regular, fontSize: SIZES.sm, color: 'red' }}>Block</Text>
+                </Row>
+              </TouchableOpacity>
+            )}
           </View>
         </BottomSheetModal>
         <AlertModal
           isVisible={isReportModalVisible}
           onBackdropPress={() => setReportModalVisible(false)}
-          title="Report this event?"
-          descritpion="Thank you for reporting this event. Our team will review the event and take appropriate action as necessary."
+          title="Report this user?"
+          descritpion="Thank you for reporting this user. Our team will review the event and take appropriate action as necessary."
           confirmText="Report"
           onPressConfirm={() => onPressReportUser(dataReport)}
+        />
+        <AlertModal
+          isVisible={isBlockModalVisible}
+          onBackdropPress={() => setBlockModalVisible(false)}
+          title="Block this user?"
+          descritpion="Blocking this user you won't be able to see its contents again"
+          confirmText="Block"
+          onPressConfirm={() => onPressBlockUser(dataBlock)}
+        />
+        <AlertModal
+          isVisible={isUnblockModalVisible}
+          onBackdropPress={() => setUnblockModalVisible(false)}
+          title="Unblock this user?"
+          descritpion="Unblocking this user you'll be able to see its contents again"
+          confirmText="Unblock"
+          onPressConfirm={() => onPressUnblockUser(selectedUserId)}
         />
       </View>
     </SafeAreaView>
