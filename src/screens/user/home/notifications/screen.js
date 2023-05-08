@@ -6,7 +6,7 @@ import { ActivityIndicator, View, FlatList, TouchableOpacity, StyleSheet } from 
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-import { Container, Header, ListEmptyComponent, LoadingImage, Row, Text } from '../../../../components';
+import { Container, Header, ListEmptyComponent, LoadingImage, Row, Skeleton, Text } from '../../../../components';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { setUserSelected } from '../../../../store/user';
 import { setTimeElapsed } from '../../../../utils/dates';
@@ -47,8 +47,6 @@ const Notification = ({ notificationData }) => {
 };
 
 export const NotificationsScreen = () => {
-  const [dataFilter, setDataFilter] = useState();
-
   const dateFilter = DateTime.now().minus({ month: 1 }).toISODate();
 
   const { data, getMoreData, getRefreshedData, refreshing, loadMore } = useInfiniteScroll({

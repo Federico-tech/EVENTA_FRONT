@@ -124,7 +124,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
           <TouchableOpacity onPress={onPressCreatePost} disabled={user._id !== currentUser._id}>
             <Row row>
               <LoadingImage
-                source={user.profilePic}
+                source={user?.hasBlockedYou ? '' : user.profilePic}
                 width={SIZE * 6}
                 profile
                 iconSIZE={SIZE * 2.5}
@@ -147,7 +147,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
         </Row>
       </Row>
       <Row style={styles.bio}>
-        <ReadMoreButton text={user.bio ? user.bio : 'Description'} style={styles.description} />
+        <ReadMoreButton text={!user?.hasBlockedYou && user.bio ? user.bio : 'Description'} style={styles.description} />
         <Row spaceBetween row style={styles.followerRow}>
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>
             <Row alignCenter style={styles.boxFollower}>
@@ -183,7 +183,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
                 </TouchableOpacity>
               )}
             </Row>
-          ) : currentUser.role === 'user' ? (
+          ) : currentUser.role === 'user' && !user?.hasBlockedYou ? (
             user?.isBlocked ? (
               <Button
                 gradient

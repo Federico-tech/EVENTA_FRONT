@@ -67,7 +67,7 @@ export const Analytics = ({ analytics }) => {
           <Ionicons name="people" color="orange" size={SIZE * 2} />
           <Row ml={SIZE}>
             <Text ff={FONTS.bold} fs={SIZES.md}>
-              {formatNumber(analytics?.average_participants)}
+              {!analytics?.average_participants ? 0 : formatNumber(analytics?.average_participants)}
             </Text>
             <Text ff={FONTS.medium} fs={SIZES.xxs} color={COLORS.gray}>
               Participants per event
@@ -78,7 +78,7 @@ export const Analytics = ({ analytics }) => {
           <MaterialCommunityIcons name="qrcode-scan" color="mediumseagreen" size={SIZE * 2} />
           <Row ml={SIZE}>
             <Text ff={FONTS.bold} fs={SIZES.md}>
-              {formatNumber(analytics?.average_scans)}
+              {!analytics?.average_scans ? 0 : formatNumber(analytics?.average_scans)}
             </Text>
             <Text ff={FONTS.medium} fs={SIZES.xxs} color={COLORS.gray}>
               Scans per event
@@ -89,7 +89,7 @@ export const Analytics = ({ analytics }) => {
           <AntDesign name="heart" color="red" size={SIZE * 2} />
           <Row ml={SIZE}>
             <Text ff={FONTS.bold} fs={SIZES.md}>
-              {formatNumber(analytics?.average_likes)}
+            {!analytics?.average_likes ? 0 : formatNumber(analytics?.average_likes)}
             </Text>
             <Text ff={FONTS.medium} fs={SIZES.xxs} color={COLORS.gray}>
               Likes per event

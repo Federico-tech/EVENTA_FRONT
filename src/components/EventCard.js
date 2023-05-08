@@ -68,6 +68,7 @@ export const EventCard = ({ eventData }) => {
     dispatch(setSelectedEvent(eventData));
     navigation.navigate('EventDetails', {
       eventData,
+      participants: totalData,
       onGoBack: () => {
         getParticipants();
       },
@@ -138,21 +139,19 @@ export const EventCard = ({ eventData }) => {
         </View>
         <View style={styles.line} />
         <Row row alignCenter spaceBetween style={{ height: SIZE * 2 }}>
-          <TouchableOpacity onPress={handleParticipantsPress}>
-            <Row row alignCenter>
-              <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && { marginLeft: 0 }]}>
-                {data?.slice(0, 3).map((data) => (
-                  <LoadingImage key={data?.user._id} source={data?.user.profilePic} imageStyle={styles.partImage} profile iconSIZE={SIZE * 1.3} />
-                ))}
-              </Row>
-              <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
-                {totalData > 3 ? `+${formatShortNumber(totalData)}` : formatShortNumber(totalData)}{' '}
-              </Text>
-              <Text style={[styles.textAdress, { color: 'black' }]}>
-                {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
-              </Text>
+          <Row row alignCenter>
+            <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && { marginLeft: 0 }]}>
+              {data?.slice(0, 3).map((data) => (
+                <LoadingImage key={data?.user._id} source={data?.user.profilePic} imageStyle={styles.partImage} profile iconSIZE={SIZE * 1.3} />
+              ))}
             </Row>
-          </TouchableOpacity>
+            <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
+              {totalData > 3 ? `+${formatShortNumber(totalData)}` : formatShortNumber(totalData)}{' '}
+            </Text>
+            <Text style={[styles.textAdress, { color: 'black' }]}>
+              {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
+            </Text>
+          </Row>
           <Row row alignCenter>
             <Feather name="calendar" size={18} color={COLORS.gray} />
             <Text style={styles.textAdress}> {formatDate(eventData.date, EVENT_DATE_FORMATR_NOYEAR)}</Text>

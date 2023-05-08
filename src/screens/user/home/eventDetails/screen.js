@@ -21,6 +21,7 @@ import {
   OrganiserInf,
   ReadMoreButton,
   Row,
+  SkeletonAccountRow,
   Text,
   TextButton,
 } from '../../../../components';
@@ -40,7 +41,7 @@ import { formatShortNumber } from '../../../../utils/numbers';
 import { COLORS, SIZES, WIDTH_DEVICE, FONTS, SIZE } from '../../../../utils/theme';
 import { EventDetailsBottomSheet } from './eventDetailsBottomSheet';
 
-const EventDetailsParticipants = ({ isParticipating }) => {
+const EventDetailsParticipants = ({ isParticipating, routeParticipants }) => {
   const event = useSelector(selectSelectedEvent);
   const [loading, setLoading] = useState(false);
   const [participants, setParticipants] = useState([]);
@@ -58,15 +59,32 @@ const EventDetailsParticipants = ({ isParticipating }) => {
     fetchData();
   }, [isParticipating]);
 
+  const length = routeParticipants === 0 ? 1 : routeParticipants <= 3 ? routeParticipants : routeParticipants > 3 && 3;
+  console.log('lenght', length);
+
   return (
     <>
       {loading ? (
-        <ActivityIndicator style={{ marginTop: SIZE }} />
+        <>
+          {Array.from({ length }, (_, i) => (
+            <SkeletonAccountRow key={`skeleton-${i}`} />
+          ))}
+        </>
+      ) : isParticipating ? (
+        <>
+          {participants?.slice(0, 3).map((participant) => (
+            <UserRow key={participant.user._id} data={participant.user} bottomSheet />
+          ))}
+          {participants?.length >= 3 && (
+            <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+          )}
+        </>
       ) : (
-        participants?.slice(0, 3).map((participant) => <UserRow key={participant.user._id} data={participant.user} bottomSheet />)
-      )}
-      {participants?.length >= 3 && (
-        <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
+        <Row width={SIZE * 20} style={{ alignSelf: 'center' }} mt={SIZE}>
+          <Text color={COLORS.gray} style={{ textAlign: 'center' }}>
+            Participate to this event to see who is participating
+          </Text>
+        </Row>
       )}
     </>
   );
@@ -176,6 +194,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
 
 export const EventDetails = ({ route }) => {
   const { onGoBack } = route?.params || {};
+  const { participants } = route?.params;
   const [isOnPressParticipateLoading, setIsOnPressParticipateLoading] = useState(false);
   const [numberOfParticipants, setNumberOfParticipants] = useState();
   const [isLoading, setIsLoading] = useState();
@@ -347,23 +366,25 @@ export const EventDetails = ({ route }) => {
                 <Text ff={FONTS.semiBold} fs={SIZES.sm}>
                   Who's going
                 </Text>
-                <Row row alignCenter>
-                  <AntDesign name="caretright" size={SIZE / 1.1} />
-                  <TextButton
-                    text="View all"
-                    textStyle={{
-                      width: SIZE * 4,
-                      fontSize: SIZES.xs,
-                      color: 'black',
-                      fontFamily: FONTS.medium,
-                      alignSelf: 'flex-end',
-                      marginLeft: SIZE / 4,
-                    }}
-                    onPress={onPressNavigateParticipants}
-                  />
-                </Row>
+                {isParticipating && (
+                  <Row row alignCenter>
+                    <AntDesign name="caretright" size={SIZE / 1.1} />
+                    <TextButton
+                      text="View all"
+                      textStyle={{
+                        width: SIZE * 4,
+                        fontSize: SIZES.xs,
+                        color: 'black',
+                        fontFamily: FONTS.medium,
+                        alignSelf: 'flex-end',
+                        marginLeft: SIZE / 4,
+                      }}
+                      onPress={onPressNavigateParticipants}
+                    />
+                  </Row>
+                )}
               </Row>
-              <EventDetailsParticipants isParticipating={isParticipating} />
+              <EventDetailsParticipants isParticipating={isParticipating} routeParticipants={participants} />
             </Row>
           </View>
         </SafeAreaView>
@@ -524,5 +545,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     backgroundColor: COLORS.backGray,
+  },
+  viewMore: {
+    alignSelf: 'center',
+    marginTop: SIZE,
+    fontSize: SIZES.sm,
+    fontFamily: FONTS.medium,
+    color: COLORS.primary,
   },
 });

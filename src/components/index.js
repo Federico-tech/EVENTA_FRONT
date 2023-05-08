@@ -24,3 +24,4 @@ export * from './ListEmptyComponent';
 export * from './AlertModal';
 export * from './Comment';
 export * from './HomeCarousel';
+export * from './Skeleton';

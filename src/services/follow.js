@@ -69,3 +69,15 @@ export const unFollowWithId = async (userId) => {
     console.log({ ErrorFollow: e });
   }
 };
+
+export const unFollowBlocked = async () => {
+  const state = store.getState();
+  const userSelected = selectSelectedUser(state);
+  try {
+    const { data: unfollowBlocked } = await mainAxios.delete(`users/${userSelected?._id}/unfollowBlocked`);
+    await getMe();
+    console.log(unfollowBlocked);
+  } catch (e) {
+    console.log({ errorUnfollowBlocked: e });
+  }
+};

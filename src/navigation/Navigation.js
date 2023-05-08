@@ -156,7 +156,7 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.PostLikesScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
-      <HomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} />
+      <HomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <UserStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );

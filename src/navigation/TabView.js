@@ -76,6 +76,12 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
               Unblock this profile to see its contents
             </Text>
           </Tabs.ScrollView>
+        ) : user?.hasBlockedYou ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              This users blocked you
+            </Text>
+          </Tabs.ScrollView>
         ) : (
           <Tabs.FlatList
             data={data}
@@ -100,6 +106,12 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
           <Tabs.ScrollView>
             <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
               Unblock this profile to see its contents
+            </Text>
+          </Tabs.ScrollView>
+        ) : user?.hasBlockedYou ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              This users blocked you
             </Text>
           </Tabs.ScrollView>
         ) : (
@@ -185,6 +197,12 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
               Unblock this profile to see its contents
             </Text>
           </Tabs.ScrollView>
+        ) : account && userId !== currentUserId && user?.hasBlockedYou ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              This user bloked you
+            </Text>
+          </Tabs.ScrollView>
         ) : account && userId !== currentUserId && currentUserRole !== 'organiser' ? (
           user.isFollowing ? (
             <Tabs.FlatList
@@ -228,6 +246,12 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
           <Tabs.ScrollView>
             <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
               Unblock this profile to see its contents
+            </Text>
+          </Tabs.ScrollView>
+        ) : account && userId !== currentUserId && user?.hasBlockedYou ? (
+          <Tabs.ScrollView>
+            <Text color={COLORS.gray} style={{ alignSelf: 'center', marginTop: SIZE * 10 }}>
+              This user blocked you
             </Text>
           </Tabs.ScrollView>
         ) : account && userId !== currentUserId && currentUserRole !== 'organiser' ? (

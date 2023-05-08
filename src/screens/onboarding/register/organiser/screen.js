@@ -8,14 +8,25 @@ import { object, string } from 'yup';
 
 import { Button, InputText, TextButton, Container, Row, Text } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
-import { loginUser, organiserSignUp } from '../../../../services/users';
+import { loginUser, organiserSignUp, userUpdate } from '../../../../services/users';
 import { ROLES } from '../../../../utils/conts';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
+import { registerForPushNotificationsAsync } from '../../../../utils/notifications';
 
 export const OrganiserSignUpScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const { t } = useTranslation();
+
+  const registerPushNotifications = async () => {
+    const token = await registerForPushNotificationsAsync();
+    console.log('Token', token);
+    if (token) {
+      userUpdate({ expoPushToken: token })
+        .then((res) => console.debug({ res }))
+        .catch((error) => console.debug({ errorUpdateUser: error }));
+    }
+  };
 
   const { values, errors, validateForm, setFieldValue, setFieldError, touched, handleSubmit } = useFormik({
     initialValues: {
@@ -55,6 +66,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
         console.log(data);
         await organiserSignUp(data);
         await loginUser(data.email, data.password);
+        await registerPushNotifications();
         setLoading(false);
       } catch (e) {
         setLoading(false);

@@ -34,6 +34,24 @@ export const updateUserCoordinates = async () => {
   }
 };
 
+export const getCurrentCoordinates = async () => {
+  try {
+    const { status } = await Location.requestForegroundPermissionsAsync({});
+    if (status === 'granted') {
+      const location = await Location.getCurrentPositionAsync({});
+      console.log('Coordinates', location.coords);
+      const position = {
+        type: 'Point',
+        coordinates: [location.coords.longitude, location.coords.latitude],
+      };
+      console.log({ position });
+      return position
+    }
+  } catch (e) {
+    console.log({ e });
+  }
+};
+
 export const nextTick = (callback) => {
   setTimeout(() => {
     callback();

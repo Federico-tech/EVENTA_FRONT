@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
@@ -10,6 +10,7 @@ import { object, string } from 'yup';
 import { Button, InputText, TextButton, Container, Row, Text } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { organiserSignUp, loginUser, userUpdate } from '../../../../services/users';
+import { getCurrentCoordinates, updateUserCoordinates } from '../../../../utils';
 import { ROLES } from '../../../../utils/conts';
 import { registerForPushNotificationsAsync } from '../../../../utils/notifications';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SIZE } from '../../../../utils/theme';
@@ -36,6 +37,10 @@ export const UserSingUpScreen = ({ navigation }) => {
       password: '',
       name: '',
       role: ROLES.USER,
+      position: {
+        type: 'point',
+        coordinates: [0, 0],
+      },
     },
     validationSchema: object().shape({
       username: string()
@@ -70,8 +75,8 @@ export const UserSingUpScreen = ({ navigation }) => {
         await validateForm(data);
         console.log(data);
         await organiserSignUp(data);
-        await registerPushNotifications();
         await loginUser(data.email, data.password);
+        // await registerPushNotifications();
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -104,6 +109,14 @@ export const UserSingUpScreen = ({ navigation }) => {
   const onPressGoBack = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      const coordinates = await getCurrentCoordinates();
+      setFieldValue('position', coordinates);
+    };
+    fetchCoordinates();
+  }, []);
 
   return (
     <Container>

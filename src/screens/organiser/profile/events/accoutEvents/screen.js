@@ -12,6 +12,8 @@ import { SIZE, WIDTH_DEVICE } from '../../../../../utils/theme';
 export const EventsAccountScreen = () => {
   const organiserId = useSelector(selectSelectedUserId);
 
+  console.log({organiserId})
+
   const { data, refreshing, getRefreshedData, getMoreData, loadMore } = useInfiniteScroll({
     entity: 'events',
     limit: 7,

@@ -46,8 +46,8 @@ export const MapScreen = ({ navigation, route }) => {
       const region = {
         latitude: event?.position?.coordinates[1],
         longitude: event?.position?.coordinates[0],
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
+        latitudeDelta: 0.2,
+        longitudeDelta: 0.2,
       };
       setRegion(region);
       mapRef.current.animateToRegion(region, 500);
@@ -126,7 +126,7 @@ export const MapScreen = ({ navigation, route }) => {
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}
         onMapReady={() => {
-          if (event && mapRef.current) {
+          if (event) {
             const region = {
               latitude: event?.position?.coordinates[1],
               longitude: event?.position?.coordinates[0],

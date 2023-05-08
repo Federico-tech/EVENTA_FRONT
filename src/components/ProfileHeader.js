@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { Unblock, block } from '../services/block';
-import { unFollow } from '../services/follow';
+import { unFollow, unFollowBlocked } from '../services/follow';
 import { report } from '../services/reports';
 import { refreshSelectedUser } from '../services/users';
 import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
@@ -65,6 +65,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
     handleClosePress();
     setBlockModalVisible(false);
     unFollow();
+    unFollowBlocked();
     showMessage({
       message: 'User blocked Succefully',
       type: 'success',
@@ -137,7 +138,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           isVisible={isBlockModalVisible}
           onBackdropPress={() => setBlockModalVisible(false)}
           title="Block this user?"
-          descritpion="Blocking this user you won't be able to see its contents again"
+          descritpion="They won't be able to see your profle posts and notes on Eventa. They won't be notififed that you blocked them."
           confirmText="Block"
           onPressConfirm={() => onPressBlockUser(dataBlock)}
         />
@@ -145,7 +146,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           isVisible={isUnblockModalVisible}
           onBackdropPress={() => setUnblockModalVisible(false)}
           title="Unblock this user?"
-          descritpion="Unblocking this user you'll be able to see its contents again"
+          descritpion="By unblocking this user he'll be able to see your contents. He won't be notified that you unblock him."
           confirmText="Unblock"
           onPressConfirm={() => onPressUnblockUser(selectedUserId)}
         />
