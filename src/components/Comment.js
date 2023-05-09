@@ -113,8 +113,8 @@ export const Comment = ({ commentData, getData }) => {
       <AlertModal
         isVisible={isReportModalVisible}
         onBackdropPress={() => setReportModalVisible(false)}
-        title="Report this post?"
-        descritpion="Thank you for reporting this comment. Our team will review the event and take appropriate action as necessary."
+        title="Report this comment?"
+        descritpion="Thank you for reporting this comment. Our team will review it and take appropriate action as necessary."
         confirmText="Report"
         onPressConfirm={() => onPressReportPost({ type: 'comment', userId: currentUserId, objectId: commentData._id })}
       />

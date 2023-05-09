@@ -162,7 +162,7 @@ export const Note = ({ data, deleteNote }) => {
         isVisible={isDeleteModalVisible}
         onBackdropPress={() => setDeleteModalVisible(false)}
         title="Delete this note?"
-        descritpion="Are you sure you want to delete this note?"
+        descritpion="Are you sure you want to delete this note? This action is irreversible."
         confirmText="Delete"
         onPressConfirm={onPressDeleteNote}
       />
@@ -170,7 +170,7 @@ export const Note = ({ data, deleteNote }) => {
         isVisible={isReportModalVisible}
         onBackdropPress={() => setReportModalVisible(false)}
         title="Report this note?"
-        descritpion="You want to report this note? Our team will review the note and take appropriate action as necessary."
+        descritpion="You want to report this note? Our team will review it and take appropriate action as necessary."
         confirmText="Report"
         onPressConfirm={() => onPressReportNote({ type: 'note', userId, objectId: data._id })}
       />

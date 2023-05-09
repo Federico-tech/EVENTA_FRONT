@@ -2,7 +2,7 @@
   "expo": {
     "name": "Eventa",
     "slug": "EVENTA_FRONT_EXPO",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./src/assets/logos/GradientBlueIcon.png",
     "scheme": "com.eventa.eventaApp",

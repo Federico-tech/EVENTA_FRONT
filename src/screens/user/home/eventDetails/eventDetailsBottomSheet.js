@@ -75,8 +75,8 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, event
       <AlertModal
         isVisible={isDeleteModalVisible}
         onBackdropPress={() => setDeleteModalVisible(false)}
-        title="Delete this event ?"
-        descritpion="Are you sure you want to delete this event. The action is irreversible."
+        title="Delete this event?"
+        descritpion="Are you sure you want to delete this event? This action is irreversible."
         confirmText="Delete"
         onPressConfirm={() => onPressDeleteEvent(eventId)}
       />
@@ -84,7 +84,7 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, event
         isVisible={isReportModalVisible}
         onBackdropPress={() => setReportModalVisible(false)}
         title="Report this event?"
-        descritpion="Thank you for reporting this event. Our team will review the event and take appropriate action as necessary."
+        descritpion="Thank you for reporting this event. Our team will review it and take appropriate action as necessary."
         confirmText="Report"
         onPressConfirm={() => onPressReportEvent({ type: 'event', userId, objectId: eventId })}
       />

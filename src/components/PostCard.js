@@ -5,7 +5,7 @@ import * as Haptics from 'expo-haptics';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
@@ -255,7 +255,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
         isVisible={isReportModalVisible}
         onBackdropPress={() => setReportModalVisible(false)}
         title="Report this post?"
-        descritpion="Thank you for reporting this post. Our team will review the event and take appropriate action as necessary."
+        descritpion="Thank you for reporting this post. Our team will review the post and take appropriate action as necessary."
         confirmText="Report"
         onPressConfirm={() => onPressReportPost({ type: 'post', userId: currentUserId, objectId: postData._id })}
       />

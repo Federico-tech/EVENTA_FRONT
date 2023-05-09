@@ -253,6 +253,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: SIZE * 15,
     borderBottomLeftRadius: SIZE * 15,
     backgroundColor: COLORS.white,
+    borderColor: COLORS.backGray,
+    borderWidth: 1,
     transform: [{ rotateZ: '45deg' }],
   },
   filterButtonLeft: {

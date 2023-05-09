@@ -5,13 +5,13 @@ import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Unblock, block } from '../services/block';
 import { unFollow, unFollowBlocked } from '../services/follow';
 import { report } from '../services/reports';
 import { refreshSelectedUser } from '../services/users';
-import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId } from '../store/user';
+import { selectCurrentUserId, selectSelectedUser, selectSelectedUserId, setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { IconButton } from './Button';
@@ -24,6 +24,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
   const currentUserId = useSelector(selectCurrentUserId);
   const selectedUserId = useSelector(selectSelectedUserId);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const bottomSheetModalRef = useRef(null);
   const userSelected = useSelector(selectSelectedUser);
 
@@ -79,6 +80,11 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
     refreshSelectedUser(user);
   };
 
+  const onPressGoBack = () => {
+    navigation.goBack();
+    dispatch(setUserSelected({}));
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       <View style={styles.wrapper}>
@@ -87,7 +93,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
             <Text style={styles.usernameText}>{user.username}</Text>
           </View>
           {!myProfile ? (
-            <TouchableOpacity onPress={() => navigation.goBack()} disabled={disableGoBack}>
+            <TouchableOpacity onPress={onPressGoBack}>
               <IconButton name="chevron-back" color="black" size={SIZE * 2} iconStyle={{ marginLeft: -SIZE / 2 }} />
             </TouchableOpacity>
           ) : (
@@ -130,7 +136,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           isVisible={isReportModalVisible}
           onBackdropPress={() => setReportModalVisible(false)}
           title="Report this user?"
-          descritpion="Thank you for reporting this user. Our team will review the event and take appropriate action as necessary."
+          descritpion="Thank you for reporting this user. Our team will take appropriate actions as necessary."
           confirmText="Report"
           onPressConfirm={() => onPressReportUser(dataReport)}
         />
@@ -138,7 +144,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           isVisible={isBlockModalVisible}
           onBackdropPress={() => setBlockModalVisible(false)}
           title="Block this user?"
-          descritpion="They won't be able to see your profle posts and notes on Eventa. They won't be notififed that you blocked them."
+          descritpion="They will not be able to see your profile, posts, and notes on Eventa. They will not be notified that you have blocked them."
           confirmText="Block"
           onPressConfirm={() => onPressBlockUser(dataBlock)}
         />
@@ -146,7 +152,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           isVisible={isUnblockModalVisible}
           onBackdropPress={() => setUnblockModalVisible(false)}
           title="Unblock this user?"
-          descritpion="By unblocking this user he'll be able to see your contents. He won't be notified that you unblock him."
+          descritpion="By unblocking this user he'll be able to see your contents. He won't be notified that you unblocked him."
           confirmText="Unblock"
           onPressConfirm={() => onPressUnblockUser(selectedUserId)}
         />

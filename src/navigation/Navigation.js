@@ -16,6 +16,7 @@ import { OrganiserHome } from '../screens/organiser/home/screen';
 import { AccountOrganiserScreen } from '../screens/organiser/profile/accountProfile/screen';
 import { EditOrganiserScreen } from '../screens/organiser/profile/editProfile/screen';
 import { OrganiserProfileScreen } from '../screens/organiser/profile/profile/screen';
+import { SearchOrganiserAccountEventsScreen } from '../screens/organiser/profile/searchAccountEvents/screen';
 import { SearchOrganiserEventsScreen } from '../screens/organiser/profile/searchEvents/screen';
 import { ScannerScreen } from '../screens/organiser/scanner/screen';
 import { AddressAutocompleteScreen } from '../screens/shared/autocompleteAddress/screen';
@@ -24,6 +25,7 @@ import { FollowingScreen } from '../screens/shared/following/screen';
 import { ParticipantsScreen } from '../screens/shared/participants/screen';
 import { PrivacyPolicyScreen } from '../screens/shared/privacyPolicy/screen';
 import { SettingScreen } from '../screens/shared/settings/screen';
+import { CreateStoryScreen } from '../screens/shared/stories/createStory/screen';
 import { EventDetails } from '../screens/user/home/eventDetails/screen';
 import { HomeScreen } from '../screens/user/home/home/screen';
 import { LikeScreen } from '../screens/user/home/like/screen';
@@ -86,7 +88,7 @@ export const ROUTES = {
   EditEventScreen: 'EditEventScreen',
   UpcomingEventsScreen: 'UpcomingEventsScreen',
   PastEventsScreen: 'PastEventsScreen',
-  SearchOrganiserEventsScreen: 'SearchOrganiserEventsScreen',
+  SearchOrganiserAccountEventsScreen: 'SearchOrganiserAccountEventsScreen',
   OrganiserBottomNavigator: 'OrganiserBottomNavigator',
   FollowingOrganisersScreen: 'FollowingOrganisersScreen',
   FollowingUsersScreen: 'FollowingUsersScreen',
@@ -99,6 +101,8 @@ export const ROUTES = {
   PopularEventsScreen: 'PopularEventsScreen',
   PrivacyPolicyScreen: 'PrivacyPolicyScreen',
   UsernameScreen: 'UsernameScreen',
+  CreateStoryScreen: 'CreateStoryScreen',
+  SearchOrganiserEventsScreen: 'SearchOrganiserEventsScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -152,10 +156,14 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.MapScreen} component={MapScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
-      <HomeStackNavigator.Screen name={ROUTES.SearchOrganiserEventsScreen} component={SearchOrganiserEventsScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen
+        name={ROUTES.SearchOrganiserAccountEventsScreen}
+        component={SearchOrganiserAccountEventsScreen}
+        options={{ headerShown: false }}
+      />
       <HomeStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.NoteFiresScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
-      <HomeStackNavigator.Screen name={ROUTES.PostLikesScreen} component={NoteFiresScreen} options={{ headerShown: false }} />
+      <HomeStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <UserStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
@@ -175,8 +183,8 @@ export const SearchNavigator = () => {
       <SearchStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <SearchStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <SearchStackNavigator.Screen
-        name={ROUTES.SearchOrganiserEventsScreen}
-        component={SearchOrganiserEventsScreen}
+        name={ROUTES.SearchOrganiserAccountEventsScreen}
+        component={SearchOrganiserAccountEventsScreen}
         options={{ headerShown: false }}
       />
     </SearchStackNavigator.Navigator>
@@ -200,6 +208,11 @@ export const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen
+        name={ROUTES.SearchOrganiserAccountEventsScreen}
+        component={SearchOrganiserAccountEventsScreen}
+        options={{ headerShown: false }}
+      />
     </ProfileStackNavigator.Navigator>
   );
 };
@@ -222,8 +235,8 @@ export const OrganiserHomeNavigator = () => {
       <OrganiserHomeStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen
-        name={ROUTES.SearchOrganiserEventsScreen}
-        component={SearchOrganiserEventsScreen}
+        name={ROUTES.SearchOrganiserAccountEventsScreen}
+        component={SearchOrganiserAccountEventsScreen}
         options={{ headerShown: false }}
       />
     </OrganiserHomeStackNavigator.Navigator>
@@ -248,6 +261,11 @@ export const OrganiserProfileNavigator = () => {
       <OrganiserProfileStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen
+        name={ROUTES.SearchOrganiserAccountEventsScreen}
+        component={SearchOrganiserAccountEventsScreen}
+        options={{ headerShown: false }}
+      />
+      <OrganiserProfileStackNavigator.Screen
         name={ROUTES.SearchOrganiserEventsScreen}
         component={SearchOrganiserEventsScreen}
         options={{ headerShown: false }}
@@ -269,6 +287,11 @@ export const MapNavigator = () => {
       <MapStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <MapStackNavigator.Screen
+        name={ROUTES.SearchOrganiserAccountEventsScreen}
+        component={SearchOrganiserAccountEventsScreen}
+        options={{ headerShown: false }}
+      />
     </MapStackNavigator.Navigator>
   );
 };
@@ -404,6 +427,7 @@ export const OrganiserStack = () => {
       </OrganiserStackNavigator.Group>
       <OrganiserStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} />
       <OrganiserStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} />
+      <OrganiserStackNavigator.Screen name={ROUTES.CreateStoryScreen} component={CreateStoryScreen} options={{ headerShown: false }} />
     </OrganiserStackNavigator.Navigator>
   );
 };
@@ -417,6 +441,7 @@ export const UserStack = () => {
       <UserStackNavigator.Group>
         <UserStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} />
         <UserStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} />
+        <UserStackNavigator.Screen name={ROUTES.CreateStoryScreen} component={CreateStoryScreen} options={{ headerShown: false }} />
       </UserStackNavigator.Group>
       <UserStackNavigator.Screen name={ROUTES.UsernameScreen} component={UsernameScreen} screenOptions={{ headerShown: false }} />
     </UserStackNavigator.Navigator>

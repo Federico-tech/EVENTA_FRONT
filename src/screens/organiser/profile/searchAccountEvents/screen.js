@@ -6,13 +6,13 @@ import { useSelector } from 'react-redux';
 
 import { Container, Header, ListEmptyComponent, MiniEventCard, SearchBar } from '../../../../components';
 import { selectSearchFilter } from '../../../../store/filter';
-import { selectCurrentUserId } from '../../../../store/user';
+import { selectSelectedUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { SIZE, WIDTH_DEVICE } from '../../../../utils/theme';
 
-export const SearchOrganiserEventsScreen = () => {
+export const SearchOrganiserAccountEventsScreen = () => {
   const name = useSelector(selectSearchFilter);
-  const organiserId = useSelector(selectCurrentUserId);
+  const organiserId = useSelector(selectSelectedUserId);
   const { data, refreshing, getRefreshedData, loadMore, getMoreData } = useInfiniteScroll({
     entity: 'events',
     limit: 7,

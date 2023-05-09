@@ -32,7 +32,7 @@ export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
       <View style={styles.userWrapper}>
         <Row row alignCenter>
           <View style={styles.profileImage}>
-            <LoadingImage source={profilePic} profile iconSIZE={SIZE * 2.5} style={styles.profileImage} />
+            <LoadingImage source={profilePic} profile iconSIZE={SIZE * 2.5} imageStyle={{ borderColor: COLORS.lightGray, borderWidth: 0.15 }} />
           </View>
           <Row style={{ paddingLeft: SIZE }}>
             <Text style={styles.usernameText}>{username}</Text>

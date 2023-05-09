@@ -65,13 +65,18 @@ export const HomeHeader = ({ organiser, ...props }) => {
     navigation.navigate(ROUTES.CreatePostScreen);
   };
 
+  const onPressCreateStory = () => {
+    navigation.navigate(ROUTES.CreateStoryScreen);
+    handleClosePress();
+  };
+
   return (
     <View>
       <View style={styles.container}>
         <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
-              <TouchableOpacity onPress={onPressCreatePost}>
+              <TouchableOpacity onPress={handlePresentModal}>
                 <Row row>
                   <LoadingImage
                     source={userinfo.profilePic}
@@ -105,6 +110,22 @@ export const HomeHeader = ({ organiser, ...props }) => {
         </View>
       </View>
       <View style={{ backgroundColor: COLORS.lightGray, height: 0.5 }} />
+      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['17%']} backdropComponent={renderBackdrop}>
+        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          <TouchableOpacity onPress={onPressCreateStory}>
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <Text semiBoldSm>Create a story</Text>
+            </Row>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+          <TouchableOpacity onPress={onPressCreatePost}>
+            <Row row alignCenter style={{ marginTop: SIZE }}>
+              <Text semiBoldSm>Create a moment</Text>
+            </Row>
+          </TouchableOpacity>
+        </View>
+      </BottomSheetModal>
     </View>
   );
 };

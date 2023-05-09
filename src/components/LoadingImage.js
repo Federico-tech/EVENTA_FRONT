@@ -17,8 +17,9 @@ export const LoadingImage = ({ source, event, indicator, profile, width, blurRad
   return (
     <View>
       {isLoading && (
-        <View style={[profile && styles.loadingProfileImage, event && styles.loadingEventImage, viewStyle, { width, position: 'absolute', zIndex: 1 }]}>
-          {indicator && <ActivityIndicator color="black" style={{ zIndex: 2, alignItems: 'center'}}/>}
+        <View
+          style={[profile && styles.loadingProfileImage, event && styles.loadingEventImage, viewStyle, { width, position: 'absolute', zIndex: 1 }]}>
+          {indicator && <ActivityIndicator color="black" style={{ zIndex: 2, alignItems: 'center' }} />}
         </View>
       )}
       {profile && !source ? (
@@ -45,11 +46,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backGray,
     aspectRatio: 1,
     borderRadius: SIZES.xxs,
+    borderColor: COLORS.backGray,
+    borderWidth: 1,
   },
   profileImage: {
     width: SIZE * 2,
     aspectRatio: 1,
     borderRadius: 100,
+    borderColor: COLORS.backGray,
+    borderWidth: 1,
   },
   loadingEventImage: {
     width: '100%',
@@ -59,7 +64,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backGray,
     justifyContent: 'center',
     alignItems: 'center',
-    
+    borderColor: COLORS.backGray,
+    borderWidth: 1,
   },
   loadingProfileImage: {
     aspectRatio: 1,

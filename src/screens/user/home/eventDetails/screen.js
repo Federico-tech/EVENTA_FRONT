@@ -432,14 +432,14 @@ export const EventDetails = ({ route }) => {
                         ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
                         : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
                     }
-                    text="Partecipa"
+                    text="Partecipate"
                     onPress={onPressPartecipate}
                     loading={isLoading}
                     disabled={isOnPressParticipateLoading}
                   />
                   {event.discount !== 0 && (
                     <View style={styles.discountContainer}>
-                      <MaterialCommunityIcons name="ticket-percent" size={SIZE * 2} color={COLORS.gray} />
+                      <Entypo name="ticket" size={SIZE * 2} color={COLORS.gray} />
                     </View>
                   )}
                 </>
@@ -448,7 +448,6 @@ export const EventDetails = ({ route }) => {
           </Row>
         </Row>
       )}
-
       <BottomSheetModal
         enablePanDownToClose
         ref={bottomSheetModalRef}

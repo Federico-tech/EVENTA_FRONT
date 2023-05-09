@@ -1,5 +1,7 @@
 export const formatNumber = (num) => {
-  if (num >= 1000000) {
+  if (typeof num === 'undefined') {
+    return 0;
+  } else if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + 'M';
   } else if (num >= 10000) {
     return (num / 1000).toFixed(1) + 'K';
@@ -9,7 +11,9 @@ export const formatNumber = (num) => {
 };
 
 export const formatShortNumber = (num) => {
-  if (num >= 1000000) {
+  if (typeof num === 'undefined') {
+    return 0;
+  } else if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + 'M';
   } else if (num >= 1000) {
     const result = (num / 1000).toFixed(1);

@@ -19,7 +19,7 @@ export const OrganiserProfileScreen = () => {
       <View style={{ zIndex: 1 }}>
         <ProfileHeader myProfile user={user} />
       </View>
-      <OrganiserTopNavigator user={user} myProfile/>
+      <OrganiserTopNavigator user={user} myProfile />
     </Container>
   );
 };

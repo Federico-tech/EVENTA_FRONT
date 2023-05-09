@@ -5,12 +5,11 @@ import { useSelector } from 'react-redux';
 import { Container, ProfileHeader } from '../../../../components';
 import { UserTopNavigator } from '../../../../navigation/TabView';
 import { refreshSelectedUser } from '../../../../services/users';
-import { selectSelectedUser, selectSelectedUserId } from '../../../../store/user';
+import { selectSelectedUser } from '../../../../store/user';
 
 export const AccountUserScreen = ({ route }) => {
   const [isLoading, setIsloading] = useState(false);
   const user = useSelector(selectSelectedUser);
-  const id = useSelector(selectSelectedUserId);
 
   useEffect(() => {
     const refresh = async () => {
@@ -19,7 +18,7 @@ export const AccountUserScreen = ({ route }) => {
       setIsloading(false);
     };
     refresh();
-  }, [id]);
+  }, []);
 
   return (
     <Container>

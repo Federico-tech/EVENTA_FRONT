@@ -106,7 +106,14 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   const handleEditProfile = () => navigation.navigate(user.role === 'organiser' ? ROUTES.EditOrganiserScreen : ROUTES.EditUserScreen);
 
   const onPressFollowing = () => {
-    navigation.push(user.role === 'organiser' ? ROUTES.SearchOrganiserEventsScreen : ROUTES.FollowingScreen, { followingParams });
+    navigation.push(
+      user.role === 'organiser'
+        ? myProfile
+          ? ROUTES.SearchOrganiserEventsScreen
+          : ROUTES.SearchOrganiserAccountEventsScreen
+        : ROUTES.FollowingScreen,
+      { followingParams }
+    );
   };
 
   const onPressCreatePost = () => {
@@ -147,7 +154,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
         </Row>
       </Row>
       <Row style={styles.bio}>
-        <ReadMoreButton text={!user?.hasBlockedYou && user.bio ? user.bio : 'Description'} style={styles.description} />
+        <ReadMoreButton text={!user?.hasBlockedYou && user.bio} style={styles.description} />
         <Row spaceBetween row style={styles.followerRow}>
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>
             <Row alignCenter style={styles.boxFollower}>

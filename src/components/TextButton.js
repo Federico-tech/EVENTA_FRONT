@@ -26,7 +26,7 @@ export const ReadMoreButton = (props, textStyle) => {
     setIsExpanded(!isExpanded);
   };
 
-  let text = (props.text || props.children).trim();
+  let text = (props.text || props.children)?.trim();
   const shouldShowMoreLess = text?.length > props?.subString;
 
   if (!isExpanded && shouldShowMoreLess) {
