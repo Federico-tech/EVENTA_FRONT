@@ -3,8 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';

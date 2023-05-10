@@ -106,7 +106,7 @@ export const Note = ({ data, deleteNote }) => {
           <View>
             <View style={styles.note}>
               <Row row alignCenter spaceBetween>
-                <TouchableOpacity onPress={onPressNavigateProfile} >
+                <TouchableOpacity onPress={onPressNavigateProfile}>
                   <LoadingImage source={data?.user.profilePic} profile width={SIZE * 3} iconSIZE={SIZE * 2} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={isFire ? onPressUnfire : onPressFire} disabled={isFireLoading}>
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     marginHorizontal: SIZE / 6,
     marginRight: SIZE,
     marginTop: SIZE,
+    marginBottom: SIZE,
     ...SHADOWS.medium,
   },
   noteImage: {

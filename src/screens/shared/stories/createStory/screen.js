@@ -2,10 +2,10 @@ import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Linking, Alert, StyleSheet, Touchable, SafeAreaView } from 'react-native';
+import { View, Text, Linking, Alert, StyleSheet, Touchable, } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Container, Row } from '../../../../components';
+import { Container, Row, SafeArea } from '../../../../components';
 import { COLORS, SIZE } from '../../../../utils/theme';
 
 export const CreateStoryScreen = () => {
@@ -34,7 +34,7 @@ export const CreateStoryScreen = () => {
     <Container>
       <Row style={styles.conatiner}>
         <Camera type={type} style={styles.camera} flashMode={flash} ref={cameraRef}>
-          <SafeAreaView>
+          <SafeArea>
             <Row row alignCenter mt={SIZE}>
               <TouchableOpacity>
                 <Row>
@@ -54,7 +54,7 @@ export const CreateStoryScreen = () => {
                 <Text>Take a picture!</Text>
               </Row>
             </TouchableOpacity>
-          </SafeAreaView>
+          </SafeArea>
         </Camera>
       </Row>
     </Container>

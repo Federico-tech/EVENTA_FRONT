@@ -2,19 +2,20 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { IconButton } from './Button';
 import { Row } from './Row';
+import { SafeArea } from './SafeArea';
 import { TextButton } from './TextButton';
 
 export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPressPlus, create }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
   return (
-    <SafeAreaView>
+    <SafeArea>
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
         <Row alignCenter row spaceBetween style={{ marginTop: SIZE / 1.5 }}>
@@ -30,7 +31,7 @@ export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPr
           )}
         </Row>
       </View>
-    </SafeAreaView>
+    </SafeArea>
   );
 };
 

@@ -15,7 +15,7 @@ import { setSelectedEvent } from '../store/event';
 import { setUserSelected } from '../store/user';
 import { EVENT_DATE_FORMATR_NOYEAR, formatDate } from '../utils/dates';
 import { formatShortNumber } from '../utils/numbers';
-import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
+import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE, HEIGHT_DEVICE } from '../utils/theme';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
@@ -182,14 +182,14 @@ export const MostPopularEventCard = ({ eventData }) => {
   return (
     <>
       <TouchableOpacity onPress={handleOnPress} activeOpacity={0.7}>
-        <Row style={{ height: SIZE * 17, width: WIDTH_DEVICE }}>
+        <Row style={{ height: HEIGHT_DEVICE / 3.45, width: WIDTH_DEVICE }}>
           <View>
             <LoadingImage
               event
               width={WIDTH_DEVICE}
-              imageStyle={{ aspectRatio: 1.6, borderRadius: 0 }}
+              imageStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45, borderRadius: 0 }}
               source={eventData?.coverImage}
-              viewStyle={{ aspectRatio: 1.6 }}
+              viewStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45 }}
               indicator
             />
             <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']} />
@@ -206,7 +206,7 @@ export const MostPopularEventCard = ({ eventData }) => {
                   <LoadingImage
                     key={data.user._id}
                     source={data?.user.profilePic}
-                    imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5 }]}
+                    imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5,  marginBottom: SIZE * 1.5 }]}
                     profile
                     iconSIZE={SIZE * 1.3}
                   />
@@ -294,6 +294,7 @@ const styles = StyleSheet.create({
     marginLeft: -SIZE,
     borderWidth: 2.5,
     borderColor: COLORS.white,
+   
   },
   dot: {
     backgroundColor: COLORS.gray,

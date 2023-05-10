@@ -2,7 +2,7 @@ import { Entypo, Octicons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { AlertModal } from './AlertModal';
 import { IconButton } from './Button';
 import { Row } from './Row';
+import { SafeArea } from './SafeArea';
 
 export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
@@ -24,7 +25,6 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
   const currentUserId = useSelector(selectCurrentUserId);
   const selectedUserId = useSelector(selectSelectedUserId);
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const bottomSheetModalRef = useRef(null);
   const userSelected = useSelector(selectSelectedUser);
 
@@ -81,12 +81,11 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
   };
 
   const onPressGoBack = () => {
-    navigation.goBack();
-    dispatch(setUserSelected({}));
+    navigation.popToTop();
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+    <SafeArea style={{ backgroundColor: COLORS.white }}>
       <View style={styles.wrapper}>
         <View style={styles.container}>
           <View style={[{ width: '100%', position: 'absolute', alignItems: 'center' }, myProfile && { alignItems: 'flex-start' }]}>
@@ -157,7 +156,7 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           onPressConfirm={() => onPressUnblockUser(selectedUserId)}
         />
       </View>
-    </SafeAreaView>
+    </SafeArea>
   );
 };
 

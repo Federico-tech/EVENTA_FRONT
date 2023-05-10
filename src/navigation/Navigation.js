@@ -135,7 +135,7 @@ const getTabBarVisibility = (route) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? ROUTES.HomeScreen;
   // console.log(routeName);
 
-  if (routeName === ROUTES.EventDetails) {
+  if (routeName === ROUTES.EventDetails || routeName === ROUTES.PostCommentScreen) {
     return 'none';
   }
   return 'flex';
@@ -166,6 +166,7 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
       <HomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <UserStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <UserStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
     </HomeStackNavigator.Navigator>
   );
 };
@@ -182,6 +183,9 @@ export const SearchNavigator = () => {
       <SearchStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <SearchStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <SearchStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
+      <SearchStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
+      <SearchStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostCommentScreen} options={{ headerShown: false }} />
+      <SearchStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
       <SearchStackNavigator.Screen
         name={ROUTES.SearchOrganiserAccountEventsScreen}
         component={SearchOrganiserAccountEventsScreen}
@@ -208,6 +212,7 @@ export const ProfileNavigator = () => {
       <ProfileStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <ProfileStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
       <ProfileStackNavigator.Screen
         name={ROUTES.SearchOrganiserAccountEventsScreen}
         component={SearchOrganiserAccountEventsScreen}
@@ -234,6 +239,9 @@ export const OrganiserHomeNavigator = () => {
       <OrganiserHomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={PopularEventsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.PostsFeedScreen} component={PostsFeedScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen
         name={ROUTES.SearchOrganiserAccountEventsScreen}
         component={SearchOrganiserAccountEventsScreen}
@@ -287,6 +295,8 @@ export const MapNavigator = () => {
       <MapStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <MapStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
+      <MapStackNavigator.Screen name={ROUTES.PostLikesScreen} component={PostLikesScreen} options={{ headerShown: false }} />
       <MapStackNavigator.Screen
         name={ROUTES.SearchOrganiserAccountEventsScreen}
         component={SearchOrganiserAccountEventsScreen}
@@ -440,7 +450,6 @@ export const UserStack = () => {
       <UserStackNavigator.Screen name={ROUTES.UserBottomNavigator} component={UserBottomNavigator} />
       <UserStackNavigator.Group>
         <UserStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} />
-        <UserStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} />
         <UserStackNavigator.Screen name={ROUTES.CreateStoryScreen} component={CreateStoryScreen} options={{ headerShown: false }} />
       </UserStackNavigator.Group>
       <UserStackNavigator.Screen name={ROUTES.UsernameScreen} component={UsernameScreen} screenOptions={{ headerShown: false }} />

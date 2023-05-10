@@ -1,10 +1,10 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet, Row } from '../../../components';
+import { Button, Text, EventBottomSheet, LoadingImage, OrganiserBottomSheet, Row, SafeArea } from '../../../components';
 import { getRefreshedEvent } from '../../../services/events';
 import { refreshSelectedUser } from '../../../services/users';
 import { setSelectedEvent } from '../../../store/event';
@@ -193,7 +193,7 @@ export const MapScreen = ({ navigation, route }) => {
       </MapView>
 
       <View style={{ position: 'absolute', zIndex: 2, flexDirection: 'row', alignSelf: 'center' }}>
-        <SafeAreaView>
+        <SafeArea>
           <Row row spaceEvenly mt={SIZE} width="100%" style={{ alignSelf: 'center' }}>
             <Button
               secondary
@@ -214,7 +214,7 @@ export const MapScreen = ({ navigation, route }) => {
               </Text>
             </Button>
           </Row>
-        </SafeAreaView>
+        </SafeArea>
       </View>
 
       <View>

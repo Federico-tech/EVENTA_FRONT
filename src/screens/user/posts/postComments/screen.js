@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Keyboard, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Keyboard, StyleSheet, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 import { FlatList, RefreshControl, TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-import { Comment, Container, Header, ListEmptyComponent, LoadingImage, Text } from '../../../../components';
+import { Comment, Container, Header, ListEmptyComponent, LoadingImage, SafeArea, Text } from '../../../../components';
 import { createComment } from '../../../../services/comments';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
@@ -38,9 +38,10 @@ export const PostCommentScreen = ({ route }) => {
 
   const keyboardDidShow = (event) => {
     const keyboardHeight = event.endCoordinates.height;
+    console.log({ keyboardHeight });
 
     viewRef.current.setNativeProps({
-      style: { marginBottom: keyboardHeight },
+      style: Platform.OS === 'android' ? { marginTop: keyboardHeight } : { marginBottom: keyboardHeight - SIZE * 2.5},
     });
   };
   const keyboardDidHide = () => {
@@ -83,22 +84,24 @@ export const PostCommentScreen = ({ route }) => {
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no comments for this post" />}
       />
-      <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: COLORS.white }}>
-        <View style={{ height: SIZE * 8, backgroundColor: COLORS.backGray }} ref={viewRef}>
-          <View style={{ backgroundColor: COLORS.white, height: 1 }} />
-          <View
-            style={{ flexDirection: 'row', marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE, width: WIDTH_DEVICE * 0.9, alignItems: 'center' }}
-            ref={textInputRef}>
-            <LoadingImage profile source={currentUser.profilePic} width={SIZE * 3.5} iconSIZE={SIZE * 2.5} />
-            <TextInput style={styles.input} onChangeText={handleInputChange} value={content} placeholder="Write you comment" maxLength={150} />
-            <TouchableOpacity onPress={onPressPostComment} disabled={(isCreatePostLoading || !content) && true}>
-              <Text color={COLORS.primary} semiBoldSm style={(isCreatePostLoading || !content) && { opacity: 0.5 }}>
-                Post
-              </Text>
-            </TouchableOpacity>
+      <SafeArea style={{ backgroundColor: COLORS.backGray}}>
+        <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: COLORS.white }}>
+          <View style={{ height: SIZE * 5.5, backgroundColor: COLORS.backGray }} ref={viewRef}>
+            <View style={{ backgroundColor: COLORS.white, height: 1 }} />
+            <View
+              style={{ flexDirection: 'row', marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE, width: WIDTH_DEVICE * 0.9, alignItems: 'center' }}
+              ref={textInputRef}>
+              <LoadingImage profile source={currentUser.profilePic} width={SIZE * 3.5} iconSIZE={SIZE * 2.5} />
+              <TextInput style={styles.input} onChangeText={handleInputChange} value={content} placeholder="Write you comment" maxLength={150} />
+              <TouchableOpacity onPress={onPressPostComment} disabled={(isCreatePostLoading || !content) && true}>
+                <Text color={COLORS.primary} semiBoldSm style={(isCreatePostLoading || !content) && { opacity: 0.5 }}>
+                  Post
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </SafeArea>
     </Container>
   );
 };

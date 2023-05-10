@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { HomeMap, MostPopularEventCard, Row, Text } from '.';
 import { getRecommendedUsers } from '../services/users';
-import { COLORS, FONTS, SIZE, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, WIDTH_DEVICE } from '../utils/theme';
 import { RecommendedUserColumn } from './AccountRow';
 
 const RecommendedUsers = () => {
@@ -63,7 +63,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
           }
         }}
         scrollEventThrottle={16}
-        contentContainerStyle={{ height: SIZE * 17 }}>
+        contentContainerStyle={{ height: HEIGHT_DEVICE / 3.45 }}>
         {items.map((item, index) => (
           <View key={index} style={{ width: WIDTH_DEVICE }}>
             {item.component}

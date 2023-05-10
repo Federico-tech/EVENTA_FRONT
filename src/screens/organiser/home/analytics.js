@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 
 import { Row, Text } from '../../../components';
 import { formatNumber } from '../../../utils/numbers';
-import { COLORS, FONTS, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SHADOWS, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const Analytics = ({ analytics }) => {
   console.debug({ analytics });
@@ -58,7 +58,7 @@ export const Analytics = ({ analytics }) => {
           </Text>
         </Row>
       </Row>
-      <Row style={[styles.wrapper, { width: '100%', aspectRatio: 1.8, padding: SIZE }]}>
+      <Row style={[styles.wrapper, { width: '100%', aspectRatio: null, padding: SIZE }]}>
         <Text ff={FONTS.semiBold} fs={SIZES.md}>
           Averages
         </Text>

@@ -66,7 +66,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   };
 
   const onPressEvent = () => {
-    navigation.navigate(ROUTES.EventDetails);
+    navigation.navigate(ROUTES.EventDetails, { participants: undefined });
     dispatch(setUserSelected(event.organiser));
     dispatch(setSelectedEvent(event));
     closeSheet();

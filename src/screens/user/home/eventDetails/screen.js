@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, ScrollView, ActivityIndicator, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ import {
   OrganiserInf,
   ReadMoreButton,
   Row,
+  SafeArea,
   SkeletonAccountRow,
   Text,
   TextButton,
@@ -33,7 +34,7 @@ import { getRefreshedEvent } from '../../../../services/events';
 import { getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
 import { refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
-import { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../../../../store/user';
+import user, { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../../../../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import mapStyle from '../../../../utils/mapStyle.json';
@@ -46,6 +47,7 @@ const EventDetailsParticipants = ({ isParticipating, routeParticipants }) => {
   const [loading, setLoading] = useState(false);
   const [participants, setParticipants] = useState([]);
   const navigation = useNavigation();
+  const currentUserRole = useSelector(selectCurrentUserRole)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,20 +62,19 @@ const EventDetailsParticipants = ({ isParticipating, routeParticipants }) => {
   }, [isParticipating]);
 
   const length = routeParticipants === 0 ? 1 : routeParticipants <= 3 ? routeParticipants : routeParticipants > 3 && 3;
-  console.log('lenght', length);
 
   return (
     <>
       {loading ? (
         <>
-          {Array.from({ length }, (_, i) => (
+          {Array.from({ length: length || 3 }, (_, i) => (
             <SkeletonAccountRow key={`skeleton-${i}`} />
           ))}
         </>
-      ) : isParticipating ? (
+      ) : isParticipating || currentUserRole === 'organiser' ? (
         <>
           {participants?.slice(0, 3).map((participant) => (
-            <UserRow key={participant.user._id} data={participant.user} bottomSheet />
+            <UserRow key={participant.user._id} data={participant.user} />
           ))}
           {participants?.length >= 3 && (
             <TextButton text="View More" style={styles.viewMore} onPress={() => navigation.navigate(ROUTES.ParticipantsScreen)} />
@@ -194,7 +195,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
 
 export const EventDetails = ({ route }) => {
   const { onGoBack } = route?.params || {};
-  const { participants } = route?.params;
+  const { participants } = route?.params || undefined;
   const [isOnPressParticipateLoading, setIsOnPressParticipateLoading] = useState(false);
   const [numberOfParticipants, setNumberOfParticipants] = useState();
   const [isLoading, setIsLoading] = useState();
@@ -295,8 +296,8 @@ export const EventDetails = ({ route }) => {
 
   return (
     <Container>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <SafeAreaView>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: SIZE * 2}}>
+        <SafeArea>
           <View style={{ marginBottom: SIZE }}>
             <View style={{ marginTop: -SIZE * 6 }}>
               <LoadingImage source={event.coverImage} width="100%" event />
@@ -387,7 +388,7 @@ export const EventDetails = ({ route }) => {
               <EventDetailsParticipants isParticipating={isParticipating} routeParticipants={participants} />
             </Row>
           </View>
-        </SafeAreaView>
+        </SafeArea>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <Text ff={FONTS.semiBold} fs={SIZES.sm} mt={SIZE / 2}>
             Location
@@ -396,58 +397,61 @@ export const EventDetails = ({ route }) => {
         </View>
       </ScrollView>
       {role === 'user' && (
-        <Row style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}>
-          <Row column spaceBetween>
-            <Row row spaceBetween alignCenter mt={SIZE} mb={SIZE * 2.7}>
-              {isParticipating ? (
-                <>
-                  <Button
-                    secondary
-                    containerStyle={
-                      event.discount !== 0
-                        ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
-                        : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
-                    }
-                    text="Unparticipate"
-                    onPress={onPressUnpartecipate}
-                    loading={isLoading}
-                    disabled={isOnPressParticipateLoading}
-                  />
-                  {event.discount !== 0 && (
-                    <Row ml={SIZE}>
-                      <TouchableOpacity onPress={toggleModal}>
-                        <View style={styles.discountContainer}>
-                          <Entypo name="ticket" size={SIZE * 2} color={COLORS.primary} />
-                        </View>
-                      </TouchableOpacity>
-                    </Row>
-                  )}
-                </>
-              ) : (
-                <>
-                  <Button
-                    gradient
-                    containerStyle={
-                      event.discount !== 0
-                        ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
-                        : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
-                    }
-                    text="Partecipate"
-                    onPress={onPressPartecipate}
-                    loading={isLoading}
-                    disabled={isOnPressParticipateLoading}
-                  />
-                  {event.discount !== 0 && (
-                    <View style={styles.discountContainer}>
-                      <Entypo name="ticket" size={SIZE * 2} color={COLORS.gray} />
-                    </View>
-                  )}
-                </>
-              )}
+        <SafeArea style={Platform.OS === 'android' && { marginTop: -SIZE * 3 }}>
+          <Row style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}>
+            <Row column spaceBetween>
+              <Row row spaceBetween alignCenter mt={SIZE} mb={Platform.OS === 'android' && SIZE}>
+                {isParticipating ? (
+                  <>
+                    <Button
+                      secondary
+                      containerStyle={
+                        event.discount !== 0
+                          ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
+                          : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
+                      }
+                      text="Unparticipate"
+                      onPress={onPressUnpartecipate}
+                      loading={isLoading}
+                      disabled={isOnPressParticipateLoading}
+                    />
+                    {event.discount !== 0 && (
+                      <Row ml={SIZE}>
+                        <TouchableOpacity onPress={toggleModal}>
+                          <View style={styles.discountContainer}>
+                            <Entypo name="ticket" size={SIZE * 2} color={COLORS.primary} />
+                          </View>
+                        </TouchableOpacity>
+                      </Row>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      gradient
+                      containerStyle={
+                        event.discount !== 0
+                          ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
+                          : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
+                      }
+                      text="Partecipate"
+                      onPress={onPressPartecipate}
+                      loading={isLoading}
+                      disabled={isOnPressParticipateLoading}
+                    />
+                    {event.discount !== 0 && (
+                      <View style={styles.discountContainer}>
+                        <Entypo name="ticket" size={SIZE * 2} color={COLORS.gray} />
+                      </View>
+                    )}
+                  </>
+                )}
+              </Row>
             </Row>
           </Row>
-        </Row>
+        </SafeArea>
       )}
+
       <BottomSheetModal
         enablePanDownToClose
         ref={bottomSheetModalRef}
@@ -521,7 +525,6 @@ const styles = StyleSheet.create({
   imageGradient: {
     width: '100%',
     height: '100%',
-    zIndex: 3,
     position: 'absolute',
   },
   iconContainer: {

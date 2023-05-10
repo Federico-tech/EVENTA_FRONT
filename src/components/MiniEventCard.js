@@ -23,6 +23,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
   const dispatch = useDispatch();
 
   const handlePress = () => {
+    closeSheet()
     dispatch(setUserSelected(data.organiser));
     dispatch(setSelectedEvent(data));
     navigation.navigate('EventDetails', { data });

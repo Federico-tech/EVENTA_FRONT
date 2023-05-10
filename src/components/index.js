@@ -25,3 +25,4 @@ export * from './AlertModal';
 export * from './Comment';
 export * from './HomeCarousel';
 export * from './Skeleton';
+export * from './SafeArea';

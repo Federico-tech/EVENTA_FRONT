@@ -17,7 +17,7 @@ export const MiniPostCard = ({ postData }) => {
   const onPressUser = () => {
     if (!postData?.user.isDeleted) {
       dispatch(setUserSelected(postData?.user));
-      navigation.navigate(ROUTES.AccountUserScreen);
+      navigation.push(ROUTES.AccountUserScreen);
     }
   };
 
