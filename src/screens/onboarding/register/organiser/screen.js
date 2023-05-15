@@ -53,7 +53,7 @@ export const OrganiserSignUpScreen = ({ navigation, route }) => {
       address: string().required('Address is a required field'),
       password: string()
         .required('Password is a required field')
-        .matches(/^(?=.*\d)[a-zA-Z\d]{8,}$/, 'This is not a valid password'),
+        .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z\d!@#$%^&*()-=_+~`[{\\}|;:'",<.>/?]{8,}$/, 'This is not a valid password'),
     }),
     validateOnChange: false,
     validateOnBlur: false,

@@ -62,7 +62,7 @@ export const UserSingUpScreen = ({ navigation }) => {
       email: string().required('Email is a required field').email('This is not a valid email'),
       password: string()
         .required('Password is a required field')
-        .matches(/^(?=.*\d)[a-zA-Z\d]{8,}$/, 'This is not a valid password'),
+        .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z\d!@#$%^&*()-=_+~`[{\\}|;:'",<.>/?]{8,}$/, 'This is not a valid password'),
       name: string().required('Name is a required field'),
     }),
     validateOnChange: false,
@@ -76,7 +76,7 @@ export const UserSingUpScreen = ({ navigation }) => {
         console.log(data);
         await organiserSignUp(data);
         await loginUser(data.email, data.password);
-        // await registerPushNotifications();
+        await registerPushNotifications();
         setLoading(false);
       } catch (e) {
         setLoading(false);

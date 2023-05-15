@@ -1,30 +1,23 @@
 import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BlueGradientLogo } from '../assets';
 import { ROUTES } from '../navigation/Navigation';
-import { createNote } from '../services/notes';
 import { setReadNotifications } from '../services/notifications';
 import { selectNotificationsRead, setUnreadNotifications } from '../store/notification';
-import { selectCurrentUser, selectCurrentUserId } from '../store/user';
+import { selectCurrentUser } from '../store/user';
 import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../utils/theme';
 import { IconButton } from './Button';
-import { InputText } from './InputText';
-import { Line } from './Line';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
-import { TextButton } from './TextButton';
 
 export const HomeHeader = ({ organiser, ...props }) => {
-  const [note, setNote] = useState();
-  const [isLoading, setIsLoading] = useState(false);
   const userinfo = useSelector(selectCurrentUser);
-  const currentUserId = useSelector(selectCurrentUserId);
   const navigation = useNavigation();
   const notificationsRead = useSelector(selectNotificationsRead);
   const dispatch = useDispatch();
@@ -36,7 +29,6 @@ export const HomeHeader = ({ organiser, ...props }) => {
   };
 
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = ['60%'];
 
   const handlePresentModal = () => {
     bottomSheetModalRef.current?.present();
@@ -63,10 +55,11 @@ export const HomeHeader = ({ organiser, ...props }) => {
 
   const onPressCreatePost = async () => {
     navigation.navigate(ROUTES.CreatePostScreen);
+    handleClosePress();
   };
 
   const onPressCreateStory = () => {
-    navigation.navigate(ROUTES.CreateStoryScreen);
+    navigation.navigate(ROUTES.CameraScreen);
     handleClosePress();
   };
 
@@ -76,7 +69,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
         <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
-              <TouchableOpacity onPress={handlePresentModal}>
+              <TouchableOpacity onPress={onPressCreatePost}>
                 <Row row>
                   <LoadingImage
                     source={userinfo.profilePic}

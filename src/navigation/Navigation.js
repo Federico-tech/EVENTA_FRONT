@@ -25,7 +25,8 @@ import { FollowingScreen } from '../screens/shared/following/screen';
 import { ParticipantsScreen } from '../screens/shared/participants/screen';
 import { PrivacyPolicyScreen } from '../screens/shared/privacyPolicy/screen';
 import { SettingScreen } from '../screens/shared/settings/screen';
-import { CreateStoryScreen } from '../screens/shared/stories/createStory/screen';
+import { CameraScreen } from '../screens/shared/stories/createStory/camera/screen';
+import { EditStoryScreen } from '../screens/shared/stories/createStory/editStory/screen';
 import { EventDetails } from '../screens/user/home/eventDetails/screen';
 import { HomeScreen } from '../screens/user/home/home/screen';
 import { LikeScreen } from '../screens/user/home/like/screen';
@@ -101,8 +102,9 @@ export const ROUTES = {
   PopularEventsScreen: 'PopularEventsScreen',
   PrivacyPolicyScreen: 'PrivacyPolicyScreen',
   UsernameScreen: 'UsernameScreen',
-  CreateStoryScreen: 'CreateStoryScreen',
+  CameraScreen: 'CameraScreen',
   SearchOrganiserEventsScreen: 'SearchOrganiserEventsScreen',
+  EditStoryScreen: 'EditStoryScreen',
 };
 
 const BottomBarIcons = ({ route }) => ({
@@ -437,7 +439,7 @@ export const OrganiserStack = () => {
       </OrganiserStackNavigator.Group>
       <OrganiserStackNavigator.Screen name={ROUTES.EditOrganiserScreen} component={EditOrganiserScreen} />
       <OrganiserStackNavigator.Screen name={ROUTES.EditEventScreen} component={EditEventScreen} />
-      <OrganiserStackNavigator.Screen name={ROUTES.CreateStoryScreen} component={CreateStoryScreen} options={{ headerShown: false }} />
+      <OrganiserStackNavigator.Screen name={ROUTES.CameraScreen} component={CameraScreen} options={{ headerShown: false }} />
     </OrganiserStackNavigator.Navigator>
   );
 };
@@ -450,7 +452,8 @@ export const UserStack = () => {
       <UserStackNavigator.Screen name={ROUTES.UserBottomNavigator} component={UserBottomNavigator} />
       <UserStackNavigator.Group>
         <UserStackNavigator.Screen name={ROUTES.EditUserScreen} component={EditUserScreen} />
-        <UserStackNavigator.Screen name={ROUTES.CreateStoryScreen} component={CreateStoryScreen} options={{ headerShown: false }} />
+        <UserStackNavigator.Screen name={ROUTES.CameraScreen} component={CameraScreen} options={{ headerShown: false }} />
+        <UserStackNavigator.Screen name={ROUTES.EditStoryScreen} component={EditStoryScreen} options={{ headerShown: false }} />
       </UserStackNavigator.Group>
       <UserStackNavigator.Screen name={ROUTES.UsernameScreen} component={UsernameScreen} screenOptions={{ headerShown: false }} />
     </UserStackNavigator.Navigator>

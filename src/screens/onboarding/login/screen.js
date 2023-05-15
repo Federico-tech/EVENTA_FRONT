@@ -47,7 +47,7 @@ export const LoginScreen = () => {
       email: string().required('Email is a required field').email('This is not a valid email'),
       password: string()
         .required('Password is a required field')
-        .matches(/^(?=.*\d)[a-zA-Z\d]{8,}$/, 'This is not a valid password'),
+        .matches(/^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z\d!@#$%^&*()-=_+~`[{\\}|;:'",<.>/?]{8,}$/, 'This is not a valid password'),
     }),
     validateOnChange: false,
     validateOnBlur: false,
@@ -113,7 +113,7 @@ export const LoginScreen = () => {
               <Row style={styles.line} />
             </View>
             {/* <SocialLoginButton apple google /> */}
-            
+
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
                 <Text style={styles.registerText}>{t(`you don't have an account`)}</Text>

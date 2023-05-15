@@ -4,11 +4,11 @@ import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ROUTES } from '../navigation/Navigation';
 import { follow, unFollow } from '../services/follow';
-import { selectCurrentUser } from '../store/user';
+import { selectCurrentUser, setUserSelected } from '../store/user';
 import { COLORS, FONTS, SIZES, SIZE } from '../utils/theme';
 import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
@@ -18,6 +18,7 @@ import { Text } from './Text';
 export const OrganiserInf = ({ organiser, isLoading, scans }) => {
   const [isFollowing, setIsFollowing] = useState();
   const [isFollowLoading, setIsFollowLoading] = useState(false);
+  const dispatch = useDispatch()
 
   const navigation = useNavigation();
   const user = useSelector(selectCurrentUser);
@@ -41,10 +42,15 @@ export const OrganiserInf = ({ organiser, isLoading, scans }) => {
     setIsFollowLoading(false);
   };
 
+  const onPressProfile = () => {
+    navigation.navigate(ROUTES.AccountOrganiserScreen);
+    dispatch(setUserSelected(organiser))
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.informationContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate(ROUTES.AccountOrganiserScreen)}>
+        <TouchableOpacity onPress={onPressProfile}>
           <Row row alignCenter>
             <LoadingImage source={organiser?.profilePic} profile width={SIZE * 4} iconSIZE={SIZE * 2} />
             <View style={styles.textContainer}>

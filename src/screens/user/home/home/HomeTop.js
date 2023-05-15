@@ -9,7 +9,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 import { HomeCarousel } from '../../../../components/HomeCarousel';
-import { InputText, LoadingImage, Note, PostCard, Row, Text, TextButton } from '../../../../components/index';
+import { InputText, LoadingImage, Note, PostCard, Row, Stories, Text, TextButton } from '../../../../components/index';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { createNote, deleteNote, getUserNotes } from '../../../../services/notes';
 import { getPosts } from '../../../../services/posts';
@@ -20,6 +20,7 @@ import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/them
 export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
   const [note, setNote] = useState();
   const [userNotes, setUserNotes] = useState();
+  const [isLoadingCreateNote, setIsLoadingCreateNote] = useState(false);
   const [post, setPost] = useState();
   const user = useSelector(selectCurrentUser);
   const userId = useSelector(selectCurrentUserId);
@@ -100,94 +101,104 @@ export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
   };
 
   const onPressCreateNote = async () => {
+    setIsLoadingCreateNote(true);
     await createNote({ content: note, userId });
-    handleClosePress();
     getUserNotes().then((result) => {
       console.log('result', result);
       setUserNotes(result.data);
     });
+    setIsLoadingCreateNote(false);
+    handleClosePress();
     setNote('');
   };
 
   return (
-    <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-      <View style={{ alignItems: 'center' }}>
-        <HomeCarousel eventData={eventData} mapData={mapData} />
-        <View style={styles.noteContainer}>
-          <FlatList
-            data={[...(userNotes || []), ...(data || [])]}
-            renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote} />}
-            keyExtractor={(item) => item._id}
-            style={{ paddingHorizontal: SIZE / 2 }}
-            onEndReachedThreshold={0.1}
-            onEndReached={_.throttle(getMoreData, 400)}
-            ListFooterComponent={
-              <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator />}</View>
-            }
-            horizontal
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            ListHeaderComponent={
-              <TouchableOpacity onPress={handlePresentModal} activeOpacity={0.7}>
-                <Row justifyCenter mt={SIZE}>
-                  <View>
-                    <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
-                      <Row alignCenter style={{ width: SIZE * 6 }} column>
-                        <Row row>
-                          <LoadingImage source={user.profilePic} profile iconSIZE={SIZE * 2.5} width={SIZE * 4} viewStyle={styles.createNoteImage} />
-                          <View style={styles.plusIcon}>
-                            <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
-                          </View>
+    <View>
+      <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+        <View style={{ alignItems: 'center' }}>
+          <HomeCarousel eventData={eventData} mapData={mapData} />
+          <View style={styles.noteContainer}>
+            <FlatList
+              data={[...(userNotes || []), ...(data || [])]}
+              renderItem={({ item }) => <Note data={item} deleteNote={onPressDeleteNote} />}
+              keyExtractor={(item) => item._id}
+              style={{ paddingHorizontal: SIZE / 2 }}
+              onEndReachedThreshold={0.1}
+              onEndReached={_.throttle(getMoreData, 400)}
+              ListFooterComponent={
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: SIZE * 4.5 }}>{loadMore && <ActivityIndicator />}</View>
+              }
+              horizontal
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              ListHeaderComponent={
+                <TouchableOpacity onPress={handlePresentModal} activeOpacity={0.7}>
+                  <Row justifyCenter mt={SIZE}>
+                    <View>
+                      <View style={[styles.note, { alignItems: 'center', alignContent: 'center', marginRight: SIZE }]}>
+                        <Row alignCenter style={{ width: SIZE * 6 }} column>
+                          <Row row>
+                            <LoadingImage
+                              source={user.profilePic}
+                              profile
+                              iconSIZE={SIZE * 2.5}
+                              width={SIZE * 4}
+                              viewStyle={styles.createNoteImage}
+                            />
+                            <View style={styles.plusIcon}>
+                              <AntDesign name="pluscircle" size={SIZE * 1.3} color={COLORS.primary} />
+                            </View>
+                          </Row>
+                          <Text style={{ fontSize: SIZES.xs, textAlign: 'center' }}>Share your plans!</Text>
                         </Row>
-                        <Text style={{ fontSize: SIZES.xs, textAlign: 'center' }}>Share your plans!</Text>
-                      </Row>
+                      </View>
                     </View>
-                  </View>
-                </Row>
-              </TouchableOpacity>
-            }
-          />
-        </View>
-        {post && (
-          <>
-            <Row row alignEnd style={{ width: '100%', marginBottom: SIZE / 2 }} spaceBetween>
-              <Row row alignCenter>
-                <Text ff={FONTS.medium} fs={SIZES.sm}>
-                  Moments
-                </Text>
-              </Row>
-
-              <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostsFeedScreen)}>
+                  </Row>
+                </TouchableOpacity>
+              }
+            />
+          </View>
+          {post && (
+            <>
+              <Row row alignEnd style={{ width: '100%', marginBottom: SIZE / 2 }} spaceBetween>
                 <Row row alignCenter>
-                  <AntDesign name="caretright" size={SIZE / 1.1} />
-                  <TextButton
-                    text="View all"
-                    textStyle={{
-                      width: SIZE * 4,
-                      fontSize: SIZES.xs,
-                      color: 'black',
-                      fontFamily: FONTS.medium,
-                      alignSelf: 'flex-end',
-                      marginLeft: SIZE / 4,
-                    }}
-                  />
+                  <Text ff={FONTS.medium} fs={SIZES.sm}>
+                    Moments
+                  </Text>
                 </Row>
-              </TouchableOpacity>
-            </Row>
-            {post && <PostCard postData={post} touchable />}
-          </>
-        )}
-        <Text ff={FONTS.medium} fs={SIZES.sm} style={{ width: '100%', marginBottom: SIZE, marginTop: SIZE / 2 }}>
-          Events near you
-        </Text>
-      </View>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
-          <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>
-          <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length} />
+
+                <TouchableOpacity onPress={() => navigation.navigate(ROUTES.PostsFeedScreen)}>
+                  <Row row alignCenter>
+                    <AntDesign name="caretright" size={SIZE / 1.1} />
+                    <TextButton
+                      text="View all"
+                      textStyle={{
+                        width: SIZE * 4,
+                        fontSize: SIZES.xs,
+                        color: 'black',
+                        fontFamily: FONTS.medium,
+                        alignSelf: 'flex-end',
+                        marginLeft: SIZE / 4,
+                      }}
+                    />
+                  </Row>
+                </TouchableOpacity>
+              </Row>
+              {post && <PostCard postData={post} touchable />}
+            </>
+          )}
+          <Text ff={FONTS.medium} fs={SIZES.sm} style={{ width: '100%', marginBottom: SIZE, marginTop: SIZE / 2 }}>
+            Events near you
+          </Text>
         </View>
-      </BottomSheetModal>
+        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+          <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
+            <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
+            <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>
+            <TextButton text="Post" textStyle={styles.share} onPress={onPressCreateNote} disabled={!note?.length || isLoadingCreateNote} />
+          </View>
+        </BottomSheetModal>
+      </View>
     </View>
   );
 });

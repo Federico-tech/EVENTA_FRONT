@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, ActivityIndicator, View } from 'react-native';
 
-import { COLORS, FONTS, SIZES } from '../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 
 export const TextButton = ({ onPress, text, textStyle, loading, lenght, disabled, ...rest }) => {
   return (
-    <View>
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
       {loading ? (
-        <ActivityIndicator color="black" style={{ alignSelf: 'center' }} />
+        <ActivityIndicator color="black" style={{ alignSelf: 'center'}} />
       ) : (
         <TouchableOpacity onPress={onPress} disabled={!onPress || disabled}>
           <Text style={[styles.text, disabled && styles.disabled, textStyle]} {...rest}>

@@ -72,6 +72,7 @@ export const refreshSelectedUser = async (user) => {
     console.log({ e });
   }
 };
+
 export const refreshSelectedUserbyId = async (userId) => {
   try {
     const { data } = await mainAxios.get(`users/${userId}`);

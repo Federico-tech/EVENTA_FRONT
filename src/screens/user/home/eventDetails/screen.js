@@ -32,7 +32,7 @@ import { MiniPostCard } from '../../../../components/MiniPostCard';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { getRefreshedEvent } from '../../../../services/events';
 import { getEventParticipants, partecipate, unpartecipate } from '../../../../services/participants';
-import { refreshSelectedUser } from '../../../../services/users';
+import { getUserById, refreshSelectedUser } from '../../../../services/users';
 import { selectSelectedEvent, selectSelectedEventId } from '../../../../store/event';
 import user, { selectCurrentUserId, selectCurrentUserRole, selectSelectedUser } from '../../../../store/user';
 import { EVENT_DATE_FORMAT, formatDate, TIME_FORMAT } from '../../../../utils/dates';
@@ -47,7 +47,7 @@ const EventDetailsParticipants = ({ isParticipating, routeParticipants }) => {
   const [loading, setLoading] = useState(false);
   const [participants, setParticipants] = useState([]);
   const navigation = useNavigation();
-  const currentUserRole = useSelector(selectCurrentUserRole)
+  const currentUserRole = useSelector(selectCurrentUserRole);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -163,7 +163,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
         <Row width={SIZE * 5}>
           <Text fs={SIZES.sm}>Likes</Text>
           <Text color={COLORS.gray} fs={SIZES.sm}>
-            {formatShortNumber(event.likes)}
+            {formatShortNumber(470)}
           </Text>
         </Row>
       </Row>
@@ -174,7 +174,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
         <Row width={SIZE * 5}>
           <Text fs={SIZES.sm}>Posts</Text>
           <Text color={COLORS.gray} fs={SIZES.sm}>
-            {formatShortNumber(posts)}
+            {formatShortNumber(120)}
           </Text>
         </Row>
       </Row>
@@ -185,7 +185,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
         <Row width={SIZE * 5}>
           <Text fs={SIZES.sm}>People</Text>
           <Text color={COLORS.gray} fs={SIZES.sm}>
-            {!participants ? 0 : formatShortNumber(participants)}
+            {!participants ? 0 : formatShortNumber(1270)}
           </Text>
         </Row>
       </Row>
@@ -206,10 +206,10 @@ export const EventDetails = ({ route }) => {
   const role = useSelector(selectCurrentUserRole);
   const userId = useSelector(selectCurrentUserId);
   const organiser = event.organiser;
-  const refreshedOrganiser = useSelector(selectSelectedUser);
+  // const refreshedOrganiser = useSelector(selectSelectedUser);
   const bottomSheetModalRef = useRef(null);
   const [isParticipating, setIsParticipating] = useState();
-  const [definitiveOrganiser, setDefinitiveOrganiser] = useState(refreshedOrganiser);
+  const [definitiveOrganiser, setDefinitiveOrganiser] = useState(organiser);
 
   const handlePresentModal = () => bottomSheetModalRef.current?.present();
   const toggleModal = () => setModalVisible(!isModalVisible);
@@ -234,11 +234,11 @@ export const EventDetails = ({ route }) => {
     []
   );
 
-  useEffect(() => {
-    if (organiser._id === refreshedOrganiser._id) {
-      setDefinitiveOrganiser(refreshedOrganiser);
-    }
-  }, [refreshedOrganiser]);
+  // useEffect(() => {
+  //   if (organiser._id === refreshedOrganiser._id) {
+  //     setDefinitiveOrganiser(refreshedOrganiser);
+  //   }
+  // }, [refreshedOrganiser]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -248,7 +248,8 @@ export const EventDetails = ({ route }) => {
           setIsParticipating(result.data.event.isParticipating);
           setNumberOfParticipants(result.data.event.participants);
         });
-        await refreshSelectedUser(organiser);
+        const refreshedOrganiser = await getUserById(organiser._id);
+        setDefinitiveOrganiser(refreshedOrganiser);
         setIsLoading(false);
       } catch (e) {
         console.log(e);
@@ -296,7 +297,7 @@ export const EventDetails = ({ route }) => {
 
   return (
     <Container>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: SIZE * 2}}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: SIZE * 2 }}>
         <SafeArea>
           <View style={{ marginBottom: SIZE }}>
             <View style={{ marginTop: -SIZE * 6 }}>
@@ -306,7 +307,6 @@ export const EventDetails = ({ route }) => {
 
             <IconButton name="chevron-back-outline" onPress={onPressGoBack} size={SIZE * 2} iconStyle={styles.arrowStyle} color="white" />
             <IconButton name="md-ellipsis-horizontal-sharp" size={SIZE * 2} iconStyle={styles.dots} color="white" onPress={handlePresentModal} />
-
             <View
               style={{
                 paddingHorizontal: WIDTH_DEVICE / 20,
@@ -317,7 +317,6 @@ export const EventDetails = ({ route }) => {
                 borderTopRightRadius: 20,
               }}>
               <OrganiserInf organiser={definitiveOrganiser} isLoading={isLoading} scans={event.scans} />
-
               <View style={{ marginHorizontal: 0 }}>
                 <Line lineStyle={{ marginBottom: 0 }} />
               </View>

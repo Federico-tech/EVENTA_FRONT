@@ -156,7 +156,11 @@ export const EventCard = ({ eventData }) => {
             <Feather name="calendar" size={18} color={COLORS.gray} />
             <Text style={styles.textAdress}> {formatDate(eventData.date, EVENT_DATE_FORMATR_NOYEAR)}</Text>
             <View style={styles.dot} />
-            <Text style={styles.textAdress}>{eventData?.address?.city}</Text>
+            <Row width={SIZE * 5}>
+              <Text style={styles.textAdress} numberOfLines={1}>
+                {eventData?.address?.city}
+              </Text>
+            </Row>
           </Row>
         </Row>
       </View>
@@ -206,7 +210,7 @@ export const MostPopularEventCard = ({ eventData }) => {
                   <LoadingImage
                     key={data.user._id}
                     source={data?.user.profilePic}
-                    imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5,  marginBottom: SIZE * 1.5 }]}
+                    imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5, marginBottom: SIZE * 1.5 }]}
                     profile
                     iconSIZE={SIZE * 1.3}
                   />
@@ -228,7 +232,7 @@ const styles = StyleSheet.create({
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,
     ...SHADOWS.medium,
-    marginBottom: SIZE,
+    marginBottom: SIZE * 1.5,
     alignSelf: 'center',
     borderRadius: SIZES.xxs,
     borderWidth: 0,
@@ -294,7 +298,6 @@ const styles = StyleSheet.create({
     marginLeft: -SIZE,
     borderWidth: 2.5,
     borderColor: COLORS.white,
-   
   },
   dot: {
     backgroundColor: COLORS.gray,
