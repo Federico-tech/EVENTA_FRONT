@@ -5,6 +5,7 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
+import { DateTime } from 'luxon';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -163,7 +164,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
         <Row width={SIZE * 5}>
           <Text fs={SIZES.sm}>Likes</Text>
           <Text color={COLORS.gray} fs={SIZES.sm}>
-            {formatShortNumber(470)}
+            {formatShortNumber(event?.likes)}
           </Text>
         </Row>
       </Row>
@@ -174,7 +175,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
         <Row width={SIZE * 5}>
           <Text fs={SIZES.sm}>Posts</Text>
           <Text color={COLORS.gray} fs={SIZES.sm}>
-            {formatShortNumber(120)}
+            {formatShortNumber(posts)}
           </Text>
         </Row>
       </Row>
@@ -185,7 +186,7 @@ const EventSocialInformations = ({ event, posts, participants }) => {
         <Row width={SIZE * 5}>
           <Text fs={SIZES.sm}>People</Text>
           <Text color={COLORS.gray} fs={SIZES.sm}>
-            {!participants ? 0 : formatShortNumber(1270)}
+            {!participants ? 0 : formatShortNumber(event?.participants)}
           </Text>
         </Row>
       </Row>
@@ -210,6 +211,9 @@ export const EventDetails = ({ route }) => {
   const bottomSheetModalRef = useRef(null);
   const [isParticipating, setIsParticipating] = useState();
   const [definitiveOrganiser, setDefinitiveOrganiser] = useState(organiser);
+  const eventDate = DateTime.fromISO(event.date);
+  const currentDate = DateTime.now();
+  const daysUntilEvent = Math.floor(eventDate.diff(currentDate, 'days').days);
 
   const handlePresentModal = () => bottomSheetModalRef.current?.present();
   const toggleModal = () => setModalVisible(!isModalVisible);
@@ -400,7 +404,53 @@ export const EventDetails = ({ route }) => {
           <Row style={{ paddingHorizontal: WIDTH_DEVICE / 20 }}>
             <Row column spaceBetween>
               <Row row spaceBetween alignCenter mt={SIZE} mb={Platform.OS === 'android' && SIZE}>
-                {isParticipating ? (
+                {daysUntilEvent <= 2 ? (
+                  isParticipating ? (
+                    <>
+                      <Button
+                        secondary
+                        containerStyle={
+                          event.discount !== 0
+                            ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
+                            : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
+                        }
+                        text="Unparticipate"
+                        onPress={onPressUnpartecipate}
+                        loading={isLoading}
+                        disabled={isOnPressParticipateLoading}
+                      />
+                      {event.discount !== 0 && (
+                        <Row ml={SIZE}>
+                          <TouchableOpacity onPress={toggleModal}>
+                            <View style={styles.discountContainer}>
+                              <Entypo name="ticket" size={SIZE * 2} color={COLORS.primary} />
+                            </View>
+                          </TouchableOpacity>
+                        </Row>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        gradient
+                        containerStyle={
+                          event.discount !== 0
+                            ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
+                            : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
+                        }
+                        text="Partecipate"
+                        onPress={onPressPartecipate}
+                        loading={isLoading}
+                        disabled={isOnPressParticipateLoading}
+                      />
+                      {event.discount !== 0 && (
+                        <View style={styles.discountContainer}>
+                          <Entypo name="ticket" size={SIZE * 2} color={COLORS.gray} />
+                        </View>
+                      )}
+                    </>
+                  )
+                ) : (
                   <>
                     <Button
                       secondary
@@ -409,34 +459,9 @@ export const EventDetails = ({ route }) => {
                           ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
                           : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
                       }
-                      text="Unparticipate"
-                      onPress={onPressUnpartecipate}
+                      text={`${daysUntilEvent} days to participate`}
+                      textStyle={{ color: COLORS.gray }}
                       loading={isLoading}
-                      disabled={isOnPressParticipateLoading}
-                    />
-                    {event.discount !== 0 && (
-                      <Row ml={SIZE}>
-                        <TouchableOpacity onPress={toggleModal}>
-                          <View style={styles.discountContainer}>
-                            <Entypo name="ticket" size={SIZE * 2} color={COLORS.primary} />
-                          </View>
-                        </TouchableOpacity>
-                      </Row>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      gradient
-                      containerStyle={
-                        event.discount !== 0
-                          ? { width: SIZE * 23, borderRadius: 15, height: SIZE * 3 }
-                          : { width: SIZE * 27, borderRadius: 15, height: SIZE * 3 }
-                      }
-                      text="Partecipate"
-                      onPress={onPressPartecipate}
-                      loading={isLoading}
-                      disabled={isOnPressParticipateLoading}
                     />
                     {event.discount !== 0 && (
                       <View style={styles.discountContainer}>
