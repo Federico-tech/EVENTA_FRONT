@@ -36,6 +36,7 @@ export const Text = ({
         { marginBottom: mb },
         { marginLeft: ml },
         { marginRight: mr },
+        { width },
         bold && styles.bold,
         semiBoldSm && styles.semiBoldSm,
         semiBoldMd && styles.semiBoldMd,

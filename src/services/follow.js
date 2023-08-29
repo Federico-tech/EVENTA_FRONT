@@ -1,7 +1,7 @@
 import { mainAxios } from '../core/axios';
 import { store } from '../store';
 import { selectSelectedUser } from '../store/user';
-import { getMe, getUserById } from './users';
+import { getMe } from './users';
 
 export const followUser = async (userId) => {
   try {
@@ -80,4 +80,4 @@ export const unFollowBlocked = async () => {
   } catch (e) {
     console.log({ errorUnfollowBlocked: e });
   }
-};
+}

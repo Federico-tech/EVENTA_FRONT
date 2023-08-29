@@ -95,6 +95,7 @@ export const InputText = ({
               spellCheck={!email}
               {...rest}
               maxLength={maxLength}
+              placeholder={label}
             />
           </View>
           <View style={styles.iconsRight}>

@@ -27,6 +27,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   const role = useSelector(selectCurrentUserRole);
   const navigation = useNavigation();
   const [isFollowing, setIsFollowing] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [isFollowingPressLoading, setIsFollowingPressLoading] = useState(false);
   const [numFollowers, setNumFollowers] = useState();
 
@@ -56,7 +57,9 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     refreshSelectedUser(user);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -137,10 +140,18 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
                       text="Following"
                       containerStyle={{ width: SIZE * 13 }}
                       onPress={onPressUnfollow}
-                      disabled={isFollowingPressLoading}
+                      disabled={isFollowingPressLoading || isLoading}
+                      loading={isLoading}
                     />
                   ) : (
-                    <Button gradient text="Follow" containerStyle={{ width: SIZE * 13 }} onPress={onPressFollow} disabled={isFollowingPressLoading} />
+                    <Button
+                      gradient
+                      text="Follow"
+                      containerStyle={{ width: SIZE * 13 }}
+                      onPress={onPressFollow}
+                      disabled={isFollowingPressLoading || isLoading}
+                      loading={isLoading}
+                    />
                   )
                 ) : (
                   <View style={{ width: SIZE * 13 }} />

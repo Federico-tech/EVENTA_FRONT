@@ -207,7 +207,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
                 containerStyle={{ width: SIZE * 13 }}
                 onPress={onPressUnfollow}
                 loading={loading}
-                disabled={isFollowLoading}
+                disabled={isFollowLoading || loading}
               />
             ) : (
               <Button
@@ -216,7 +216,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
                 containerStyle={{ width: SIZE * 13 }}
                 onPress={onPressFollow}
                 loading={loading}
-                disabled={isFollowLoading}
+                disabled={isFollowLoading || loading}
               />
             )
           ) : (

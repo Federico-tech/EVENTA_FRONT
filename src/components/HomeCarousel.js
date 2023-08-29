@@ -17,12 +17,10 @@ const RecommendedUsers = () => {
     });
   }, []);
 
-  console.log('RecommendedUsers', recommendedUsers);
-
   return (
     <View style={styles.recommendedUserContainer}>
       <Text ff={FONTS.medium}>Find new Friends!</Text>
-      <Row row spaceBetween width="100%" mt={SIZE}>
+      <Row row spaceBetween width='100%' mt={SIZE}>
         {recommendedUsers?.map((recommendedUser) => (
           <RecommendedUserColumn key={recommendedUser._id} data={recommendedUser} />
         ))}
@@ -37,7 +35,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
   const items = [
     {
       title: 'Event Card 1',
-      component: eventData?._id ? <MostPopularEventCard eventData={eventData} /> : null,
+      component: eventData?._id ? <MostPopularEventCard eventData={eventData} /> : undefined,
     },
     {
       title: 'Map',

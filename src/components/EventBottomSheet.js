@@ -42,8 +42,10 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
   }, [eventId]);
 
   useEffect(() => {
+    setLoading(true);
     refreshSelectedUser(event.organiser);
     setIsFollowing(organiser.isFollowing);
+    setLoading(false);
   }, [event]);
 
   const onPressFollow = async () => {
@@ -98,7 +100,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
                   onPress={onPressUnfollow}
                   containerStyle={{ width: SIZE * 9 }}
                   loading={loading}
-                  disabled={isFollowingPressLoading}
+                  disabled={isFollowingPressLoading || loading}
                 />
               ) : (
                 <Button
@@ -107,7 +109,7 @@ export const EventBottomSheet = ({ scroll, closeSheet }) => {
                   onPress={onPressFollow}
                   containerStyle={{ width: SIZE * 9 }}
                   loading={loading}
-                  disabled={isFollowingPressLoading}
+                  disabled={isFollowingPressLoading || loading}
                 />
               ))}
           </View>

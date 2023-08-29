@@ -3,9 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, TouchableHighlight, View } from 'react-native';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { color } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
 import { mainAxios } from '../core/axios';
@@ -104,9 +103,9 @@ export const EventCard = ({ eventData }) => {
   return (
     <View style={styles.cardContainer}>
       <TouchableOpacity onPress={handleOnPress} activeOpacity={0.8}>
-        <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator event width="100%" />
+        <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator event width='100%' />
       </TouchableOpacity>
-      <View style={{ marginHorizontal: SIZE * 2 }}>
+      <View style={{ paddingHorizontal: SIZE, width: WIDTH_DEVICE * 0.9 }}>
         <View style={styles.descContainer}>
           <View style={styles.informationContainer}>
             <TouchableOpacity onPress={onPressOrganiser}>
@@ -138,7 +137,7 @@ export const EventCard = ({ eventData }) => {
           </View>
         </View>
         <View style={styles.line} />
-        <Row row alignCenter spaceBetween style={{ height: SIZE * 2 }}>
+        <Row width="100%" row alignCenter spaceBetween style={{ height: SIZE * 2 }}>
           <Row row alignCenter>
             <Row row style={[{ alignItems: 'center', marginLeft: SIZE, marginRight: SIZE / 3 }, totalData === 0 && { marginLeft: 0 }]}>
               {data?.slice(0, 3).map((data) => (
@@ -156,7 +155,7 @@ export const EventCard = ({ eventData }) => {
             <Feather name="calendar" size={18} color={COLORS.gray} />
             <Text style={styles.textAdress}> {formatDate(eventData.date, EVENT_DATE_FORMATR_NOYEAR)}</Text>
             <View style={styles.dot} />
-            <Row width={SIZE * 5}>
+            <Row style={{ maxWidth: SIZE * 5 }}>
               <Text style={styles.textAdress} numberOfLines={1}>
                 {eventData?.address?.city}
               </Text>
@@ -179,9 +178,9 @@ export const MostPopularEventCard = ({ eventData }) => {
     });
   };
 
-  const { data } = useGetParticipants(eventData?._id);
+  console.debug({ mostPopularEvent: eventData });
 
-  console.log('data', data);
+  const { data } = useGetParticipants(eventData?._id);
 
   return (
     <>
@@ -191,7 +190,7 @@ export const MostPopularEventCard = ({ eventData }) => {
             <LoadingImage
               event
               width={WIDTH_DEVICE}
-              imageStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45, borderRadius: 0 }}
+              imageStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45, borderRadius: 0, borderWidth: 0 }}
               source={eventData?.coverImage}
               viewStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45 }}
               indicator

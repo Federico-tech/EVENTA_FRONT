@@ -62,11 +62,13 @@ export const OrganiserHome = () => {
 
               {popularEvents && (
                 <>
-                  <TouchableOpacity onPress={onPressNavigatePopularEvents}>
-                    <Text style={styles.viewAll} mt={SIZE}>
-                      View all
-                    </Text>
-                  </TouchableOpacity>
+                  {popularEvents.length !== 0 && (
+                    <TouchableOpacity onPress={onPressNavigatePopularEvents}>
+                      <Text style={styles.viewAll} mt={SIZE}>
+                        View all
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </>
               )}
             </Row>

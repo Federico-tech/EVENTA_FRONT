@@ -126,7 +126,7 @@ export const RecommendedUserColumn = ({ data, containerStyle }) => {
       </TouchableOpacity>
       <Row width={SIZE * 6} alignCenter mt={SIZE}>
         <TouchableOpacity onPress={handleOnPress} style={{ alignItems: 'center' }}>
-          <Text fs={SIZES.xxs} ff={FONTS.medium} width numberOfLines={1}>
+          <Text fs={SIZES.xxs} ff={FONTS.medium} numberOfLines={1}>
             {data.username}
           </Text>
           <Text color={COLORS.gray} fs={SIZES.xxs} ff={FONTS.regular} numberOfLines={1} mb={SIZE}>

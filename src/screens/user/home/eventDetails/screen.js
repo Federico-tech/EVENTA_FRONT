@@ -305,7 +305,7 @@ export const EventDetails = ({ route }) => {
         <SafeArea>
           <View style={{ marginBottom: SIZE }}>
             <View style={{ marginTop: -SIZE * 6 }}>
-              <LoadingImage source={event.coverImage} width="100%" event />
+              <LoadingImage source={event.coverImage} width="100%" event imageStyle={{ borderWidth: 0}}/>
               <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.5)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.5)']} />
             </View>
 
