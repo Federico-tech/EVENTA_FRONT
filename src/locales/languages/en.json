@@ -37,5 +37,9 @@
   "notifications":"Notifications",
   "settings": "Settings",
   "follow": "Follow",
-  "followingB": "Following"
+  "followingB": "Following",
+  "findNewFriends": "Find new friends",
+  "mostPopular": "Most popular",
+  "shareYourPlans": "Share your plans!"
 }
+

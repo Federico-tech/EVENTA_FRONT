@@ -78,7 +78,7 @@ export const SettingScreen = () => {
         </Row>
       </Row>
       <Line />
-      <Row style={{ marginVertical: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
+      {/* <Row style={{ marginVertical: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
         <Text semiBoldMd style={styles.notification}>
           Language
         </Text>
@@ -94,7 +94,7 @@ export const SettingScreen = () => {
             style={language === 'en' ? styles.languageButtonEnable : styles.languageButtonDisabled}
           />
         </Row>
-      </Row>
+      </Row> */}
       <Line />
       <Row style={{ marginVertical: SIZE, marginHorizontal: WIDTH_DEVICE / 20 }}>
         <Text semiBoldMd style={styles.notification}>

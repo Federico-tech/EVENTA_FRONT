@@ -2,7 +2,9 @@ import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BlueGradientLogo } from '../assets';
@@ -14,12 +16,14 @@ import { WIDTH_DEVICE, HEIGHT_DEVICE, SIZES, FONTS, SIZE, COLORS } from '../util
 import { IconButton } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
+import { SafeArea } from './SafeArea';
 import { Text } from './Text';
 
 export const HomeHeader = ({ organiser, ...props }) => {
   const userinfo = useSelector(selectCurrentUser);
   const navigation = useNavigation();
   const notificationsRead = useSelector(selectNotificationsRead);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const onPressNotification = () => {
@@ -55,18 +59,13 @@ export const HomeHeader = ({ organiser, ...props }) => {
 
   const onPressCreatePost = async () => {
     navigation.navigate(ROUTES.CreatePostScreen);
-    handleClosePress();
-  };
-
-  const onPressCreateStory = () => {
-    navigation.navigate(ROUTES.CameraScreen);
-    handleClosePress();
   };
 
   return (
     <View>
+      <SafeArea />
       <View style={styles.container}>
-        <View style={{ flex: 1, marginTop: HEIGHT_DEVICE / 24 }}>
+        <View style={{ flex: 1 }}>
           <View style={styles.header}>
             <View style={styles.TextContainer}>
               <TouchableOpacity onPress={onPressCreatePost}>
@@ -86,7 +85,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={onPressProfile}>
                 <View style={styles.text}>
-                  <Text style={styles.welcome}>Welcome back,</Text>
+                  <Text style={styles.welcome}>{t('welcome')}</Text>
                   <Text style={styles.federico}>{userinfo.username}</Text>
                 </View>
               </TouchableOpacity>
@@ -103,31 +102,15 @@ export const HomeHeader = ({ organiser, ...props }) => {
         </View>
       </View>
       <View style={{ backgroundColor: COLORS.lightGray, height: 0.5 }} />
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['17%']} backdropComponent={renderBackdrop}>
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <TouchableOpacity onPress={onPressCreateStory}>
-            <Row row alignCenter style={{ marginTop: SIZE }}>
-              <Text semiBoldSm>Create a story</Text>
-            </Row>
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
-          <TouchableOpacity onPress={onPressCreatePost}>
-            <Row row alignCenter style={{ marginTop: SIZE }}>
-              <Text semiBoldSm>Create a moment</Text>
-            </Row>
-          </TouchableOpacity>
-        </View>
-      </BottomSheetModal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    height: SIZE * 7.5,
+    height: SIZE * 4.7,
     marginBottom: SIZE / 2,
-    marginTop: SIZE / 6,
+    marginTop: -SIZE / 5,
   },
   header: {
     flex: 1,

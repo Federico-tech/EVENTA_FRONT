@@ -16,6 +16,7 @@ import { getPosts } from '../../../../services/posts';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { useInfiniteScroll } from '../../../../utils/hooks';
 import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { useTranslation } from 'react-i18next';
 
 export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
   const [note, setNote] = useState();
@@ -25,6 +26,7 @@ export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
   const user = useSelector(selectCurrentUser);
   const userId = useSelector(selectCurrentUserId);
   const navigation = useNavigation();
+  const {t} = useTranslation()
 
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ['60%'];

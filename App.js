@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import i18n from './src/locales/i18n';
 import AppNavigator from './src/navigation/AppNavigator';
 import { store } from './src/store';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 WebBrowser.maybeCompleteAuthSession();
@@ -86,8 +87,10 @@ const App = () => {
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-            <AppNavigator />
-            <FlashMessage position="top" />
+            <SafeAreaProvider>
+              <AppNavigator />
+              <FlashMessage position="top" />
+            </SafeAreaProvider>
           </View>
         </Provider>
       </I18nextProvider>

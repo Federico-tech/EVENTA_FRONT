@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -9,6 +10,7 @@ import { RecommendedUserColumn } from './AccountRow';
 
 const RecommendedUsers = () => {
   const [recommendedUsers, setRecommendedUsers] = useState();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getRecommendedUsers().then((result) => {
@@ -19,8 +21,8 @@ const RecommendedUsers = () => {
 
   return (
     <View style={styles.recommendedUserContainer}>
-      <Text ff={FONTS.medium}>Find new Friends!</Text>
-      <Row row spaceBetween width='100%' mt={SIZE}>
+      <Text ff={FONTS.medium}>{t('findNewFriends')}</Text>
+      <Row row spaceBetween width="100%" mt={SIZE} mb={SIZE}>
         {recommendedUsers?.map((recommendedUser) => (
           <RecommendedUserColumn key={recommendedUser._id} data={recommendedUser} />
         ))}
@@ -81,13 +83,13 @@ const styles = StyleSheet.create({
   carouselContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: SIZE * 20,
+    height: HEIGHT_DEVICE / 3.25,
     width: WIDTH_DEVICE,
   },
   itemContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: SIZE * 18,
+    height: HEIGHT_DEVICE / 3.45,
   },
   textContainer: {
     width: '90%',

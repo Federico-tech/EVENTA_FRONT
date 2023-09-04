@@ -93,7 +93,7 @@ export const ROUTES = {
   OrganiserBottomNavigator: 'OrganiserBottomNavigator',
   FollowingOrganisersScreen: 'FollowingOrganisersScreen',
   FollowingUsersScreen: 'FollowingUsersScreen',
-  CreatePostScreen: 'PreatePostScreen',
+  CreatePostScreen: 'CreatePostScreen',
   PostsFeedScreen: 'PostsFeedScreen',
   ScannerScreen: 'ScannerScreen',
   PostLikesScreen: 'PostLikesScreen',
@@ -238,7 +238,7 @@ export const OrganiserHomeNavigator = () => {
       <OrganiserHomeStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.PopularEventsScreen} component={PopularEventsScreen} options={{ headerShown: false }} />
-      <OrganiserHomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={PopularEventsScreen} options={{ headerShown: false }} />
+      <OrganiserHomeStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
       <OrganiserHomeStackNavigator.Screen name={ROUTES.PostCommentScreen} component={PostCommentScreen} options={{ headerShown: false }} />
@@ -265,11 +265,13 @@ export const OrganiserProfileNavigator = () => {
       />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.SettingScreen} component={SettingScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.FollowersScreen} component={FollowersScreen} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.FollowingScreen} component={FollowingScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.ParticipantsScreen} component={ParticipantsScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.PrivacyPolicyScreen} component={PrivacyPolicyScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.NotificationsScreen} component={NotificationsScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.CreatePostScreen} component={CreatePostScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen name={ROUTES.EventDetails} component={EventDetails} options={{ headerShown: false }} />
+      <OrganiserProfileStackNavigator.Screen name={ROUTES.AccountUserScreen} component={AccountUserScreen} options={{ headerShown: false }} />
       <OrganiserProfileStackNavigator.Screen
         name={ROUTES.SearchOrganiserAccountEventsScreen}
         component={SearchOrganiserAccountEventsScreen}

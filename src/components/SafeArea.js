@@ -1,8 +1,8 @@
 import React from 'react';
-import { SafeAreaView, Platform } from 'react-native';
-
-import { SIZE } from '../utils/theme';
+import { Platform, SafeAreaView as SafeAreaViewRN } from 'react-native';
+import { SafeAreaView as SafeAreaViewContext } from 'react-native-safe-area-context';
 
 export const SafeArea = ({ children, style }) => {
-  return <SafeAreaView style={[style, Platform.OS === 'android' && { paddingTop: SIZE * 3 }]}>{children}</SafeAreaView>;
+  const Component = Platform.OS === 'android' ? SafeAreaViewContext : SafeAreaViewRN;
+  return <Component style={style}>{children}</Component>;
 };

@@ -11,6 +11,7 @@ import { Button } from './Button';
 import { LoadingImage } from './LoadingImage';
 import { Row } from './Row';
 import { Text } from './Text';
+import { useTranslation } from 'react-i18next';
 
 export const UserRow = ({ data, bottomSheet, closeSheet = () => {} }) => {
   const { profilePic, username, name } = data;
@@ -96,6 +97,7 @@ export const UserColumn = ({ data }) => {
 export const RecommendedUserColumn = ({ data, containerStyle }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowLoading, setIsFollowLoading] = useState(false);
+  const {t} = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   console.log(data);
@@ -136,7 +138,7 @@ export const RecommendedUserColumn = ({ data, containerStyle }) => {
         {isFollowing ? (
           <Button
             secondary
-            text="Following"
+            text={t('followingB')}
             onPress={onPressUnfollow}
             containerStyle={{ width: SIZE * 7, height: SIZE * 2, borderRadius: 10 }}
             disabled={isFollowLoading}
@@ -145,7 +147,7 @@ export const RecommendedUserColumn = ({ data, containerStyle }) => {
         ) : (
           <Button
             gradient
-            text="Follow"
+            text={t('follow')}
             onPress={onPressFollow}
             containerStyle={{ width: SIZE * 7, height: SIZE * 2, borderRadius: 10 }}
             disabled={isFollowLoading}

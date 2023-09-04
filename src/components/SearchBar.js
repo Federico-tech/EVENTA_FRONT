@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import { setSearchFilter } from '../store/filter';
 import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { SafeArea } from './SafeArea';
 
 export const SearchBar = ({ style }) => {
   const { t } = useTranslation();
@@ -20,10 +21,12 @@ export const SearchBar = ({ style }) => {
   }, [searchData]);
 
   return (
-    <View style={[styles.wrapper, style]}>
-      <Ionicons name="ios-search" size={20} color={COLORS.gray} style={styles.icon} />
-      <TextInput placeholder={t('search')} placeholderTextColor={COLORS.gray} style={styles.textInput} onChangeText={setSearchData} />
-    </View>
+    <SafeArea>
+      <View style={[styles.wrapper, style]}>
+        <Ionicons name="ios-search" size={20} color={COLORS.gray} style={styles.icon} />
+        <TextInput placeholder={t('search')} placeholderTextColor={COLORS.gray} style={styles.textInput} onChangeText={setSearchData} />
+      </View>
+    </SafeArea>
   );
 };
 

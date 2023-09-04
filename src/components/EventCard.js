@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
@@ -55,11 +56,6 @@ export const EventCard = ({ eventData }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const handleParticipantsPress = () => {
-    dispatch(setSelectedEvent(eventData));
-    navigation.navigate(ROUTES.ParticipantsScreen);
-  };
-
   const { data, fetchData: getParticipants, totalData } = useGetParticipants(eventData._id);
 
   const handleOnPress = () => {
@@ -103,7 +99,7 @@ export const EventCard = ({ eventData }) => {
   return (
     <View style={styles.cardContainer}>
       <TouchableOpacity onPress={handleOnPress} activeOpacity={0.8}>
-        <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator event width='100%' />
+        <LoadingImage source={eventData.coverImage} style={styles.eventImage} resizeMode="cover" indicator event width="100%" />
       </TouchableOpacity>
       <View style={{ paddingHorizontal: SIZE, width: WIDTH_DEVICE * 0.9 }}>
         <View style={styles.descContainer}>
@@ -170,6 +166,7 @@ export const EventCard = ({ eventData }) => {
 export const MostPopularEventCard = ({ eventData }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const handleOnPress = () => {
     dispatch(setUserSelected(eventData.organiser));
     dispatch(setSelectedEvent(eventData));
@@ -200,7 +197,7 @@ export const MostPopularEventCard = ({ eventData }) => {
           <Row style={styles.info}>
             <Row>
               <Text color={COLORS.white} ff={FONTS.semiBold} fs={SIZES.sm}>
-                Most popular
+                {t('mostPopular')}
               </Text>
             </Row>
             <Row row alignCenter width={WIDTH_DEVICE} ml={SIZE} style={{ justifyContent: 'flex-end', marginRight: SIZE }}>

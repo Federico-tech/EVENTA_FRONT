@@ -1,6 +1,8 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,7 +15,7 @@ import { selectCurrentUser, setUserSelected } from '../../../store/user';
 import { ROLES } from '../../../utils/conts';
 import { useInfiniteScroll } from '../../../utils/hooks';
 import mapStyle from '../../../utils/mapStyle.json';
-import { COLORS, FONTS, SIZE, SIZES } from '../../../utils/theme';
+import { COLORS, FONTS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../utils/theme';
 
 export const MapScreen = ({ navigation, route }) => {
   const [snap, setSnap] = useState(false);
@@ -120,8 +122,27 @@ export const MapScreen = ({ navigation, route }) => {
     );
   }, [data, filter]);
 
+  const goToMyPosition = () => {
+    const userPosition = {
+      latitude: user?.position?.coordinates[1],
+      longitude: user?.position?.coordinates[0],
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
+    mapRef.current.animateToRegion(userPosition, 500);
+  };
+
+  console.log('map', mapRef);
+
   return (
     <View style={{ flex: 1 }}>
+      {Platform.OS === 'android' && (
+        <View style={styles.showLocationButton}>
+          <TouchableOpacity onPress={() => goToMyPosition()}>
+            <MaterialIcons name="my-location" size={SIZE * 2} />
+          </TouchableOpacity>
+        </View>
+      )}
       <MapView
         style={{ width: '100%', height: '100%', zIndex: 1 }}
         provider={PROVIDER_GOOGLE}
@@ -152,7 +173,7 @@ export const MapScreen = ({ navigation, route }) => {
         showsUserLocation
         ref={mapRef}
         region={region}
-        showsMyLocationButton
+        showsMyLocationButton={Platform.OS !== 'android'}
         customMapStyle={mapStyle}>
         {filter === 'organisers'
           ? data.map((user) => (
@@ -191,7 +212,6 @@ export const MapScreen = ({ navigation, route }) => {
               </Marker>
             ))}
       </MapView>
-
       <View style={{ position: 'absolute', zIndex: 2, flexDirection: 'row', alignSelf: 'center' }}>
         <SafeArea>
           <Row row spaceEvenly mt={SIZE} width="100%" style={{ alignSelf: 'center' }}>
@@ -275,5 +295,17 @@ const styles = StyleSheet.create({
     fontSize: SIZES.xxs,
     padding: SIZE / 2,
     paddingVertical: SIZE / 2.5,
+  },
+  showLocationButton: {
+    width: SIZE * 4,
+    aspectRatio: 1,
+    backgroundColor: COLORS.backGray,
+    position: 'absolute',
+    zIndex: 2,
+    marginTop: HEIGHT_DEVICE * 0.87,
+    marginLeft: WIDTH_DEVICE * 0.8,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

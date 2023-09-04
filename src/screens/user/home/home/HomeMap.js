@@ -10,7 +10,7 @@ import { LoadingImage } from '../../../../components/LoadingImage';
 import { ROUTES } from '../../../../navigation/Navigation';
 import { selectCurrentUser } from '../../../../store/user';
 import mapStyle from '../../../../utils/mapStyle.json';
-import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { COLORS, HEIGHT_DEVICE, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const HomeMap = ({ mapData }) => {
   const user = useSelector(selectCurrentUser);
@@ -75,7 +75,7 @@ export const HomeMap = ({ mapData }) => {
     <View>
       <TouchableOpacity onPress={() => navigation.jumpTo(ROUTES.MapNavigator)} activeOpacity={0.7}>
         <MapView
-          style={{ height: SIZE * 19, width: WIDTH_DEVICE }}
+          style={{ height: HEIGHT_DEVICE / 3.45, width: WIDTH_DEVICE }}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
             latitude: user.position.coordinates[1],
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.xxs,
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    marginTop: SIZE * 13,
+    marginTop: SIZE * 12.5,
     marginLeft: SIZE * 26,
   },
 });

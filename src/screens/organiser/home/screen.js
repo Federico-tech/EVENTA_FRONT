@@ -20,8 +20,6 @@ export const OrganiserHome = () => {
   const organiserId = useSelector(selectCurrentUserId);
   const user = useSelector(selectCurrentUser);
 
-  console.log(popularEvents);
-
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
@@ -33,8 +31,6 @@ export const OrganiserHome = () => {
     setPopularEvents(resEvents);
     setIsLoading(false);
   };
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     fetchData();
