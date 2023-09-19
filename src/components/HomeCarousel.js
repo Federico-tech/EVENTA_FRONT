@@ -37,7 +37,7 @@ export const HomeCarousel = ({ eventData, mapData }) => {
   const items = [
     {
       title: 'Event Card 1',
-      component: eventData?._id ? <MostPopularEventCard eventData={eventData} /> : undefined,
+      component: <MostPopularEventCard eventData={eventData} />,
     },
     {
       title: 'Map',

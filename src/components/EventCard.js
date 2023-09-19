@@ -8,6 +8,9 @@ import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
+import { LoadingImage } from './LoadingImage';
+import { Row } from './Row';
+import { Text } from './Text';
 import { mainAxios } from '../core/axios';
 import { ROUTES } from '../navigation/Navigation';
 import { like, unLike } from '../services/likes';
@@ -16,9 +19,6 @@ import { setUserSelected } from '../store/user';
 import { EVENT_DATE_FORMATR_NOYEAR, formatDate } from '../utils/dates';
 import { formatShortNumber } from '../utils/numbers';
 import { COLORS, FONTS, SHADOWS, SIZES, WIDTH_DEVICE, SIZE, HEIGHT_DEVICE } from '../utils/theme';
-import { LoadingImage } from './LoadingImage';
-import { Row } from './Row';
-import { Text } from './Text';
 
 export const useGetParticipants = (eventId) => {
   const [data, setData] = useState([]);
@@ -178,20 +178,30 @@ export const MostPopularEventCard = ({ eventData }) => {
   console.debug({ mostPopularEvent: eventData });
 
   const { data } = useGetParticipants(eventData?._id);
+  console.log({ partMostPop: data });
 
   return (
     <>
       <TouchableOpacity onPress={handleOnPress} activeOpacity={0.7}>
         <Row style={{ height: HEIGHT_DEVICE / 3.45, width: WIDTH_DEVICE }}>
           <View>
-            <LoadingImage
-              event
-              width={WIDTH_DEVICE}
-              imageStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45, borderRadius: 0, borderWidth: 0 }}
-              source={eventData?.coverImage}
-              viewStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45 }}
-              indicator
-            />
+            {eventData ? (
+              <LoadingImage
+                event
+                width={WIDTH_DEVICE}
+                imageStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45, borderRadius: 0, borderWidth: 0 }}
+                source={eventData?.coverImage}
+                viewStyle={{ aspectRatio: null, height: HEIGHT_DEVICE / 3.45 }}
+                indicator
+              />
+            ) : (
+              <Row style={{ height: HEIGHT_DEVICE / 3.45 }} alignCenter  justifyCenter>
+                <Text style={{ fontFamily: FONTS.medium, fontSize: SIZES.sm}}>
+                  There are no events in your area
+                </Text>
+              </Row>
+            )}
+
             <LinearGradient style={styles.imageGradient} colors={['rgba(0, 0, 0, 0.3)', 'transparent', 'transparent', 'rgba(0, 0, 0, 0.3)']} />
           </View>
           <Row style={styles.info}>
@@ -201,18 +211,20 @@ export const MostPopularEventCard = ({ eventData }) => {
               </Text>
             </Row>
             <Row row alignCenter width={WIDTH_DEVICE} ml={SIZE} style={{ justifyContent: 'flex-end', marginRight: SIZE }}>
-              <Row row mr={SIZE * 2}>
-                {data?.map((data) => (
-                  <LoadingImage
-                    key={data.user._id}
-                    source={data?.user.profilePic}
-                    imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5, marginBottom: SIZE * 1.5 }]}
-                    profile
-                    iconSIZE={SIZE * 1.3}
-                  />
-                ))}
-                <Row width={SIZE} />
-              </Row>
+              {eventData?._id && (
+                <Row row mr={SIZE * 2}>
+                  {data?.map((data) => (
+                    <LoadingImage
+                      key={data.user._id}
+                      source={data?.user.profilePic}
+                      imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5, marginBottom: SIZE * 1.5 }]}
+                      profile
+                      iconSIZE={SIZE * 1.3}
+                    />
+                  ))}
+                  <Row width={SIZE} />
+                </Row>
+              )}
             </Row>
           </Row>
         </Row>

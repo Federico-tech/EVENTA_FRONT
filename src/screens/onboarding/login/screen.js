@@ -112,7 +112,7 @@ export const LoginScreen = () => {
               <Text style={styles.orLoginUsing}>or</Text>
               <Row style={styles.line} />
             </View>
-            {/* <SocialLoginButton apple google /> */}
+            <SocialLoginButton apple google />
 
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
