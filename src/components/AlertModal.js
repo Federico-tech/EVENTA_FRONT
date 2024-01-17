@@ -36,7 +36,7 @@ export const AlertModal = ({ isVisible, onBackdropPress, title, descritpion, onP
 const styles = StyleSheet.create({
   wrapper: {
     alignSelf: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.darkGray,
     alignItems: 'center',
     flexDirection: 'column',
     borderRadius: SIZES.xxs,
@@ -55,9 +55,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: SIZE / 2,
     marginBottom: SIZE,
+    color: 'white'
   },
   line: {
-    height: 1,
+    height: 0.2,
     backgroundColor: COLORS.backGray,
     width: SIZE * 20,
   },
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     color: COLORS.error,
   },
   cancel: {
-    color: 'black',
+    color: 'white',
     fontSize: SIZES.sm,
     fontFamily: FONTS.medium,
   },

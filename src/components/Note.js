@@ -180,7 +180,7 @@ export const Note = ({ data, deleteNote }) => {
 
 const styles = StyleSheet.create({
   note: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.darkGray,
     width: SIZE * 10.5,
     aspectRatio: 1,
     borderRadius: SIZES.sm,

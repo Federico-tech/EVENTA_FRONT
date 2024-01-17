@@ -29,10 +29,10 @@ const screenOptions = (tabBarLabel) => ({
     backgroundColor: 'transparent',
     borderBottomWidth: 0.17,
     borderColor: COLORS.lightGray,
-    tabBarInactiveTintColor: COLORS.darkGray,
   },
-  tabBarIndicatorStyle: { backgroundColor: 'black' },
-  tabBarStyle: { height: SIZE * 3.3 },
+  tabBarIndicatorStyle: { backgroundColor: 'white' },
+  tabBarStyle: { height: SIZE * 3.3, backgroundColor: COLORS.white },
+  tabBarActiveTintColor: 'white'
 });
 
 export const SearchTopNavigator = () => {

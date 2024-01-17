@@ -45,7 +45,6 @@ export const OrganiserHome = () => {
       <HomeHeader organiser />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginBottom: SIZE }}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchData} />}>
         <Analytics analytics={analytics} />
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>

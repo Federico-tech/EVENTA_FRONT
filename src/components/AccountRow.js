@@ -122,7 +122,7 @@ export const RecommendedUserColumn = ({ data, containerStyle }) => {
   };
 
   return (
-    <View style={[styles.postedRecommendedUserContainer, { borderWidth: 1, borderColor: COLORS.backGray }, containerStyle]}>
+    <View style={[styles.postedRecommendedUserContainer, { borderWidth: 0.3, borderColor: '#141414' }, containerStyle]}>
       <TouchableOpacity onPress={handleOnPress}>
         <LoadingImage source={data.profilePic} profile width={SIZE * 5} iconSIZE={SIZE * 2} />
       </TouchableOpacity>
@@ -142,7 +142,7 @@ export const RecommendedUserColumn = ({ data, containerStyle }) => {
             onPress={onPressUnfollow}
             containerStyle={{ width: SIZE * 7, height: SIZE * 2, borderRadius: 10 }}
             disabled={isFollowLoading}
-            textStyle={{ fontFamily: FONTS.medium, fontSize: SIZES.xs }}
+            textStyle={{ fontFamily: FONTS.semiBold, fontSize: SIZES.xs }}
           />
         ) : (
           <Button
@@ -151,7 +151,7 @@ export const RecommendedUserColumn = ({ data, containerStyle }) => {
             onPress={onPressFollow}
             containerStyle={{ width: SIZE * 7, height: SIZE * 2, borderRadius: 10 }}
             disabled={isFollowLoading}
-            textStyle={{ fontFamily: FONTS.medium, fontSize: SIZES.xs }}
+            textStyle={{ fontFamily: FONTS.semiBold, fontSize: SIZES.xs }}
           />
         )}
       </Row>
@@ -163,11 +163,13 @@ const styles = StyleSheet.create({
   userWrapper: {
     marginTop: SIZE,
     height: SIZE * 3.5,
+    
   },
   organiserWrapper: {
     marginTop: SIZE,
     height: SIZE * 5,
     marginHorizontal: WIDTH_DEVICE / 20,
+    
   },
   profileImage: {
     width: SIZE * 3.5,
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   postedRecommendedUserContainer: {
-    backgroundColor: COLORS.white,
+    backgroundColor: '#121212',
     height: SIZE * 13.5,
     width: SIZE * 8.5,
     flexDirection: 'column',
@@ -221,5 +223,6 @@ const styles = StyleSheet.create({
     paddingVertical: SIZE,
     borderRadius: SIZES.xxs,
     justifyContent: 'center',
+    
   },
 });

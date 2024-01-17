@@ -7,6 +7,13 @@ import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-nat
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
+import { RecommendedUserColumn } from './AccountRow';
+import { AlertModal } from './AlertModal';
+import { Button } from './Button';
+import { LoadingImage } from './LoadingImage';
+import { Row } from './Row';
+import { Text } from './Text';
+import { ReadMoreButton } from './TextButton';
 import { ROUTES } from '../navigation/Navigation';
 import { Unblock } from '../services/block';
 import { follow, unFollow } from '../services/follow';
@@ -16,13 +23,6 @@ import { ROLES } from '../utils/conts';
 import { useInfiniteScroll } from '../utils/hooks';
 import { formatNumber } from '../utils/numbers';
 import { COLORS, FONTS, SIZES, WIDTH_DEVICE, SIZE } from '../utils/theme';
-import { RecommendedUserColumn } from './AccountRow';
-import { AlertModal } from './AlertModal';
-import { Button } from './Button';
-import { LoadingImage } from './LoadingImage';
-import { Row } from './Row';
-import { Text } from './Text';
-import { ReadMoreButton } from './TextButton';
 
 const RecommendedUsers = () => {
   const { data, getMoreData, loadMore } = useInfiniteScroll({
@@ -125,7 +125,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
   };
 
   return (
-    <View>
+    <View style={{ backgroundColor: COLORS.black }}>
       <Row row>
         <View style={styles.TextContainer}>
           <TouchableOpacity onPress={onPressCreatePost} disabled={user._id !== currentUser._id}>
@@ -148,9 +148,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
         </View>
         <Row style={styles.name}>
           <Text semiBoldMd>{user.username}</Text>
-          <Text regularSm color={COLORS.darkGray}>
-            {user.name}
-          </Text>
+          <Text regularSm>{user.name}</Text>
         </Row>
       </Row>
       <Row style={styles.bio}>
@@ -159,9 +157,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
           <TouchableOpacity onPress={() => navigation.push(ROUTES.FollowersScreen, { followingParams })}>
             <Row alignCenter style={styles.boxFollower}>
               <Text semiBoldSm>{user.followers ? formatNumber(user.followers) : 0}</Text>
-              <Text color={COLORS.darkGray} regularXs>
-                Followers
-              </Text>
+              <Text regularXs>Followers</Text>
             </Row>
           </TouchableOpacity>
           <TouchableOpacity onPress={onPressFollowing}>
@@ -169,9 +165,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
               <Text semiBoldSm>
                 {user.role === 'organiser' ? (!user.events ? 0 : formatNumber(user.events)) : !user.followed ? 0 : formatNumber(user.followed)}
               </Text>
-              <Text color={COLORS.darkGray} regularXs>
-                {organiser || user.role === 'organiser' ? 'Events' : 'Following'}
-              </Text>
+              <Text regularXs>{organiser || user.role === 'organiser' ? 'Events' : 'Following'}</Text>
             </Row>
           </TouchableOpacity>
           {myProfile || currentUser._id === selectedUser._id ? (
@@ -185,7 +179,7 @@ export const ProfileInfo = ({ myProfile, organiser, user: initialUser, loading }
               {currentUser.role === 'user' && (
                 <TouchableOpacity onPress={toggleShowRecommended}>
                   <View style={styles.buttonShowFirends}>
-                    <Feather name={showRecommendedUsers ? 'chevron-up' : 'chevron-down'} size={SIZE * 1.4} />
+                    <Feather name={showRecommendedUsers ? 'chevron-up' : 'chevron-down'} size={SIZE * 1.4} color="white" />
                   </View>
                 </TouchableOpacity>
               )}
@@ -277,6 +271,7 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: FONTS.regular,
     fontSize: SIZES.xs,
+    color: 'white',
   },
   usernameText: {
     color: COLORS.white,
@@ -327,7 +322,7 @@ const styles = StyleSheet.create({
   buttonShowFirends: {
     height: SIZE * 2.5,
     aspectRatio: 1,
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
     borderRadius: 8,
     marginLeft: SIZE / 2,
     paddingTop: SIZE / 8,

@@ -14,6 +14,6 @@ export const Line = ({ lineStyle }) => {
 const styles = StyleSheet.create({
   line: {
     height: 0.5,
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: COLORS.darkGray,
   },
 });

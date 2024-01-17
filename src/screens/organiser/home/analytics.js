@@ -102,7 +102,7 @@ export const Analytics = ({ analytics }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.darkGray,
     width: SIZE * 13,
     aspectRatio: 1.5,
     ...SHADOWS.medium,

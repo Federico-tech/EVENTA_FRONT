@@ -15,7 +15,7 @@ import { Container, InputText, TextButton, Header, Row, Text, LoadingImage } fro
 import { checkUsername, updateUserImage, userUpdate } from '../../../../services/users';
 import { selectCurrentUser, selectCurrentUserId } from '../../../../store/user';
 import { requestCameraPermission } from '../../../../utils/permissions';
-import { FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../../../../utils/theme';
 
 export const EditUserScreen = () => {
   const [isUsernameFree, setIsUsernameFree] = useState(true);
@@ -172,12 +172,12 @@ export const EditUserScreen = () => {
           </Container>
         </KeyboardAwareScrollView>
         <View>
-          <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+          <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop} backgroundStyle={{ backgroundColor: COLORS.darkGray}}>
             <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
               <TouchableOpacity
                 onPress={status?.status !== 'granted' ? () => alert('Please allow access to your photo library in your device settings') : pickImage}>
                 <Row row alignCenter style={{ marginTop: SIZE }}>
-                  <Ionicons name="images-outline" size={SIZE * 2} />
+                  <Ionicons name="images-outline" size={SIZE * 2} color={'white'} />
                   <Text regularSm style={{ marginLeft: SIZE }}>
                     Choose From your library
                   </Text>

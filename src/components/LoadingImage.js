@@ -19,12 +19,12 @@ export const LoadingImage = ({ source, event, indicator, profile, width, blurRad
       {isLoading && (
         <View
           style={[profile && styles.loadingProfileImage, event && styles.loadingEventImage, viewStyle, { width, position: 'absolute', zIndex: 1 }]}>
-          {indicator && <ActivityIndicator color="black" style={{ zIndex: 2, alignItems: 'center' }} />}
+          {indicator && <ActivityIndicator color={COLORS.gray} style={{ zIndex: 2, alignItems: 'center' }} />}
         </View>
       )}
       {profile && !source ? (
         <View style={[profile && styles.loadingProfileImage, viewStyle, { width }, imageStyle]}>
-          <Ionicons name="person" size={iconSIZE} color={COLORS.lightGray} style={{ marginBottom: SIZE / 4 }} />
+          <Ionicons name="person" size={iconSIZE} color={'white'} style={{ marginBottom: SIZE / 4 }} />
         </View>
       ) : (
         <View style={viewStyle}>
@@ -43,34 +43,34 @@ export const LoadingImage = ({ source, event, indicator, profile, width, blurRad
 };
 const styles = StyleSheet.create({
   eventImage: {
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
     aspectRatio: 1,
     borderRadius: SIZES.xxs,
-    borderColor: COLORS.backGray,
-    borderWidth: 1,
+    borderColor: COLORS.gray,
+    //borderWidth: 0.5,
   },
   profileImage: {
     width: SIZE * 2,
     aspectRatio: 1,
     borderRadius: 100,
-    borderColor: COLORS.backGray,
-    borderWidth: 1,
+    borderColor: COLORS.darkGray,
+    borderWidth: 0.3,
   },
   loadingEventImage: {
     width: '100%',
     height: '100%',
     aspectRatio: 1,
     borderRadius: SIZES.xxs,
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: COLORS.backGray,
-    borderWidth: 1,
+    //borderWidth: 1,
   },
   loadingProfileImage: {
     aspectRatio: 1,
     borderRadius: 100,
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.lightGray,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -45,7 +45,7 @@ export const EventDetailsBottomSheet = ({ organiserId, userId, closeSheet, event
         <>
           <TouchableOpacity onPress={onPressEditEvent}>
             <Row row alignCenter style={{ marginTop: SIZE }}>
-              <AntDesign name="edit" size={SIZE * 2} />
+              <AntDesign name="edit" size={SIZE * 2} color={'white'} />
               <Text regularSm style={{ marginLeft: SIZE }}>
                 Edit this event
               </Text>

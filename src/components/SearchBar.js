@@ -6,7 +6,7 @@ import { StyleSheet, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setSearchFilter } from '../store/filter';
-import { COLORS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, FONTS, SIZE, SIZES, WIDTH_DEVICE } from '../utils/theme';
 import { SafeArea } from './SafeArea';
 
 export const SearchBar = ({ style }) => {
@@ -24,7 +24,7 @@ export const SearchBar = ({ style }) => {
     <SafeArea>
       <View style={[styles.wrapper, style]}>
         <Ionicons name="ios-search" size={20} color={COLORS.gray} style={styles.icon} />
-        <TextInput placeholder={t('search')} placeholderTextColor={COLORS.gray} style={styles.textInput} onChangeText={setSearchData} />
+        <TextInput placeholder={t('search')} placeholderTextColor={COLORS.gray} color={'white'} style={styles.textInput} onChangeText={setSearchData} />
       </View>
     </SafeArea>
   );
@@ -32,7 +32,7 @@ export const SearchBar = ({ style }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: '#DEDEDE',
+    backgroundColor: COLORS.darkGray,
     marginTop: SIZE,
     height: SIZE * 3,
     borderRadius: SIZES.xs,
@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
     marginLeft: WIDTH_DEVICE / 50,
     width: SIZE * 23,
     fontSize: SIZES.sm,
+    
   },
 });

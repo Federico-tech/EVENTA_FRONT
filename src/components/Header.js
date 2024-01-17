@@ -20,13 +20,13 @@ export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPr
         <Text style={styles.title}>{title}</Text>
         <Row alignCenter row spaceBetween style={{ marginTop: SIZE / 1.5 }}>
           {cancel && <TextButton text={t('Cancel')} onPress={() => navigation.goBack()} textStyle={styles.cancel} />}
-          {back && <IconButton name="chevron-back" size={SIZE * 2} onPress={() => navigation.goBack()} iconStyle={{ marginLeft: -SIZE / 2 }} />}
+          {back && <IconButton name="chevron-back" size={SIZE * 2} onPress={() => navigation.goBack()} iconStyle={{ marginLeft: -SIZE / 2 }} /> }
           <View />
           {done && <TextButton text={t('done')} onPress={onPress} textStyle={styles.fine} loading={loading} />}
           {create && <TextButton text="Create" onPress={onPress} textStyle={styles.fine} loading={loading} />}
           {plus && (
             <TouchableOpacity onPress={onPressPlus}>
-              <AntDesign name="plus" size={SIZE * 1.6} />
+              <AntDesign name="plus" size={SIZE * 1.6} color={'white'} />
             </TouchableOpacity>
           )}
         </Row>
@@ -38,8 +38,8 @@ export const Header = ({ title, onPress, loading, done, cancel, back, plus, onPr
 const styles = StyleSheet.create({
   container: {
     height: SIZE * 3.5,
-    borderBottomWidth: 0.5,
-    borderBottomColor: COLORS.lightGray,
+    borderBottomWidth: 0.2,
+    borderBottomColor: COLORS.darkGray,
     paddingHorizontal: WIDTH_DEVICE / 20,
     backgroundColor: COLORS.white,
   },
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     position: 'absolute',
     marginTop: SIZE / 1.4,
+    color: 'white',
   },
   fine: {
     fontFamily: FONTS.semiBold,

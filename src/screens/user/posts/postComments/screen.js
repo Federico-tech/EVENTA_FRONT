@@ -84,15 +84,15 @@ export const PostCommentScreen = ({ route }) => {
         ListFooterComponent={<View style={{ marginTop: SIZE }}>{loadMore && <ActivityIndicator />}</View>}
         ListEmptyComponent={!refreshing && <ListEmptyComponent text="There are no comments for this post" />}
       />
-      <SafeArea style={{ backgroundColor: COLORS.backGray}}>
-        <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: COLORS.white }}>
-          <View style={{ height: SIZE * 5.5, backgroundColor: COLORS.backGray }} ref={viewRef}>
-            <View style={{ backgroundColor: COLORS.white, height: 1 }} />
+      <SafeArea style={{ backgroundColor: '#080808'}}>
+        <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: '#080808' }}>
+          <View style={{ height: SIZE * 5.5, backgroundColor: '#080808' }} ref={viewRef}>
+            <View style={{ backgroundColor: '#080808', height: 1 }} />
             <View
               style={{ flexDirection: 'row', marginHorizontal: WIDTH_DEVICE / 20, marginTop: SIZE, width: WIDTH_DEVICE * 0.9, alignItems: 'center' }}
               ref={textInputRef}>
               <LoadingImage profile source={currentUser.profilePic} width={SIZE * 3.5} iconSIZE={SIZE * 2.5} />
-              <TextInput style={styles.input} onChangeText={handleInputChange} value={content} placeholder="Write you comment" maxLength={150} />
+              <TextInput style={styles.input} onChangeText={handleInputChange} value={content} placeholder="Write you comment" maxLength={150} placeholderTextColor={COLORS.gray} />
               <TouchableOpacity onPress={onPressPostComment} disabled={(isCreatePostLoading || !content) && true}>
                 <Text color={COLORS.primary} semiBoldSm style={(isCreatePostLoading || !content) && { opacity: 0.5 }}>
                   Post
@@ -109,12 +109,11 @@ export const PostCommentScreen = ({ route }) => {
 const styles = StyleSheet.create({
   input: {
     height: SIZE * 3.5,
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.lightGray,
-    borderWidth: 0.5,
     borderRadius: 30,
     marginHorizontal: SIZE,
     paddingHorizontal: SIZE,
     width: SIZE * 19,
+    color: 'white',
+    backgroundColor: COLORS.darkGray
   },
 });

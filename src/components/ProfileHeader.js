@@ -93,20 +93,20 @@ export const ProfileHeader = ({ myProfile, user, disableGoBack }) => {
           </View>
           {!myProfile ? (
             <TouchableOpacity onPress={onPressGoBack}>
-              <IconButton name="chevron-back" color="black" size={SIZE * 2} iconStyle={{ marginLeft: -SIZE / 2 }} />
+              <IconButton name="chevron-back" size={SIZE * 2} iconStyle={{ marginLeft: -SIZE / 2 }} color={'white'} />
             </TouchableOpacity>
           ) : (
             <View style={{ width: SIZE }} />
           )}
           {myProfile ? (
-            <IconButton name="settings-sharp" color="black" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
+            <IconButton name="settings-sharp" size={SIZE * 1.5} onPress={() => navigation.navigate('SettingScreen')} />
           ) : currentUserId !== selectedUserId ? (
-            <IconButton name="ios-ellipsis-horizontal" color="black" size={SIZE * 1.75} onPress={handlePresentModal} />
+            <IconButton name="ios-ellipsis-horizontal" size={SIZE * 1.75} onPress={handlePresentModal} />
           ) : (
             <View style={{ width: SIZE * 1.5 }} />
           )}
         </View>
-        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['17%']} backdropComponent={renderBackdrop}>
+        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={['17%']} backdropComponent={renderBackdrop} backgroundStyle={{ backgroundColor: COLORS.darkGray}}>
           <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
             <TouchableOpacity onPress={() => setReportModalVisible(true)}>
               <Row row alignCenter style={{ marginTop: SIZE }}>
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     height: SIZE * 3.4,
   },
   usernameText: {
-    color: COLORS.black,
+    color: 'white',
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.md,
   },

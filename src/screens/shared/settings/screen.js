@@ -101,11 +101,11 @@ export const SettingScreen = () => {
           Your data
         </Text>
         <Row row alignCenter style={{ marginTop: SIZE }}>
-          <MaterialCommunityIcons name="lock-outline" size={SIZE * 2} style={{ marginRight: SIZE / 2 }} />
+          <MaterialCommunityIcons name="lock-outline" size={SIZE * 2} style={{ marginRight: SIZE / 2 }} color={'white'}/>
           <TextButton text="Privacy & Terms" onPress={onPressPrivacyPolicy} />
         </Row>
         <Row row alignCenter style={{ marginTop: SIZE }}>
-          <MaterialCommunityIcons name="information-outline" size={SIZE * 2} style={{ marginRight: SIZE / 2 }} />
+          <MaterialCommunityIcons name="information-outline" size={SIZE * 2} style={{ marginRight: SIZE / 2 }} color={'white'}/>
           <TextButton text="Informations" />
         </Row>
         <Row style={{ marginTop: SIZE / 2 }} />

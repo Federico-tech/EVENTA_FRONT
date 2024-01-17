@@ -6,15 +6,16 @@ export const WIDTH_DEVICE = width;
 export const HEIGHT_DEVICE = height;
 
 export const COLORS = {
-  primary: '#00A1FF',
-  white: '#fff',
+  primary: '#0098fe',
+  white: '#000000',
   backGray: '#F2F2F2',
   gray: '#A1A1A1',
   lightGray: '#CCCBCB',
-  darkGray: '#7A7A7A',
+  darkGray: '#262626',
   gradient1: '#00D1FF',
   gradient2: '#00A1FF',
   error: 'red',
+  black: "#000000",
   gradient: ['#32DAE4', '#00A1FF'],
 };
 
@@ -94,11 +95,11 @@ export function useTheme() {
   const appearance = Appearance.getColorScheme();
   let colors = {
     primary: '#00A1FF',
-    white: '#fff',
+    white: '#161616',
     backGray: '#F2F2F2',
     gray: '#A1A1A1',
     lightGray: '#CCCBCB',
-    darkGray: '#7A7A7A',
+    darkGray: '#262626',
     gradient1: '#00D1FF',
     gradient2: '#00A1FF',
     error: 'red',

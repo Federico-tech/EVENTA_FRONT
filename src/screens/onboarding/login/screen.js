@@ -113,7 +113,6 @@ export const LoginScreen = () => {
               <Row style={styles.line} />
             </View>
             <SocialLoginButton apple google />
-
             <View style={styles.registerContainer}>
               <View style={styles.registerTextContainer}>
                 <Text style={styles.registerText}>{t(`you don't have an account`)}</Text>
@@ -143,7 +142,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     marginHorizontal: WIDTH_DEVICE / 20,
-    marginTop: -SIZE,
   },
 
   logo: {
@@ -203,6 +201,7 @@ const styles = StyleSheet.create({
   registerText: {
     fontFamily: 'InterRegular',
     fontSize: SIZES.xs,
+    color: 'white'
   },
 
   registerButtonText: {

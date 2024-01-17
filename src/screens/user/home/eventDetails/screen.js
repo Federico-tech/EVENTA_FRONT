@@ -480,6 +480,7 @@ export const EventDetails = ({ route }) => {
         enablePanDownToClose
         ref={bottomSheetModalRef}
         index={0}
+        backgroundStyle={{ backgroundColor: COLORS.darkGray}}
         snapPoints={organiser._id === userId ? ['17%'] : ['13%']}
         backdropComponent={renderBackdrop}>
         <EventDetailsBottomSheet closeSheet={handleClosePress} userId={userId} organiserId={organiser._id} eventId={event._id} />
@@ -561,7 +562,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backGray,
   },
   description: {
-    color: COLORS.darkGray,
+    color: COLORS.backGray,
     fontSize: SIZES.sm,
   },
   discountContainer: {
@@ -570,7 +571,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
   },
   viewMore: {
     alignSelf: 'center',

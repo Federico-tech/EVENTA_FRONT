@@ -3,7 +3,8 @@
     "name": "Eventa",
     "slug": "EVENTA_FRONT_EXPO",
     "jsEngine": "hermes",
-    "version": "1.1.3",
+    "backgroundColor": "#000000",
+    "version": "1.1.4",
     "orientation": "portrait",
     "icon": "./src/assets/logos/GradientBlueIcon.png",
     "scheme": "com.eventa.eventaApp",
@@ -14,7 +15,7 @@
     "splash": {
       "image": "./src/assets/logos/SplashScreen.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -58,7 +59,7 @@
         "expo-notifications",
         {
           "icon": "./src/assets/logos/GradientBlueIcon.png",
-          "color": "#ffffff"
+          "color": "#000000"
         }
       ],
       [

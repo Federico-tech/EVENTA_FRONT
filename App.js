@@ -8,14 +8,17 @@ import { View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
+import * as SystemUI from "expo-system-ui";
 
 import i18n from './src/locales/i18n';
 import AppNavigator from './src/navigation/AppNavigator';
 import { store } from './src/store';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 SplashScreen.preventAutoHideAsync();
 WebBrowser.maybeCompleteAuthSession();
+SystemUI.setBackgroundColorAsync("black");
 
 const App = () => {
   const [notification, setNotification] = useState(false);
@@ -88,6 +91,7 @@ const App = () => {
         <Provider store={store}>
           <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
             <SafeAreaProvider>
+              <StatusBar style="light" />
               <AppNavigator />
               <FlashMessage position="top" />
             </SafeAreaProvider>

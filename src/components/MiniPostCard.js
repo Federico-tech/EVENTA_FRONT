@@ -28,7 +28,7 @@ export const MiniPostCard = ({ postData }) => {
         <TouchableOpacity onPress={onPressUser}>
           <Row row alignCenter style={{ margin: SIZE / 2 }}>
             <LoadingImage source={postData.user.profilePic} profile width={SIZE * 2} />
-            <Text regularXs color={COLORS.white} style={{ marginLeft: SIZE / 2, fontFamily: FONTS.semiBold }}>
+            <Text regularXs color={'white'} style={{ marginLeft: SIZE / 2, fontFamily: FONTS.semiBold }}>
               {postData.user.username}
             </Text>
           </Row>

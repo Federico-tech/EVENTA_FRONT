@@ -193,7 +193,7 @@ export const HomeTop = forwardRef(({ eventData, mapData, ...props }, ref) => {
             Events near you
           </Text>
         </View>
-        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+        <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop} backgroundStyle={{ backgroundColor:'#080808' }}>
           <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
             <InputText label="Write your note" maxLength={45} value={note} onChangeText={setNote} />
             <Text color={COLORS.gray}>{note?.length !== undefined ? 45 - note?.length : 45}/45</Text>

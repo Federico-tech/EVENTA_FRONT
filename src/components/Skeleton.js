@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useRef } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 
-import { SIZE, SIZES } from '../utils/theme';
+import { COLORS, SIZE, SIZES } from '../utils/theme';
 import { Row } from './Row';
 
 export const Skeleton = ({ width, height, style }) => {
@@ -17,7 +17,7 @@ export const Skeleton = ({ width, height, style }) => {
     ).start();
   }, [width]);
   return (
-    <View style={StyleSheet.flatten([{ width, height, backgroundColor: 'rgba(0,0,0,0.12)', overflow: 'hidden' }, style])}>
+    <View style={StyleSheet.flatten([{ width, height, backgroundColor: COLORS.darkGray, overflow: 'hidden' }, style])}>
       <Animated.View style={{ width: '100%', height: '100%', transform: [{ translateX }] }}>
         <LinearGradient
           style={{ width: '100%', height: '100%' }}

@@ -118,7 +118,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
                 <TouchableOpacity onPress={onPressFollowers}>
                   <Row alignCenter style={styles.boxFollower}>
                     <Text semiBoldSm>{numFollowers ? formatNumber(numFollowers) : 0}</Text>
-                    <Text color={COLORS.darkGray} regularXs>
+                    <Text color={COLORS.lightGray} regularXs>
                       Followers
                     </Text>
                   </Row>
@@ -126,7 +126,7 @@ export const OrganiserBottomSheet = ({ scroll, closeSheet }) => {
                 <TouchableOpacity onPress={onPressEvents}>
                   <Row alignCenter>
                     <Text semiBoldSm>{formatNumber(data.length)}</Text>
-                    <Text color={COLORS.darkGray} regularXs>
+                    <Text color={COLORS.lightGray} regularXs>
                       events
                     </Text>
                   </Row>

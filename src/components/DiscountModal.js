@@ -44,8 +44,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     borderRadius: SIZES.xxs,
-    borderColor: COLORS.primary,
-    borderWidth: 3,
+    borderColor: COLORS.darkGray,
+    borderWidth: 0.5
+
   },
   logo: {
     width: SIZE * 18,

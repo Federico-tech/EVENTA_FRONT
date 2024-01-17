@@ -41,7 +41,7 @@ import { AccountUserScreen } from '../screens/user/profile/accountProfile/screen
 import { EditUserScreen } from '../screens/user/profile/editProfile/screen';
 import { ProfileScreen } from '../screens/user/profile/userProfile/screen';
 import { SearchScreen } from '../screens/user/search/screen';
-import { SIZE, WIDTH_DEVICE } from '../utils/theme';
+import { COLORS, SIZE, WIDTH_DEVICE } from '../utils/theme';
 
 const UserBottomTabNavigator = createBottomTabNavigator();
 const OrganiserBottomTabNavigator = createBottomTabNavigator();
@@ -126,7 +126,7 @@ const BottomBarIcons = ({ route }) => ({
     }
     return (
       <View style={{ width: SIZE * 4, aspectRatio: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Ionicons name={iconName} size={SIZE * 2} style={{ marginTop: SIZE / 2 }} onPress={onPress} />
+        <Ionicons name={iconName} size={SIZE * 2} style={{ marginTop: SIZE / 2 }} onPress={onPress} color={'white'}/>
       </View>
     );
   },
@@ -319,6 +319,9 @@ export const UserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -329,6 +332,9 @@ export const UserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -339,6 +345,9 @@ export const UserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -349,6 +358,9 @@ export const UserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -366,6 +378,9 @@ export const OrganiserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -376,6 +391,9 @@ export const OrganiserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -386,6 +404,9 @@ export const OrganiserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -396,6 +417,9 @@ export const OrganiserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}
@@ -406,6 +430,9 @@ export const OrganiserBottomNavigator = () => {
         options={({ route }) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
+            backgroundColor: COLORS.white,
+            borderTopWidth: 0.3,
+            borderTopColor: COLORS.darkGray
           },
           headerShown: false,
         })}

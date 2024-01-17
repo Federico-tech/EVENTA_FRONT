@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text as RNText, StyleSheet } from 'react-native';
 
-import { FONTS, SIZES } from '../utils/theme';
+import { COLORS, FONTS, SIZES } from '../utils/theme';
 export const Text = ({
   color,
   style,
@@ -29,7 +29,7 @@ export const Text = ({
       ellipsizeMode="tail"
       onTextLayout={onTextLayout}
       style={[
-        { color },
+        { color: color && color || 'white' },
         { fontFamily: ff },
         { fontSize: fs },
         { marginTop: mt },

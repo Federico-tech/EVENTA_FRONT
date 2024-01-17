@@ -70,7 +70,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
-                <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} />
+                <AntDesign name="hearto" iconStyle={styles.icon} size={SIZE * 1.7} color={'white'} />
               </TouchableOpacity>
             )}
           </View>
@@ -82,7 +82,7 @@ export const MiniEventCard = ({ data, closeSheet = () => {}, onPress, scan }) =>
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.darkGray,
     paddingHorizontal: SIZE,
     marginTop: SIZE,
     borderRadius: SIZES.md,

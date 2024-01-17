@@ -3,13 +3,14 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
+import { ColorSpace } from 'react-native-reanimated';
 
+import { Row } from './Row';
 import { GoogleLogo } from '../assets';
 import { noAuthAxios } from '../core/axios';
 import { store } from '../store';
 import { setUserInfo } from '../store/user';
 import { COLORS, FONTS, HEIGHT_DEVICE, SIZES, WIDTH_DEVICE, SHADOWS, SIZE } from '../utils/theme';
-import { Row } from './Row';
 
 export const Button = ({
   text,
@@ -133,7 +134,7 @@ export const SocialLoginButton = ({ google, apple }) => {
 
   return (
     <Row row alignCenter spaceBetween mt={SIZE}>
-      <TouchableOpacity onPress={onPressGoogle}>
+      <TouchableOpacity onPress={onPressGoogle} backgroundColor={COLORS.darkGray}>
         <View style={styles.socialLoginButtonContainer}>
           <Image source={GoogleLogo} resizeMode="contain" style={styles.appleLogo} />
           <Text style={styles.textSocialLogin}> Google </Text>
@@ -157,7 +158,7 @@ export const SocialLoginButton = ({ google, apple }) => {
 export const IconButton = ({ onPress, name, iconStyle, size, color }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <Ionicons name={name} size={size} style={[styles.icon, iconStyle]} color={color} />
+      <Ionicons name={name} size={size} style={[styles.icon, iconStyle]} color={color || 'white'} />
     </TouchableOpacity>
   );
 };
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
     marginTop: HEIGHT_DEVICE / 50,
   },
   containerGradient: {
-    backgroundColor: '#00B2FF',
+    backgroundColor: COLORS.primary,
     height: SIZE * 2.5,
     width: SIZE * 13,
     borderRadius: SIZES.xxs,
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   secondary: {
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
     height: SIZE * 2.5,
     borderRadius: SIZES.xxs,
     alignItems: 'center',
@@ -200,9 +201,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.darkGray,
   },
   textGradient: {
-    fontFamily: FONTS.bold,
+    fontFamily: FONTS.semiBold,
     fontSize: SIZES.sm,
-    color: COLORS.white,
+    color: 'white',
   },
   onboardText: {
     color: 'white',
@@ -217,9 +218,10 @@ const styles = StyleSheet.create({
   textSecondary: {
     fontFamily: FONTS.medium,
     fontSize: SIZES.sm,
+    color: 'white'
   },
   socialLoginButtonContainer: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.darkGray,
     width: WIDTH_DEVICE / 2.3,
     height: HEIGHT_DEVICE / 15,
     borderRadius: SIZES.xxs,
@@ -230,9 +232,9 @@ const styles = StyleSheet.create({
     ...SHADOWS.medium,
   },
   textSocialLogin: {
-    fontFamily: FONTS.regular,
-    fontSize: SIZES.md,
-    color: COLORS.darkGray,
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.sm,
+    color: COLORS.lightGray,
     marginLeft: WIDTH_DEVICE / 80,
   },
   pressed: {

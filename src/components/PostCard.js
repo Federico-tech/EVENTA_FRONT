@@ -159,7 +159,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
               </Row>
             </TouchableOpacity>
             <TouchableOpacity onPress={handlePresentModal} style={{ paddingVertical: SIZE }}>
-              <Entypo name="dots-three-horizontal" size={SIZE * 1.3} onPress={handlePresentModal} />
+              <Entypo name="dots-three-horizontal" size={SIZE * 1.3} onPress={handlePresentModal} color={'white'}/>
             </TouchableOpacity>
           </Row>
           <LoadingImage
@@ -185,7 +185,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
                 ) : (
                   <TouchableOpacity onPress={onPresslike} disabled={isLikePressLoading}>
                     <Row row alignCenter>
-                      <AntDesign name="hearto" size={SIZE * 1.7} />
+                      <AntDesign name="hearto" size={SIZE * 1.7} color={'white'}/>
                       <TouchableOpacity onPress={onPressLikeNumber}>
                         <Text style={{ marginHorizontal: SIZE / 1.5 }} fs={SIZES.sm}>
                           {likes}
@@ -197,7 +197,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
 
                 <TouchableOpacity onPress={onPressComments}>
                   <Row row alignCenter>
-                    <AntDesign name="message1" size={SIZE * 1.7} style={{ marginRight: SIZE / 1.5, marginLeft: SIZE / 1.8 }} />
+                    <AntDesign name="message1" size={SIZE * 1.7} style={{ marginRight: SIZE / 1.5, marginLeft: SIZE / 1.8 }} color={'white'}/>
                     <Text fs={SIZES.sm}>{postData.comments}</Text>
                   </Row>
                 </TouchableOpacity>
@@ -272,7 +272,7 @@ export const PostCard = ({ postData, getData, touchable }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.darkGray,
     borderRadius: SIZES.xxs,
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,

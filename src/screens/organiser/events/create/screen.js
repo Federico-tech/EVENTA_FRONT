@@ -101,7 +101,7 @@ export const CreateEventScreen = ({ route }) => {
         navigation.goBack();
         showMessage({
           message: 'Event Created Succefully',
-          description: 'The event has been cerated succefully',
+          description: 'The event has been created succefully',
           type: 'success',
         });
         resetForm();
@@ -197,8 +197,8 @@ export const CreateEventScreen = ({ route }) => {
               <View style={styles.uploadImage}>
                 {!values.file ? (
                   <>
-                    <Ionicons name="add" size={50} />
-                    <Text>{t('pick an image')}</Text>
+                    <Ionicons name="add" size={50} color={COLORS.lightGray}/>
+                    <Text style={{ color: COLORS.lightGray}} >{t('pick an image')}</Text>
                   </>
                 ) : (
                   <Image source={{ uri: values.file }} style={{ width: WIDTH_DEVICE / 2, aspectRatio: 1, borderRadius: SIZES.xxs }} />
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     height: HEIGHT_DEVICE / 6,
   },
   uploadImage: {
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
     width: WIDTH_DEVICE / 2,
     aspectRatio: 1,
     alignSelf: 'center',
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   textDiscount: {
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.xs,
-    color: COLORS.darkGray,
+    color: COLORS.lightGray,
     marginRight: SIZE,
   },
 });

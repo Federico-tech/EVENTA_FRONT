@@ -106,13 +106,13 @@ export const HomeMap = ({ mapData }) => {
         <View style={styles.mapButton}>
           <TouchableOpacity onPress={handleZoomIn}>
             <Row style={{ width: SIZE * 2.5, height: SIZE * 1.8 }} alignCenter justifyCenter>
-              <Entypo name="plus" size={SIZE * 1.6} />
+              <Entypo name="plus" size={SIZE * 1.6}  color={'white'}/>
             </Row>
           </TouchableOpacity>
           <View style={{ height: 1, width: SIZE * 2.5, backgroundColor: 'black' }} />
           <TouchableOpacity onPress={handleZoomOut}>
             <Row style={{ width: SIZE * 2.5, height: SIZE * 1.8 }} alignCenter justifyCenter>
-              <Entypo name="minus" size={SIZE * 1.6} />
+              <Entypo name="minus" size={SIZE * 1.6} color={'white'} />
             </Row>
           </TouchableOpacity>
         </View>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 100,
     borderWidth: SIZE / 5,
-    borderColor: COLORS.white,
+    borderColor: COLORS.lightGray,
     transform: [{ rotateZ: '315deg' }],
   },
   marker: {
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: SIZE * 15,
     borderTopRightRadius: SIZE * 15,
     borderBottomLeftRadius: SIZE * 15,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.lightGray,
+    borderColor: COLORS.lightGray,
     transform: [{ rotateZ: '45deg' }],
   },
   filterButtonLeft: {
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
   mapButton: {
     position: 'absolute',
     width: SIZE * 2.5,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.darkGray,
     zIndex: 2,
     height: SIZE * 5,
     borderRadius: SIZES.xxs,

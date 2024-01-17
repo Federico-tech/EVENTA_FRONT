@@ -220,7 +220,7 @@ export const MapScreen = ({ navigation, route }) => {
               loading={refreshing && filter === 'events'}
               containerStyle={[filter === 'events' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { width: SIZE * 13 }]}
               onPress={() => updateFilters('events')}>
-              <Text medium color={filter === 'events' ? COLORS.white : 'black'}>
+              <Text semiBoldMd={filter === 'events'} medium={filter !== 'events'} color={filter !== 'events' ? COLORS.gray : 'white'}>
                 Events
               </Text>
             </Button>
@@ -229,7 +229,7 @@ export const MapScreen = ({ navigation, route }) => {
               loading={refreshing && filter === 'organisers'}
               containerStyle={[filter === 'organisers' && { backgroundColor: 'black', borderRadius: SIZES.xxs }, { width: SIZE * 13 }]}
               onPress={() => updateFilters('organisers')}>
-              <Text medium color={filter === 'organisers' ? COLORS.white : 'black'}>
+              <Text semiBoldMd={filter === 'organisers'} medium={filter !== 'organisers'} color={filter !== 'organisers' ? COLORS.gray : 'white'}>
                 Organisers
               </Text>
             </Button>
@@ -242,6 +242,7 @@ export const MapScreen = ({ navigation, route }) => {
           enablePanDownToClose
           ref={bottomSheetModalRef}
           index={0}
+          backgroundStyle={{ backgroundColor: '#080808' }}
           snapPoints={filter === 'organisers' ? organiserSnapPoints : eventSnapPoints}
           backdropComponent={renderBackdrop}
           onChange={handleAnimate}>
@@ -260,8 +261,8 @@ const styles = StyleSheet.create({
   profileImage: {
     aspectRatio: 1,
     borderRadius: 100,
-    borderWidth: SIZE / 5,
-    borderColor: COLORS.white,
+    borderWidth: SIZE / 8,
+    borderColor: COLORS.lightGray,
     transform: [{ rotateZ: '315deg' }],
   },
   marker: {
@@ -272,9 +273,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: SIZE * 15,
     borderTopRightRadius: SIZE * 15,
     borderBottomLeftRadius: SIZE * 15,
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.backGray,
-    borderWidth: 1,
+    backgroundColor: COLORS.lightGray,
+    borderColor: COLORS.lightGray,
+    borderWidth: 0.5,
     transform: [{ rotateZ: '45deg' }],
   },
   filterButtonLeft: {

@@ -101,7 +101,7 @@ export const HomeHeader = ({ organiser, ...props }) => {
           </View>
         </View>
       </View>
-      <View style={{ backgroundColor: COLORS.lightGray, height: 0.5 }} />
+      <View style={{ backgroundColor: COLORS.darkGray, height: 0.8 }} />
     </View>
   );
 };

@@ -153,8 +153,8 @@ export const CreatePostScreen = () => {
             <View style={styles.uploadImage}>
               {!values.file ? (
                 <>
-                  <Ionicons name="add" size={50} />
-                  <Text>{t('pick an image')}</Text>
+                  <Ionicons name="add" size={50} color={COLORS.lightGray} />
+                  <Text color={COLORS.lightGray}>{t('pick an image')}</Text>
                 </>
               ) : (
                 <Image source={{ uri: values.file }} style={{ width: SIZE * 26, aspectRatio: 1, borderRadius: SIZES.xxs }} />
@@ -176,7 +176,7 @@ export const CreatePostScreen = () => {
           <Text style={[styles.requiredImage]}>{errors.eventId && touched.eventId ? errors.eventId : null}</Text>
         </View>
       </KeyboardAwareScrollView>
-      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop}>
+      <BottomSheetModal enablePanDownToClose ref={bottomSheetModalRef} index={0} snapPoints={snapPoints} backdropComponent={renderBackdrop} backgroundStyle={{ backgroundColor: '#080808' }}>
         <View style={{ marginHorizontal: WIDTH_DEVICE / 20 }}>
           <FlatList
             data={data}
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     marginTop: SIZE * 2,
   },
   uploadImage: {
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
     width: SIZE * 26,
     aspectRatio: 1,
     alignSelf: 'center',

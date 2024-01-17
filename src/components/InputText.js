@@ -78,9 +78,9 @@ export const InputText = ({
   return (
     <Component onPress={onPressPressable}>
       <View style={[styles.container, containerStyle]} onLayout={onLayout}>
-        {!!label && <Text style={[styles.label]}>{label}</Text>}
+        {/* {!!label && <Text style={[styles.label]}>{label}</Text>} */}
         <View>
-          <View pointerEvents={pointerEvents}>
+          <View pointerEvents={pointerEvents} >
             <TextInput
               allowFontScaling={false}
               style={[styles.textInput, multiline && styles.multiline]}
@@ -96,12 +96,14 @@ export const InputText = ({
               {...rest}
               maxLength={maxLength}
               placeholder={label}
+              placeholderTextColor={COLORS.lightGray}
+              
             />
           </View>
           <View style={styles.iconsRight}>
             {secureTextEntry && (
               <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)} style={styles.icon}>
-                <Ionicons name={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'} size={16} />
+                <Ionicons name={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'} size={16} color={'white'}/>
               </TouchableOpacity>
             )}
           </View>
@@ -120,15 +122,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+   
   },
   container: {
     borderRadius: SIZES.xxs,
+    marginBottom: SIZE,
   },
   label: {
     marginTop: HEIGHT_DEVICE / 150,
     fontFamily: FONTS.semiBold,
     fontSize: SIZES.xs,
-    color: COLORS.darkGray,
+    color: COLORS.lightGray,
   },
   errorStyle: {
     paddingTop: 2,
@@ -170,12 +174,12 @@ const styles = StyleSheet.create({
     height: INPUT_HEIGHT,
     marginTop: HEIGHT_DEVICE / 100,
     borderRadius: SIZES.xs,
-    borderWidth: 0.5,
-    borderColor: COLORS.lightGray,
     paddingHorizontal: SIZE,
     flexDirection: 'row',
     alignItems: 'center',
     fontSize: SIZES.sm,
+    backgroundColor: COLORS.darkGray,
+    color: 'white'
   },
   textUnder: {
     minHeight: Normalize(5),

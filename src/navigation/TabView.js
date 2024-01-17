@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
+import { MaterialTabBar, Tabs, MaterialTabItem } from 'react-native-collapsible-tab-view';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
@@ -14,10 +14,11 @@ import { COLORS, FONTS, SIZE, SIZES } from '../utils/theme';
 const tabBar = (props) => (
   <MaterialTabBar
     {...props}
-    indicatorStyle={{ backgroundColor: 'black' }}
-    activeColor="black"
-    inactiveColor={COLORS.darkGray}
+    indicatorStyle={{ backgroundColor: 'white' }}
     labelStyle={styles.tabBar}
+    activeColor="white"
+    inactiveColor={COLORS.gray}
+    TabItemComponent={(itemProps) => <MaterialTabItem {...itemProps} inactiveOpacity={1} pressOpacity={1}/>}
   />
 );
 
@@ -64,7 +65,11 @@ export const OrganiserTopNavigator = ({ user, account, isLoading }) => {
   };
 
   return (
-    <Tabs.Container renderHeader={account ? AccountHeader : MyHeader} tabStyle={styles.tab} renderTabBar={tabBar}>
+    <Tabs.Container
+      renderHeader={account ? AccountHeader : MyHeader}
+      tabStyle={styles.tab}
+      renderTabBar={tabBar}
+      renderItem={(itemProps) => <MaterialTabItem {...itemProps} inactiveOpacity={0} />}>
       <Tabs.Tab name="Events">
         {isLoading ? (
           <Tabs.ScrollView>
@@ -165,7 +170,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
 
   const MyHeader = ({ isLoading }) => {
     return (
-      <View>
+      <View style={{ backgroundColor: COLORS.white }}>
         <ProfileInfo myProfile user={user} loading={isLoading} />
       </View>
     );
@@ -173,7 +178,7 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
 
   const AccountHeader = () => {
     return (
-      <View>
+      <View style={{ backgroundColor: COLORS.white }}>
         <ProfileInfo user={user} loading={isLoading} />
       </View>
     );
@@ -185,7 +190,8 @@ export const UserTopNavigator = ({ user, account, isLoading }) => {
     <Tabs.Container
       renderHeader={userId !== currentUserId ? () => <AccountHeader isLoading={isLoading} /> : MyHeader}
       tabStyle={styles.tab}
-      renderTabBar={tabBar}>
+      renderTabBar={tabBar}
+      renderItem={(itemProps) => <MaterialTabItem {...itemProps} inactiveOpacity={0} style={{ backgroundColor: 'red' }} />}>
       <Tabs.Tab name={`Moments (${formatNumber(postTotalData)})`}>
         {isLoading ? (
           <Tabs.ScrollView>
@@ -298,6 +304,11 @@ const styles = StyleSheet.create({
     fontSize: SIZES.sm,
     marginBottom: -SIZE / 2,
     textTransform: 'capitalize',
-    marginTop: SIZE / 2,
+    marginTop: -SIZE / 2,
+    paddingTop: SIZE * 1.8,
+    backgroundColor: 'black',
+    width: '112%',
+    flex: 1,
+    textAlign: 'center',
   },
 });

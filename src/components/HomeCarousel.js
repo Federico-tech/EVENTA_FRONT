@@ -24,7 +24,7 @@ const RecommendedUsers = () => {
       <Text ff={FONTS.medium}>{t('findNewFriends')}</Text>
       <Row row spaceBetween width="100%" mt={SIZE} mb={SIZE}>
         {recommendedUsers?.map((recommendedUser) => (
-          <RecommendedUserColumn key={recommendedUser._id} data={recommendedUser} />
+          <RecommendedUserColumn key={recommendedUser._id} data={recommendedUser} containerStyle={{ borderWidth: 0.2, borderColor: COLORS.black}}/>
         ))}
       </Row>
     </View>
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     marginBottom: -SIZE,
   },
   recommendedUserContainer: {
-    backgroundColor: COLORS.backGray,
+    backgroundColor: COLORS.darkGray,
     height: SIZE * 19,
     marginBottom: -SIZE,
     alignItems: 'center',

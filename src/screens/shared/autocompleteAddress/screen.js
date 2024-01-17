@@ -45,22 +45,43 @@ export const AddressAutocompleteScreen = ({ route, navigation }) => {
           styles={{
             container: {
               width: WIDTH_DEVICE * 0.9,
+              
             },
+            row: {
+              backgroundColor: COLORS.darkGray,
+              
+            },
+            listView: {
+              borderRadius: SIZES.xs
+            },
+            separator: {
+              height: 0.5,
+              backgroundColor: COLORS.gray,
+            },
+            description: {
+              color: 'white'
+            }
+            
+           
           }}
+          listUnderlayColor='red'
+          listHoverColor= 'red'
           enablePoweredByContainer={false}
-          listUnderlayColor="transparent"
           placeholder="Search"
           numberOfLines={10}
           nearbyPlacesAPI="GooglePlacesSearch"
           textInputProps={{
             placeholderTextColor: COLORS.gray,
-            borderWidth: 0.5,
             borderRadius: SIZES.xs,
             borderColor: COLORS.lightGray,
             height: HEIGHT_DEVICE / 17,
             cursorColor: 'black',
+            backgroundColor: COLORS.darkGray,
+            color: 'white',
+           
           }}
           fetchDetails
+       
           onPress={onPress}
           onFail={(error) => console.debug(error)}
           query={{

@@ -140,10 +140,10 @@ export const EventCard = ({ eventData }) => {
                 <LoadingImage key={data?.user._id} source={data?.user.profilePic} imageStyle={styles.partImage} profile iconSIZE={SIZE * 1.3} />
               ))}
             </Row>
-            <Text style={[styles.textAdress, { color: 'black', fontFamily: FONTS.semiBold }]}>
+            <Text style={[styles.textAdress, { color: 'white', fontFamily: FONTS.semiBold }]}>
               {totalData > 3 ? `+${formatShortNumber(totalData)}` : formatShortNumber(totalData)}{' '}
             </Text>
-            <Text style={[styles.textAdress, { color: 'black' }]}>
+            <Text style={[styles.textAdress, { color: 'white' }]}>
               {totalData === 0 ? 'participants' : totalData === 1 ? 'participant' : 'participants'}
             </Text>
           </Row>
@@ -183,7 +183,7 @@ export const MostPopularEventCard = ({ eventData }) => {
   return (
     <>
       <TouchableOpacity onPress={handleOnPress} activeOpacity={0.7}>
-        <Row style={{ height: HEIGHT_DEVICE / 3.45, width: WIDTH_DEVICE }}>
+        <Row style={{ height: HEIGHT_DEVICE / 3.45, width: WIDTH_DEVICE, backgroundColor: COLORS.darkGray }}>
           <View>
             {eventData ? (
               <LoadingImage
@@ -195,7 +195,7 @@ export const MostPopularEventCard = ({ eventData }) => {
                 indicator
               />
             ) : (
-              <Row style={{ height: HEIGHT_DEVICE / 3.45 }} alignCenter  justifyCenter>
+              <Row style={{ height: HEIGHT_DEVICE / 3.45 }} alignCenter  justifyCenter> 
                 <Text style={{ fontFamily: FONTS.medium, fontSize: SIZES.sm}}>
                   There are no events in your area
                 </Text>
@@ -206,18 +206,18 @@ export const MostPopularEventCard = ({ eventData }) => {
           </View>
           <Row style={styles.info}>
             <Row>
-              <Text color={COLORS.white} ff={FONTS.semiBold} fs={SIZES.sm}>
+              <Text ff={FONTS.semiBold} fs={SIZES.sm}>
                 {t('mostPopular')}
               </Text>
             </Row>
-            <Row row alignCenter width={WIDTH_DEVICE} ml={SIZE} style={{ justifyContent: 'flex-end', marginRight: SIZE }}>
+            {/* <Row row alignCenter width={WIDTH_DEVICE} ml={SIZE} style={{ justifyContent: 'flex-end', marginRight: SIZE }}>
               {eventData?._id && (
                 <Row row mr={SIZE * 2}>
-                  {data?.map((data) => (
+                  {data?.slice(0, 2).map((data) => (
                     <LoadingImage
                       key={data.user._id}
                       source={data?.user.profilePic}
-                      imageStyle={[styles.partImage, { width: SIZE * 3.2, borderWidth: 1.5, marginBottom: SIZE * 1.5 }]}
+                      imageStyle={[styles.partImage, { width: SIZE * 3.2, marginBottom: SIZE * 1.5, borderColor: 'white', borderWidth: 1 }]}
                       profile
                       iconSIZE={SIZE * 1.3}
                     />
@@ -225,7 +225,7 @@ export const MostPopularEventCard = ({ eventData }) => {
                   <Row width={SIZE} />
                 </Row>
               )}
-            </Row>
+            </Row> */}
           </Row>
         </Row>
       </TouchableOpacity>
@@ -236,7 +236,7 @@ export const MostPopularEventCard = ({ eventData }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     height: SIZE * 35.8,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.darkGray,
     width: WIDTH_DEVICE * 0.9,
     marginHorizontal: WIDTH_DEVICE / 20,
     ...SHADOWS.medium,
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   textAdress: {
     fontFamily: FONTS.regular,
     fontSize: SIZES.xxs,
-    color: COLORS.gray,
+    color: COLORS.lightGray,
   },
   likeContainer: {
     alignItems: 'center',
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     marginLeft: -SIZE,
     borderWidth: 2.5,
-    borderColor: COLORS.white,
+    borderColor: COLORS.darkGray
   },
   dot: {
     backgroundColor: COLORS.gray,

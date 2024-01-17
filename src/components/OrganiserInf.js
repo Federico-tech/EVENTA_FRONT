@@ -85,7 +85,7 @@ export const OrganiserInf = ({ organiser, isLoading, scans }) => {
           <TouchableOpacity onPress={() => navigation.navigate(ROUTES.ScannerScreen)}>
             <Row row alignCenter ml={SIZE * 5.5}>
               <Text mr={SIZE} fs={SIZES.sm} color={COLORS.gray} >{scans}</Text>
-              <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} />
+              <MaterialCommunityIcons name="qrcode-scan" size={SIZE * 2} color={'white'} />
             </Row>
           </TouchableOpacity>
         )}

@@ -10,6 +10,7 @@ import { awaitRehydrate } from '../store';
 import { selectIsAuthenticated, selectCurrentUserRole } from '../store/user';
 import { ROLES } from '../utils/conts';
 import { AuthNavigator, OrganiserStack, UserStack } from './Navigation';
+import { COLORS } from '../utils/theme';
 
 const AppNavigator = () => {
   const [rehydrated, setRehydrated] = useState(false);
@@ -29,10 +30,12 @@ const AppNavigator = () => {
   }
 
   return (
-    <NavigationContainer>
+      <NavigationContainer>
       <BottomSheetModalProvider>{isLogged ? role === ROLES.USER ? <UserStack /> : <OrganiserStack /> : <AuthNavigator />}</BottomSheetModalProvider>
       <FlashMessage position="top" />
     </NavigationContainer>
+    
+    
   );
 };
 
